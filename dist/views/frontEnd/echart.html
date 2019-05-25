@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>echart的日常使用 | 人走茶凉</title>
+    <meta name="description" content="在前端的路上越走越远">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    
+    <link rel="preload" href="/assets/css/0.styles.6af0ae30.css" as="style"><link rel="preload" href="/assets/js/app.18364c99.js" as="script"><link rel="preload" href="/assets/js/6.01720d6a.js" as="script"><link rel="preload" href="/assets/js/1.450e2223.js" as="script"><link rel="preload" href="/assets/js/9.e6dfb581.js" as="script"><link rel="prefetch" href="/assets/js/10.4ffbccd7.js"><link rel="prefetch" href="/assets/js/11.6f9f2e2c.js"><link rel="prefetch" href="/assets/js/12.59d78057.js"><link rel="prefetch" href="/assets/js/13.8dc9425a.js"><link rel="prefetch" href="/assets/js/14.f3f07dfd.js"><link rel="prefetch" href="/assets/js/15.132e64aa.js"><link rel="prefetch" href="/assets/js/16.089f24bb.js"><link rel="prefetch" href="/assets/js/17.df308603.js"><link rel="prefetch" href="/assets/js/18.6fce16c2.js"><link rel="prefetch" href="/assets/js/19.f7c861e8.js"><link rel="prefetch" href="/assets/js/20.35e96911.js"><link rel="prefetch" href="/assets/js/21.22f1f1e5.js"><link rel="prefetch" href="/assets/js/22.62eab4ad.js"><link rel="prefetch" href="/assets/js/23.a0375427.js"><link rel="prefetch" href="/assets/js/24.c0a24ddd.js"><link rel="prefetch" href="/assets/js/25.439d0776.js"><link rel="prefetch" href="/assets/js/26.6e09de39.js"><link rel="prefetch" href="/assets/js/27.85ce17db.js"><link rel="prefetch" href="/assets/js/4.fb61191b.js"><link rel="prefetch" href="/assets/js/5.2de50911.js"><link rel="prefetch" href="/assets/js/7.fa7fed42.js"><link rel="prefetch" href="/assets/js/8.bd918a63.js"><link rel="prefetch" href="/assets/js/vendors~flowchart.7c199c7c.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.6af0ae30.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div><div class="theme-container"><div><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/head.png" alt="人走茶凉" class="logo"> <span class="site-name">人走茶凉</span></a> <div class="links"><div class="color-picker"><a href="#" class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="theme-options"><!----> <div class="dark-theme-options toggle-option"><label for="dark-theme-toggle">Enable Dark Theme?</label> <input id="dark-theme-toggle" type="checkbox" checked="checked"></div></div></div></div> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  首页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      分类
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/category/frontEnd.html" class="nav-link"><i class="iconfont undefined"></i>
+  frontEnd
+</a></li><li class="dropdown-item"><!----> <a href="/category/hobby.html" class="nav-link"><i class="iconfont undefined"></i>
+  hobby
+</a></li><li class="dropdown-item"><!----> <a href="/category/work.html" class="nav-link"><i class="iconfont undefined"></i>
+  work
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  标签
+</a></div><div class="nav-item"><a href="/timeLine/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-message"></i>
+      联系我
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/TypeInfos" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-github"></i>
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/doudoublog/" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-bokeyuan"></i>
+  博客圆
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  首页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      分类
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/category/frontEnd.html" class="nav-link"><i class="iconfont undefined"></i>
+  frontEnd
+</a></li><li class="dropdown-item"><!----> <a href="/category/hobby.html" class="nav-link"><i class="iconfont undefined"></i>
+  hobby
+</a></li><li class="dropdown-item"><!----> <a href="/category/work.html" class="nav-link"><i class="iconfont undefined"></i>
+  work
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  标签
+</a></div><div class="nav-item"><a href="/timeLine/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-message"></i>
+      联系我
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/TypeInfos" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-github"></i>
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/doudoublog/" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-bokeyuan"></i>
+  博客圆
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>echart的日常使用</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/views/frontEnd/echart.html#echart的属性对应的图表组件" class="sidebar-link">echart的属性对应的图表组件</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/views/frontEnd/echart.html#title" class="sidebar-link">title</a></li><li class="sidebar-sub-header"><a href="/views/frontEnd/echart.html#legand" class="sidebar-link">legand</a></li><li class="sidebar-sub-header"><a href="/views/frontEnd/echart.html#grid" class="sidebar-link">grid</a></li><li class="sidebar-sub-header"><a href="/views/frontEnd/echart.html#rich" class="sidebar-link">rich</a></li><li class="sidebar-sub-header"><a href="/views/frontEnd/echart.html#xaxis和yaxis" class="sidebar-link">xAxis和yAxis</a></li><li class="sidebar-sub-header"><a href="/views/frontEnd/echart.html#series" class="sidebar-link">series</a></li></ul></li><li><a href="/views/frontEnd/echart.html#曲线图例子" class="sidebar-link">曲线图例子</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <div><main class="page reco-hide"> <div class="page-title"><h1>echart的日常使用</h1> <hr> <div data-v-0b496ca7><i class="iconfont reco-account" data-v-0b496ca7><span data-v-0b496ca7>kent</span></i> <i class="iconfont reco-date" data-v-0b496ca7><span data-v-0b496ca7>2019-4-20</span></i> <span id="/views/frontEnd/echart.html" data-flag-title="Your Article Title" class="leancloud-visitors" data-v-2e99e05a data-v-0b496ca7><i class="iconfont reco-eye" style="margin-right: .5rem" data-v-2e99e05a></i> <a class="leancloud-visitors-count" style="font-size:.9rem;font-weight:normal;color:#999;" data-v-2e99e05a></a></span> <i class="iconfont reco-tag tags" data-v-0b496ca7><span class="tag-item" data-v-0b496ca7>
+      echart
+    </span><span class="tag-item" data-v-0b496ca7>
+      可视化
+    </span><span class="tag-item" data-v-0b496ca7>
+      前端
+    </span></i></div></div> <div class="content default"><div class="tip custom-block"><p class="custom-block-title">概述</p> <p>在日常开发中使用到的echart的一些理解，为了方便日后使用。</p></div> <h2 id="echart的属性对应的图表组件"><a href="#echart的属性对应的图表组件" aria-hidden="true" class="header-anchor">#</a> echart的属性对应的图表组件</h2> <h3 id="title"><a href="#title" aria-hidden="true" class="header-anchor">#</a> title</h3> <p>基本不用，这是对应每个图表的标题，当需要把这个图表下载下来的时候才会用到。</p> <h3 id="legand"><a href="#legand" aria-hidden="true" class="header-anchor">#</a> legand</h3> <p>图例组件，可以通过点击图例控制哪些系列不显示。比如如下的营收占比，
+<img src="/assets/img/echart1.7b9dcbfc.jpg" alt=""> --&gt;
+可以配置位置(left,top...)、宽高(width\height)、图例之间的距离(itemGap)、图例的宽高(itemWidth、itemHeight)、格式化图例(formatter)<a href="https://www.echartsjs.com/option.html#legend" target="_blank" rel="noopener noreferrer">等等<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a><br></p> <h3 id="grid"><a href="#grid" aria-hidden="true" class="header-anchor">#</a> grid</h3> <p>grid可以是个数组对象，每个数组对象表示一个图表的配置，可以配置离容器的top、left，图表的宽高(默认是继承容器的宽高)</p> <h3 id="rich"><a href="#rich" aria-hidden="true" class="header-anchor">#</a> rich</h3> <p>富文本，当你的X\Y轴需要加图片或一些css样式时，可以用到富文本，比如下图:红色标记的箭头是图片
+<img src="/assets/img/echart2.2b2c3ff2.png" alt=""></p> <div class="language-js line-numbers-mode"><pre class="language-js"><code>      xAxis<span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token comment">// x坐标轴</span>
+        type<span class="token punctuation">:</span> <span class="token string">'category'</span><span class="token punctuation">,</span>
+        data<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'天使'</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">,</span> <span class="token string">'A轮'</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">,</span> <span class="token string">'B轮'</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">,</span> <span class="token string">'C轮'</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">,</span> <span class="token string">'D轮'</span><span class="token punctuation">,</span> <span class="token string">'T'</span><span class="token punctuation">,</span> <span class="token string">'E轮'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        axisLabel<span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token comment">// 文字</span>
+          textStyle<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            color<span class="token punctuation">:</span> <span class="token string">'#b5bddb'</span><span class="token punctuation">,</span>
+            fontSize<span class="token punctuation">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          interval<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token comment">// 设置成 0 强制显示所有标签。</span>
+          <span class="token function-variable function">formatter</span><span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">value<span class="token punctuation">,</span> index</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 判断如果是下标为奇数时（也就是T）显示箭头</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">===</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+              <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`{arrow|}`</span></span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+              <span class="token keyword">return</span> value
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          rich<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+            arrow<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+              width<span class="token punctuation">:</span> <span class="token number">30</span><span class="token punctuation">,</span>
+              height<span class="token punctuation">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+              align<span class="token punctuation">:</span> <span class="token string">'center'</span><span class="token punctuation">,</span>
+              backgroundColor<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                image<span class="token punctuation">:</span> arrowIcon<span class="token punctuation">,</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br></div></div><h3 id="xaxis和yaxis"><a href="#xaxis和yaxis" aria-hidden="true" class="header-anchor">#</a> xAxis和yAxis</h3> <p>这是最常用的属性了，在一些柱状图和曲线图基本都有用到，最常用到的比如：<br></p> <div class="language-html line-numbers-mode"><pre class="language-html"><code>name: 'string' =&gt; 坐标轴名称
+nameLocation: ''start','middle' 或者 'center','end' =&gt; 坐标轴名称显示的位置
+nameTextStyle: 'object' =&gt; 坐标轴名称的样式
+nameGap: 'Number' =&gt; 坐标轴名称与轴线之间的距离。 Y轴的轴名与Y轴，看下图。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p><img src="/assets/img/echart3.1fed1d24.png" alt=""></p> <h3 id="series"><a href="#series" aria-hidden="true" class="header-anchor">#</a> series</h3> <p>系列列表。每个系列通过 type 决定自己的图表类型，每个type都有自己的对象。</p> <h2 id="曲线图例子"><a href="#曲线图例子" aria-hidden="true" class="header-anchor">#</a> 曲线图例子</h2></div> <!----> <footer class="page-edit"><!----> <!----></footer> <!----> </main> <div class="valine-wrapper" data-v-0162251c><div id="valine" data-v-0162251c></div></div></div> <div class="back-to-ceiling" style="right:1rem;bottom:3rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;background-color:rgba(231, 234, 241,.5);display:none;" data-v-d0bfeaa4 data-v-d0bfeaa4><i class="iconfont reco-up" data-v-d0bfeaa4></i></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.18364c99.js" defer></script><script src="/assets/js/6.01720d6a.js" defer></script><script src="/assets/js/1.450e2223.js" defer></script><script src="/assets/js/9.e6dfb581.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>VSCode的一些配置 | 人走茶凉</title>
+    <meta name="description" content="主题、icon、Setting.json的配置">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    
+    <link rel="preload" href="/assets/css/0.styles.6af0ae30.css" as="style"><link rel="preload" href="/assets/js/app.18364c99.js" as="script"><link rel="preload" href="/assets/js/6.01720d6a.js" as="script"><link rel="preload" href="/assets/js/1.450e2223.js" as="script"><link rel="preload" href="/assets/js/18.6fce16c2.js" as="script"><link rel="prefetch" href="/assets/js/10.4ffbccd7.js"><link rel="prefetch" href="/assets/js/11.6f9f2e2c.js"><link rel="prefetch" href="/assets/js/12.59d78057.js"><link rel="prefetch" href="/assets/js/13.8dc9425a.js"><link rel="prefetch" href="/assets/js/14.f3f07dfd.js"><link rel="prefetch" href="/assets/js/15.132e64aa.js"><link rel="prefetch" href="/assets/js/16.089f24bb.js"><link rel="prefetch" href="/assets/js/17.df308603.js"><link rel="prefetch" href="/assets/js/19.f7c861e8.js"><link rel="prefetch" href="/assets/js/20.35e96911.js"><link rel="prefetch" href="/assets/js/21.22f1f1e5.js"><link rel="prefetch" href="/assets/js/22.62eab4ad.js"><link rel="prefetch" href="/assets/js/23.a0375427.js"><link rel="prefetch" href="/assets/js/24.c0a24ddd.js"><link rel="prefetch" href="/assets/js/25.439d0776.js"><link rel="prefetch" href="/assets/js/26.6e09de39.js"><link rel="prefetch" href="/assets/js/27.85ce17db.js"><link rel="prefetch" href="/assets/js/4.fb61191b.js"><link rel="prefetch" href="/assets/js/5.2de50911.js"><link rel="prefetch" href="/assets/js/7.fa7fed42.js"><link rel="prefetch" href="/assets/js/8.bd918a63.js"><link rel="prefetch" href="/assets/js/9.e6dfb581.js"><link rel="prefetch" href="/assets/js/vendors~flowchart.7c199c7c.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.6af0ae30.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div><div class="theme-container"><div><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/head.png" alt="人走茶凉" class="logo"> <span class="site-name">人走茶凉</span></a> <div class="links"><div class="color-picker"><a href="#" class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="theme-options"><!----> <div class="dark-theme-options toggle-option"><label for="dark-theme-toggle">Enable Dark Theme?</label> <input id="dark-theme-toggle" type="checkbox" checked="checked"></div></div></div></div> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  首页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      分类
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/category/frontEnd.html" class="nav-link"><i class="iconfont undefined"></i>
+  frontEnd
+</a></li><li class="dropdown-item"><!----> <a href="/category/hobby.html" class="nav-link"><i class="iconfont undefined"></i>
+  hobby
+</a></li><li class="dropdown-item"><!----> <a href="/category/work.html" class="nav-link"><i class="iconfont undefined"></i>
+  work
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  标签
+</a></div><div class="nav-item"><a href="/timeLine/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-message"></i>
+      联系我
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/TypeInfos" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-github"></i>
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/doudoublog/" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-bokeyuan"></i>
+  博客圆
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  首页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      分类
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/category/frontEnd.html" class="nav-link"><i class="iconfont undefined"></i>
+  frontEnd
+</a></li><li class="dropdown-item"><!----> <a href="/category/hobby.html" class="nav-link"><i class="iconfont undefined"></i>
+  hobby
+</a></li><li class="dropdown-item"><!----> <a href="/category/work.html" class="nav-link"><i class="iconfont undefined"></i>
+  work
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  标签
+</a></div><div class="nav-item"><a href="/timeLine/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-message"></i>
+      联系我
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/TypeInfos" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-github"></i>
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/doudoublog/" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-bokeyuan"></i>
+  博客圆
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>VSCode的一些配置</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/views/frontEnd/VSCode.html#配置主题" class="sidebar-link">配置主题</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/views/frontEnd/VSCode.html#settings-sync" class="sidebar-link">Settings Sync</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/views/frontEnd/VSCode.html#setting-json" class="sidebar-link">setting.json</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/views/frontEnd/VSCode.html#eslint" class="sidebar-link">eslint</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/views/frontEnd/VSCode.html#rule" class="sidebar-link">rule</a></li></ul></li></ul></section></li></ul> </aside> <div><main class="page reco-hide"> <div class="page-title"><h1>VSCode的一些配置</h1> <hr> <div data-v-0b496ca7><i class="iconfont reco-account" data-v-0b496ca7><span data-v-0b496ca7>kent</span></i> <!----> <span id="/views/frontEnd/VSCode.html" data-flag-title="Your Article Title" class="leancloud-visitors" data-v-2e99e05a data-v-0b496ca7><i class="iconfont reco-eye" style="margin-right: .5rem" data-v-2e99e05a></i> <a class="leancloud-visitors-count" style="font-size:.9rem;font-weight:normal;color:#999;" data-v-2e99e05a></a></span> <i class="iconfont reco-tag tags" data-v-0b496ca7><span class="tag-item" data-v-0b496ca7>
+      前端
+    </span><span class="tag-item" data-v-0b496ca7>
+      VSCode
+    </span></i></div></div> <div class="content default"><h2 id="配置主题"><a href="#配置主题" aria-hidden="true" class="header-anchor">#</a> 配置主题</h2> <p>文件 -&gt; 首选项 -&gt; 颜色主题 -&gt; 选择更改</p> <p>快捷键： ctrl + k、ctrl + t</p> <p>icon theme:<code>Material Icon Theme</code>
+color theme:<code>one dark pro</code></p> <h2 id="settings-sync"><a href="#settings-sync" aria-hidden="true" class="header-anchor">#</a> Settings Sync</h2> <div class="tip custom-block"><p>VSCode插件，可以同步：</p> <ol><li>Settings File</li> <li>Keybinding File</li> <li>Launch File</li> <li>Snippets Folder</li> <li>VSCode Extensions &amp; Extensions Configurations</li> <li>Workspaces Folder</li></ol></div> <p>Upload Key : <code>Shift + Alt + U</code><br>
+Download Key : <code>Shift + Alt + D</code><br>
+gist（vscode配置）: <br></p> <ul><li>token: <code>407aa4d91fdaeecc9e89be1385028f99a1724f7c</code></li> <li>gistId: <code>712826c7c78cde4011844be779b921d5</code></li></ul> <h2 id="setting-json"><a href="#setting-json" aria-hidden="true" class="header-anchor">#</a> setting.json</h2> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token punctuation">{</span>
+    <span class="token string">&quot;editor.fontSize&quot;</span><span class="token punctuation">:</span> <span class="token number">14</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;workbench.iconTheme&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;material-icon-theme&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// 控制资源管理器是否在把文件删除到废纸篓时进行确认。</span>
+    <span class="token string">&quot;explorer.confirmDelete&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 启用后，将在文件打开时尝试猜测字符集编码。可以按语言对此项进行配置。</span>
+    <span class="token string">&quot;files.autoGuessEncoding&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 控制在资源管理器内拖放移动文件或文件夹时是否进行确认。</span>
+    <span class="token string">&quot;explorer.confirmDragAndDrop&quot;</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token comment">// 窗口失去焦点时会自动保存当前代码</span>
+    <span class="token string">&quot;files.autoSave&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;onFocusChange&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// 制表符的空格数</span>
+    <span class="token string">&quot;editor.tabSize&quot;</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token comment">// 按下保存会自动修复eslint的配置</span>
+    <span class="token string">&quot;eslint.autoFixOnSave&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 启用或禁用字体连字。</span>
+    <span class="token string">&quot;editor.fontLigatures&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 是否在每行后面添加分号</span>
+    <span class="token string">&quot;prettier.semi&quot;</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token comment">// 如果为真，将使用单引号而不是双引号</span>
+    <span class="token string">&quot;prettier.singleQuote&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 用“beautiful -eslint”代替“beautiful tier”</span>
+    <span class="token string">&quot;prettier.eslintIntegration&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 限制缩略图的宽度，控制其最多显示的列数。</span>
+    <span class="token string">&quot;editor.minimap.maxColumn&quot;</span><span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+    <span class="token comment">// 是否显示右侧的缩略图</span>
+    <span class="token string">&quot;editor.minimap.enabled&quot;</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token comment">// 控制在差异编辑器中是否把前导空格或尾随空格的改动显示为差异。</span>
+    <span class="token string">&quot;diffEditor.ignoreTrimWhitespace&quot;</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token comment">// 启用时，提交将自动从当前Git存储库的默认远程获取。</span>
+    <span class="token string">&quot;git.autofetch&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;eslint.validate&quot;</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        <span class="token string">&quot;javascript&quot;</span><span class="token punctuation">,</span><span class="token punctuation">{</span>
+            <span class="token string">&quot;language&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;vue&quot;</span><span class="token punctuation">,</span>
+            <span class="token string">&quot;autoFix&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token string">&quot;html&quot;</span><span class="token punctuation">,</span>
+        <span class="token string">&quot;vue&quot;</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 控制终端的渲染方式。</span>
+    <span class="token string">&quot;terminal.integrated.rendererType&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;dom&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;editor.fontFamily&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;Source Code Variable,Menlo, Monaco, 'Courier New', monospace&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// 安装StandardJS 启动style检测</span>
+    <span class="token string">&quot;standard.enable&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 在保存时启用或禁用自动修复</span>
+    <span class="token string">&quot;standard.autoFixOnSave&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 为避免默认的Vetur模板验证</span>
+    <span class="token string">&quot;vetur.validation.template&quot;</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;editor.formatOnPaste&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 控制是否显示工作台底部状态栏中的 Twitter 反馈 (笑脸图标)。</span>
+    <span class="token string">&quot;workbench.statusBar.feedback.visible&quot;</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token comment">// 启用/禁用导航路径，在页面的上方出现面包</span>
+    <span class="token string">&quot;breadcrumbs.enabled&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 控制终端游标是否闪烁。</span>
+    <span class="token string">&quot;terminal.integrated.cursorBlinking&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 不要使用重复的样式定义。</span>
+    <span class="token string">&quot;css.lint.duplicateProperties&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;error&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// css 零不需要单位。</span>
+    <span class="token string">&quot;css.lint.zeroUnits&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;warning&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// 未知的供应商特定属性。</span>
+    <span class="token string">&quot;less.lint.unknownVendorSpecificProperties&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;warning&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// 在使用 padding 或 border 时，不要使用 width 或 height。</span>
+    <span class="token string">&quot;less.lint.boxModel&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;warning&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// 360秒自动 git fetch 之间的间隔时间。</span>
+    <span class="token string">&quot;git.autofetchPeriod&quot;</span><span class="token punctuation">:</span> <span class="token number">360</span><span class="token punctuation">,</span>
+    <span class="token comment">// 忽略空格</span>
+    <span class="token string">&quot;gitblame.ignoreWhitespace&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 缩进 &lt;head&gt; 和 &lt;body&gt; 部分。</span>
+    <span class="token string">&quot;html.format.indentInnerHtml&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// force\-aligned: 对除第一个属性外的其他每个属性进行换行，并保持对齐</span>
+    <span class="token string">&quot;html.format.wrapAttributes&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;force-aligned&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// 是否在解决合并冲突后自动转到下一个合并冲突。</span>
+    <span class="token string">&quot;merge-conflict.autoNavigateNextConflict.enabled&quot;</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token comment">// 同步插件和setting</span>
+    <span class="token string">&quot;sync.gist&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;712826c7c78cde4011844be779b921d5&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// eslint的运行环境，没有加这个有时候eslint server启动失败</span>
+    <span class="token string">&quot;eslint.runtime&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;node&quot;</span><span class="token punctuation">,</span>
+    <span class="token comment">// 当在 VS Code 中重命名或移动文件时，启用或禁用自动更新导入路径</span>
+    <span class="token string">&quot;javascript.updateImportsOnFileMove.enabled&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;always&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;editor.suggestSelection&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;first&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;workbench.colorTheme&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;One Dark Pro Vivid&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br></div></div><h2 id="eslint"><a href="#eslint" aria-hidden="true" class="header-anchor">#</a> eslint</h2> <h3 id="rule"><a href="#rule" aria-hidden="true" class="header-anchor">#</a> rule</h3> <div class="language-js line-numbers-mode"><pre class="language-js"><code>    <span class="token comment">// 关闭 禁止使用console，生产环境不能使用console</span>
+    <span class="token string">'no-console'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭 使用debugger，生产环境不能使用</span>
+    <span class="token string">'no-debugger'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭 禁止对函数参数再赋值，在使用map时会使用参数更改</span>
+    <span class="token string">'no-param-reassign'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭 强制 generator 函数中 * 号周围有空格</span>
+    <span class="token string">'generator-star-spacing'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 强制缩进2格</span>
+    indent<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭 禁用不必要的转义字符</span>
+    <span class="token string">'no-useless-escape'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭 使用eval</span>
+    <span class="token string">'no-eval'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭 禁用未声明的变量</span>
+    <span class="token string">'no-undef'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 开启 禁止使用拖尾逗号</span>
+    <span class="token string">'comma-dangle'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token string">'never'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭函数名()的前面加空格</span>
+    <span class="token string">'space-before-function-paren'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭代码末尾空行</span>
+    <span class="token string">'no-trailing-spaces'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁止块内填充(不加多的空行)</span>
+    <span class="token string">'padded-blocks'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token string">'never'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 不允许空行</span>
+    <span class="token string">'no-empty'</span><span class="token punctuation">:</span> <span class="token string">'error'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 禁用封号</span>
+    semi<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token string">'never'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 允许全局属性的使用，比如isNaN()</span>
+    <span class="token string">'no-restricted-globals'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token string">'event'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token comment">// 允许函数根据代码分支有不同的return行为,可以return,也可以return false</span>
+    <span class="token string">'consistent-return'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭对function是否命名的禁用</span>
+    <span class="token string">'func-names'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭对continue的禁用</span>
+    <span class="token string">'no-continue'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭在数组里面必须return</span>
+    <span class="token string">'array-callback-return'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 关闭禁止使用特定的语法</span>
+    <span class="token string">'no-restricted-syntax'</span><span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token comment">// 要求箭头函数的参数使用圆括号，且当只有一个参数不需要括号</span>
+    <span class="token string">'arrow-parens'</span><span class="token punctuation">:</span> <span class="token string">'as-needed'</span><span class="token punctuation">,</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br></div></div></div> <!----> <footer class="page-edit"><!----> <!----></footer> <!----> </main> <div class="valine-wrapper" data-v-0162251c><div id="valine" data-v-0162251c></div></div></div> <div class="back-to-ceiling" style="right:1rem;bottom:3rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;background-color:rgba(231, 234, 241,.5);display:none;" data-v-d0bfeaa4 data-v-d0bfeaa4><i class="iconfont reco-up" data-v-d0bfeaa4></i></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.18364c99.js" defer></script><script src="/assets/js/6.01720d6a.js" defer></script><script src="/assets/js/1.450e2223.js" defer></script><script src="/assets/js/18.6fce16c2.js" defer></script>
+  </body>
+</html>
