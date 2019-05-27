@@ -1,5 +1,5 @@
 module.exports = {
-  title: "人走茶凉",
+  title: "豆豆",
   description: '在前端的路上越走越远',
   dest: 'dist',
   head: [
