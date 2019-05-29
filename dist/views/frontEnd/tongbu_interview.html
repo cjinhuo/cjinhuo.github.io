@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>记得有一次同步网络的面试(为了佳明) | 豆豆</title>
+    <meta name="description" content="在前端的路上越走越远">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    
+    <link rel="preload" href="/assets/css/0.styles.6af0ae30.css" as="style"><link rel="preload" href="/assets/js/app.c8912a4d.js" as="script"><link rel="preload" href="/assets/js/6.804f0c03.js" as="script"><link rel="preload" href="/assets/js/1.93fb4e99.js" as="script"><link rel="preload" href="/assets/js/22.68797b27.js" as="script"><link rel="prefetch" href="/assets/js/10.728720b6.js"><link rel="prefetch" href="/assets/js/11.1c018485.js"><link rel="prefetch" href="/assets/js/12.26a2ed75.js"><link rel="prefetch" href="/assets/js/13.3d03a39e.js"><link rel="prefetch" href="/assets/js/14.c057b84e.js"><link rel="prefetch" href="/assets/js/15.8871fd51.js"><link rel="prefetch" href="/assets/js/16.a1fd9b5e.js"><link rel="prefetch" href="/assets/js/17.cbad033b.js"><link rel="prefetch" href="/assets/js/18.7b7c2872.js"><link rel="prefetch" href="/assets/js/19.a279de72.js"><link rel="prefetch" href="/assets/js/20.fb178fd6.js"><link rel="prefetch" href="/assets/js/21.c2314703.js"><link rel="prefetch" href="/assets/js/23.ba71f4f5.js"><link rel="prefetch" href="/assets/js/24.6ad2404f.js"><link rel="prefetch" href="/assets/js/25.2ae0fdf7.js"><link rel="prefetch" href="/assets/js/26.5db5b609.js"><link rel="prefetch" href="/assets/js/27.0e649c4e.js"><link rel="prefetch" href="/assets/js/28.e705eabd.js"><link rel="prefetch" href="/assets/js/29.3ac80c83.js"><link rel="prefetch" href="/assets/js/4.c4a4e93b.js"><link rel="prefetch" href="/assets/js/5.2eb27ecb.js"><link rel="prefetch" href="/assets/js/7.a7519433.js"><link rel="prefetch" href="/assets/js/8.9e1b8bc0.js"><link rel="prefetch" href="/assets/js/9.8c23c086.js"><link rel="prefetch" href="/assets/js/vendors~flowchart.7c199c7c.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.6af0ae30.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div><div class="theme-container"><div><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/head.png" alt="豆豆" class="logo"> <span class="site-name">豆豆</span></a> <div class="links"><div class="color-picker"><a href="#" class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="theme-options"><!----> <div class="dark-theme-options toggle-option"><label for="dark-theme-toggle">Enable Dark Theme?</label> <input id="dark-theme-toggle" type="checkbox" checked="checked"></div></div></div></div> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  首页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      分类
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/category/frontEnd.html" class="nav-link"><i class="iconfont undefined"></i>
+  frontEnd
+</a></li><li class="dropdown-item"><!----> <a href="/category/hobby.html" class="nav-link"><i class="iconfont undefined"></i>
+  hobby
+</a></li><li class="dropdown-item"><!----> <a href="/category/work.html" class="nav-link"><i class="iconfont undefined"></i>
+  work
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  标签
+</a></div><div class="nav-item"><a href="/timeLine/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-message"></i>
+      联系我
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/TypeInfos" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-github"></i>
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/doudoublog/" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-bokeyuan"></i>
+  博客圆
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link"><i class="iconfont reco-home"></i>
+  首页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      分类
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/category/frontEnd.html" class="nav-link"><i class="iconfont undefined"></i>
+  frontEnd
+</a></li><li class="dropdown-item"><!----> <a href="/category/hobby.html" class="nav-link"><i class="iconfont undefined"></i>
+  hobby
+</a></li><li class="dropdown-item"><!----> <a href="/category/work.html" class="nav-link"><i class="iconfont undefined"></i>
+  work
+</a></li></ul></div></div><div class="nav-item"><a href="/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  标签
+</a></div><div class="nav-item"><a href="/timeLine/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-message"></i>
+      联系我
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/TypeInfos" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-github"></i>
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li><li class="dropdown-item"><!----> <a href="https://www.cnblogs.com/doudoublog/" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-bokeyuan"></i>
+  博客圆
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>记得有一次同步网络的面试(为了佳明)</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/views/frontEnd/tongbu_interview.html#数据结构和操作系统" class="sidebar-link">数据结构和操作系统</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/views/frontEnd/tongbu_interview.html#vue" class="sidebar-link">Vue</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/views/frontEnd/tongbu_interview.html#es6-es7" class="sidebar-link">ES6&amp;&amp;ES7</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/views/frontEnd/tongbu_interview.html#项目" class="sidebar-link">项目</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/views/frontEnd/tongbu_interview.html#总结" class="sidebar-link">总结</a><ul class="sidebar-sub-headers"></ul></li></ul></section></li></ul> </aside> <div><main class="page reco-hide"> <div class="page-title"><h1>记得有一次同步网络的面试(为了佳明)</h1> <hr> <div data-v-0b496ca7><i class="iconfont reco-account" data-v-0b496ca7><span data-v-0b496ca7>kent</span></i> <i class="iconfont reco-date" data-v-0b496ca7><span data-v-0b496ca7>2019-5-29</span></i> <span id="/views/frontEnd/tongbu_interview.html" data-flag-title="Your Article Title" class="leancloud-visitors" data-v-2e99e05a data-v-0b496ca7><i class="iconfont reco-eye" style="margin-right: .5rem" data-v-2e99e05a></i> <a class="leancloud-visitors-count" style="font-size:.9rem;font-weight:normal;color:#999;" data-v-2e99e05a></a></span> <i class="iconfont reco-tag tags" data-v-0b496ca7><span class="tag-item" data-v-0b496ca7>
+      面试
+    </span><span class="tag-item" data-v-0b496ca7>
+      厦门
+    </span><span class="tag-item" data-v-0b496ca7>
+      前端工程师
+    </span></i></div></div> <div class="content default"><div class="tip custom-block"><p>为了佳明同学，写了这篇面试过程，我希望你可以请我吃放。同步网络的视频面试<br>
+为了重现面试过程把面试官比作Q, 把我比作A</p></div> <h1 id="自我介绍"><a href="#自我介绍" aria-hidden="true" class="header-anchor">#</a> 自我介绍</h1> <p>我是介绍学校，为什么来杭州实习，为什么要找厦门公司</p> <h1 id="他的自我介绍"><a href="#他的自我介绍" aria-hidden="true" class="header-anchor">#</a> 他的自我介绍</h1> <p>他是谁，然后就开始问问题了。</p> <h1 id="一面"><a href="#一面" aria-hidden="true" class="header-anchor">#</a> 一面</h1> <h2 id="数据结构和操作系统"><a href="#数据结构和操作系统" aria-hidden="true" class="header-anchor">#</a> 数据结构和操作系统</h2> <p>Q：讲一些你认识的数据结构<br>
+A：讲了数组、链表、栈、队列，二叉树<br>
+Q：二叉树的排序有了解吗，讲一下你对二叉树的排序。<br>
+A：堆排序，先分成大根堆或者小根堆，然后取第一个节点再分成大根堆或者小根堆<br>
+Q：了解进程调度的算法吗？讲几个你熟悉的。<br>
+A：先来先服务，最短作业优先，我能记得就这两个，当然还有很多个。<br>
+Q：讲一个你立即比较深入的调度算法。<br>
+A：先来先服务：这个是性能比较差的，就是先来后到的原则，一个作业来了就先执行，后面来的就放在队列中等待，等前面执行完，再一个个上去执行。<br></p> <h2 id="vue"><a href="#vue" aria-hidden="true" class="header-anchor">#</a> Vue</h2> <p>Q：你讲讲Vue的生命周期<br>
+A：我用到的是在Created里面放请求函数，在mounted里面放渲染图表，在destroyed里面放clear（）清除延时函数<br>
+Q：Vue你是怎么选择周边插件的？<br>
+A：判断是否符合产品需求，看看npm包的大小<br></p> <h2 id="es6-es7"><a href="#es6-es7" aria-hidden="true" class="header-anchor">#</a> ES6&amp;&amp;ES7</h2> <p>Q：你说你熟悉ES6和ES7，那你讲一些你最经常用到的语法。<br>
+A：ES6：箭头函数，promise，扩展运算符，ES7：async/await，Object.entries，Object.values<br>
+Q：那你能不能讲讲箭头函数的优点和缺点？<br>
+A：箭头函数本身没有this，他的this是继承下来的，最经常用的是在setTimeout上面用到的，balabala一大堆<br>
+Q：说到setTimeout，那你在Vue怎么保证在单个页面只有一个延时函数？<br>
+A：我说可以把timer放在data里面，然后在created里面可以clear<br>
+Q：还有一种方法，在高阶组件里面用到的，你可以去看看，这边就不讲，这边看到你用Git，你可以讲讲如果一个版本要开发新版本，又有好几个人开发几个新模块，需要怎么做？<br>
+A：我的理解是这样的，master只能是稳定运行的版本，新建个dev分支，然后再dev分支再出每个人对应的分支，然后在各个分支开发，开发完之后再一次merge到dev分支，然后内测，稳定之后再merge到master<br>
+Q：你这里有用到eslint，你讲下你的理解。<br>
+A：当几个人一起开发一个项目后，如果没有代码规范的话push到git的时候会有冲突，所以这时候就必须要有一个eslint来规范几个人的代码规范。<br>
+Q：你最后还有没有什么想问的？<br>
+A：你们公司的技术栈是什么？<br>
+Q：主：react，副：Vue，还有一些老项目用jquery，后端用php<br>
+A：我也会一点php，但是我的毕设是用springboot写的。<br>
+Q：问你一个基础的string、stringBuild、stringBuffer的区别？<br>
+A：我记得我看过一篇文章，我想下，然后没想起来。回去补下<br></p> <h2 id="项目"><a href="#项目" aria-hidden="true" class="header-anchor">#</a> 项目</h2> <p>讨论项目的难点和技术栈，业务，还有你是怎么解决这个问题的。你的收获是什么？巴拉巴拉。。。</p> <h1 id="二面"><a href="#二面" aria-hidden="true" class="header-anchor">#</a> 二面</h1> <p>也不算二面吧，一面男的说我的同事想问你一个问题<br>
+然后一个女的就问了一个东西：<br>
+git上面的<code>reset</code>、<code>revert</code>、<code>checkout</code>的区别将一下，我听不懂她讲的英语，听成<code>reset</code>、<code>rewatch</code>、<code>re。。。</code>，然后我就说我就用过reset，然后就巴拉巴拉，说后面两个没用过。回来百度才知道是这三个。估计不会所以就没继续问下去了。</p> <h1 id="三面"><a href="#三面" aria-hidden="true" class="header-anchor">#</a> 三面</h1> <div class="tip custom-block"><p>简单寒暄几句</p></div> <p>Q: 你为什么要来厦门<br>
+A：厦门同学多，离家近，同学一直叫我来厦门<br>
+Q：为什么会去杭州<br>
+A：机缘巧合<br>
+Q：你觉得你的最大的优点和最大的缺点是什么？<br>
+A：巴拉巴拉...<br>
+Q：你要进一家公司看种的是什么？<br>
+A：发展前景、离家近、工资，最后补充：要是对我帮助大的话工资低也无所谓。<br>
+Q：你去过两家公司，你觉得在这两家公司学习到什么？<br>
+A：巴拉巴拉。。。<br>
+Q：你还有没有什么想问的。<br>
+A：没有。<br>
+过了几分钟，hr过来说三个工作日会给你回复。</p> <h2 id="总结"><a href="#总结" aria-hidden="true" class="header-anchor">#</a> 总结</h2> <p>有一些小问题没回忆起来，面完总体来说还可以。问到优点和缺点有点懵逼。</p></div> <!----> <footer class="page-edit"><!----> <!----></footer> <!----> </main> <div class="valine-wrapper" data-v-0162251c><div id="valine" data-v-0162251c></div></div></div> <div class="back-to-ceiling" style="right:1rem;bottom:3rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;background-color:rgba(231, 234, 241,.5);display:none;" data-v-d0bfeaa4 data-v-d0bfeaa4><i class="iconfont reco-up" data-v-d0bfeaa4></i></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.c8912a4d.js" defer></script><script src="/assets/js/6.804f0c03.js" defer></script><script src="/assets/js/1.93fb4e99.js" defer></script><script src="/assets/js/22.68797b27.js" defer></script>
+  </body>
+</html>
