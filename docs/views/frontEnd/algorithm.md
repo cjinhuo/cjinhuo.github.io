@@ -91,6 +91,34 @@ partition(test, 8)
 // [ 0, 3, 4, 7, 8, 32, 56, 78, 100, 999 ]
 console.log(test)
 ```
+## 数组去重
+```js
+Array.prototype.unique = function(){
+  let hash = new Map()
+  let result = []
+  let item
+  for (let i = 0; i < this.length; i++) {
+    if (Object.prototype.toString.call(this[i]) === '[object Object]'
+      || Object.prototype.toString.call(this[i]) === '[object Array]') {
+      item = JSON.stringify(this[i])
+    } else {
+      item = this[i]
+    }
+    if (!hash.has(item)) {
+      hash.set(item, true)
+      result.push(this[i])
+    }
+  }
+  return result
+}
+```
+``` js
+console.log([123,undefined, undefined, { a: 1 }, { a: { b: 1 } }, { a: "1" }, { a: { b: 1 } }, "meili"].unique())
+
+```
+结果对比
+`[123,undefined, undefined, { a: 1 }, { a: { b: 1 } }, { a: "1" }, { a: { b: 1 } }, "meili"]`<br/>
+`[ 123, undefined, { a: 1 }, { a: { b: 1 } }, { a: '1' }, 'meili' ]`
 ## 冒泡排序
 ::: tip
 | 时间复杂度（平均）| 时间复杂度（最坏）| 时间复杂度（最好）| 空间复杂度| 稳定性|
@@ -130,6 +158,101 @@ console.log(test)
 ## 选择排序
 ## 插入排序
 ## 归并排序
+```js
+//归并排序
+function mergeSort(arr) {
+    const merge = (arr, l, mid, r) => {
+      let help = []
+      let i = 0
+      let p1 = l
+      let p2 = mid + 1
+      while (p1 <= mid && p2 <= r) {
+        help[i++] = (arr[p1] < arr[p2]) ? arr[p1++] : arr[p2++]
+      }
+      while (p1 <= mid) {
+        help[i++] = arr[p1++]
+      }
+      while (p2 <= r) {
+        help[i++] = arr[p2++]
+      }
+      console.log('help', help)
+      for (let i = 0; i < help.length; i++) {
+        arr[l + i] = help[i]
+      }
+      console.log('arr', arr)
+    }
+  const sortProcess = (arr, l, r) => {
+    if (l == r) {
+      return
+    }
+    let mid = Math.floor((l + r) / 2)
+    sortProcess(arr, l, mid)
+    sortProcess(arr, mid + 1, r)
+    merge(arr, l, mid, r)
+  }
+
+    if (arr.length < 2) {
+      return
+    }
+    sortProcess(arr, 0, arr.length - 1)
+}
+mergeSort(test)
+```
+打印
+```
+help [ 2, 4 ]
+arr [ 2, 4, 52, 3, 2, 56, 23, 1 ]
+help [ 3, 52 ]
+arr [ 2, 4, 3, 52, 2, 56, 23, 1 ]
+help [ 2, 3, 4, 52 ]
+arr [ 2, 3, 4, 52, 2, 56, 23, 1 ]
+help [ 2, 56 ]
+arr [ 2, 3, 4, 52, 2, 56, 23, 1 ]
+help [ 1, 23 ]
+arr [ 2, 3, 4, 52, 2, 56, 1, 23 ]
+help [ 1, 2, 23, 56 ]
+arr [ 2, 3, 4, 52, 1, 2, 23, 56 ]
+help [ 1, 2, 2, 3, 4, 23, 52, 56 ]
+arr [ 1, 2, 2, 3, 4, 23, 52, 56 ]
+```
+## js 快速排序
+```js
+function quickSort(arr, left, right) {
+     //为了防止剩一个数时再进行计算
+    if (left < right) {
+        //设置最左边的元素为基准点：pivot
+    let p = arr[left];
+    //把要排序的序列中比p大的放到右边，比p小的放到左边，p的下标位置为i
+    let i = left,
+        j = right;
+    while(i<j)
+    {
+        //j向左移，找到一个比p小的元素，直到找到小于p的数就停止在j下标上
+        while(arr[j] >= p && i < j){
+            j--;
+        }
+        //i向右移，找到一个比p大的元素
+        while(arr[i] <= p && i < j){
+            i++;
+        }
+        //当i和j不相等的时候交换
+        if (i<j){
+            let temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+    arr[left] = arr[i];
+    arr[i] = p;
+      //i-1,i+1是为了让当前基准点继续参加排序
+    quickSort(arr,left,i - 1);
+    quickSort(arr, i + 1, right);
+    }
+    return arr;
+}
+var arr = [1,3,4,2,45,2,92,0,-2];
+console.log(quickSort(arr,0,arr.length-1));
+```
 ## 三路随机快排
 ```js
 

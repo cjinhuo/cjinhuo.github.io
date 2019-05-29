@@ -425,7 +425,6 @@ let t = [{
 }]
 // 传入属性名
 t.sort(compareDescending('a'))
-
 ```
 ## 防抖&节流
 ::: tip 防抖
@@ -464,42 +463,12 @@ const throttle = (fn, context, delay, args) => {
 }
 
 ```
-## 数组去重
-```js
-Array.prototype.unique = function(){
-  let hash = new Map()
-  let result = []
-  let item
-  for (let i = 0; i < this.length; i++) {
-    if (Object.prototype.toString.call(this[i]) === '[object Object]'
-      || Object.prototype.toString.call(this[i]) === '[object Array]') {
-      item = JSON.stringify(this[i])
-    } else {
-      item = this[i]
-    }
-    if (!hash.has(item)) {
-      hash.set(item, true)
-      result.push(this[i])
-    }
-  }
-  return result
-}
-```
-``` js
-console.log([123,undefined, undefined, { a: 1 }, { a: { b: 1 } }, { a: "1" }, { a: { b: 1 } }, "meili"].unique())
-
-```
-结果对比
-`[123,undefined, undefined, { a: 1 }, { a: { b: 1 } }, { a: "1" }, { a: { b: 1 } }, "meili"]`<br/>
-`[ 123, undefined, { a: 1 }, { a: { b: 1 } }, { a: '1' }, 'meili' ]`
 ## 正则表达式
 ### 中文
 ::: tip 中文正则
 “\u4e00”和“\u9fa5”是unicode编码，并且正好是中文编码的开始和结束的两个值，所以这个正则表达式可以用来判断字符串中是否包含中文
 :::
 匹配中文就可以用:`/^[\u4e00-\u9fa5]/`
-
-
 ## NaN
 ::: tip NaN
 NaN是全局属性，初始值就是NaN和Number.NaN的值是一样的，NaN和任何值都不相等，包括自身。可以通过x!==x来判断是否为NaN，为true就是NaN
@@ -524,7 +493,8 @@ Number('abc') // NaN
 满足其中一个就会产生跨域。<br>
 跨域通信：js进行DOM操作、通信时如果目标与当前窗口不满足同源条件，浏览器为了安全会阻止跨域操作。跨域通信通常有以下方法：
 ### 解决跨域的方法
- 最普遍的就是CORS，就是后端允许我们的本地的请求地址或线上域名 
+* cors:最普遍的就是CORS，就是后端允许我们的本地的请求地址或线上域名
+* jsonp:不经常用，通过script标签无视同源策略来向后端发送参数，后端返回类似函数的形式传给前端，然后前端就是调用这个函数
 ## js有哪几种方式里检查数据类型：
 ```js
 let a = "cjh";
@@ -678,44 +648,7 @@ Array.prototype.unique = function(){
   return result
 }
 ```
-## js 快速排序
-```js
-function quickSort(arr, left, right) {
-     //为了防止剩一个数时再进行计算
-    if (left < right) {
-        //设置最左边的元素为基准点：pivot
-    let p = arr[left];
-    //把要排序的序列中比p大的放到右边，比p小的放到左边，p的下标位置为i
-    let i = left,
-        j = right;
-    while(i<j)
-    {
-        //j向左移，找到一个比p小的元素，直到找到小于p的数就停止在j下标上
-        while(arr[j] >= p && i < j){
-            j--;
-        }
-        //i向右移，找到一个比p大的元素
-        while(arr[i] <= p && i < j){
-            i++;
-        }
-        //当i和j不相等的时候交换
-        if (i<j){
-            let temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-        }
-    }
-    arr[left] = arr[i];
-    arr[i] = p;
-      //i-1,i+1是为了让当前基准点继续参加排序
-    quickSort(arr,left,i - 1);
-    quickSort(arr, i + 1, right);
-    }
-    return arr;
-}
-var arr = [1,3,4,2,45,2,92,0,-2];
-console.log(quickSort(arr,0,arr.length-1));
-```
+
 ## ===和==运算符判断相等的流程是怎样的
 ### ===
 - 如果两个值不是相同类型，它们不相等

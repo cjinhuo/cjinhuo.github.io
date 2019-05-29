@@ -153,6 +153,8 @@ Asynchronous Module Definition(异步组件定义)，提前加载依赖
 Common Module Definition，AMD的优化版，依赖后置，使用时才加载，
 RequireJS提供延迟加载功能
 :::
+### module.exports 、exports、export、export default的区别
+`module.exports`和`exports`属于CommonJS模块规范，`module.exports`和`exports`导出模块，用require引入模块。
 
 ## C# => 取num个在min - max的不重复随机数
 ```c#
@@ -244,66 +246,7 @@ HTTPS即加密的HTTP，HTTPS并不是一个新协议，而是HTTP+SSL（TLS）�
 ## DNS
 它作为将域名与IP地址相互映射的一个分布式数据库，能够使人更方便地访问互联网。DNS使用TCP和UDP端口53
 ## get&&post
-get也可以带body参数，
-## 排序
-### 归并排序
-```js
-//归并排序
-function mergeSort(arr) {
-    const merge = (arr, l, mid, r) => {
-      let help = []
-      let i = 0
-      let p1 = l
-      let p2 = mid + 1
-      while (p1 <= mid && p2 <= r) {
-        help[i++] = (arr[p1] < arr[p2]) ? arr[p1++] : arr[p2++]
-      }
-      while (p1 <= mid) {
-        help[i++] = arr[p1++]
-      }
-      while (p2 <= r) {
-        help[i++] = arr[p2++]
-      }
-      console.log('help', help)
-      for (let i = 0; i < help.length; i++) {
-        arr[l + i] = help[i]
-      }
-      console.log('arr', arr)
-    }
-  const sortProcess = (arr, l, r) => {
-    if (l == r) {
-      return
-    }
-    let mid = Math.floor((l + r) / 2)
-    sortProcess(arr, l, mid)
-    sortProcess(arr, mid + 1, r)
-    merge(arr, l, mid, r)
-  }
-
-    if (arr.length < 2) {
-      return
-    }
-    sortProcess(arr, 0, arr.length - 1)
-}
-mergeSort(test)
-```
-打印
-```
-help [ 2, 4 ]
-arr [ 2, 4, 52, 3, 2, 56, 23, 1 ]
-help [ 3, 52 ]
-arr [ 2, 4, 3, 52, 2, 56, 23, 1 ]
-help [ 2, 3, 4, 52 ]
-arr [ 2, 3, 4, 52, 2, 56, 23, 1 ]
-help [ 2, 56 ]
-arr [ 2, 3, 4, 52, 2, 56, 23, 1 ]
-help [ 1, 23 ]
-arr [ 2, 3, 4, 52, 2, 56, 1, 23 ]
-help [ 1, 2, 23, 56 ]
-arr [ 2, 3, 4, 52, 1, 2, 23, 56 ]
-help [ 1, 2, 2, 3, 4, 23, 52, 56 ]
-arr [ 1, 2, 2, 3, 4, 23, 52, 56 ]
-```
+get也可以带body参数
 ## 后端返回流下载
 ::: tip 
 正常情况下window.open可以解决下载问题，但是有时候要在请求头里面加参数，比如一些权限验证，就可以用下面的代码
