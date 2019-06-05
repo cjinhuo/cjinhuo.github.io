@@ -141,7 +141,7 @@ exports.blog = {
 ```
 新建test.js
 ```js
-let say = require('./one').blog
+let say = require('./say').blog
 console.log(say.say()) // say function'
 ```
 ### AMD
@@ -155,6 +155,34 @@ RequireJS提供延迟加载功能
 :::
 ### module.exports 、exports、export、export default的区别
 `module.exports`和`exports`属于CommonJS模块规范，`module.exports`和`exports`导出模块，用require引入模块。
+
+Node应用由模块组成，采用CommonJS模块规范。根据这个规范，每个文件就是一个模块，有自己的作用域。在一个文件里面定义的变量、函数、类、都是私有的，对其他文件不可见。
+
+`export`和`export default`导出模块，import导入模块。
+
+通过export方式导出，在导入时要加{ }，export default则不需要，使用export default命令，为模块指定默认输出，这样就不需要知道所要加载模块的变量名。
+
+`export`导出
+```js
+export const str = 'hello world'  //变量
+
+export function fuunc(a){ //函数
+    return a+1
+}
+```
+`对应的导入方式`
+```js
+import { str, func } from 'demo' //也可以分开写两次，导入的时候带花括号
+```
+
+`export default`
+```js
+export default const str = 'hello world'
+```
+`对应的导入方式`
+```js
+import str from 'demo1' //导入的时候没有花括号
+```
 
 ## C# => 取num个在min - max的不重复随机数
 ```c#

@@ -4,11 +4,31 @@ sidebarDepth: 2
 sidebar: auto
 categories: 
  - frontEnd
-date: 2019-02-12
+date: 2019-05-29
 tags:
 - Git
-- 前端
 ---
+
+## 工作区和暂存区
+::: tip
+Git和其他版本控制系统如SVN的一个不同之处就是有暂存区的概念。
+:::
+### 版本库
+工作区有个隐藏目录`.git`，这个不算工作区，而是Git的版本库。
+
+Git的版本库存了很多东西，其中最重要的就是成为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
+
+当我们把文件往Git版本库里添加的时候，是分两步执行的：
+
+第一步是用`git add`把文件添加进去，实际上就是把文件修改添加到暂存区去
+
+第二步是用`git commit`提交更改，实际上就是把暂存区的所有内容提交到当前分支
+
+因为我们创建Git版本库时，Git自动为我们创建了唯一一个master分支，所以，现在，git commit就是往master分支上提交更改。
+
+你可以简单理解为，需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改。
+
+
 
 ## 推送到远程库
 正常推送到远程库的流程是
@@ -30,6 +50,8 @@ git push origin master
 表示将本地的'cjh'分支push到远程
 ### git push
 如果当前分支只有一个远程分支，那么主机名都可以省略，形如 git push
+### git push --set-upstream origin <本地分支名>
+当你在本地新建分支时，远程是没有的，这时候需要用上面这个命令来推到远程。
 ## 新建、切换、删除远程库
 * 查看远程库的地址：
 `git remote -v`<br>
@@ -94,7 +116,33 @@ Commit 信息应符合如下规则，建议使用工具 comitzen(git cz) 代替 
 * 【可选】ISSUE：改动关联的 issue 号码
 一般用于 feat、fix ，仅当前 commit 针对某个 issue 时使用。<br>
 例如：`fix(login): 修复登录流程的Bug #111`
-
-
+## git log && git reflog
+### git log
+可以显示所有提交过的版本信息<br>
+![](../../.vuepress/public/git_log.png)
+如果感觉太繁琐，可以加上参数  --pretty=oneline，只会显示版本号和提交时的备注信息
+`git log --pretty=oneline`
+这样只会显示版本号和提交时的备注信息
+### git reflog
+可以查看所有分支的所有操作记录（包括已经被删除的 commit 记录和 reset 的操作）
+![](../../.vuepress/public/git_reflog.png)
+例如执行 git reset --hard HEAD~1，退回到上一个版本，用`git log`则是看不出来被删除的commit，用`git reflog`则可以看到被删除的commited，我们就可以买后悔药，恢复到被删除的那个版本。
+## git reset
+`git reset (–mixed) HEAD~1`
+回退一个版本,且会将暂存区的内容和本地已提交的内容全部恢复到未暂存的状态,不影响原来本地文件(未提交的也 
+不受影响) 
+`git reset –soft HEAD~1`
+回退一个版本,不清空暂存区,将已提交的内容恢复到暂存区,不影响原来本地的文件(未提交的也不受影响) 
+`git reset –hard HEAD~1`
+回退一个版本,清空暂存区,将已提交的内容的版本恢复到本地,本地的文件也将被恢复的版本替换
+## git checkout
+在commit层面，`git checkout <branch name>`表示切换至另一个分支，这个命令实际上是将HEAD指向另外一个分支，并且将工作区更新到那个分支。和git reset不同，git checkout不会移动分支。<br>
+git checkout也可以指定某个commit，这就像切换一个分支一样：git会将HEAD指向那个commit，形成`detached HEAD`，查了下资料发现这个`detached HEAD`是个临时指向，并没有新建分支，所以并没有什用。这对于快速查看文件旧版本来说非常方便，但如果你当前的HEAD没有任何分支引用，那么这会造成HEAD分离。因此，在为分离的HEAD添加新的提交时候你应该创建一个新的分支。
+## git merge
+::: tip –no-ff参数的作用
+git merge –no-ff 可以保存你之前的分支历史。能够更好的查看 merge历史，以及branch 状态。<br>
+git merge 则不会显示 feature，只保留单条分支记录。
+:::
+![](../../.vuepress/public/git_merge.png)
 
 

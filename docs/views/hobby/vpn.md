@@ -25,7 +25,7 @@ tags:
 3. `vim /etc/ssh/sshd_config`（更改#port 22 => port 20000）
 4. `reboot`
 5. `ssh -p 20000 root@id`
-6. `apt update`、`apt dist-upgrade`（升级系统）
+6. `apt update`、`apt dist-upgrade`（升级系统）然后`reboot`
 7. `echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf`（将net.core.default_qdisc=fq追加到sysctl.conf文件）
 8. `echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf`（将net.ipv4.tcp_congestion_control=bbr追加到sysctl.conf文件）
 9. `sysctl -p`（从指定的文件加载系统参数，如不指定即从/etc/sysctl.conf中加载）
@@ -33,10 +33,18 @@ tags:
 11. `sysctl -p`（从指定的文件加载系统参数，如不指定即从/etc/sysctl.conf中加载）
 12. `apt install shadowsocks-libev`
 13. `systemctl disable shadowsocks-libev`
-// /etc/shadowsocks-libev下的配置改完就需要执行下面的命令
-14. systemctl restart shadowsocks-libev-server@config
-15. 查看shadowsocks的状态命令：`systemctl status shadowsocks-libev-server@config`
-
+14. `nano /etc/shadowsocks-libev/config` (更改配置信息，其中包括密码，模式)
+```js
+{
+  method: 'aes-256-gcm',
+  port: '20001', // 随意
+  "fast_open":true
+}
+```
+15. `systemctl enable shadowsocks-libev-server@config` 
+16. `systemctl restart shadowsocks-libev-server@config`
+17. `systemctl status shadowsocks-libev-server@config` (查看shadowsocks的状态命令)
+18. 当状态正常但是本地连小飞机上不了Google的时候把config.json的server字段删除。也就是从14行开始，删除config的第一行。
 ## vpn
 ::: tip
 `wget https://git.io/vpnsetup -O vpnsetup.sh && sudo sh vpnsetup.sh`<br>

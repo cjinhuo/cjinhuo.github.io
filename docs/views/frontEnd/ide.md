@@ -55,6 +55,90 @@ git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
 
 `oh-my-zsh: https://github.com/robbyrussell/oh-my-zsh`
 
+## eslint
+### rule
+```js
+    // 关闭 禁止使用console，生产环境不能使用console
+    'no-console': 'off',
+    // 关闭 使用debugger，生产环境不能使用
+    'no-debugger': 'off',
+    // 关闭 禁止对函数参数再赋值，在使用map时会使用参数更改
+    'no-param-reassign': 'off',
+    // 关闭 强制 generator 函数中 * 号周围有空格
+    'generator-star-spacing': 'off',
+    // 强制缩进2格
+    indent: ['error', 2],
+    // 关闭 禁用不必要的转义字符
+    'no-useless-escape': 'off',
+    // 关闭 使用eval
+    'no-eval': 'off',
+    // 关闭 禁用未声明的变量
+    'no-undef': 'off',
+    // 开启 禁止使用拖尾逗号
+    'comma-dangle': ['error', 'never'],
+    // 关闭函数名()的前面加空格
+    'space-before-function-paren': 'off',
+    // 关闭代码末尾空行
+    'no-trailing-spaces': 'off',
+    // 禁止块内填充(不加多的空行)
+    'padded-blocks': ['error', 'never'],
+    // 不允许空行
+    'no-empty': 'error',
+    // 禁用封号
+    semi: ['error', 'never'],
+    // 允许全局属性的使用，比如isNaN()
+    'no-restricted-globals': ['error', 'event'],
+    // 允许函数根据代码分支有不同的return行为,可以return,也可以return false
+    'consistent-return': 'off',
+    // 关闭对function是否命名的禁用
+    'func-names': 'off',
+    // 关闭对continue的禁用
+    'no-continue': 'off',
+    // 关闭在数组里面必须return
+    'array-callback-return': 'off',
+    // 关闭禁止使用特定的语法
+    'no-restricted-syntax': 'off',
+    // 要求箭头函数的参数使用圆括号，且当只有一个参数不需要括号
+    'arrow-parens': 'as-needed',
+```
+
+## babel
+::: tip babel
+babel是一个Javascript编译器，是目前前端开发最常用的工具之一，主要用于将 ECMAScript 2015+ 版本的代码转换为向后兼容的 JavaScript 语法，以便能够运行在当前和旧版本的浏览器或其他环境。比如在代码中使用了ES6的箭头函数，这种写法在IE里面是会报错的，为了让代码能在IE中运行，就需要将代码编译成IE支持的写法，这就是babel的工作。
+:::
+### package.json方式
+```js
+//package.json
+{
+   "name":"babel-test",
+   "version":"1.0.0",
+   "devDependencies": {
+       "@babel/core":"^7.4.5",
+       "@babel/cli":"^7.4.4",
+       "@babel/preset-env":"^7.4.5"
+   }
+   "babel": {
+       "presets": ["@babel/preset-env"]
+   }
+}
+```
+### .babelrc和.babelrc.js是同一种配置方式，只是文件格式不同，一个是json文件，一个是js文件。
+.babelrc
+```js
+{
+    "presets": ["@babel/preset-env"]
+}
+```
+.babelrc.js
+```js
+//webpack的配置文件也是这种写法
+module.exports = {
+    presets: ['@babel/preset-env']
+}
+```
+这两个配置文件是针对文件夹的，即该配置文件所在的文件夹包括子文件夹都会应用此配置文件的设置，而且下层配置文件会覆盖上层配置文件，通过此种方式可以给不同的目录设置不同的规则。
+### babel.config.js
+babel.config.js虽然写法和.babelrc.js一样，但是babel.config.js是针对整个项目，一个项目只有一个放在项目根目录。
 
 
 
