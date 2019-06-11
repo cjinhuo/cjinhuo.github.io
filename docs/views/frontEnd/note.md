@@ -3,7 +3,7 @@ title: '前端小笔记'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories: 
+categories:
 - frontEnd
 # 分类 共有三个分类： frontEnd work else
 date: 2019-05-24
@@ -50,17 +50,17 @@ const codeMessage = {
 [https://blog.csdn.net/four_lemmo/article/details/78211520](https://blog.csdn.net/four_lemmo/article/details/78211520)
 ## placeholder样式的更改
 ```css
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
-color: #666; 
-} 
-input:-moz-placeholder, textarea:-moz-placeholder { 
-color: #666; 
-} 
-input::-moz-placeholder, textarea::-moz-placeholder { 
-color: #666; 
-} 
-input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
-color: #666; 
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+color: #666;
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+color: #666;
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+color: #666;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+color: #666;
 }
 ```
 ## Http Options Method
@@ -111,7 +111,7 @@ Mutation Observer API 用来监视 DOM 变动。DOM 的任何变动，比如节�
 `npm uninstall xxx --save-dev`<br>
 删除模块，同时删除模块留在package.json中devDependencies下的对应信息
 ### npx
-::: tip 
+::: tip
 npm v5.2.0引入的一条命令（npx），引入这个命令的目的是为了提升开发者使用包内提供的命令行工具的体验。
 :::
 🌰：
@@ -190,7 +190,7 @@ import str from 'demo1' //导入的时候没有花括号
 
 ## C# => 取num个在min - max的不重复随机数
 ```c#
-/// 
+///
     /// </summary>
     /// <param name="num"></param>
     /// <param name="min"></param>
@@ -272,7 +272,7 @@ TCP/IP是一个协议簇，里面包括很多协议，例如：超文本协议(h
 ### https
 ::: tip https
 HTTPS即加密的HTTP，HTTPS并不是一个新协议，而是HTTP+SSL（TLS）。原本HTTP先和TCP（假定传输层是TCP协议）直接通信，而加了SSL后，就变成HTTP先和SSL通信，再由SSL和TCP通信，相当于SSL被嵌在了HTTP和TCP之间
-:::  
+:::
 ### http1.0&&http1.1&&http2.0
 
 ## DNS
@@ -280,7 +280,7 @@ HTTPS即加密的HTTP，HTTPS并不是一个新协议，而是HTTP+SSL（TLS）�
 ## get&&post
 get也可以带body参数
 ## 后端返回流下载
-::: tip 
+::: tip
 正常情况下window.open可以解决下载问题，但是有时候要在请求头里面加参数，比如一些权限验证，就可以用下面的代码
 :::
 ```js
@@ -305,10 +305,31 @@ const download = async (url, sessionId) => {
 ::: tip
 多线程开发可以将耗时操作放入子线程，将UI刷新加入主线程，防止页面卡顿。
 :::
-## 前向代理
-
-## 反向代理
+## 代理
+### 前向代理
 ::: tip
-反向代理是服务器是代理服务器的一种。服务根据客户的请求，从其关联的一组或多组后端服务器上获取资源，然后再将这些资源返回给客户端，客户端只会得知反向代理的IP地址，而不知道在代理服务器后面的服务器簇的存在。
+前向代理:是一个位于客户端和原始服务器(origin server)之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端才能使用前向代理。
 :::
+一般提到的前向代理。表面上客户端C可以直接访问服务器S，但实际上C在访问S的过程中经过了另一个中间的服务器M，M就是代理服务器。为什么说是正向搭理？因为前向代理是面向客户端的，而不是服务器。M接收了C的请求后，（有选择的）对请求进行简化或者其他处理再向目标服务器请求数据。结合下面这一张图片。
+![](../../.vuepress/public/forward_proxy.png)
+对请求进行简化或者其他处理意味着可以无视某些请求，譬如：譬如：学校发现 abc.com 站点上的内容很黄很暴力，为了在校学生的身心健康，在学校的代理服务器上对 abc.com 做限制，于是学生就不能访问 abc.com 站点了，也可以说 abc.com 被和谐了。我们现在访问Google，一般来说也是访问不到的。
+::: 前向代理的应用
+1. 访问被和谐的站点，譬如FQ等
+2. 隐藏客户端，真正与服务器打交道的是前向代理
+3. 提高访问速度，前向代理的缓存功能
+4. goagent 将 Google App Engine GAE 作为代理服务器中转，从而突破围墙。
+:::
+### 反向代理
+::: tip
+反向代理是服务器是代理服务器的一种。服务根据客户的请求，从其关联的一组或多组后端服务器上获取资源，然后再将这些资源返回给客户端，客户端只会得知反向代理的IP地址，而不知道在代理服务器后面的服务器簇的存在。反向代理是面向服务器，对于客户端C访问服务器S而言，好像A真的在访问S一样，其实真正的服务器是在S后面的M。这就是Nginx的反向代理和负载均衡的基本思想。
+:::
+![](../../.vuepress/public/reverse_proxy.jpg)
+::: 反向代理的应用
+1. 负载均衡
+2. 加速访问静态页面内容，和前向代理一样有缓存的功能
+3. 隐藏真实服务器，客户端不知道真正的服务器是怎样的
+:::
+看下面一张CDN的图，反向代理可以说是CDN的一种实现原理。
+![](../../.vuepress/public/cdn.png)
+
 
