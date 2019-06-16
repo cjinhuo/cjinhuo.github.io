@@ -3,7 +3,7 @@ title: 'VPN搭建'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories: 
+categories:
 - hobby
 # 分类 共有三个分类： frontEnd work hobby
 date: 2019-05-29
@@ -20,7 +20,7 @@ tags:
 3. 搭建vpn（适用于所有的client，包括browser）
 :::
 
-1. [vultr](https://my.vultr.com/) 
+1. [vultr](https://my.vultr.com/)
 2. `ssh root@ip`（用于mac链接linux服务器）
 3. `vim /etc/ssh/sshd_config`（更改#port 22 => port 20000）
 4. `reboot`
@@ -41,7 +41,7 @@ tags:
   "fast_open":true
 }
 ```
-15. `systemctl enable shadowsocks-libev-server@config` 
+15. `systemctl enable shadowsocks-libev-server@config`
 16. `systemctl restart shadowsocks-libev-server@config`
 17. `systemctl status shadowsocks-libev-server@config` (查看shadowsocks的状态命令)
 18. 当状态正常但是本地连小飞机上不了Google的时候把config.json的server字段删除。也就是从14行开始，删除config的第一行。
@@ -56,10 +56,10 @@ Username: vpnuser
 Password: 94rvmdYAj4dduNXS -->
 IPsec VPN server is now ready for use!<br>
 Connect to your new VPN with these details:<br>
-* Server IP: `45.32.225.73`
-* IPsec PSK: `6VUvVs4jGoSi87LK3dLp`
-* Username: `vpnuser`
-* Password: `94rvmdYAj4dduNXS`
+* Server IP: 95.179.233.78
+* IPsec PSK: rJ7ybeoELAWXUjgXd9tE
+* Username: vpnuser
+* Password: oxiBDKd2poYi8EMb
 
 
 
