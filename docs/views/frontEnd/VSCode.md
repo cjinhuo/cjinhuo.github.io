@@ -3,7 +3,7 @@ title: 'VSCode的一些配置'
 description: '主题、icon、Setting.json的配置'
 sidebarDepth: 2
 sidebar: auto
-categories: 
+categories:
 - frontEnd
 tags:
 - 前端
@@ -117,5 +117,14 @@ gist（vscode配置）: <br>
     "workbench.colorTheme": "One Dark Pro Vivid"
 }
 ```
+## 安装code path
+Visual Studio Code的扩展工具菜单中有Install command line的快捷安装
 
-
+运行 VS code并打开命令面板（ ⇧⌘P ），然后输入 shell command 找到: Install ‘code' command in PATH ，点击安装就行了。
+##
+::: tip
+打开粘贴历史：⌘ + shift + h  <br/>
+打开最近目录： ⌘ + alt + /<br/>
+Tab纵向分割：⌘+d<br/>
+Tab横向分割：⌘+shift+d<br/>
+:::
