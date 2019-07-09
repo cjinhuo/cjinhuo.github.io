@@ -11,7 +11,7 @@ module.exports = {
     nav: [
       { text: '首页', link: '/', icon: 'reco-home' },
       { text: '时间线', link: '/timeLine/', icon: 'reco-date' },
-      { text: '联系我', 
+      { text: '联系我',
         icon: 'reco-message',
         items: [
           // { text: 'NPM', link: 'https://www.npmjs.com/~reco_luan', icon: 'reco-npm' },
@@ -71,4 +71,14 @@ module.exports = {
     lineNumbers: true
   },
   plugins: ['@vuepress/medium-zoom', 'flowchart']
-}  
+}
+
+  // 谷歌 adsence
+  // <script async
+  //         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  // <script>
+  //   (adsbygoogle = window.adsbygoogle || []).push({
+  //     google_ad_client: "ca-pub-3501052071865973",
+  //     enable_page_level_ads: true
+  //   });
+  // </script>
