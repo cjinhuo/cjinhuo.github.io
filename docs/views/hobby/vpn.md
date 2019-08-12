@@ -38,7 +38,10 @@ tags:
 {
   method: 'aes-256-gcm',
   port: '20001', // 随意
-  "fast_open":true
+  "fast_open":true,
+  "mode":"tcp_and_udp",
+  "local_port":1080,
+  "timeout":60,
 }
 ```
 15. `systemctl enable shadowsocks-libev-server@config`
@@ -56,10 +59,7 @@ Username: vpnuser
 Password: 94rvmdYAj4dduNXS -->
 IPsec VPN server is now ready for use!<br>
 Connect to your new VPN with these details:<br>
-* Server IP: 95.179.233.78
-* IPsec PSK: rJ7ybeoELAWXUjgXd9tE
-* Username: vpnuser
-* Password: oxiBDKd2poYi8EMb
+* Server IP: 45.77.87.244
 
 
 
