@@ -2,7 +2,7 @@
 title: '前端开发环境'
 sidebarDepth: 2
 sidebar: auto
-categories: 
+categories:
 - frontEnd
 # 分类 共有三个分类： frontEnd work else
 date: 2019-04-24
@@ -139,6 +139,27 @@ module.exports = {
 这两个配置文件是针对文件夹的，即该配置文件所在的文件夹包括子文件夹都会应用此配置文件的设置，而且下层配置文件会覆盖上层配置文件，通过此种方式可以给不同的目录设置不同的规则。
 ### babel.config.js
 babel.config.js虽然写法和.babelrc.js一样，但是babel.config.js是针对整个项目，一个项目只有一个放在项目根目录。
+
+## 配置linux的node服务
+
+1. 下载node文件到本地，桌面的文件夹/upload/node-v10.16.2-linux-x64.tar.xz
+2. 用scp从本地拷贝到linux，现在linux的/home目录下新建一个文件夹，这里叫groot
+
+```
+scp ~/Desktop/upload/node-v10.16.2-linux-x64.tar.xz root@ip:/home/groot
+```
+
+如果有端口的话在scp后面加 -P 20000(端口号)
+3. 在linux解压，并且安装
+
+```
+cd /home/groot
+tar -xvf node-v10.16.2-linux-x64.tar.xz // 解压
+mv node-v10.16.2-linux-x64 nodejs // 重命名文件夹
+ln -s /home/groot/nodejs/bin/npm /usr/local/bin // 将node的二进制文件和linux的二进制文件建立软连接
+ln -s /home/groot/nodejs/bin/node /usr/local/bin // 将node的二进制文件和linux的二进制文件建立软连接
+node -v // 检查node版本,如果没有报错并且显示出来版本号说明成功了
+```
 
 
 
