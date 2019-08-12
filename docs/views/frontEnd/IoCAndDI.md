@@ -31,10 +31,29 @@ DI（Dependency Injection），即“依赖注入”，是组件之间依赖关�
 企业级Java的一个有趣的点是在构建大量主流J2EE技术的替代方案方面有大量的获取，且大部分都是在开源环境下发生的。这在很大程度上是对主流J2EE世界的重量级复杂性的一种反应，但它也在探索替代方案并提出创造性的想法。要解决一个常见的问题是怎么将不同的元素连接到一起，当web的controller层被互不了解的不同团队构建时，如果将它们与数据库接口相结合。（这应该就是DTO层出现的原因了）。许多框架尝试解决这个问题，部分框架正在扩展以提供从不同层封装组件的能力。这些都被称作为轻量级容器，例如包括[PicoContainer](http://picocontainer.com/)和[Spring](https://spring.io/)。
 
 在这些容器有一部分有趣的设计原理，这些设计原理超越了一些特殊的容器和Java平台。这里我想探索一些一个原理。我使用的例子都是在Java中使用的，但就像我编写大多数原理一样，这些原理同样适用于其他OO环境，特别是.NET。
-## 组件和服务(Components and Services)
+### 组件和服务(Components and Services)
 围绕这些服务和组件把每个元素相连的部分立即让我陷入棘手的技术问题。你可以轻松的找到关于这些事情定义的冗长而又矛盾的文章。出于我的目的，这些是我目前的看法（ For my purposes here are my current uses of these overloaded terms.
 
-）
+### 一个原生的例子
+为了是这些想法更加具体，我将用一个运行实例来讨论。像我所有的例子一样，这是一个超级简单的例子，小到不真实，但是希望足以让你看到正在发生的事情，而不是陷入真实范例的沼泽。
+
+在这个例子，我正在编写一个组件提供由特定导演指导的电影列表。这个极其有用的函数实现了一个简单的方法。
+
+``` java
+class MovieLister...
+  public Movie[] moviesDirectedBy(String arg) {
+      List allMovies = finder.findAll();
+      for (Iterator it = allMovies.iterator(); it.hasNext();) {
+          Movie movie = (Movie) it.next();
+          if (!movie.getDirector().equals(arg)) it.remove();
+      }
+      return (Movie[]) allMovies.toArray(new Movie[allMovies.size()]);
+  }
+```
+
+这个函数的实现是极度原生的方式，它调用了finder对象来返回所有它知道的电影。然后它只是搜索这个列表返回由特定导演执导的电影。
+
+
 
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
