@@ -2,7 +2,7 @@
 title: 'Vue的一些理解'
 sidebarDepth: 2
 sidebar: auto
-categories: 
+categories:
 - frontEnd
 # 分类 共有三个分类： frontEnd work else
 date: 2019-02-12
@@ -26,7 +26,7 @@ tags:
 
 ### focus
 ### keyup
-### 
+###
 ## 点击事件
 ### 鼠标右击事件
 ```js
@@ -392,7 +392,7 @@ let app = new Vue({
 
 ```
 ## router
-::: tip 
+::: tip
 Vue router的用处就是在单页应用中通过router与component的交互，演变成类似多页面，但是路由变化时并没有重新刷新页面和请求后端资源，只是页面div的替换，因此页面切换速度非常快。
 :::
 ### 嵌套路由
@@ -545,6 +545,33 @@ let app = new Vue({
     }
   }
 ```
+## clipBoard
+
+```js
+// codes 就是复制的内容
+<button id="copy-code" :data-clipboard-text="codes" @click="click"></button>
+  click()
+  {
+let clipBoard = new Clipboard('#copy-code')
+      clipBoard.on('success', e => {
+        this.$message({
+          message: '复制成功',
+          type: 'success'
+        })
+        clipBoard.destroy()
+      })
+      clipBoard.on('error', e => {
+        this.$message({
+          message: '复制失败',
+          type: 'error'
+        })
+        clipBoard.destroy()
+      })
+  }
+
+```
+
+
 ## minxin vue
 ::: tip
 值为对象的选项，例如 methods, components 和 directives，将被混合为同一个对象。两个对象键名冲突时，取组件`自己`对象的键值对。
@@ -590,4 +617,5 @@ this.$route.query.type
 
 ## 什么时候用到Vuex
 如果数据传到后台，不同的组件使用的话，都可以从后台拿到数据，只是网络请求开销比较大，父子组件通信的话，可以直接emit,而多层嵌套组件通信就需要有vuex这样的解决方案，公共数据托管在state里，不同的组件都可以拿到这个数据。
+
 
