@@ -2,7 +2,7 @@
 title: 'Git'
 sidebarDepth: 2
 sidebar: auto
-categories: 
+categories:
  - frontEnd
 date: 2019-05-29
 tags:
@@ -13,6 +13,32 @@ tags:
 ::: tip
 Git和其他版本控制系统如SVN的一个不同之处就是有暂存区的概念。
 :::
+### 暂存操作
+:::
+list相当于是一个数组，数组下标对应的内容就是存着你每次暂存的信息.
+:::
+* 暂存操作
+`git stash save '本次暂存的名称'`
+* 查看记录
+`git stash list`
+ 会出现以下信息
+ ```
+ stash@{0}: On master: test
+
+ stash@{下标从0开始} On 分支：你填入暂存的名称
+ ```
+* 恢复暂存的工作
+pop命令恢复,恢复后,暂存区域会删除当前的记录
+`git stash pop stash@{index}`
+apply命令恢复,恢复后,暂存区域会保留当前的记录
+`git stash apply stash@{index}`
+
+* 删除暂存
+删除某个暂存，删之后你就取不了这个下标的信息了
+`git stash drop stash@{index}`
+删除全部暂存
+`git stash clear`
+
 ### 版本库
 工作区有个隐藏目录`.git`，这个不算工作区，而是Git的版本库。
 
@@ -45,7 +71,7 @@ git push origin master
 ### git push origin master
 如果远程分支被省略，如上则表示将本地分支推送到与之存在追踪关系的远程分支（通常两者同名），如果该远程分支不存在，则会被新建
 ### git push origin
-如果当前分支与远程分支存在追踪关系，则本地分支和远程分支都可以省略，将当前分支推送到origin主机的对应分支 
+如果当前分支与远程分支存在追踪关系，则本地分支和远程分支都可以省略，将当前分支推送到origin主机的对应分支
 `git push origin cjh:cjh`<br>
 表示将本地的'cjh'分支push到远程
 ### git push
@@ -82,7 +108,7 @@ git push origin master
 3. 将master的内容合并到dev分支上
 `git merge master`
 ## git fetch
-::: tip 
+::: tip
 更新远程代码到本地仓库，经常用这个来检测别人是否push上去了没。
 :::
 ## Commit 规范
@@ -129,10 +155,10 @@ Commit 信息应符合如下规则，建议使用工具 comitzen(git cz) 代替 
 例如执行 git reset --hard HEAD~1，退回到上一个版本，用`git log`则是看不出来被删除的commit，用`git reflog`则可以看到被删除的commited，我们就可以买后悔药，恢复到被删除的那个版本。
 ## git reset
 `git reset (–mixed) HEAD~1`
-回退一个版本,且会将暂存区的内容和本地已提交的内容全部恢复到未暂存的状态,不影响原来本地文件(未提交的也 
-不受影响) 
+回退一个版本,且会将暂存区的内容和本地已提交的内容全部恢复到未暂存的状态,不影响原来本地文件(未提交的也
+不受影响)
 `git reset –soft HEAD~1`
-回退一个版本,不清空暂存区,将已提交的内容恢复到暂存区,不影响原来本地的文件(未提交的也不受影响) 
+回退一个版本,不清空暂存区,将已提交的内容恢复到暂存区,不影响原来本地的文件(未提交的也不受影响)
 `git reset –hard HEAD~1`
 回退一个版本,清空暂存区,将已提交的内容的版本恢复到本地,本地的文件也将被恢复的版本替换
 ## git checkout
