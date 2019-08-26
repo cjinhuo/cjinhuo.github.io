@@ -97,7 +97,42 @@ The name of the implementation class comes from the fact that I'm getting my lis
 
 注入依赖的基本思想是有一个独立的对象（一个汇编程序），对象使用finder接口的适当实现填充lister类中的字段，生成如图2所示的依赖关系图
 
+![](../../.vuepress/public/ioc-02.gif)
 
+现在有三个注入依赖的主要风格。名字我管它们叫做构造函数注入（Constructor injection），设置注入（Setter injection）和接口注入（（interface injection）。如果你在当前关于控制反转的讨论中读到过这些内容，那么您将会听到这些被称为类型1 IoC(interface injection)、类型2 IoC (setter injection)和类型3 IoC(Constructor injection)。我发现数字很难记住，所这就是为什么我用这些名字的原因。
+
+### 在PicoContainer（轻量级IoC容器）中做构造函数注入
+
+我将在这个轻量级容器`PicoContainer`中开始展示怎么注入。我之所以从这里开始，主要是因为我在ThoughtWorks的几位同事对`PicoContainer`的开发非常积极(是的，这是一种企业裙带关系)。
+
+`PicoContainer`使用一个构造函数来决定如何将`finder`实现注入`lister`类。为了让它起作用，`movie`类需要声明一个构造函数来包含它所需要注入的所有内容。
+
+```java
+class MovieLister...
+  public MovieLister(MovieFinder finder) {
+      this.finder = finder;
+  }
+```
+`finder`本身也将由`pico`容器管理，因此将文本文件的文件名由容器注入其中。
+```java
+class ColonMovieFinder...
+  public ColonMovieFinder(String filename) {
+      this.filename = filename;
+  }
+```
+
+然后需要告诉`pico`要与每个接口关联的实现类，以及要注入到`finder`中的字符串。
+
+```java
+private MutablePicoContainer configureContainer() {
+    MutablePicoContainer pico = new DefaultPicoContainer();
+    Parameter[] finderParams =  {new ConstantParameter("movies1.txt")};
+    pico.registerComponentImplementation(MovieFinder.class, ColonMovieFinder.class, finderParams);
+    pico.registerComponentImplementation(MovieLister.class);
+    return pico;
+}
+
+```
 
 
 超链接 [文本](URL)
