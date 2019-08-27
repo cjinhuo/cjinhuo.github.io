@@ -133,9 +133,19 @@ private MutablePicoContainer configureContainer() {
 }
 
 ```
+这个配置代码通常在另一个类中设置。在我们的示例中，每个使用我的`lister`的朋友都可以在他们自己的`setup`类中编写适当的配置代码。
+当然，将这类配置信息保存在单独的配置文件中是很常见的。你可以写一个类来读取这个配置文件，尽管`PicoContainer`本身并不包含此功能，但是有一个密切相关的项目叫做`NanoContainer`，它提供了适当的包装器，允许您拥有XML配置文件。这样的`nano`容器将解析XML，然后配置底层的`pico`容器。该项目的理念是将配置文件格式与底层机制（underlying mechanism）分离。
 
+要使用容器，你可以写出类似下面得代码：
+```java
+public void testWithPico() {
+    MutablePicoContainer pico = configureContainer();
+    MovieLister lister = (MovieLister) pico.getComponentInstance(MovieLister.class);
+    Movie[] movies = lister.moviesDirectedBy("Sergio Leone");
+    assertEquals("Once Upon a Time in the West", movies[0].getTitle());
+}
+```
 
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
-
