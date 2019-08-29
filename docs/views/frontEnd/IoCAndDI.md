@@ -99,10 +99,9 @@ The name of the implementation class comes from the fact that I'm getting my lis
 
 ![](../../.vuepress/public/ioc-02.gif)
 
-现在有三个注入依赖的主要风格。名字我管它们叫做构造函数注入（Constructor injection），设置注入（Setter injection）和接口注入（（interface injection）。如果你在当前关于控制反转的讨论中读到过这些内容，那么您将会听到这些被称为类型1 IoC(interface injection)、类型2 IoC (setter injection)和类型3 IoC(Constructor injection)。我发现数字很难记住，所这就是为什么我用这些名字的原因。
+现在有三个注入依赖的主要风格。名字我管它们叫做构造函数注入（Constructor injection），Setter注入（Setter injection）和接口注入（（interface injection）。如果你在当前关于控制反转的讨论中读到过这些内容，那么您将会听到这些被称为类型1 IoC(interface injection)、类型2 IoC (setter injection)和类型3 IoC(Constructor injection)。我发现数字很难记住，所这就是为什么我用这些名字的原因。
 
 ### 在PicoContainer（轻量级IoC容器）中做构造函数注入
-
 我将在这个轻量级容器`PicoContainer`中开始展示怎么注入。我之所以从这里开始，主要是因为我在ThoughtWorks的几位同事对`PicoContainer`的开发非常积极(是的，这是一种企业裙带关系)。
 
 `PicoContainer`使用一个构造函数来决定如何将`finder`实现注入`lister`类。为了让它起作用，`movie`类需要声明一个构造函数来包含它所需要注入的所有内容。
@@ -145,6 +144,141 @@ public void testWithPico() {
     assertEquals("Once Upon a Time in the West", movies[0].getTitle());
 }
 ```
+尽管在示例中我使用的是构造函数注入，`Pico`容器也支持Setter注入，尽管它的开发者更倾向于构造函数注入。像Pico容器它支持构造函数和Setter注入。
+
+### 在Spring中Setter注入(Setter Injection with Spring)
+
+Spring框架是一个企业级Java开发的广泛框架。它包括事务的抽象层、持久性框架、web应用程序开发和jdbc（Java DataBase Connectivity）。与Pico容器一样，它同时支持构造函数和setter注入，但它（spring）的开发人员倾向于使用setter注入-这使得它成为本例的适当选择。
+
+为了让我的`MoveieLister`能接受一个注入我为这个服务定义一个set方法。
+```java
+class MovieLister...
+
+  private MovieFinder finder;
+public void setFinder(MovieFinder finder) {
+  this.finder = finder;
+}
+```
+同样的我给filename也定义一个setter。
+```java
+class ColonMovieFinder...
+  public void setFilename(String filename) {
+      this.filename = filename;
+  }
+```
+
+第三个步骤是创建配置文件。Spring是通过xml文件和代码支持配置，但是XML是比较推荐的。
+```xml
+<beans>
+    <bean id="MovieLister" class="spring.MovieLister">
+        <property name="finder">
+            <ref local="MovieFinder"/>
+        </property>
+    </bean>
+    <bean id="MovieFinder" class="spring.ColonMovieFinder">
+        <property name="filename">
+            <value>movies1.txt</value>
+        </property>
+    </bean>
+</beans>
+```
+然后这个测试看起来是这样的：
+```java
+public void testWithSpring() throws Exception {
+    ApplicationContext ctx = new FileSystemXmlApplicationContext("spring.xml");
+    MovieLister lister = (MovieLister) ctx.getBean("MovieLister");
+    Movie[] movies = lister.moviesDirectedBy("Sergio Leone");
+    assertEquals("Once Upon a Time in the West", movies[0].getTitle());
+}
+```
+### 接口依赖(Interface Injection)
+第三种注入方法是定义和使用接口来注入。`Avalon`是在一些地方使用这种技术的框架的一个例子。稍后我将更详细地讨论这个问题，但在本例中，我将使用一些简单的示例代码。在这个方法开始时，我首先定义了一个接口，我将用它来执行注入。下边是一个` MovieFinder`注入对象的接口。
+
+该接口将由提供MovieFinder接口的人定义。它需要由任何想要用`finder`类的人实现，比如：`lister`。
+```java
+class MovieLister implements InjectFinder
+  public void injectFinder(MovieFinder finder) {
+      this.finder = finder;
+  }
+```
+我使用类似的方法将文件名注入finder实现中。
+```java
+public interface InjectFinderFilename {
+    void injectFilename (String filename);
+}
+
+class ColonMovieFinder implements MovieFinder, InjectFinderFilename...
+
+  public void injectFilename(String filename) {
+      this.filename = filename;
+  }
+```
+然后，像往常一样，我需要一些配置代码来连接实现。为了简单起见，我将在代码中这样做.
+```java
+class Tester...
+  private Container container;
+   private void configureContainer() {
+     container = new Container();
+     registerComponents();
+     registerInjectors();
+     container.start();
+  }
+```
+这个配置有两个阶段，通过查找键注册组件与其他示例非常相似。
+```java
+class Tester...
+
+  private void registerComponents() {
+    container.registerComponent("MovieLister", MovieLister.class);
+    container.registerComponent("MovieFinder", ColonMovieFinder.class);
+  }
+```
+一个新的步骤是注册将注入相关组件的注入器。每个注入接口需要一些代码来注入依赖对象。在这里，我通过向容器注册注入器对象来实现这一点。每个注入器对象实现注入器接口。
+```java
+class Tester...
+  private void registerInjectors() {
+    container.registerInjector(InjectFinder.class, container.lookup("MovieFinder"));
+    container.registerInjector(InjectFinderFilename.class, new FinderFilenameInjector());
+  }
+public interface Injector {
+  public void inject(Object target);
+}
+```
+When the dependent is a class written for this container, it makes sense for the component to implement the injector interface itself, as I do here with the movie finder. For generic classes, such as the string, I use an inner class within the configuration code.
+```java
+class ColonMovieFinder implements Injector...
+
+  public void inject(Object target) {
+    ((InjectFinder) target).injectFinder(this);
+  }
+class Tester...
+
+  public static class FinderFilenameInjector implements Injector {
+    public void inject(Object target) {
+      ((InjectFinderFilename)target).injectFilename("movies1.txt");
+    }
+    }
+```
+然后测试使用容器。
+```java
+class Tester…
+
+  public void testIface() {
+    configureContainer();
+    MovieLister lister = (MovieLister)container.lookup("MovieLister");
+    Movie[] movies = lister.moviesDirectedBy("Sergio Leone");
+    assertEquals("Once Upon a Time in the West", movies[0].getTitle());
+  }
+```
+容器使用声明的注入接口来确定依赖项，并使用注入器注入正确的依赖项(我在这里所做的特定容器实现对该技术并不重要，我不会展示它，因为您只会笑)
+
+### 使用服务定位器(Using a Service Locator)
+使用依赖注入器的好处是它消除了`MovieLister`类对具体`MovieFinder`实现的依赖。这允许我将listers提供给朋友，并让他们插入适合自己环境的实现。注入不是打破这种依赖关系的唯一方法，另一种方法是使用服务定位器。
+
+服务定位器背后的基本思想是拥有一个知道如何获取应用程序可能需要的所有服务的对象。因此，此应用程序的服务定位器将具有一个方法，当需要时就会返回一个`movie finder`。当然，这只是稍微转移了一些负担，我们仍然需要将定位器放入`lister`中，这导致了图3中的依赖关系
+![](../../.vuepress/public/ioc-03.gif)
+
+
 
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
