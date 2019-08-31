@@ -280,10 +280,11 @@ class Tester…
 
 图3：服务定位器的依赖项
 
-在这个例子我将使用服务定位器作为一个简单额注册。`lister`然后可以在实例化`finder`时使用它来获取`finder`。
+在这个例子我将使用服务定位器作为一个简单的注册。`lister`然后可以在实例化`finder`时使用它来获取`finder`。
 ```java
 class MovieLister...
   MovieFinder finder = ServiceLocator.movieFinder();
+
 class ServiceLocator...
   public static MovieFinder movieFinder() {
       return soleInstance.movieFinder;
@@ -291,3 +292,124 @@ class ServiceLocator...
   private static ServiceLocator soleInstance;
   private MovieFinder movieFinder;
 ```
+与注入方法一样，我们必须配置服务定位器，这里我是用代码来做的，但是从配置文件中读取数据的机制并不难。
+```java
+class Tester...
+
+  private void configure() {
+      ServiceLocator.load(new ServiceLocator(new ColonMovieFinder("movies1.txt")));
+  }
+
+class ServiceLocator...
+
+  public static void load(ServiceLocator arg) {
+      soleInstance = arg;
+  }
+
+  public ServiceLocator(MovieFinder movieFinder) {
+      this.movieFinder = movieFinder;
+  }
+```
+这里是测试的代码。
+```java
+class Tester...
+
+  public void testSimple() {
+      configure();
+      MovieLister lister = new MovieLister();
+      Movie[] movies = lister.moviesDirectedBy("Sergio Leone");
+      assertEquals("Once Upon a Time in the West", movies[0].getTitle());
+  }
+```
+我经常听到有人抱怨说，这类服务定位器是一件坏事，因为它们是不可测试的，因为您无法用实现来替代它们。当然，您可以将它们设计得很糟糕，从而陷入这种麻烦，但是你不必这样做。在这种情况服务定位器实例只是一个简单的数据持有者。我可以使用我的服务的测试实现轻松地创建定位器。
+
+对于更复杂的定位器，我可以子类化服务定位器并通过子类传递到注册表的类变量中。我可以更改静态方法来调用实例上的方法，而不是直接访问实例变量。我可以通过使用特定于线程的存储来提供特定于线程的定位器。所有这些都可以在不更改服务定位器客户端的情况下完成。
+
+## 为定位器使用隔离接口（Using a Segregated Interface for the Locator）
+
+上面简单方法的一个问题是`MovieLister`依赖于完整的服务器定位器类，即使它只使用一个服务。我们可以通过使用角色接口来减少这种情况。这样，`lister`就可以声明它所需要的接口，而不是完整的服务定位器接口。
+
+在这种情况，lister的提供者还将提供一个定位器接口，它需要这个接口来获取finder。
+```java
+public interface MovieFinderLocator {
+  public MovieFinder movieFinder()
+}
+```
+然后定位器需要实现此接口来提供对`finder`的访问。
+```java
+MovieFinderLocator locator = ServiceLocator.locator();
+MovieFinder finder = locator.movieFinder();
+public static ServiceLocator locator() {
+     return soleInstance;
+ }
+ public MovieFinder movieFinder() {
+     return movieFinder;
+ }
+ private static ServiceLocator soleInstance;
+ private MovieFinder movieFinder;
+```
+您将注意到，由于我们想要使用接口，所以不能再仅仅通过静态方法访问服务。我们必须使用类来获取locator实例，然后使用它来获取我们需要的东西。
+## 动态服务器定位器（A Dynamic Service Locator）
+上面的例子是静态的，因为服务定位器类为您需要的每个服务都有方法。这并不是唯一的方法，您还可以创建一个动态服务定位器，允许您将所需的任何服务存储到其中，并在运行时做出选择。
+
+在本例中，服务定位器为每个服务使用映射而不是字段，并提供获取和加载服务的通用方法。
+
+```java
+class ServiceLocator...
+
+  private static ServiceLocator soleInstance;
+  public static void load(ServiceLocator arg) {
+      soleInstance = arg;
+  }
+  private Map services = new HashMap();
+  public static Object getService(String key){
+      return soleInstance.services.get(key);
+  }
+  public void loadService (String key, Object service) {
+      services.put(key, service);
+  }
+```
+配置涉及使用适当的密钥加载服务。
+```java
+class Tester...
+
+  private void configure() {
+      ServiceLocator locator = new ServiceLocator();
+      locator.loadService("MovieFinder", new ColonMovieFinder("movies1.txt"));
+      ServiceLocator.load(locator);
+  }
+```
+我使用相同的键字符串来使用服务。
+```java
+class MovieLister...
+
+  MovieFinder finder = (MovieFinder) ServiceLocator.getService("MovieFinder");
+```
+总的来说，我不喜欢这个方法。尽管它是灵活的，但是它并没有非常明确的。我能找到如何到达服务的唯一方法是通过文本键（keys）。我更喜欢显式方法，因为通过查看接口定义更容易找到它们的位置。
+
+## 在`Avalon`中使用定位器和注入(Using both a locator and injection with Avalon)
+依赖项注入和服务定位器不一定是相互排斥的概念。两者一起使用的一个很好的例子是`Avalon`框架。`Avalon`使用服务定位器，但是使用注入来告诉组件在哪里找到定位器。
+
+`Berin Loritsch`向我发送了这个使用`Avalon`运行示例的简单版本。
+
+```java
+public class MyMovieLister implements MovieLister, Serviceable {
+    private MovieFinder finder;
+
+    public void service( ServiceManager manager ) throws ServiceException {
+        finder = (MovieFinder)manager.lookup("finder");
+    }
+```
+服务方法是接口注入的一个例子，允许容器将服务管理器注入`MyMovieLister`。`service manager`是这个例子中的服务定位器。在本例中，`lister`不将`manager`存储在字段中，而是立即使用它来查找`finder`，并将其存储。
+
+## 决定使用哪个选项(Deciding which option to use)
+到目前为止，我一直专注于解释我如何看待这些模式及其变化。现在，我可以开始讨论它们的优缺点，以帮助确定使用哪些方法以及何时使用。
+
+## 服务定位器 VS 依赖注入(Service Locator vs Dependency Injection)
+
+ 基本得选择是服务定位器和依赖注入。第一点是，这两种实现都提供了基本得解耦，而这正是简单示例中所缺少的，在这量
+
+。。。。。。
+
+## 构造函数与setter注入
+对于多层服务，您总是必须有某种约定才能将内容连接在一起。
