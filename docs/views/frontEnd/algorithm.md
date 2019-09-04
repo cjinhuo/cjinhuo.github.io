@@ -3,7 +3,7 @@ title: '练习过的一些算法题'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories: 
+categories:
 - frontEnd
 # 分类 共有三个分类： frontEnd work hobby
 date: 2019-05-24
@@ -20,7 +20,7 @@ tags:
 ```js
 /**
  * 找出字符串中最高key的数量并显示 复杂度为 2n
- * @param {字符串} str 
+ * @param {字符串} str
  */
 function computedCount(str) {
   // 将字符串拆成对象形式，value为单个字符出现的次数
@@ -62,8 +62,8 @@ console.log(computedCount(str))
 ```js
 /**
  * 荷兰国旗问题 => 分成小于 等于 大于 num 的三个分区
- * @param {数组} arr 
- * @param {需要分割的数字} num 
+ * @param {数组} arr
+ * @param {需要分割的数字} num
  */
 function partition(arr, num) {
   const swap = (arr, l, r) => {
@@ -156,7 +156,54 @@ bubbleSort(test)
 console.log(test)
 ```
 ## 选择排序
+```js
+// 选择排序
+function selectSort(arr) {
+    let length = arr.length
+    let min = 0
+    let minIndex = 0
+    for (let i = 0; i < length - 1; i++) {
+        min = arr[i]
+        minIndex = i
+        for (let j = i + 1; j < length; j++) {
+            if (min > arr[j]) {
+                min = arr[j]
+                minIndex = j
+            }
+        }
+        if (minIndex !== i) {
+            let temp = arr[i]
+            arr[i] = min
+            arr[minIndex] = temp
+        }
+    }
+    return arr
+}
+let test = [2, -2, 4, 52, -10, 3, 2, 56, 23, 1]
+selectSort(test)
+console.log(test)
+```
 ## 插入排序
+```js
+//插入排序
+function insertSort(arr) {
+    let length = arr.length
+    let preIndex, current
+    for (let i = 1; i < length; i++) {
+        preIndex = i - 1
+        current = arr[i]
+        while (preIndex >= 0 && arr[preIndex] > current) {
+            arr[preIndex + 1] = arr[preIndex]
+            preIndex--
+        }
+        arr[preIndex + 1] = current
+    }
+    return arr
+}
+let test = [2, -2, 4, 52, -10, 3, 2, 56, 23, 1]
+insertSort(test)
+console.log(test)
+```
 ## 归并排序
 ```js
 //归并排序
