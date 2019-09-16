@@ -34,8 +34,25 @@ sudo ./mongod  -dbpath /data/db/
 cd /usr/local/mongodb/bin/
 ./mongo
 :::
-然后先执行`mgd.sh` => `./Desktop/MongoDB-sh/mgd.sh`<br/>
-在执行`mge.sh` => `./Desktop/MongoDB-sh/mge.sh`<br/>
+然后先执行`mgd.sh` => `~/Desktop/MongoDB-sh/mgd.sh`<br/>
+在执行`mge.sh` => `~/Desktop/MongoDB-sh/mge.sh`<br/>
+
+### 优化
+每次打开MongoDB都需要执行上面两个文件，显然`~/Desktop/MongoDB-sh/mgd.sh`，这段命令有点长，而且每次都打同样的代码会很烦，所以可以通过软链接再次优化，将上面的命令变成一个单词。这里使用的是软链接(我写了软链接和硬链接的区别，在搜索框中查找软链接)。将文件路径链接到`/usr/local/bin`。
+
+```
+ln -s ~/Desktop/MongoDB-sh/mgd.sh mongof //将 ~/Desktop/MongoDB-sh/mgd.sh的路径链接到bin文件夹中的mongof
+```
+现在你可以试下在终端中输入`mongof`，发现跟执行`~/Desktop/MongoDB-sh/mgd.sh`效果是一样的.
+
+同样的:
+```
+ln -s ~/Desktop/MongoDB-sh/mge.sh mongos
+```
+这样下次你就可以直接新建两个终端，先后运行:`mongof` `mongos`
+
+### 究极优化
+当然还有一种优化，可以在第一个sh文件的末尾写：新建终端 && 执行另一个sh文件，这样以后开mongo服务只需要输入一个单词。
 <!-- 超链接 [文本](URL) -->
 <!-- ../../.vuepress/public/line-height.png) -->
 <!-- 图片 ![](url) -->
