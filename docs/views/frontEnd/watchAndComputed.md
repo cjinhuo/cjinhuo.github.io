@@ -27,11 +27,15 @@ tags:
 6. 初始化状态
 7. 将数据添加到观察者中实现双数据绑定
 
+模板编译
+数据劫持
 
 ## 双向数据绑定原理
 observe()方法判断value中有没有_ob_属性并且是不是Observe实例化的，value是不是Vnode实例化的，如果不是则调用Observe去把数据添加到观察者中，为数据添加_ob_属性，Observe则调用defineReacive
 
 ## Watch
+
+
 
 
 

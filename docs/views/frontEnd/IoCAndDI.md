@@ -230,7 +230,7 @@ class Tester...
      container.start();
   }
 ```
-这个配置有两个阶段，通过查找键注册组件与其他示例非常相似。
+这个配置有两个阶段，通过查找键来注册组件与其他示例非常相似。
 ```java
 class Tester...
 
@@ -281,7 +281,7 @@ class Tester…
 容器使用声明的注入接口来确定依赖项，并使用注入器注入正确的依赖项(我在这里所做的特定容器实现对该技术并不重要，我不会展示它，因为您只会笑)
 
 ## 使用服务定位器(Using a Service Locator)
-使用依赖注入器的好处是它消除了`MovieLister`类对具体`MovieFinder`实现的依赖。这允许我将listers提供给朋友，并让他们插入适合自己环境的实现。注入不是打破这种依赖关系的唯一方法，另一种方法是使用服务定位器。
+使用依赖注入器的好处是它消除了`MovieLister`类对具体`MovieFinder`实现的依赖。这允许我将`listers`提供给朋友，并让他们插入适合自己环境的实现。注入不是打破这种依赖关系的唯一方法，另一种方法是使用服务定位器。
 
 服务定位器背后的基本思想是拥有一个知道如何获取应用程序可能需要的所有服务的对象。因此，此应用程序的服务定位器将具有一个方法，当需要时就会返回一个`movie finder`。当然，这只是稍微转移了一些负担，我们仍然需要将定位器放入`lister`中，这导致了图3中的依赖关系
 ![](../../.vuepress/public/ioc-03.gif)
@@ -295,6 +295,7 @@ class MovieLister...
 
 class ServiceLocator...
   public static MovieFinder movieFinder() {
+    //  soleInstance是当前类ServiceLocator的实例
       return soleInstance.movieFinder;
   }
   private static ServiceLocator soleInstance;
