@@ -2,7 +2,7 @@
 title: '前端工程师面经'
 sidebarDepth: 2
 sidebar: auto
-categories: 
+categories:
 - frontEnd
 tags:
 - 面试
@@ -504,7 +504,7 @@ let d = new Date();
 let e = function(){alert(111);};
 let f = function(){this.name="22";};
 ```
-### typeof 
+### typeof
 ::: tip
 *可以判断function的类型；在判断除Object类型的对象时比较方便*
 不能区分array和object
@@ -517,7 +517,7 @@ alert(typeof d)   ------------> object => new Date
 alert(typeof e)   ------------> function
 alert(typeof f)   ------------> function
 ```
-### instanceof 
+### instanceof
 ::: tip
 *后面一定要是对象类型，并且大小写不能错，该方法适合一些条件选择或分支*
 挺好用的，就是要区分大小写，自己写继承类的时候用这个比较好。<br>
@@ -548,7 +548,7 @@ eg：
 // 言归正传，解决construtor的问题通常是让对象的constructor手动指向自己：
       aobj.constructor = A; //将自己的类赋值给对象的constructor属性
       alert(aobj.constructor === A) -----------> true;
-      alert(aobj.constructor === B) -----------> false; 
+      alert(aobj.constructor === B) -----------> false;
 //基类不会报true了;不过规范一点的话，继承后必须把constructor指向它的父类
 ```
 ### prototype.toString
@@ -570,7 +570,7 @@ DNS欺骗就是攻击者冒充域名服务器的一种欺骗行为。 原理：�
 :::
 例如更改电脑的host文件。
 ### DDOS攻击
-::: tip 
+::: tip
 分布式拒绝服务(DDoS:Distributed Denial of Service)攻击指借助于客户/服务器技术，将多个计算机联合起来作为攻击平台，对一个或多个目标发动DDoS攻击，从而成倍地提高拒绝服务攻击的威力，通过大量互联网流量压倒目标或其周围的基础架构来破坏目标服务器，服务或网络的正常流量。DDoS攻击通过利用多个受损计算机系统作为攻击流量来源来实现有效性。被利用的机器可以包括计算机和其他网络资源，例如物联网设备。从高层次来看，DDoS攻击就像堵塞高速公路的交通堵塞，阻止了常规交通到达其所需的目的地。
 :::
 ![](../../.vuepress/public/ddos.jpeg)
@@ -622,7 +622,7 @@ console.log(obj.name);//get it
 作用：使私有变量（局部变量）能够转换被多个函数共享，而不被能解析器从内存中释放掉
 :::
 ## 编写一个Javascript函数，传入一个数组，对数组中的元素进行去重并返回一个无重复元素的数组，数组的元素可以是数字、字符串、数组和对象。举例说明：
-::: tip 
+::: tip
 1. 如传入的数组元素为[123, "meili", "123", "mogu", 123],则输出：[123, "meili", "123", "mogu"]
 2. 如传入的数组元素为[123, [1, 2, 3], [1, "2", 3], [1, 2, 3], "meili"],则输出：[123, [1, 2, 3], [1, "2", 3], "meili"]
 3. 如传入的数组元素为[123, {a: 1}, {a: {b: 1}}, {a: "1"}, {a: {b: 1}}, "meili"],则输出：[123, {a: 1}, {a: {b: 1}}, {a: "1"}, "meili"]
@@ -769,3 +769,91 @@ var num4=parseFloat("3.125e7");             //31250000
 ::: tip
 ECMAScript定义了isNaN()函数。这个函数接受一个参数，该参数可以是任何类型，而函数会帮我们确定这个参数是否“不是数值”。isNaN()在接收到一个值之后，会尝试将这个值转换为数值。不能转换为数值的参数会返回true。
 :::
+
+## Event Loop
+::: tip
+在`JavaScript`中，任务被分为两种，一种宏任务（MacroTask）也叫Task，一种叫微任务（MicroTask）。
+:::
+### MacroTask（宏任务）
+`script`全部代码、setTimeout、setINterval、I/0、UI Rendering
+### MicroTask（微任务）
+Process.nextTick（Node独有）、Promise、MutationObserver（具体使用方式[查看](http://javascript.ruanyifeng.com/dom/mutationobserver.html)）
+### 浏览器中的Event Loop
+JS有一个`main thread`主线程和`call-stack`调用栈（执行栈），所有的任务都会被放到调用栈等待主线程执行。
+### JS调用栈
+JS调用栈采用的是后进先出的规则，当函数执行的时候，会被添加到栈的顶部，当执行栈执行完成后，就会从栈顶移出，直到栈内被清空。
+![](../../.vuepress/public/event_loop1.png)
+### 同步任务和异步任务
+`JS`单线程任务被分为同步任务和异步任务，同步任务会在调用栈按照顺序等待主线程依次执行，异步任务会在异步任务有了结果后，将注册的回调函数放入任务队列中等待主线程空闲的时候（调用栈被清空），被读取到栈内等待主线程的执行。
+
+任务队列`Task Queue`，是一种先进先出的数据结构。
+![](../../.vuepress/public/event_loop2.png)
+* 选择当前要执行的任务队列，选择任务队列中最先进进入的任务，如果任务队列为空时，则执行跳转到微任务(MicroTask)的执行步骤。
+* 将事件循环中的任务设置为已选择任务。
+* 执行任务
+* 将事件循环中当前运行任务设置null
+* 将已经运行完成的任务从任务队列在删除。
+* MicroTasks步骤：进入MicroTask检查点
+* 更新页面渲染（人工赋值）
+* 返回第一步
+**举个例子**
+```js
+console.log('script start');
+
+setTimeout(function() {
+  console.log('setTimeout');
+}, 0);
+
+Promise.resolve().then(function() {
+  console.log('promise1');
+}).then(function() {
+  console.log('promise2');
+});
+console.log('script end');
+```
+打印结果：
+```
+script start =》 先执行宏任务中script
+script end =》 先执行宏任务中script
+promise1 =》 再执行微任务中的promise,执行完又将then推到微任务
+promise2  =》 检查微任务队列，再次执行微任务
+setTimeout =》 微任务为空回来执行宏任务
+```
+
+**再来看个例子**
+```js
+console.log('script start');
+
+setTimeout(function() {
+  console.log('setTimeout');
+}, 0);
+
+Promise.resolve().then(function() {
+  console.log('promise1');
+}).then(function() {
+  console.log('promise2');
+});
+Promise.resolve().then(function() {
+  console.log('promise11');
+}).then(function() {
+  console.log('promise22');
+});
+console.log('script end');
+```
+打印结果：
+```
+script start =》 先执行宏任务中script
+
+script end =》 先执行宏任务中script
+
+promise1 =》 再执行微任务中的promise，然后将then再次推到微任务队列
+
+promise11 =》 promise11在promise2的前面是因为，执行完promise1才会执行then，而promise11是一开始就和promise1一起放在微任务队列的
+promise2
+promise22
+setTimeout =》 微任务为空回来执行宏任务
+```
+
+
+
+
