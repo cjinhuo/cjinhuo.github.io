@@ -360,7 +360,6 @@ Object.defineProperty(key, prop, {
   //配置
 })
 ```
-现在的Vue是基于ES6的proxy的实现，因为跟更改，区别就是:......
 ## 去重数组
 ``` js
 function dedupe(array) {
@@ -612,7 +611,7 @@ console.log(obj.name);//get it
 obj.name = 1234;//set it
 console.log(obj.name);//get it
 ```
- 后来Vue更新了，用ES6的proxy代替了Object.defineProperty
+ Vue3.0更新后，用ES6的proxy代替了Object.defineProperty。
  ## Array.prototype.sort
  Google Chrome 对 sort 做了特殊处理，对于长度 <= 10 的数组使用的是插入排序(稳定排序算法) ，length >10 的数组使用的是快速排序。快速排序是不稳定的排序算法。
 ## 闭包
@@ -621,6 +620,7 @@ console.log(obj.name);//get it
 函数内部可以直接读取全局变量<br>
 作用：使私有变量（局部变量）能够转换被多个函数共享，而不被能解析器从内存中释放掉
 :::
+
 ## 编写一个Javascript函数，传入一个数组，对数组中的元素进行去重并返回一个无重复元素的数组，数组的元素可以是数字、字符串、数组和对象。举例说明：
 ::: tip
 1. 如传入的数组元素为[123, "meili", "123", "mogu", 123],则输出：[123, "meili", "123", "mogu"]
@@ -667,6 +667,24 @@ Array.prototype.unique = function(){
 - 如果有布尔类型，将true转换为1，false转换为0，然后用==规则继续比较
 - 如果一个值是对象，另一个是数字或字符串，将对象转换为原始值然后用==规则继续比较
 - 其他所有情况都认为不相等
+
+### Object.js和===
+Object.is() 判断两个值是否相同。如果下列任何一项成立，则两个值相同：
+* 两个值都是`undefined`
+* 两个值都是null
+* 两个值都是`true`或都是`false`
+* 两个值是由相同个数的字符相同的顺序组成的字符串
+* 两个值指向同一个对象
+* 两个值都是数字并且
+ * 都是正零`+0`
+ * 都是正零`-0`
+ * 都是`NaN`
+ * 都是除零和NaN外的
+
+结论：
+
+这与 === 运算符的判定方式也不一样。=== 运算符（和== 运算符）将数字值 -0 和 +0 视为相等，并认为 Number.NaN 不等于 NaN。
+
 ## async/await
 ::: tip
 为什么要使用async/await，常用promise（当你没有彻底理解promise，请先看这篇文章）的人都知道每次都需要写`new Promise()`，代码整体看起来没那么优雅，但是两个作用都是一样的，都是处理异步操作。
