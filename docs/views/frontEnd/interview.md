@@ -872,6 +872,95 @@ promise22
 setTimeout =》 微任务为空回来执行宏任务
 ```
 
+## seal && freeze && preventExtensions
+### Object.seal
+::: tip
+`Object.seal`方法可以密封对象，从而防止向其添加新属性，并将所有现有属性标记为**不可配置**，只要可写，当前属性的值仍可以更改。所以还是可以在`__proto__`添加属性。
+:::
+返回值:
+被密封的对象。
+例子：
+```js
+const object1 = {
+  property1: 42
+};
 
+Object.seal(object1);
+object1.property1 = 33;
+console.log(object1.property1);
+// expected output: 33
 
+delete object1.property1; // cannot delete when sealed
+console.log(object1.property1);
+// expected output: 33
+
+let bb = new Object()
+Object.seal(bb)
+bb.__proto__.test = 1
+console.log(Object.prototype.test)
+//expected output: 1
+```
+### Object.freeze
+::: tip
+冻结的对象无法再更改。冻结对象可防止向其添加新属性、删除现有属性、更改现有属性的可枚举性，可配置或可写性、更改现有属性的值。之外，冻结对象还可以防止更改其原型（`__proto__`不能被更改）。
+:::
+返回值:<br>
+被冻结的对象（与传入值一样）。<br>
+例子：<br>
+```js
+const obj = {
+  prop: 42
+};
+Object.getOwnPropertyDescriptor(obj, 'prop')
+// expected output:
+// configurable: true
+// enumerable: true
+// value: 42
+// writable: true
+Object.freeze(obj);
+Object.getOwnPropertyDescriptor(obj, 'prop')
+// expected output:
+// configurable: false
+// enumerable: true
+// value: 42
+// writable: false
+obj.prop = 33;
+// Throws an error in strict mode
+obj.test = 1
+
+console.log(obj.test)
+// expected output: undefined
+
+console.log(obj.prop);
+// expected output: 42
+
+obj.__proto__ = {test:1}
+// expected output: Uncaught TypeError: #<Object> is not extensible
+```
+
+### Object.preventExtensions
+::: tip
+防止将新属性添加到对象
+:::
+例子：
+```js
+const object1 = {};
+
+Object.preventExtensions(object1);
+
+try {
+  Object.defineProperty(object1, 'property1', {
+    value: 42
+  });
+} catch (e) {
+  console.log(e);
+  // Expected output: TypeError: Cannot define property property1, object is not extensible
+}
+```
+### 结论
+* Object.seal: 防止向其添加新属性，并将所有现有属性标记为不可配置
+* Object.freeze: 止向其添加新属性、删除现有属性、更改现有属性的可枚举性，可配置或可写性、更改现有属性的值,`__proto__`也不让更改
+* Object.preventExtensions: 防止向其添加新属性
+
+那么可以用`Object.isExtensible()`判断是否可以为其添加新属性，不要是不可扩展的就会返回`false`
 

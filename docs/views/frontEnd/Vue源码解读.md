@@ -170,14 +170,16 @@ var allowedGlobals = makeMap(
 :::
 ```js
 function observe(value, asRootData) {
-  // 判断是否是对象
+  // 判断是否是对象 || 这个对象是否是 VNode
   if (!isObject(value) || value instanceof VNode) {
     return
   }
   var ob;
+  // 如果这个对象有__ob__属性 && __ob__属性是Observer的实例，就将__ob__赋值给ob
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
     ob = value.__ob__;
   } else if (
+    // 如果应该观察 && 不是服务端渲染 && （这个值是个数组 || 这个值是个纯对象）&& 对象是可以扩展的
     shouldObserve &&
     !isServerRendering() &&
     (Array.isArray(value) || isPlainObject(value)) &&
@@ -226,7 +228,7 @@ function observe(value, asRootData) {
         proxy(vm, "_data", key);
       }
     }
-    // observe data
+    // observe data 观察data
     observe(data, true /* asRootData */);
   }
 ```
@@ -422,6 +424,29 @@ function def(obj, key, val, enumerable) {
   }
 ```
 
+
+
+### hasOwn
+::: tip
+判断这个对象有没有这个属性
+:::
+```js
+  var hasOwnProperty = Object.prototype.hasOwnProperty;
+  function hasOwn (obj, key) {
+    return hasOwnProperty.call(obj, key)
+  }
+
+```
+### shouldObserve
+::: tip
+在某些情况下，我们可能想要禁止组件中更新计算中的观察。
+:::
+```js
+  var shouldObserve = true;
+  function toggleObserving (value) {
+    shouldObserve = value;
+  }
+```
 
 ### proxy
 ::: tip
