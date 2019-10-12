@@ -964,3 +964,105 @@ try {
 
 那么可以用`Object.isExtensible()`判断是否可以为其添加新属性，不要是不可扩展的就会返回`false`
 
+## 伪类&&伪元素
+### 伪类
+::: tip
+1. 伪类存在的意义是为了通过选择器找到那些不存在与DOM树中的信息以及不能被常规CSS选择器获取到的信息。
+2. 伪类由一个冒号:开头，冒号后面是伪类的名称和包含在圆括号中的可选参数。
+3. 任何常规选择器可以再任何位置使用伪类。伪类语法不区别大小写。一些伪类的作用会互斥，另外一些伪类可以同时被同一个元素使用。并且，为了满足用户在操作DOM时产生的DOM结构改变，伪类也可以是动态的。
+:::
+
+### 伪元素
+::: tip
+1. 伪元素在DOM树中创建了一些抽象元素，这些抽象元素是不存在于文档语言里的，比如：document接口不提供访问元素内容的第一个字或者第一行的机制，而伪元素可以使开发者可以提取到这些信息。并且，一些伪元素可以使开发者获取到不存在于源文档中的内容（比如常见的::before,::after）。
+2. 伪元素的由两个冒号::开头，然后是伪元素的名称。
+3. 使用两个冒号`::`是为了区别伪类和伪元素（CSS2中并没有区别）。当然，考虑到兼容性，CSS2中已存的伪元素仍然可以使用一个冒号`:`的语法，但是CSS3中新增的伪元素必须使用两个冒号`::`。
+:::
+
+## JSON.parse
+::: tip
+参数:
+1. text： 要被解析成JavaScript值的字符串，关于JSON的语法格式
+2. reviver：转换器, 如果传入该参数(函数)，可以用来修改解析生成的原始值，调用时机在parse函数返回之前。注意：解析值本身以及它所包含的所有属性，会按照一定的顺序（从最最里层的属性开始，一级级往外，最终到达顶层，也就是解析值本省）
+:::
+例子：
+```js
+JSON.parse('[1, 2, 3, 4]', function (k, v) {
+	console.log('k', k, 'v',v)
+    if(k === '') return v;     // 如果到了最顶层，则直接返回属性值，
+    return v * 2;              // 否则将属性值变为原来的 2 倍。
+});
+// Expected output
+// k 0 v 1
+// 2 k 1 v 2
+// 2 k 2 v 3
+// 2 k 3 v 4
+// 2 k  v (4) [2, 4, 6, 8]
+JSON.parse('{"p": 5}', function (k, v) {
+	console.log('k', k, 'v',v)
+    if(k === '') return v;     // 如果到了最顶层，则直接返回属性值，
+    return v * 2;              // 否则将属性值变为原来的 2 倍。
+});
+// Expected output
+// k p v 5
+// 2 k  v {p: 10}
+{p: 10}
+JSON.parse('{"p":{"test":1}}', function (k, v) {
+	console.log('k', k, 'v',v)
+    return v;
+});
+// Expected output
+// k test v 1
+// k p v {test: 1}
+// k  v p: {test: 1}
+```
+## JSON.stringify
+::: tip
+参数：
+1. value：将要序列化成一个JSON字符串的值
+2. replacer(可选)：如果该参数是一个函数，则在序列化过程中，被序列化的值的每个属性都会经过该函数的转换和处理；如果该参数是一个数组，则只有包含在这个数组中的属性名才会被序列化到最终的 JSON 字符串中；如果该参数为null或者未提供，则对象所有的属性都会被序列化；
+3. space(可选)：指定缩进用的空白字符串，用于美化输出（pretty-print）；如果参数是个数字，它代表有多少的空格；上限为10。该值若小于1，则意味着没有空格。如果该参数没有提供（或者为null）将没有空格。
+:::
+例子：
+```js
+function replacer(key, value) {
+  console.log('key', key, 'value', value)
+  return value;
+}
+
+let foo = { foundation: "Mozilla", model: "box", month: 7 }
+JSON.stringify(foo, replacer)
+// 可以看出来JSON.stringify是从外层向内层进行遍历的，而JSON.parse是从最内层开始往外遍历
+// Expected output
+// key  value { foundation: 'Mozilla', model: { test: 1 }, month: 7 }
+// key foundation value Mozilla
+// key model value { test: 1 }
+// key test value 1
+// key month value 7
+```
+如果replacer是一个数组，数组的值代表将被序列化成JSON字符串的属性名。
+
+```js
+let replacer = ['foundation', 'model']
+
+let foo = { foundation: "Mozilla", model: "box", month: 7 }
+
+console.log(JSON.stringify(foo, replacer))
+// 只保留'foundation'和'model'属性值。
+// Expected output
+// {"foundation":"Mozilla","model":"box"}
+```
+如果一个被序列化的对象拥有 toJSON 方法，那么该 toJSON 方法就会覆盖该对象默认的序列化行为：不是那个对象被序列化，而是调用 toJSON 方法后的返回值会被序列化
+```js
+var obj = {
+  foo: 'foo',
+  toJSON: function () {
+    return 'bar';
+  }
+};
+JSON.stringify(obj);      // '"bar"'
+JSON.stringify({x: obj}); // '{"x":"bar"}'
+```
+
+
+
