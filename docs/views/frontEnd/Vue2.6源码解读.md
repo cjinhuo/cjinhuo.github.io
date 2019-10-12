@@ -83,6 +83,9 @@ vm._renderProxy = new Proxy(vm, handlers);
 This is an internal flag that allows Vue's runtime to pick the correct Proxy strategy to detect variable reference errors during render, depending on whether with has been stripped by vue-template-es2015-compiler.
 :::
 ### getHandler && hasHandler
+::: tip
+这两种方法主要是为了当用户错误操作vm的属性提示报错。比如调用for in循环遍历vm实例属性时，会触发hasHandler方法，调用vm._data就会触发gethandler方法。
+:::
 看上面两个对象前先看一个工具函数:
 ```js
 var allowedGlobals = makeMap(
@@ -138,6 +141,17 @@ var allowedGlobals = makeMap(
       }
     };
 ```
+### proxy的traps
+::: tip
+proxy所有的traps是可选的。如果某个trap没有定义，那么默认的行为会应用到目标对象上
+:::
+上面当两个handles处理好后，将要执行`vm._renderProxy = new Proxy(vm, handlers);`，getHandle对应的是get方法，hasHandler对应的是has方法。
+* handler.has()<br>
+在判断代理对象是否拥有某个属性时触发该操作，比如在执行 "foo" in proxy 时。
+* handler.get()<br>
+在读取代理对象的某个属性时触发该操作，比如在执行 proxy.foo 时。
+### initProxy的流程
+![](../../.vuepress/public/vue2.6-initProxy.jpg)
 ### initLifecycle
 ```js
 
