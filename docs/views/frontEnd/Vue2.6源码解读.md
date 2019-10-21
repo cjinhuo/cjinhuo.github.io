@@ -19,9 +19,9 @@ tags:
 。。。
 :::
 
-## 第一个大标题
+## Vue2.6
 
-### _init
+## _init
 ```javascript
 Vue.prototype._init = function (options) {
   var vm = this;
@@ -51,7 +51,7 @@ Vue.prototype._init = function (options) {
 ```
 [initProxy]()
 [initLifecycle]()
-### initProxy
+## initProxy
 ```javascript
     var initProxy = function initProxy (vm) {
       if (hasProxy) {  //hasProxy = typeof Proxy !== 'undefined' && isNative(Proxy);
@@ -82,7 +82,7 @@ vm._renderProxy = new Proxy(vm, handlers);
 ::: tip render._withStripped github issues
 This is an internal flag that allows Vue's runtime to pick the correct Proxy strategy to detect variable reference errors during render, depending on whether with has been stripped by vue-template-es2015-compiler.
 :::
-### getHandler && hasHandler
+## getHandler && hasHandler
 ::: tip
 这两种方法主要是为了当用户错误操作vm的属性提示报错。比如调用for in循环遍历vm实例属性时，会触发hasHandler方法，调用vm._data就会触发gethandler方法。
 :::
@@ -141,7 +141,7 @@ var allowedGlobals = makeMap(
       }
     };
 ```
-### proxy的traps
+## proxy的traps
 ::: tip
 proxy所有的traps是可选的。如果某个trap没有定义，那么默认的行为会应用到目标对象上
 :::
@@ -150,13 +150,13 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
 在判断代理对象是否拥有某个属性时触发该操作，比如在执行 "foo" in proxy 时。
 * handler.get()<br>
 在读取代理对象的某个属性时触发该操作，比如在执行 proxy.foo 时。
-### initProxy的流程
+## initProxy的流程
 ![](../../.vuepress/public/vue2.6-initProxy.jpg)
-### initLifecycle
+## initLifecycle
 ```js
 
 ```
-### initState
+## initState
 ```js
   function initState (vm) {
     // 定义vm的watchers
@@ -175,14 +175,53 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
     }
   }
 ```
+![](../../.vuepress/public/vue2.6-initWatch.png)
+## initData
+```js
+  function initData (vm) {
+    var data = vm.$options.data;
+    // 不管是函数还是对象，最终返回的都是纯对象，如果不是纯对象就抛出warn
+    // 并且赋值给vm._data
+    data = vm._data = typeof data === 'function'
+      ? getData(data, vm)
+      : data || {};
+    if (!isPlainObject(data)) {
+      data = {};
+      warn();
+    }
+    var keys = Object.keys(data);
+    var props = vm.$options.props;
+    var methods = vm.$options.methods;
+    var i = keys.length;
+    // 判断data的key有没有在prop或methods已经定义过
+    while (i--) {
+      var key = keys[i];
+      {
+        if (methods && hasOwn(methods, key)) {
+          warn();
+        }
+      }
+      if (props && hasOwn(props, key)) {
+        warn();
+      } else if (!isReserved(key)) { // isReserved判断字符串是否是$开头的
+        // 将vm[key]代理到_data[key]
+        // 取vm[key]的值就是取_data[key]的值
+        // vm.message  => vm._data.message
+        proxy(vm, "_data", key);
+      }
+    }
+    // observe data 观察data
+    observe(data, true /* asRootData */);
+  }
+```
+## initComputed
+::: tip
 
-
-### initComputed
+:::
 ```js
   function initComputed(vm, computed) {
-    // $flow-disable-line
+    // 创建不带任何的原型链的空对象并且挂载到当前组件的实例上
     var watchers = vm._computedWatchers = Object.create(null);
-    // computed properties are just getters during SSR
     var isSSR = isServerRendering();
 
     for (var key in computed) {
@@ -196,18 +235,18 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
       }
 
       if (!isSSR) {
-        // create internal watcher for the computed property.
+        // 针对option.computed中的每个key进行Watcher
+        // watcher 用来存储计算值，判断是否需要重新计算
         watchers[key] = new Watcher(
           vm,
-          getter || noop,
+          getter || noop, // 用watcher保存getter函数
           noop,
           computedWatcherOptions
+          // computedWatcherOptions = { lazy: true };作用是初始化watcher的第一次不执行this.get()，也就是不会获取当前值，只在用到的时候获取
         );
       }
 
-      // component-defined computed properties are already defined on the
-      // component prototype. We only need to define computed properties defined
-      // at instantiation here.
+      // 如果key不在vm属性在指定的对象或其原型链中，就执行defineComputed
       if (!(key in vm)) {
         defineComputed(vm, key, userDef);
       } else {
@@ -220,7 +259,149 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
     }
   }
 ```
+### defineComputed
+```js
+  function defineComputed(
+    target,
+    key,
+    userDef
+  ) {
+    var shouldCache = !isServerRendering();
+    if (typeof userDef === 'function') {
+      sharedPropertyDefinition.get = shouldCache
+        ? createComputedGetter(key)
+        : createGetterInvoker(userDef);
+      sharedPropertyDefinition.set = noop;
+    } else {
+      // 当计算属性是对象时，判断用户有没有设置set，有的话将用户的set赋值
+      sharedPropertyDefinition.get = userDef.get
+        ? shouldCache && userDef.cache !== false
+          ? createComputedGetter(key)
+          : createGetterInvoker(userDef.get)
+        : noop;
+      sharedPropertyDefinition.set = userDef.set || noop;
+    }
+    if (sharedPropertyDefinition.set === noop) {
+      sharedPropertyDefinition.set = function () {
+        warn(
+          ("Computed property \"" + key + "\" was assigned to but it has no setter."),
+          this
+        );
+      };
+    }
+    Object.defineProperty(target, key, sharedPropertyDefinition);
+  }
+```
+### computed流程图
+![](../../.vuepress/public/vue2.6-initComputed.png)
 
+### createComputedGetter
+```js
+  function createComputedGetter(key) {
+    return function computedGetter() {
+      // _computedWatchers在Vue
+      // this指的是vm，即当前组件实例
+      var watcher = this._computedWatchers && this._computedWatchers[key];
+      if (watcher) {
+        // 缓存控制
+        if (watcher.dirty) {
+          // 调用evaluate后dirty会变成false
+          watcher.evaluate();
+          // dep.notice => update() => this.dirty=true
+        }
+        if (Dep.target) {
+          watcher.depend();
+        }
+        return watcher.value
+      }
+    }
+  }
+```
+### createGetterInvoker
+```js
+  function createGetterInvoker(fn) {
+    return function computedGetter() {
+      return fn.call(this, this)
+    }
+  }
+```
+
+
+## initWatch
+```js
+function initWatch (vm: Component, watch: Object) {
+  for (const key in watch) {
+    const handler = watch[key]
+    // 判断是否是数组，是的话就遍历 ？？？？？？ watch还能传数组
+    if (Array.isArray(handler)) {
+      for (let i = 0; i < handler.length; i++) {
+        createWatcher(vm, key, handler[i])
+      }
+    } else {
+      createWatcher(vm, key, handler)
+    }
+  }
+}
+```
+
+### createWatcher
+```js
+function createWatcher (
+  vm: Component,
+  expOrFn: string | Function,
+  handler: any,
+  options?: Object
+) {
+  if (isPlainObject(handler)) {
+    options = handler
+    handler = handler.handler
+  }
+  // 说明handle可以传字符串 handle: 'init'，init是method中的一函数
+  if (typeof handler === 'string') {
+    // 从当前组件中获取属性
+    handler = vm[handler]
+  }
+  return vm.$watch(expOrFn, handler, options)
+}
+```
+### vm.$watch
+```js
+  Vue.prototype.$watch = function (
+    expOrFn: string | Function,
+    cb: any,
+    options?: Object
+  ): Function {
+    const vm: Component = this
+    if (isPlainObject(cb)) {
+      // 如果handle是对象的话就再次执行createWatcher,看下面代码有两个handler，但是效果还是执行执行一次，所以觉得不是很有必要
+      //
+      // watch:{
+      //   message:{
+      //     handler: {
+      //       handler: 'init',
+      //       immediate: true
+      //       },
+      //     },
+      //   },
+      return createWatcher(vm, expOrFn, cb, options)
+    }
+    options = options || {}
+    options.user = true
+    // 在deps
+    const watcher = new Watcher(vm, expOrFn, cb, options)
+    if (options.immediate) {
+      try {
+        cb.call(vm, watcher.value)
+      } catch (error) {
+        handleError(error, vm, `callback for immediate watcher "${watcher.expression}"`)
+      }
+    }
+    return function unwatchFn () {
+      watcher.teardown()
+    }
+  }
+}
+```
 
 ## observe
 ::: tip
@@ -240,54 +421,14 @@ function observe(value, asRootData) {
     // 如果应该观察 && 不是服务端渲染 && （这个值是个数组 || 这个值是个纯对象）&& 对象是可以扩展的 && value._isVue的值是false(只有根vm._isVue = true)
     shouldObserve &&
     !isServerRendering() &&
-    (Array.isArray(value) || isPlainObject(value)) &&
-    Object.isExtensible(value) &&
-    !value._isVue
+    (Array.isArray(value) || isPlainObject(value)) && Object.isExtensible(value) &&!value._isVue
   ) {
     ob = new Observer(value);
   }
   return ob
 }
 ```
-### initData
-```js
-  function initData (vm) {
-    var data = vm.$options.data;
-    // 不管是函数还是对象，最终返回的都是纯对象，如果不是纯对象就抛出warn
-    // 并且赋值给vm._data
-    data = vm._data = typeof data === 'function'
-      ? getData(data, vm)
-      : data || {};
-    if (!isPlainObject(data)) {
-      data = {};
-      warn();
-    }
-    // proxy data on instance
-    var keys = Object.keys(data);
-    var props = vm.$options.props;
-    var methods = vm.$options.methods;
-    var i = keys.length;
-    // 判断data的key有没有在prop或methods已经定义过
-    while (i--) {
-      var key = keys[i];
-      {
-        if (methods && hasOwn(methods, key)) {
-          warn();
-        }
-      }
-      if (props && hasOwn(props, key)) {
-        warn();
-      } else if (!isReserved(key)) {
-        // 将vm[key]代理到_data[key]
-        // 取vm[key]的值就是取_data[key]的值
-        // vm.message  => vm._data.message
-        proxy(vm, "_data", key);
-      }
-    }
-    // observe data 观察data
-    observe(data, true /* asRootData */);
-  }
-```
+
 
 
 ## defineReactive$$1
@@ -418,11 +559,13 @@ function observe(value, asRootData) {
   };
 ```
 
-## Array
+## arrayMethods
+::: tip
+拦截用户对数组的操作，并且通知这些数据变换依赖的watcher
+:::
 ```js
     // 获取原生Array中提供的所有方法
     var arrayProto = Array.prototype;
-
     // 将原生提供的方法创建一个新的对象，以免修改原生的方法，造成全局污染
     var arrayMethods = Object.create(arrayProto);
   var methodsToPatch = [
@@ -434,7 +577,6 @@ function observe(value, asRootData) {
     'sort',
     'reverse'
   ];
-
   /**
    * 截取上面这些方法，然后实现相应的操作
    */
@@ -586,7 +728,7 @@ function def(obj, key, val, enumerable) {
 
 ### proxy
 ::: tip
-将target的key属性的值代理到sourceKey中的属性key。结论：取target中的key就是取sourceKey中的key
+将target的key属性的值代理到sourceKey中的属性key。结论：取target中的key就是取sourceKey中的key,例如`vm.message = '123'`触发set函数`vm._data.message = '123'`
 :::
 ```js
   var sharedPropertyDefinition = {
@@ -628,6 +770,9 @@ this.message = 'world'
 ```
 
 ### Dep
+::: tip
+defineReactive方法将data中的数据进行响应式后，可以监听到数据的变化了,然后Dep就是帮我们收集究竟要通知到哪里。
+:::
 ```js
 /*  */
   var uid = 0;
@@ -670,6 +815,7 @@ this.message = 'world'
 
   // 当首次计算 computed 属性的值时，Dep将会在计算期间对依赖进行收集
   Dep.target = null;
+  // 设置成数组的原因是：可能会有对象嵌套
   var targetStack = [];
 
   function pushTarget(target) {
@@ -714,6 +860,8 @@ var Watcher = function Watcher(
     this.cb = cb;
     this.id = ++uid$2; // uid for batching
     this.active = true;
+    //  lazy 表示一种固定描述，不可改变，表示这个 watcher 需要缓存
+    // dirty 表示缓存是否可用，如果为 true，表示缓存脏了，需要重新计算，否则不用
     this.dirty = this.lazy; // for lazy watchers
     this.deps = [];
     this.newDeps = [];
@@ -721,6 +869,7 @@ var Watcher = function Watcher(
     this.newDepIds = new _Set();
     this.expression = expOrFn.toString();
     // parse expression for getter
+    // 接收计算函数的getter
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn;
     } else {
@@ -735,10 +884,49 @@ var Watcher = function Watcher(
         );
       }
     }
+
     this.value = this.lazy
       ? undefined
       : this.get();
+      // get是个重要分支
   };
+  // 调用this.get方法，并将dirty设置成false，防止再次调用
+    Watcher.prototype.evaluate = function evaluate() {
+    this.value = this.get();
+    this.dirty = false;
+  };
+```
+
+### watcher.prototype.get
+
+```js
+  get () {
+    // 将当前的watcher推入栈中，为后面的添加依赖做铺垫
+    // Dep.target = this
+    pushTarget(this)
+    let value
+    const vm = this.vm
+    try {
+      // 调用getter =》 dep.depend(); 这一步将是将Dep.target推入到dep中
+      value = this.getter.call(vm, vm)
+    } catch (e) {
+      if (this.user) {
+        handleError(e, vm, `getter for watcher "${this.expression}"`)
+      } else {
+        throw e
+      }
+    } finally {
+      // "touch" every property so they are all tracked as
+      // dependencies for deep watching
+      if (this.deep) {
+        traverse(value)
+      }
+      // 撤销当前Dep.target
+      popTarget()
+      this.cleanupDeps()
+    }
+    return value
+  }
 ```
 
 ### 如何建立联系
