@@ -20,6 +20,10 @@ tags:
 :::
 
 ## Vue2.6
+:::tip
+
+:::
+
 
 ## _init
 ```javascript
@@ -332,7 +336,17 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
 function initWatch (vm: Component, watch: Object) {
   for (const key in watch) {
     const handler = watch[key]
-    // 判断是否是数组，是的话就遍历 ？？？？？？ watch还能传数组
+    // 判断是否是数组，是的话就遍历，可以写成
+    // watch: {
+    //   message: {
+    //     [{
+    //       handle: 'init'
+    //     },
+    //     {
+    //       handle: 'init'
+    //     }]
+    //   }
+    // }
     if (Array.isArray(handler)) {
       for (let i = 0; i < handler.length; i++) {
         createWatcher(vm, key, handler[i])
@@ -374,7 +388,6 @@ function createWatcher (
     const vm: Component = this
     if (isPlainObject(cb)) {
       // 如果handle是对象的话就再次执行createWatcher,看下面代码有两个handler，但是效果还是执行执行一次，所以觉得不是很有必要
-      //
       // watch:{
       //   message:{
       //     handler: {
@@ -387,7 +400,7 @@ function createWatcher (
     }
     options = options || {}
     options.user = true
-    // 在deps
+    // 在dep为message的对象中添加订阅，dep.subs添加该watcher
     const watcher = new Watcher(vm, expOrFn, cb, options)
     if (options.immediate) {
       try {
@@ -934,6 +947,49 @@ var Watcher = function Watcher(
 
 :::
 
+
+## $set
+```js
+ function set(target, key, val) {
+  //  如果target是null、undefined、基础类型就报错。计算属性是
+    if (isUndef(target) || isPrimitive(target)
+    ) {
+      warn(("Cannot set reactive property on undefined, null, or primitive value: " + ((target))));
+    }
+    //
+    // 如果目标是数组的话就用splice来插入，因为Vue本身有劫持数组的方法，其中包括splice，这样就会触发数据响应
+    // 这里假设的情况是target是data里面的数组
+    if (Array.isArray(target) && isValidArrayIndex(key)) {
+      target.length = Math.max(target.length, key);
+      target.splice(key, 1, val);
+      return val
+    }
+    // 如果key是在target的属性里面的属性，直接在该属性上面改动，然后触发defineReactive$$1的setter
+    // 这里假设的情况是target是data里面的对象
+    if (key in target && !(key in Object.prototype)) {
+      target[key] = val;
+      return val
+    }
+    // 如果target._isVue是true就说明vue实例，不能添加属性
+    var ob = (target).__ob__;
+    if (target._isVue || (ob && ob.vmCount)) {
+      warn(
+        'Avoid adding reactive properties to a Vue instance or its root $data ' +
+        'at runtime - declare it upfront in the data option.'
+      );
+      return val
+    }
+    // 计算属性是没有__ob__的，所以计算属性是不会直接进来这个分支，然后在内存里面值是变了，但是页面没有更新的。
+    if (!ob) {
+      target[key] = val;
+      return val
+    }
+    //如果都没有命中上面的条件，那么就是认为是用户想定义新的响应式数据
+    defineReactive$$1(ob.value, key, val);
+    ob.dep.notify();
+    return val
+  }
+```
 ## nexttick
 ### 全局变量
 ```js
