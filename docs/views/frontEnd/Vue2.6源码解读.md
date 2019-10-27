@@ -15,24 +15,31 @@ tags:
 # 标签
 ---
 
-::: tip 概述
-。。。
-:::
+
 
 ## Vue2.6
-:::tip
-
+::: tip 带着问题看源码
+1. message为data中定义的对象，vm._data.message和vm.message有什么区别？
+2.
+为什么Vue中不能通过索引来修改数组以更新视图？
+为什么只能通过官网指定的几个方法(push、splice...)才能出发数组数据更新？
+为什么通过this.$set就可以触发数组下标更新导致更新视图？
+computed和watch的区别有哪些，computed的缓存是怎么做到的？
+怎么样做到更新数据会更新对应的节点，是？
+社区经常提到的watcher和dep到底为响应式数据提供了怎么样的变逻辑
 :::
-
-
+需要解答上面一系列问题，需要从Vue的_init开始走起。下面得是Vue2.6的源码照搬过来的，基本上每一行都会有注释，但是有一些通过命名就看出来的就没有注释了，可能源码较多，所以我花了流程图，推荐是拿着Vue提供的开发版源码[Vue开发版源码地址](https://cdn.jsdelivr.net/npm/vue/dist/vue.js)，然后在new Vue()断点，慢慢的走一遍，然后再回来看这边文章，可能会解答更多的困惑。
 ## _init
+::: tip
+初始化函数，option就是你定义的data、methods、created等等Vue提供的一些属性。
+:::
 ```javascript
 Vue.prototype._init = function (options) {
   var vm = this;
-  // a flag to avoid this being observed
-  // 做个标记，避免后面被Observer()实例化
+  // 做个标记，避免后面被Observer()实例化，因为组件不用观察，需要观察的是数据
   vm._isVue = true;
   {
+    // 初始化代理 这边
     initProxy(vm);
   }
   // expose real self
@@ -56,10 +63,15 @@ Vue.prototype._init = function (options) {
 [initProxy]()
 [initLifecycle]()
 ## initProxy
+::: tip
+首先判断Proxy(<a style="color:rgb(122, 214, 253);" href="#proxy的traps">查看下面要用到的知识点</a>)是否可用，如果可用就定义`has`或`get`traps放入Proxy，返回给vm._renderProxy。
+:::
 ```javascript
     var initProxy = function initProxy (vm) {
-      if (hasProxy) {  //hasProxy = typeof Proxy !== 'undefined' && isNative(Proxy);
-        // determine which proxy handler to use
+      // => 表示别区已经定义好，这边为了减少文章代理量
+      // hasProxy => typeof Proxy !== 'undefined' && isNative(Proxy);
+      if (hasProxy) {
+        // 决定使用哪个代理handler
         var options = vm.$options;
         var handlers = options.render && options.render._withStripped
           ? getHandler
@@ -76,13 +88,13 @@ Vue.prototype._init = function (options) {
 vm._renderProxy = new Proxy(vm, handlers);
 ```
 然后看这个`handlers`是啥。
+
 ```js
         var handlers = options.render && options.render._withStripped
           ? getHandler
           : hasHandler;
 ```
 上面的`render._withStripped`搜了一下是内部标志，用来正确选择proxy，大部分情况都是undefined，所有`handles`基本都是`hasHandler`
-
 ::: tip render._withStripped github issues
 This is an internal flag that allows Vue's runtime to pick the correct Proxy strategy to detect variable reference errors during render, depending on whether with has been stripped by vue-template-es2015-compiler.
 :::
@@ -92,14 +104,16 @@ This is an internal flag that allows Vue's runtime to pick the correct Proxy str
 :::
 看上面两个对象前先看一个工具函数:
 ```js
+    // allowedGlobals是一个映射表，映射下面列出的类型，
+    // allowedGlobals('Infinity') => true
+    // allowedGlobals('test') => false
 var allowedGlobals = makeMap(
       'Infinity,undefined,NaN,isFinite,isNaN,' +
       'parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,' +
       'Math,Number,Date,Array,Object,Boolean,String,RegExp,Map,Set,JSON,Intl,' +
       'require' // for Webpack/Browserify
     );
-    // Make a map and return a function for checking if a key，is in that map.
-    // 翻译：生成一个map对象和返回一个函数来检查是否含有某个键
+    // 生成一个map对象和返回一个函数来检查是否含有某个键
   function makeMap (
     str,
     expectsLowerCase
@@ -119,7 +133,6 @@ var allowedGlobals = makeMap(
     var hasHandler = {
       has: function has (target, key) {
         var has = key in target;
-        // allowedGlobals是一个映射表
         // allowedGlobals('Infinity') => true
         // 当访问的属性是一些js默认定义（allowedGlobals）的类型之一
         // 或者不是string类型且key不是_开头的且属性不在target.$data上返回true
@@ -133,7 +146,7 @@ var allowedGlobals = makeMap(
         return has || !isAllowed
       }
     };
-// 针对读取代理对象的某个属性时进行的操作。
+// 针对读取代理对象的某个属性时进行的操作
 // 当访问的属性不是string类型或者属性值在被代理的对象不存在，则抛出错误提示，否则就返回该属性值
     var getHandler = {
       get: function get (target, key) {
@@ -156,19 +169,16 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
 在读取代理对象的某个属性时触发该操作，比如在执行 proxy.foo 时。
 ## initProxy的流程
 ![](../../.vuepress/public/vue2.6-initProxy.jpg)
-## initLifecycle
-```js
-
-```
 ## initState
 ```js
   function initState (vm) {
-    // 定义vm的watchers
+    // 定义vm的watchers，便于在new Watcher时收集已经实例化的watcher
     vm._watchers = [];
     var opts = vm.$options;
     if (opts.props) { initProps(vm, opts.props); }
     if (opts.methods) { initMethods(vm, opts.methods); }
     if (opts.data) {
+    // 继续走initData
       initData(vm);
     } else {
       observe(vm._data = {}, true /* asRootData */);
@@ -179,16 +189,19 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
     }
   }
 ```
-![](../../.vuepress/public/vue2.6-initWatch.png)
 ## initData
+::: tip
+ 初始化data对象，这里面包括定义响应式数据，重点是会新建vm._data属性里面，然后里面放入的是你预定的属性，再将_data的所有属性代理到vm上面，将`vm[key]`代理到`_data[key]`
+ 下面的流程推荐在源码中断点走一遍，不理解的再回来看看注释。
+:::
 ```js
   function initData (vm) {
     var data = vm.$options.data;
-    // 不管是函数还是对象，最终返回的都是纯对象，如果不是纯对象就抛出warn
+    // 不管是函数还是对象，最终返回的都是纯对象，如果不是纯对象就抛出warn，因为我们只需要data里面预定的属性
     // 并且赋值给vm._data
     data = vm._data = typeof data === 'function'
-      ? getData(data, vm)
-      : data || {};
+      ? getData(data, vm) : data || {};
+      // getData(data, vm) =>  return data.call(vm, vm)
     if (!isPlainObject(data)) {
       data = {};
       warn();
@@ -197,17 +210,17 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
     var props = vm.$options.props;
     var methods = vm.$options.methods;
     var i = keys.length;
-    // 判断data的key有没有在prop或methods已经定义过
     while (i--) {
       var key = keys[i];
       {
+        // 判断data的key有没有在prop或methods已经定义过
         if (methods && hasOwn(methods, key)) {
           warn();
         }
       }
       if (props && hasOwn(props, key)) {
         warn();
-      } else if (!isReserved(key)) { // isReserved判断字符串是否是$开头的
+      } else if (!isReserved(key)) { // isReserved判断字符串是否是$开头,
         // 将vm[key]代理到_data[key]
         // 取vm[key]的值就是取_data[key]的值
         // vm.message  => vm._data.message
@@ -218,6 +231,9 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
     observe(data, true /* asRootData */);
   }
 ```
+`proxy(vm, "_data", key);`这里的实现很巧妙，点击<a style="color:rgb(122, 214, 253);" href="#proxy">proxy函数</a>跳到函数实现。
+
+`observe(data, true /* asRootData */);`是观察data里面的所有属性，也是开始定义响应式数据的入口点了。点击<a style="color:rgb(122, 214, 253);" href="#observe（判断是否需要观察）">observer</a>函数实现
 ## initComputed
 ::: tip
 
@@ -249,7 +265,6 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
           // computedWatcherOptions = { lazy: true };作用是初始化watcher的第一次不执行this.get()，也就是不会获取当前值，只在用到的时候获取
         );
       }
-
       // 如果key不在vm属性在指定的对象或其原型链中，就执行defineComputed
       if (!(key in vm)) {
         defineComputed(vm, key, userDef);
@@ -415,8 +430,8 @@ function createWatcher (
   }
 }
 ```
-
-## observe
+![](../../.vuepress/public/vue2.6-initWatch.png)
+## observe（判断是否需要观察）
 ::: tip
 尝试为value创建一个观察者实例，如果成功就返回新Observer的实例或返回当前已存在Observer
 :::
@@ -434,19 +449,17 @@ function observe(value, asRootData) {
     // 如果应该观察 && 不是服务端渲染 && （这个值是个数组 || 这个值是个纯对象）&& 对象是可以扩展的 && value._isVue的值是false(只有根vm._isVue = true)
     shouldObserve &&
     !isServerRendering() &&
-    (Array.isArray(value) || isPlainObject(value)) && Object.isExtensible(value) &&!value._isVue
+    (Array.isArray(value) || isPlainObject(value)) && Object.isExtensible(value) && !value._isVue
   ) {
     ob = new Observer(value);
   }
   return ob
 }
 ```
-
-
-
+如果符合上面一系列条件后会跳到Observe进行实例化,点击<a style="color:rgb(122, 214, 253);" href="#observer（观察属性，并替换数组的-proto-）">Observer</a>跳到函数实现。
 ## defineReactive$$1
 ::: tip
-
+传入对象和属性名，来设置`defineProperty`的`setter`、`getter`，每次定义前都会new Dep来定义当前数据的Dep，用来保存该数据对应更新user watcher、computed、渲染watcher。
 :::
 ```js
 // 声明一个响应式对象
@@ -462,31 +475,31 @@ function observe(value, asRootData) {
     // // 获取对应属性的描述符
     // getOwnPropertyDescriptor
     // {
-    //   configurable: true
-    //   enumerable: true
-    //   value: "hello world!"
-    //   writable: true
+    //   configurable: Boolean
+    //   enumerable: Boolean
+    //   value: ''
+    //   writable: Boolean
     // }
     var property = Object.getOwnPropertyDescriptor(obj, key);
     if (property && property.configurable === false) {
       return
     }
-
-    // cater for pre-defined getter/setters
+    // 获取预设定的getter、setter
     var getter = property && property.get;
     var setter = property && property.set;
-    // 如果
+    // 如果传入参数只有两个，说明没有传val，就调用obj[key]
     if ((!getter || setter) && arguments.length === 2) {
       val = obj[key];
     }
-    // shallow => 浅，只在定义 $attrs和$listeners是true
-    // 为true时不会向当前对象的值进行递归
+    // shallow表示浅的意思，只在定义 $attrs和$listeners是true，其他都默认为false，便会递归观察对象
     var childOb = !shallow && observe(val);
     Object.defineProperty(obj, key, {
       enumerable: true,
       configurable: true,
       get: function reactiveGetter () {
+        // 判断是否有getter，有getter优先调用，在data中定义的是没有getter的
         var value = getter ? getter.call(obj) : val;
+        // 在Watcher.get中会触发pushTarget(this);然后将当前的watcher推入全局栈targetStack中，并且将静态变量Dep.target赋值为当前的watcher
         if (Dep.target) {
           dep.depend();
           if (childOb) {
@@ -500,10 +513,12 @@ function observe(value, asRootData) {
       },
       set: function reactiveSetter (newVal) {
         var value = getter ? getter.call(obj) : val;
-        // (newVal !== newVal && value !== value)用来判断 是否是NaN，如果是NaN就直接return
+        // 如果旧值和新值全等直接return
+        // (newVal !== newVal && value !== value)用来判断 是否是NaN，如果是NaN直接return
         if (newVal === value || (newVal !== newVal && value !== value)) {
           return
         }
+        // 如果有自定义setter就执行setter
         if (customSetter) {
           customSetter();
         }
@@ -514,14 +529,20 @@ function observe(value, asRootData) {
         } else {
           val = newVal;
         }
+        // 如果shallow为undefined或false就把新值扔进observer判断是否需要观察
         childOb = !shallow && observe(newVal);
+        // 通知当前dep依赖的watcher更新
         dep.notify();
       }
     });
   }
 ```
+**上面在data里面每个对象挂载了setter、getter方法，但是在之前的proxy也有挂载getter、setter方法，会不会被覆盖呢？**
 
-## Observer
+答案是不会，因为`Object.defineProperty(obj, key)`中虽然key相同，但是obj是不同的，所以两次挂载是不重复，第一次在proxy中设置getter、setter是为了新建一个内存空间来放入getter、setter的值用的，这边是为了截取用户调用data中属性而设置的getter、setter。
+![](../../.vuepress/public/Vue2.6-defineReactive-getter&setter.png)
+如果按照流程走，现在已经走完`initData()`了，返回<a style="color:rgb(122, 214, 253);" href="#initstate">initState</a>继续走<a style="color:rgb(122, 214, 253);" href="#initcomputed">initComputed</a>
+## Observer（观察属性，并替换数组的__proto__）
 ::: tip
 附加到每个观察对象的观察者类。一旦附加，观察者将目标对象的属性键转换为`getter/setter`，用于收集依赖项和分配更新。与`Dep`类共同工作才能完成数据更新。
 :::
@@ -531,23 +552,15 @@ function observe(value, asRootData) {
     // 实例化一个dep
     this.dep = new Dep();
     this.vmCount = 0;
-  // 在这个属性上面添加__ob__这个属性
-  // function def(obj, key, val, enumerable) {
-  //   Object.defineProperty(obj, key, {
-  //     value: val,
-  //     enumerable: !!enumerable,
-  //     writable: true,
-  //     configurable: true
-  //   });
-  // }
+    // 在value上面添加__ob__这个属性并指向this
     def(value, '__ob__', this);
     if (Array.isArray(value)) {
       if (hasProto) {
         // protoAugment => value.__proto__ = arrayMethods
-        // arrayMethods 重点分支
+        // arrayMethods 重点分支，基于Array.__proto__新建一个原型链，然后劫持用户对数组的操作
         protoAugment(value, arrayMethods);
       } else {
-        // 忽略
+        // 忽略
         copyAugment(value, arrayMethods, arrayKeys);
       }
       this.observeArray(value);
@@ -555,7 +568,14 @@ function observe(value, asRootData) {
       this.walk(value);
     }
   };
-
+```
+上面用到的函数:
+1. <a style="color:rgb(122, 214, 253);" href="#def">def</a>在对象上面添加或修改属性
+2. <a style="color:rgb(122, 214, 253);" href="#arraymethods">arrayMethods</a>拦截用户对数组的操作，并且通知这些数据变换依赖的watcher
+3. <a style="color:rgb(122, 214, 253);" href="#observearray">Observer.observeArray</a>遍历数组调用observe
+4. <a style="color:rgb(122, 214, 253);" href="#walk">Observer.walk</a>遍历对象中所有属性来调用`defineReactive$$1`
+### walk
+```js
   // 遍历所有属性并将它们转换为getter/setter。此方法只应在值类型为Object时调用。
   Observer.prototype.walk = function walk (obj) {
     var keys = Object.keys(obj);
@@ -563,7 +583,11 @@ function observe(value, asRootData) {
       defineReactive$$1(obj, keys[i]);
     }
   };
+```
+`defineReactive$$1()`给对象设置getter、setter，点击<a style="color:rgb(122, 214, 253);" href="#definereactive-1">defineReactive$$1</a>跳转函数实现。
 
+### observeArray
+```js
 // 遍历数组调用observe
   Observer.prototype.observeArray = function observeArray (items) {
     for (var i = 0, l = items.length; i < l; i++) {
@@ -571,16 +595,15 @@ function observe(value, asRootData) {
     }
   };
 ```
-
 ## arrayMethods
 ::: tip
-拦截用户对数组的操作，并且通知这些数据变换依赖的watcher
+基于`Array.prototype`新建一个原型链，拦截用户对数组的操作，并且通知这些数据变换依赖的watcher。
 :::
 ```js
     // 获取原生Array中提供的所有方法
-    var arrayProto = Array.prototype;
+  var arrayProto = Array.prototype;
     // 将原生提供的方法创建一个新的对象，以免修改原生的方法，造成全局污染
-    var arrayMethods = Object.create(arrayProto);
+  var arrayMethods = Object.create(arrayProto);
   var methodsToPatch = [
     'push',
     'pop',
@@ -622,9 +645,7 @@ function observe(value, asRootData) {
       return result
     });
   });
-
 ```
-
 ## 公用函数
 ### setScope
 ```js
@@ -715,8 +736,6 @@ function def(obj, key, val, enumerable) {
   }
 ```
 
-
-
 ### hasOwn
 ::: tip
 判断这个对象有没有这个属性
@@ -726,7 +745,6 @@ function def(obj, key, val, enumerable) {
   function hasOwn (obj, key) {
     return hasOwnProperty.call(obj, key)
   }
-
 ```
 ### shouldObserve
 ::: tip
@@ -738,7 +756,6 @@ function def(obj, key, val, enumerable) {
     shouldObserve = value;
   }
 ```
-
 ### proxy
 ::: tip
 将target的key属性的值代理到sourceKey中的属性key。结论：取target中的key就是取sourceKey中的key,例如`vm.message = '123'`触发set函数`vm._data.message = '123'`
@@ -757,9 +774,14 @@ function def(obj, key, val, enumerable) {
     sharedPropertyDefinition.set = function proxySetter (val) {
       this[sourceKey][key] = val;
     };
+    // 这边的target是vm，在defineReactive$$1中也有设置get、set，那里面的target是我们定义的data对象
     Object.defineProperty(target, key, sharedPropertyDefinition);
   }
 ```
+
+下面这个例子讲的是，我们平时在取`this.message`的时候其实取的是`this._data.messgae`，当前setter也是一样的效果。
+![](../../.vuepress/public/Vue2.6-proxy-getter&setter.png)
+
 ## Dep与Watcher
 ::: tip 联系
 * dep与watcher是多对多的关系，watcher负责包含页面的变化函数，dep
@@ -942,6 +964,73 @@ var Watcher = function Watcher(
   }
 ```
 
+### flushSchedulerQueue
+```js
+function flushSchedulerQueue () {
+  currentFlushTimestamp = getNow()
+  flushing = true
+  let watcher, id
+  // Sort queue before flush.
+  // This ensures that:
+  // 1. Components are updated from parent to child. (because parent is always
+  //    created before the child)
+  // 2. A component's user watchers are run before its render watcher (because
+  //    user watchers are created before the render watcher)
+  // 3. If a component is destroyed during a parent component's watcher run,
+  //    its watchers can be skipped.
+  // 排序watcher队列
+  // 1. 父组件总是比子组件更早创建
+  // 2. 用户创建的监听器肯定要在页面渲染前面，因为监听器是在页面渲染前面的
+  // 3. 如果一个组件被销毁，那么他的自组件肯定不需要被渲染
+  queue.sort((a, b) => a.id - b.id)
+
+  // do not cache length because more watchers might be pushed
+  // as we run existing watchers
+  for (index = 0; index < queue.length; index++) {
+    watcher = queue[index]
+    // 更新页面节点数据前调用beforeUpdate钩子函数
+    if (watcher.before) {
+      watcher.before()
+    }
+    id = watcher.id
+    has[id] = null
+    // 更新页面节点
+    watcher.run()
+    // in dev build, check and stop circular updates.
+    if (process.env.NODE_ENV !== 'production' && has[id] != null) {
+      circular[id] = (circular[id] || 0) + 1
+      if (circular[id] > MAX_UPDATE_COUNT) {
+        warn(
+          'You may have an infinite update loop ' + (
+            watcher.user
+              ? `in watcher with expression "${watcher.expression}"`
+              : `in a component render function.`
+          ),
+          watcher.vm
+        )
+        break
+      }
+    }
+  }
+
+  // keep copies of post queues before resetting state
+  const activatedQueue = activatedChildren.slice()
+  const updatedQueue = queue.slice()
+
+  resetSchedulerState()
+
+  // call component updated and activated hooks
+  callActivatedHooks(activatedQueue)
+  callUpdatedHooks(updatedQueue)
+
+  // devtool hook
+  /* istanbul ignore if */
+  if (devtools && config.devtools) {
+    devtools.emit('flush')
+  }
+}
+```
+
 ### 如何建立联系
 ::: tip
 
@@ -1024,22 +1113,11 @@ var Watcher = function Watcher(
 :::
 ```js
   var timerFunc;
-
-  // The nextTick behavior leverages the microtask queue, which can be accessed
-  // via either native Promise.then or MutationObserver.
-  // MutationObserver has wider support, however it is seriously bugged in
-  // UIWebView in iOS >= 9.3.3 when triggered in touch event handlers. It
-  // completely stops working after triggering a few times... so, if native
   // Promise is available, we will use it:
   if (typeof Promise !== 'undefined' && isNative(Promise)) {
     var p = Promise.resolve();
     timerFunc = function () {
       p.then(flushCallbacks);
-      // In problematic UIWebViews, Promise.then doesn't completely break, but
-      // it can get stuck in a weird state where callbacks are pushed into the
-      // microtask queue but the queue isn't being flushed, until the browser
-      // needs to do some other work, e.g. handle a timer. Therefore we can
-      // "force" the microtask queue to be flushed by adding an empty timer.
       if (isIOS) { setTimeout(noop); }
     };
     isUsingMicroTask = true;
@@ -1049,8 +1127,6 @@ var Watcher = function Watcher(
     MutationObserver.toString() === '[object MutationObserverConstructor]'
   )) {
     // Use MutationObserver where native Promise is not available,
-    // e.g. PhantomJS, iOS7, Android 4.4
-    // (#6466 MutationObserver is unreliable in IE11)
     var counter = 1;
     var observer = new MutationObserver(flushCallbacks);
     var textNode = document.createTextNode(String(counter));
@@ -1109,8 +1185,13 @@ var Watcher = function Watcher(
   }
 ```
 
+## 原理图
+![](../../.vuepress/public/Vue2.6-theory.png)
 
-超链接 [文本](URL)
-<!-- ../../.vuepress/public/line-height.png) -->
-图片 ![](url)
+
+<!-- 超链接 [文本](URL) -->
+
+<!-- ![](../../.vuepress/public/line-height.png) -->
+
+
 
