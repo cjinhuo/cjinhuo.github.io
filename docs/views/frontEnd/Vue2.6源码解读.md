@@ -20,8 +20,7 @@ tags:
 ## Vue2.6
 ::: tip 带着问题看源码
 1. message为data中定义的对象，vm._data.message和vm.message有什么区别？
-2.
-为什么Vue中不能通过索引来修改数组以更新视图？
+为什么Vue中不能通过索引来修改数组以更新视图？为什么有时候莫名其妙就可以触发视图更新？
 为什么只能通过官网指定的几个方法(push、splice...)才能出发数组数据更新？
 为什么通过this.$set就可以触发数组下标更新导致更新视图？
 computed和watch的区别有哪些，computed的缓存是怎么做到的？
@@ -619,7 +618,6 @@ function observe(value, asRootData) {
   methodsToPatch.forEach(function (method) {
     // 缓存原始方法，也就是Array的原型方法原本的实现
     var original = arrayProto[method];
-    // 在
     def(arrayMethods, method, function mutator () {
       // 截取用户调用Array.methods传入的参数args
       var args = [], len = arguments.length;
@@ -1184,6 +1182,14 @@ function flushSchedulerQueue () {
     }
   }
 ```
+
+
+![](../../.vuepress/public/Vue2.6-nexttick-arrayDemo1.png)
+
+看上图，点击按钮后页面是不会重新渲染的，这很正常，因为前面讲过，Vue只提供那些变异方法才能促使页面更新，vm.$Set也是这样的，但是看下面一张图
+
+![](../../.vuepress/public/Vue2.6-nexttick-arrayDemo2.png)
+点击测试，页面数据变换了，为什么？可以看出代码多加了一行`this.message = 'hello'`，当执行到这一句时会调用`dep.notify`，触发render watcher，但是没有马上执行只是放在nexttick队列中，等待宏任务执行完在执行nexttick宏任务，再执行到`this.realArr[0] = '111'`，没有触发`dep.notify`，但是对应的引用地址中的值确实变了，所以在后面执行render watcher时，再次调用this.realArr的时候值就变了。
 
 ## 原理图
 ![](../../.vuepress/public/Vue2.6-theory.png)
