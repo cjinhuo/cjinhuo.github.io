@@ -20,12 +20,12 @@ tags:
 ## Vue2.6
 ::: tip 带着问题看源码
 1. message为data中定义的对象，vm._data.message和vm.message有什么区别？
-为什么Vue中不能通过索引来修改数组以更新视图？为什么有时候莫名其妙就可以触发视图更新？
-为什么只能通过官网指定的几个方法(push、splice...)才能出发数组数据更新？
-为什么通过this.$set就可以触发数组下标更新导致更新视图？
-computed和watch的区别有哪些，computed的缓存是怎么做到的？
-怎么样做到更新数据会更新对应的节点，是？
-社区经常提到的watcher和dep到底为响应式数据提供了怎么样的变逻辑
+2. 为什么Vue中不能通过索引来修改数组以更新视图？为什么有时候莫名其妙就可以触发视图更新？
+3. 为什么只能通过官网指定的几个方法(push、splice...)才能出发数组数据更新？
+4. 为什么通过this.$set就可以触发数组下标更新导致更新视图？
+5. computed和watch的区别有哪些，computed的缓存是怎么做到的？
+6. 怎么样做到更新数据会更新对应的节点，是？
+7. 社区经常提到的watcher和dep到底为响应式数据提供了怎么样的逻辑
 :::
 需要解答上面一系列问题，需要从Vue的_init开始走起。下面得是Vue2.6的源码照搬过来的，基本上每一行都会有注释，但是有一些通过命名就看出来的就没有注释了，可能源码较多，所以我花了流程图，推荐是拿着Vue提供的开发版源码[Vue开发版源码地址](https://cdn.jsdelivr.net/npm/vue/dist/vue.js)，然后在new Vue()断点，慢慢的走一遍，然后再回来看这边文章，可能会解答更多的困惑。
 ## _init
@@ -63,11 +63,10 @@ Vue.prototype._init = function (options) {
 [initLifecycle]()
 ## initProxy
 ::: tip
-首先判断Proxy(<a style="color:rgb(122, 214, 253);" href="#proxy的traps">查看下面要用到的知识点</a>)是否可用，如果可用就定义`has`或`get`traps放入Proxy，返回给vm._renderProxy。
+首先判断Proxy(<a style="color:rgb(122, 214, 253);" href="#proxy的traps">了解Proxy</a>)是否可用，如果可用就定义`has`或`get`traps放入Proxy，返回给vm._renderProxy。改方法只在开发环境下才会运行，主要是为了检查当前编写的Vue组件是否有错误，如果有就会在控制台报错。
 :::
 ```javascript
     var initProxy = function initProxy (vm) {
-      // => 表示别区已经定义好，这边为了减少文章代理量
       // hasProxy => typeof Proxy !== 'undefined' && isNative(Proxy);
       if (hasProxy) {
         // 决定使用哪个代理handler
@@ -234,8 +233,15 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
 
 `observe(data, true /* asRootData */);`是观察data里面的所有属性，也是开始定义响应式数据的入口点了。点击<a style="color:rgb(122, 214, 253);" href="#observe（判断是否需要观察）">observer</a>函数实现
 ## initComputed
-::: tip
-
+::: tip initComputed流程
+```js
+computed:{
+  result() {
+    return this.message + 'computed'
+  }
+}
+```
+假设computed是上面的数据，首先创建不带任何的原型链的空对象赋值到当前vm上`var watchers = vm._computedWatchers = Object.create(null);`，然后遍历computed，跟watch一样，computed也可以是多种写法，经过一系列判断，最终导出set（如果没有就为noop），get函数，然后实例化Watcher，和watch不同的是，是实例化Watcher的时候最后一个参数变成`{ lazy: true }`，这个是缓存的标志，在实例化watcher的过程中并不会执行到`watcher.get`，但是在后续会给当前计算属性`result`设置getter方法，在页面获取值时就会触发getter方法，判断`watcher.dirty`是否是true，如果是的话就执行`watcher.evaluate()`，在`evaluate()`中重新获取`watcher.get()`。可以知道计算属性是通过`watcher.dirty`来判断是否需要重新获取值，在`this.message`更改值时会触发notify，然后执行对应的`watcher.update`，在`update`中`watcher.dirty`变成true。
 :::
 ```js
   function initComputed(vm, computed) {
@@ -346,6 +352,16 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
 
 
 ## initWatch
+::: tip initWatch流程
+```js
+watch:{
+  message(newVal, oldVal){
+    console.log(newVal, oldVal)
+  }
+}
+```
+假设`watch`是上面的数据，遍历`key`，由于`watch`可以多种写法，字符串、函数、对象、数组形式，最终导出回调函数，并取到表达式`message`，然后实例化一个`Watcher`，在实例化的过程成中会调用`this.get()`，然后就执行`message`的`getter`，就执行`dep.depend`，依赖就被存储了，然后判断`immediate`是否为`true`，是的话直接执行回调函数。
+:::
 ```js
 function initWatch (vm: Component, watch: Object) {
   for (const key in watch) {
@@ -1194,6 +1210,8 @@ function flushSchedulerQueue () {
 ## 原理图
 ![](../../.vuepress/public/Vue2.6-theory.png)
 
+解读：
+在实例化data对象时，递归遍历，将每个数据都对应的实例化一个Dep类，并且在defineProperty的get函数中设置depend,在set函数设置notify，在页面渲染的时候
 
 <!-- 超链接 [文本](URL) -->
 
