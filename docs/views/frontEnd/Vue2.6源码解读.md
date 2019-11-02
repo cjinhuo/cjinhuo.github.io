@@ -24,8 +24,7 @@ tags:
 3. 为什么只能通过官网指定的几个方法(push、splice...)才能出发数组数据更新？
 4. 为什么通过this.$set就可以触发数组下标更新导致更新视图？
 5. computed和watch的区别有哪些，computed的缓存是怎么做到的？
-6. 怎么样做到更新数据会更新对应的节点，是？
-7. 社区经常提到的watcher和dep到底为响应式数据提供了怎么样的逻辑
+6. 社区经常提到的watcher和dep到底为响应式数据提供了怎么样的逻辑
 :::
 需要解答上面一系列问题，需要从Vue的_init开始走起。下面得是Vue2.6的源码照搬过来的，基本上每一行都会有注释，但是有一些通过命名就看出来的就没有注释了，可能源码较多，所以我花了流程图，推荐是拿着Vue提供的开发版源码[Vue开发版源码地址](https://cdn.jsdelivr.net/npm/vue/dist/vue.js)，然后在new Vue()断点，慢慢的走一遍，然后再回来看这边文章，可能会解答更多的困惑。
 ## _init
@@ -801,10 +800,10 @@ function def(obj, key, val, enumerable) {
 * dep与watcher是多对多的关系，watcher负责包含页面的变化函数，dep
 * watcher：一个表达式对应一个Watcher，一个watcher可能对应多个Dep（多层表达式：foo.test.one）
 * dep：一个dep可能对应多个watcher，属性可能在模板中被多次使用到(比如：<br>
-<p>{{message}}</p><br>
-<div>{{message}}</div><br>
-computed:{test(){return this.message + '22'}}<br>
-)<br>
+<!-- <p>{{message}}</p><br> -->
+<!-- <div>{{message}}</div><br> -->
+<!-- computed:{test(){return this.message + '22'}}<br> -->
+<br>
 :::
 ```js
 data:{
@@ -820,7 +819,7 @@ this.message = 'world'
 
 ### Dep
 ::: tip
-defineReactive方法将data中的数据进行响应式后，可以监听到数据的变化了,然后Dep就是帮我们收集究竟要通知到哪里。
+defineReactive方法将data中的数据进行响应式后，可以监听到数据的变化了,然后Dep就是帮我们收集依赖究竟要通知到哪里。每单个对象（递归）对应一个Dep类。
 :::
 ```js
 /*  */
@@ -882,8 +881,11 @@ defineReactive方法将data中的数据进行响应式后，可以监听到数�
 ```
 
 ## Watcher
-```js
+::: tip
 
+Watcher负责
+:::
+```js
 var Watcher = function Watcher(
     vm,
     expOrFn,
@@ -1211,7 +1213,7 @@ function flushSchedulerQueue () {
 ![](../../.vuepress/public/Vue2.6-theory.png)
 
 解读：
-在实例化data对象时，递归遍历，将每个数据都对应的实例化一个Dep类，并且在defineProperty的get函数中设置depend,在set函数设置notify，在页面渲染的时候
+在实例化data对象时，递归遍历，将每个数据都对应的实例化一个Dep类，并且在defineProperty的get函数中设置dep.depend,在set函数设置dep.notify，在页面渲染、computed或watch的时候会触发get然后就会设置依赖，在数据更新时就通过set中的dep.notify来通知在get中设置的依赖，达到响应式更新数据的效果，更新数据这一操作是放到全局变量`callback`栈中，当宏任务结束后就以微任务的形式挨个执行`callback`的更新回调。所以数据是部分更新的，并不是单个更新的。
 
 <!-- 超链接 [文本](URL) -->
 
