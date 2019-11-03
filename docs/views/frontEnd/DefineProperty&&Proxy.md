@@ -5,7 +5,7 @@ sidebarDepth: 2
 sidebar: auto
 categories: frontEnd
 # 分类 共有三个分类： frontEnd work hobby
-date: 2019-02-12
+date: 2019-10-31
 # 时间
 tags:
 - Vue
@@ -323,11 +323,11 @@ data = new Proxy(_data, {
 })
 data[1] = 2 // 直接在下标为1的数字上面改
 // set obj:1,2, key: 1,newVal:2
-data.push(10) // 因为push的操作是先取得length，再用data[length] = 10，然后返回length
-// get obj:1,2, key: push
-// get obj: 1, 2, key: length
-// set obj: 1, 2, 10, key: 2, newVal: 10
-// set obj: 1, 2, 10, key: length, newVal: 3
+data.push(10) // push操作
+// get obj:1,2, key: push => 取得Array.prototype.push方法
+// get obj: 1, 2, key: length => 然后取得array的length属性
+// set obj: 1, 2, 10, key: 2, newVal: 10 => 再设置data[length] = 10
+// set obj: 1, 2, 10, key: length, newVal: 3 => 再执行length++
 ```
 可以看到，数组做的任何操作都显示出来，连push的过程都打印出来，这就是Vue-next用`Proxy`代替`defineProperty`的原因。
 ### 复用Dep类
