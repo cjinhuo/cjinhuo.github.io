@@ -165,6 +165,8 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
 ## initProxy的流程
 ![](../../.vuepress/public/vue2.6-initProxy.jpg)
 ## initState
+自己理解initState后面的一些流程，省略了其他的模块：
+![](../../.vuepress/public/vue2.6-initState.png)
 ```js
   function initState (vm) {
     // 定义vm的watchers，便于在new Watcher时收集已经实例化的watcher
@@ -1390,7 +1392,7 @@ dep.subs[watcher:{id:1}]<br>
 watch和computed一个重要区别就是，监听的属性发生改变时就执行watch函数，计算属性和data里面属性一样，只有在某个地方用到时才会调用计算属性的getter，而getter中包含表达式。然后计算属性是可以缓存的，这个缓存指的是基于它们的响应式依赖进行缓存的，`defin·Reactive`中set中`oldValue`和`newValue`如果不等时就会触发`dep.notify=>dep.update=>this.dirty=true`，在获取计算属性的时候，判断dirty会true时就会调用`this.get`重新获取对应的值。
 :::
 ::: tip 社区经常提到的watcher和dep到底为响应式数据提供了怎么样的逻辑
-Vue2.6中只会在computed、watch、页面渲染时实例化Watcher，在初始化响应式数据、Vue.$Set时会实例化Dep，一个Dep可以对应多个Watcher。
+Vue2.6中只会在computed、watch、页面渲染时实例化Watcher，具体看dep与watcher是如何建立联系的可以看<a style="color:rgb(122, 214, 253);" href="#如何建立联系">dep与watcher是如何建立联系</a>
 :::
 
 <!-- 超链接 [文本](URL) -->
