@@ -37,7 +37,6 @@ Vue.prototype._init = function (options) {
   // 做个标记，避免后面被Observer()实例化，因为组件不用观察，需要观察的是数据
   vm._isVue = true;
   {
-    // 初始化代理 这边
     initProxy(vm);
   }
   // expose real self
@@ -58,8 +57,7 @@ Vue.prototype._init = function (options) {
   }
 };
 ```
-[initProxy]()
-[initLifecycle]()
+先走<a style="color:rgb(122, 214, 253);" href="#initproxy">initProxy</a>
 ## initProxy
 ::: tip
 首先判断Proxy(<a style="color:rgb(122, 214, 253);" href="#proxy的traps">了解Proxy</a>)是否可用，如果可用就定义`has`或`get`traps放入Proxy，返回给vm._renderProxy。改方法只在开发环境下才会运行，主要是为了检查当前编写的Vue组件是否有错误，如果有就会在控制台报错。
@@ -330,7 +328,7 @@ computed:{
         if (watcher.dirty) {
           // 调用evaluate后dirty会变成false
           watcher.evaluate();
-          // dep.notice => update() => this.dirty=true
+          // dep.notify => update() => this.dirty=true
         }
         if (Dep.target) {
           watcher.depend();
@@ -865,7 +863,7 @@ defineReactive方法将data中的数据进行响应式后，可以监听到数�
   Dep.target = null;
   // 设置成数组的原因是：可能会有对象嵌套
   var targetStack = [];
-
+  // target指的是watcher
   function pushTarget(target) {
     // 在一次依赖收集期间，如果有其他依赖收集任务开始（比如：当前 computed 计算属性嵌套其他 computed 计算属性），
     // 那么将会把当前 target 暂存到 targetStack，先进行其他 target 的依赖收集，
@@ -979,6 +977,25 @@ var Watcher = function Watcher(
     return value
   }
 ```
+
+### watcher.prototype.addDep
+::: tip addDep
+在执行`dep.depend()`之前一般都会先执行`pushTarget()`，将当前的`watcher`推到全局变量`targetStack`的栈中，并且把`Dep.target`赋值为当前推入的`watcher`，然后就开始想户建立建立关系，建立关系的代码就在下面。
+:::
+```js
+    var id = dep.id;
+    if (!this.newDepIds.has(id)) {
+      this.newDepIds.add(id);
+      // watcher中放入dep
+      this.newDeps.push(dep);
+      if (!this.depIds.has(id)) {
+        // dep中放入watcher
+        dep.addSub(this);
+      }
+    }
+```
+
+###
 
 ### flushSchedulerQueue
 ```js
@@ -1214,6 +1231,26 @@ function flushSchedulerQueue () {
 
 解读：
 在实例化data对象时，递归遍历，将每个数据都对应的实例化一个Dep类，并且在defineProperty的get函数中设置dep.depend,在set函数设置dep.notify，在页面渲染、computed或watch的时候会触发get然后就会设置依赖，在数据更新时就通过set中的dep.notify来通知在get中设置的依赖，达到响应式更新数据的效果，更新数据这一操作是放到全局变量`callback`栈中，当宏任务结束后就以微任务的形式挨个执行`callback`的更新回调。所以数据是部分更新的，并不是单个更新的。
+
+## 问题解答
+::: tip message为data中定义的对象，vm._data.message和vm.message有什么区别？
+本质上vm._data和vm.data是没有区别的，在`initData`中`vm._data = typeof data === 'function'? getData(data, vm) : data || {};`，因为设置`defineProperty`中的`getter`、`setter`需要临时变量来保存用户设置的值，所以新建了`_data`。
+:::
+::: tip 为什么Vue中不能通过索引来修改数组以更新视图？为什么有时候莫名其妙就可以触发视图更新？
+从根源上来讲，Vue2.6通过更改数组索引的方式来更改数组的数据是不会触发`defineProperty`的`set`函数，也就不会触发页面更新，但是数组的引用地址对应的数据确实被改了，当你也一起修改某个响应式数据，对应更新的`watcher`的推到`nexttick`队列，当宏任务结束后，就会执行nexttick中的队列，页面重新渲染时获取的是数组的最新的数据，有时响应式数据更新在数据修改的后面就会导致页面数组重新获取数据。
+:::
+::: tip 为什么只能通过官网指定的几个方法(push、splice...)才能出发数组数据更新？
+在源码`arrayMethods`可以看出来，Vue2.6是先截取了原生的Array.prototype的方法，然后重写方法获取用户传入的参数，在重写方法内部先是调用原方法，然后调用`ob.dep.notify()`来更新对应`watcher`。
+:::
+::: tip 为什么通过this.$set就可以触发数组下标更新导致更新视图？
+在这一篇[DefineProperty和Proxy](https://chenjinhuo.netlify.com/views/frontend/defineproperty&&proxy.html)中讲过它们两个的区别，因为Vue2.6中用的是`DefineProperty`，而这个方法必须要传入目标对象`obj`,目标对象的键`Key`，这就造成了很难动态的添加属性，为什么说很难呢？因为这个是可以实现的，比如本来data里面有数据message，message是执行过`defineReactive`的，所以可以监听到getter、setter，但是你想新建一个flag，直接data.flag = 10，每次调用前都需要判断是否定义过，没有定义的就执行`defineReactive`，无疑是很费性能的，数据也是一样，数组是没有key的，所以更是监听不了的，Vue.$Set也是通过判断是否是数组，是的话再调用那些变异方法来执行更新。
+:::
+::: tip computed和watch的区别有哪些，computed的缓存是怎么做到的？
+watch和computed一个重要区别就是，监听的属性发生改变时就执行watch函数，计算属性和data里面属性一样，只有在某个地方用到时才会调用计算属性的getter，而getter中包含表达式。然后计算属性是可以缓存的，这个缓存指的是基于它们的响应式依赖进行缓存的，`defin·Reactive`中set中`oldValue`和`newValue`如果不等时就会触发`dep.notify=>dep.update=>this.dirty=true`，在获取计算属性的时候，判断dirty会true时就会调用`this.get`重新获取对应的值。
+:::
+::: tip 社区经常提到的watcher和dep到底为响应式数据提供了怎么样的逻辑
+Vue2.6中只会在computed、watch、页面渲染时实例化Watcher，在初始化响应式数据、Vue.$Set时会实例化Dep，一个Dep可以对应多个Watcher。
+:::
 
 <!-- 超链接 [文本](URL) -->
 

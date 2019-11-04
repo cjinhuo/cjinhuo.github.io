@@ -374,7 +374,7 @@ dedupe([1, 1, 2, 3]) // [1, 2, 3]
 
 ## Vue中的计算属性可以调用计算属性吗？
 
-答案是不可以，在调用后会提示：`Maximum call stack size exceeded`，
+答案是可以的，因为，在你调用时会触发，在调用后该计算属性的`getter`，而且前后顺序没有函数提示：`Maximum call stack size exceeded`，
 计算属性是在调用后才执行里的语句，跟函数是一样的。
 
 ## 用indexOf来实现简易版的include
