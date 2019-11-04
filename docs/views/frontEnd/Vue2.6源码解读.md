@@ -414,12 +414,15 @@ function createWatcher (
   ): Function {
     const vm: Component = this
     if (isPlainObject(cb)) {
-      // 如果handle是对象的话就再次执行createWatcher,看下面代码有两个handler，但是效果还是执行执行一次，所以觉得不是很有必要
+      // 如果handle是对象的话就再次执行createWatcher,看下面代码有三层handler，
+      // 其实再多几层也可以，这边会递归handle，所以最终传入到$watch的时候，cb肯定不是个对象了
       // watch:{
       //   message:{
       //     handler: {
-      //       handler: 'init',
-      //       immediate: true
+      //       handler: {
+      //         handler: 'init'
+      //         immediate: true
+      //         },
       //       },
       //     },
       //   },
@@ -553,7 +556,9 @@ function observe(value, asRootData) {
 
 答案是不会，因为`Object.defineProperty(obj, key)`中虽然key相同，但是obj是不同的，所以两次挂载是不重复，第一次在proxy中设置getter、setter是为了新建一个内存空间来放入getter、setter的值用的，这边是为了截取用户调用data中属性而设置的getter、setter。
 ![](../../.vuepress/public/Vue2.6-defineReactive-getter&setter.png)
-如果按照流程走，现在已经走完`initData()`了，返回<a style="color:rgb(122, 214, 253);" href="#initstate">initState</a>继续走<a style="color:rgb(122, 214, 253);" href="#initcomputed">initComputed</a>
+* 如果你是按照流程走，现在已经走完`initData()`了，返回<a style="color:rgb(122, 214, 253);" href="#initstate">initState</a>继续走<a style="color:rgb(122, 214, 253);" href="#initcomputed">initComputed</a>
+
+* 如果你是从`this.getter.call`跳过来的话，执行的是`getter`函数，里面先判断Dep.targt是否存在，然后就开始建立关系<a style="color:rgb(122, 214, 253);" href="#dep-prototype-depend">dep.depend()</a>
 ## Observer（观察属性，并替换数组的__proto__）
 ::: tip
 附加到每个观察对象的观察者类。一旦附加，观察者将目标对象的属性键转换为`getter/setter`，用于收集依赖项和分配更新。与`Dep`类共同工作才能完成数据更新。
@@ -817,48 +822,51 @@ this.message = 'world'
 
 ### Dep
 ::: tip
-defineReactive方法将data中的数据进行响应式后，可以监听到数据的变化了,然后Dep就是帮我们收集依赖究竟要通知到哪里。每单个对象（递归）对应一个Dep类。
+defineReactive方法将data中的数据进行响应式后，可以监听到数据的变化了,然后Dep就是帮我们收集依赖究竟要通知到哪里。每单个对象（递归遍历）对应一个Dep类。
 :::
 ```js
-/*  */
+// 为了让更好的订阅watcher，每个数据对象都有唯一的uid，
   var uid = 0;
-  /**
-   * A dep is an observable that can have multiple
-   * directives subscribing to it.
-   */
   var Dep = function Dep () {
     this.id = uid++;
     this.subs = [];
   };
-
-  Dep.prototype.addSub = function addSub (sub) {
+```
+### addSub&&removeSub
+```js
+ Dep.prototype.addSub = function addSub (sub) {
+    // 将watcher放入该数据订阅的subs数组中，当该数据更新会通知所有已订阅的watcher更新。
     this.subs.push(sub);
   };
-
-  Dep.prototype.removeSub = function removeSub (sub) {
+  Dep.prototype. = function removeSub (sub) {
     remove(this.subs, sub);
   };
-
+```
+### Dep.prototype.depend
+```js
   Dep.prototype.depend = function depend () {
     if (Dep.target) {
+      // 执行Watcher.prototype.addDep并把当前dep实例作为参数带入
       Dep.target.addDep(this);
     }
   };
-
+```
+`Dep.target`指的是当前`watcher`，继续走<a style="color:rgb(122, 214, 253);" href="#watcher-prototype-adddep">Dep.target.addDep(this)</a>
+### Dep.prototype.notify
+```js
   Dep.prototype.notify = function notify () {
-    // stabilize the subscriber list first
     var subs = this.subs.slice();
+      // 异步执行更新 默认情况下config.async = true，异步更新性能较好
     if (!config.async) {
-      // subs aren't sorted in scheduler if not running async
-      // we need to sort them now to make sure they fire in correct
-      // order
       subs.sort(function (a, b) { return a.id - b.id; });
     }
     for (var i = 0, l = subs.length; i < l; i++) {
       subs[i].update();
     }
   };
-
+```
+### pushTarget&&popTarget
+```js
   // 当首次计算 computed 属性的值时，Dep将会在计算期间对依赖进行收集
   Dep.target = null;
   // 设置成数组的原因是：可能会有对象嵌套
@@ -947,7 +955,6 @@ var Watcher = function Watcher(
 ```
 
 ### watcher.prototype.get
-
 ```js
   get () {
     // 将当前的watcher推入栈中，为后面的添加依赖做铺垫
@@ -972,17 +979,20 @@ var Watcher = function Watcher(
       }
       // 撤销当前Dep.target
       popTarget()
+      // 代码解释在下面
       this.cleanupDeps()
     }
     return value
   }
 ```
+`value = this.getter.call(vm, vm)`最终会跳到会跳到`defineReactive`中定义的getter函数，<a style="color:rgb(122, 214, 253);" href="##definereactive-1">definereactive-get</a>
 
 ### watcher.prototype.addDep
 ::: tip addDep
 在执行`dep.depend()`之前一般都会先执行`pushTarget()`，将当前的`watcher`推到全局变量`targetStack`的栈中，并且把`Dep.target`赋值为当前推入的`watcher`，然后就开始想户建立建立关系，建立关系的代码就在下面。
 :::
 ```js
+  Watcher.prototype.addDep = function addDep(dep) {
     var id = dep.id;
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id);
@@ -993,9 +1003,33 @@ var Watcher = function Watcher(
         dep.addSub(this);
       }
     }
+  };
 ```
-
-###
+执行到<a style="color:rgb(122, 214, 253);" href="#addsub-removesub">dep.addSub(this)</a>
+### cleanupDeps
+::: tip
+`addDep`的作用是将关系放入`newDepIds`、`newDeps`中，而`cleanupDeps`是将新的Dep与旧的Dep做判断，如果新的依赖集合里面没有以前旧的，就把dep已经订阅的watcher移除，然后将`newDepIds`、`newDeps`转到`depIds`,`deps`，并置空`newDepIds`、`newDeps`。听起来有点绕口，下面有个例子:<a style="color:rgb(122, 214, 253);" href="#如何建立联系">如何建立联系</a>
+:::
+```js
+    var i = this.deps.length;
+    while (i--) {
+      // 判断最新的
+      var dep = this.deps[i];
+      if (!this.newDepIds.has(dep.id)) {
+        dep.removeSub(this);
+      }
+    }
+    // 利用一个额外空间来newDepIds 转到 depIds，并清空newDepIds
+    var tmp = this.depIds;
+    this.depIds = this.newDepIds;
+    this.newDepIds = tmp;
+    this.newDepIds.clear();
+    // 利用一个额外空间来newDeps 转到 deps，并清空newDeps
+    tmp = this.deps;
+    this.deps = this.newDeps;
+    this.newDeps = tmp;
+    this.newDeps.length = 0;
+```
 
 ### flushSchedulerQueue
 ```js
@@ -1003,22 +1037,12 @@ function flushSchedulerQueue () {
   currentFlushTimestamp = getNow()
   flushing = true
   let watcher, id
-  // Sort queue before flush.
-  // This ensures that:
-  // 1. Components are updated from parent to child. (because parent is always
-  //    created before the child)
-  // 2. A component's user watchers are run before its render watcher (because
-  //    user watchers are created before the render watcher)
-  // 3. If a component is destroyed during a parent component's watcher run,
-  //    its watchers can be skipped.
-  // 排序watcher队列
-  // 1. 父组件总是比子组件更早创建
-  // 2. 用户创建的监听器肯定要在页面渲染前面，因为监听器是在页面渲染前面的
-  // 3. 如果一个组件被销毁，那么他的自组件肯定不需要被渲染
-  queue.sort((a, b) => a.id - b.id)
 
-  // do not cache length because more watchers might be pushed
-  // as we run existing watchers
+  // 排序watcher队列
+      // 1. 组件更新是从父到子的过程，因为组件创建过程也是从父到子的
+      // 2. 为了让user watcher比render watcher更早执行
+      // 3. 当一个组件在父组件的watcher中销毁时，这个组件的watcher应该被销毁。
+  queue.sort((a, b) => a.id - b.id)
   for (index = 0; index < queue.length; index++) {
     watcher = queue[index]
     // 更新页面节点数据前调用beforeUpdate钩子函数
@@ -1065,9 +1089,126 @@ function flushSchedulerQueue () {
 ```
 
 ### 如何建立联系
-::: tip
-
+::: tip 代码例子
+```js
+  computed: {
+      firstComputed() {
+          if (this.toggle) {
+              return this.message + this.num + 33
+          }
+          return this.message + this.anotherNum + 33
+      }，
+      secondComputed(){
+        return this.message
+      }
+  }
+```
+我们知道在data中的每个属性都会实例化一个Dep类，假设下面试实例化出来的Dep类:<br>
+`message => dep.id = 3`<br>
+`num => dep.id = 4`<br>
+`anotherNum => dep.id = 5`<br>
+`toggle => dep.id = 6`<br>
+计算属性`firstComputed`对应的`watcher.id = 1`<br>
+计算属性`secondComputed`对应的`watcher.id = 2`<br>
 :::
+首先要明白一点，watcher和dep是多对多的关系，可以这样理解：在计算属性中可以有多个数据，比如:
+
+* 当`toggle=true`时`firstComputed`的watcher对应多个`depIds:[6,3,4]`
+* `message`的dep中订阅了多个`watcherIds:[1, 2]`
+
+**现在来看看`depIds:[6,3,4]`是怎么放入的？**
+
+1. 执行到firstComputed时，会先判断dirty是否为`true`,然后会走`watcher.get => pushTarget => this.getter.call(vm,vm)`也就是从`if (this.toggle)`开始走下去
+2. 从而进入到toggle的getter函数，触发了`dep.depend => Dep.target.addDep(this)`，这时候开始建立关系，newDepIds先判断已经含有`newDepIds.add(6)`，`newDeps.push(dep:{id:6})`，`dep.addSub(watcher:{id:1})`，这边为了更好的看清怎么添加关系的，所以我在实例后面加了个id作为识别，真正情况下只是添加这个实例。执行完这一步后，结果如下：
+```js
+  Watcher.prototype.addDep = function addDep(dep) {
+    var id = dep.id;
+    if (!this.newDepIds.has(id)) {
+      this.newDepIds.add(id);
+      // watcher中放入dep
+      this.newDeps.push(dep);
+      if (!this.depIds.has(id)) {
+        // dep中放入watcher
+        dep.addSub(this);
+      }
+    }
+  };
+```
+::: tip watcher:{id:1}
+newDepIds: [6]<br>
+newDeps: [dep:{id:6}]<br>
+deps:[]<br>
+depIds:[]<br>
+:::
+::: tip dep:{id:6}
+dep.subs[watcher:{id:1}]<br>
+:::
+3. 从`if (this.toggle)`执行完到`return`后结果就会变成:
+::: tip watcher:{id:1}
+newDepIds: [6,3,4]<br>
+newDeps: [dep:{id:6},dep:{id:3},dep:{id:4}]<br>
+deps:[]<br>
+depIds:[]<br>
+:::
+::: tip dep:{id:6}
+dep.subs[watcher:{id:1}]<br>
+:::
+::: tip dep:{id:3}
+dep.subs[watcher:{id:1}]<br>
+:::
+::: tip dep:{id:4}
+dep.subs[watcher:{id:1}]<br>
+:::
+4. 执行完`this.getter.call(vm,vm)`后就又回到`watch.get`，执行<a style="color:rgb(122, 214, 253);" href="#cleanupdeps">watcher.cleanupDeps</a>，由于这是第一次执行这个步骤。所以没有旧的deps，只是简单的转移数据和置空数据，结果如下所示:
+::: tip watcher:{id:1}
+newDepIds: []<br>
+newDeps: []<br>
+deps:[dep:{id:6},dep:{id:3},dep:{id:4}]<br>
+depIds:[6,3,4]<br>
+:::
+5. 当我们将toggle改为false时：又从`firstComputed`执行到`if (this.toggle)`了，又进来toggle的getter函数，触发了`dep.depend => Dep.target.addDep(this)`，开始建立关系，这一次if条件变了，return变成第二个了，所以执行完所有的getter，最终的结果如下所示：
+::: tip watcher:{id:1}
+newDepIds: [6,3,5]<br>
+newDeps: [dep:{id:6},dep:{id:3},dep:{id:5}]<br>
+deps:[6,3,4]<br>
+depIds:[dep:{id:6},dep:{id:3},dep:{id:4}]<br>
+:::
+::: tip dep:{id:6}
+dep.subs[watcher:{id:1}]<br>
+:::
+::: tip dep:{id:3}
+dep.subs[watcher:{id:1}]<br>
+:::
+::: tip dep:{id:4}
+dep.subs[watcher:{id:1}]<br>
+这个`dep`已经不需要订阅`watcher:{id:1}`了，需要在cleanupDeps里面移除
+:::
+::: tip dep:{id:5}
+dep.subs[watcher:{id:1}]<br>
+:::
+6. 走完后开始走`watcher.cleanupDeps`,这次旧的`deps`是有数据的，看到`dep:{id:4}`还在订阅这个`computed watcher`，所以`cleanupDeps`需要移除这个订阅，并且将最新的数据转移到`deps`，`depIds`，最终的结果如下所示：
+::: tip watcher:{id:1}
+newDepIds: []<br>
+newDeps: []<br>
+deps:[6,3,5]<br>
+depIds:[dep:{id:6},dep:{id:3},dep:{id:5}]<br>
+:::
+::: tip dep:{id:6}
+dep.subs[watcher:{id:1}]<br>
+:::
+::: tip dep:{id:3}
+dep.subs[watcher:{id:1}]<br>
+:::
+::: tip dep:{id:4}
+dep.subs[]<br>
+这个`dep`已经不订阅`watcher:{id:1}`了
+:::
+::: tip dep:{id:5}
+dep.subs[watcher:{id:1}]<br>
+:::
+
+#### 总结dep&&watcher
+为了在每次更新时都保持dep与watcher都有相同的依赖和订阅，所以dep和watcher都有相互的变量可以访问到对方，做到你中有我，我中有你的状态。
 
 
 ## $set
