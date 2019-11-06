@@ -1,5 +1,5 @@
 ---
-title: 'Vue2.6源码解读'
+title: 'Vue2.6响应式分析'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
@@ -11,6 +11,7 @@ date: 2019-11-01
 tags:
 - frontEnd
 - 源码解读
+- Vue2.6 响应式分析
 - Vue
 # 标签
 ---
@@ -24,7 +25,8 @@ tags:
 3. 为什么只能通过官网指定的几个方法(push、splice...)才能出发数组数据更新？
 4. 为什么通过this.$set就可以触发数组下标更新导致更新视图？
 5. computed和watch的区别有哪些，computed的缓存是怎么做到的？
-6. 社区经常提到的watcher和dep到底为响应式数据提供了怎么样的逻辑
+6. 社区经常提到的watcher和dep到底为响应式数据提供了怎么样的逻辑？
+
 :::
 需要解答上面一系列问题，需要从Vue的_init开始走起。下面得是Vue2.6的源码照搬过来的，基本上每一行都会有注释，但是有一些通过命名就看出来的就没有注释了，可能源码较多，所以我花了流程图，推荐是拿着Vue提供的开发版源码[Vue开发版源码地址](https://cdn.jsdelivr.net/npm/vue/dist/vue.js)，然后在new Vue()断点，慢慢的走一遍，然后再回来看这边文章，可能会解答更多的困惑。
 ## _init
@@ -539,7 +541,6 @@ function observe(value, asRootData) {
         if (customSetter) {
           customSetter();
         }
-        // #7981: for accessor properties without setter
         if (getter && !setter) { return }
         if (setter) {
           setter.call(obj, newVal);
@@ -722,33 +723,39 @@ function def(obj, key, val, enumerable) {
 
 ### traverse
 ::: tip
-递归遍历一个对象来调用所有转换的对象的getter，为了让对象中的每个嵌套属性都被作为一个“深度”依赖。
+递归遍历一个对象中的所有属性，取到当前值时就触发了getter，在getter中建立依赖。
 :::
 ```js
   function traverse (val) {
+    // seenObjects是一个set，在递归的过程中存入depId，碰到已经监听的dep就跳过
     _traverse(val, seenObjects);
     seenObjects.clear();
   }
 
   function _traverse (val, seen) {
     var i, keys;
+    // 在这里调用val，触发了getter => dep.depend
     var isA = Array.isArray(val);
+    // isFrozen判断不可扩展，响应式数据都是可扩展的
     if ((!isA && !isObject(val)) || Object.isFrozen(val) || val instanceof VNode) {
       return
     }
     if (val.__ob__) {
       var depId = val.__ob__.dep.id;
+      // 碰到已经监听过的dep就跳过
       if (seen.has(depId)) {
         return
       }
       seen.add(depId);
     }
+    // 遍历数组，递归数组的值
     if (isA) {
       i = val.length;
       while (i--) { _traverse(val[i], seen); }
     } else {
       keys = Object.keys(val);
       i = keys.length;
+      // 遍历对象的每个属性
       while (i--) { _traverse(val[keys[i]], seen); }
     }
   }
@@ -1043,7 +1050,7 @@ function flushSchedulerQueue () {
   // 排序watcher队列
       // 1. 组件更新是从父到子的过程，因为组件创建过程也是从父到子的
       // 2. 为了让user watcher比render watcher更早执行
-      // 3. 当一个组件在父组件的watcher中销毁时，这个组件的watcher应该被销毁。
+      // 3. 当一个组件在父组件的watcher中销毁时，这个组件的watcher应该被跳过。
   queue.sort((a, b) => a.id - b.id)
   for (index = 0; index < queue.length; index++) {
     watcher = queue[index]
@@ -1208,6 +1215,10 @@ dep.subs[]<br>
 ::: tip dep:{id:5}
 dep.subs[watcher:{id:1}]<br>
 :::
+
+上面的过程用一个流程图表示：
+
+![](../../.vuepress/public/Vue2.6-addDep-cleanupDeps.png)
 
 #### 总结dep&&watcher
 为了在每次更新时都保持dep与watcher都有相同的依赖和订阅，所以dep和watcher都有相互的变量可以访问到对方，做到你中有我，我中有你的状态。
