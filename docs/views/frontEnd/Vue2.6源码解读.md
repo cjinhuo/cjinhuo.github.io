@@ -1290,7 +1290,7 @@ dep.subs[watcher:{id:1}]<br>
 ```
 ### timerFunc
 ::: tip
-只需要记得timerFunc是一个微任务，下面代码是为了兼容多个浏览器和UIWebview，在正常谷歌浏览器时可把代码省略成下面这样，timerFunc的函数作用是将`flushCallbacks`函数推入微任务队列
+只需要记得timerFunc是一个微任务，，如果不懂微任务的话可以看着这一篇文章:<a style="color:rgb(122, 214, 253);" target="_blank" href="https://chenjinhuo.netlify.com/views/frontEnd/interview.html#event-loop">微任务和宏任务</a>，下面代码是为了兼容多个浏览器和UIWebview，在正常谷歌浏览器时可把代码省略成下面这样，timerFunc的函数作用是将`flushCallbacks`函数推入微任务队列
 ```js
     var p = Promise.resolve();
     timerFunc = function () {
@@ -1378,13 +1378,13 @@ dep.subs[watcher:{id:1}]<br>
 看上图，点击按钮后页面是不会重新渲染的，这很正常，因为前面讲过，Vue只提供那些变异方法才能促使页面更新，vm.$Set也是这样的，但是看下面一张图
 
 ![](../../.vuepress/public/Vue2.6-nexttick-arrayDemo2.png)
-点击测试，页面数据变换了，为什么？可以看出代码多加了一行`this.message = 'hello'`，当执行到这一句时会调用`dep.notify`，触发render watcher，但是没有马上执行只是放在nexttick队列中，等待宏任务执行完在执行nexttick宏任务，再执行到`this.realArr[0] = '111'`，没有触发`dep.notify`，但是对应的引用地址中的值确实变了，所以在后面执行render watcher时，再次调用this.realArr的时候值就变了。
+点击测试，页面数据变换了，为什么？可以看出代码多加了一行`this.message = 'hello'`，当执行到这一句时会调用`dep.notify`，触发`render watcher`，但是没有马上执行只是放在nexttick队列中，等待宏任务执行完在执行nexttick宏任务，再执行到`this.realArr[0] = '111'`，没有触发`dep.notify`，但是对应的引用地址中的值确实变了，所以在后面执行render watcher时，再次调用this.realArr的时候值就变了。
 
 ## 原理图
 ![](../../.vuepress/public/Vue2.6-theory.png)
 
 解读：
-在实例化data对象时，递归遍历，将每个数据都对应的实例化一个Dep类，并且在defineProperty的get函数中设置dep.depend,在set函数设置dep.notify，在页面渲染、computed或watch的时候会触发get然后就会设置依赖，在数据更新时就通过set中的dep.notify来通知在get中设置的依赖，达到响应式更新数据的效果，更新数据这一操作是放到全局变量`callback`栈中，当宏任务结束后就以微任务的形式挨个执行`callback`的更新回调。所以数据是部分更新的，并不是单个更新的。
+在实例化`data`对象时，递归遍历，将每个数据都对应的实例化一个`Dep`类，并且在`defineReactive`的get函数中设置`dep.depend`,在`set`函数设置`dep.notify`，在页面渲染、`computed`或`watch`的时候会触发`get`然后就会设置依赖，在数据更新时就通过`set`中的`dep.notify`来通知在`get`中设置的依赖，达到响应式更新数据的效果，更新数据或页面这一操作是放到全局变量`callback`栈中，当宏任务结束后就以微任务的形式挨个执行`callback`的更新回调。所以数据是部分更新的，并不是单个更新的。
 
 ## 问题解答
 ::: tip message为data中定义的对象，vm._data.message和vm.message有什么区别？
@@ -1397,7 +1397,7 @@ dep.subs[watcher:{id:1}]<br>
 在源码`arrayMethods`可以看出来，Vue2.6是先截取了原生的Array.prototype的方法，然后重写方法获取用户传入的参数，在重写方法内部先是调用原方法，然后调用`ob.dep.notify()`来更新对应`watcher`。
 :::
 ::: tip 为什么通过this.$set就可以触发数组下标更新导致更新视图？
-在这一篇[DefineProperty和Proxy](https://chenjinhuo.netlify.com/views/frontend/defineproperty&&proxy.html)中讲过它们两个的区别，因为Vue2.6中用的是`DefineProperty`，而这个方法必须要传入目标对象`obj`,目标对象的键`Key`，这就造成了很难动态的添加属性，为什么说很难呢？因为这个是可以实现的，比如本来data里面有数据message，message是执行过`defineReactive`的，所以可以监听到getter、setter，但是你想新建一个flag，直接data.flag = 10，每次调用前都需要判断是否定义过，没有定义的就执行`defineReactive`，无疑是很费性能的，数据也是一样，数组是没有key的，所以更是监听不了的，Vue.$Set也是通过判断是否是数组，是的话再调用那些变异方法来执行更新。
+在这一篇[DefineProperty和Proxy](https://chenjinhuo.netlify.com/views/frontend/defineproperty&&proxy.html)中讲过它们两个的区别，因为Vue2.6中用的是`DefineProperty`，而这个方法必须要传入目标对象`obj`,目标对象的键`Key`，这就造成了很难动态的添加属性，为什么说很难呢？因为这个是可以实现的，比如本来data里面有数据message，message是执行过`defineReactive`的，所以可以监听到getter、setter，但是你想新建一个flag，直接`data.flag = 10`，每次调用前都需要判断是否定义过，没有定义的就执行`defineReactive`，无疑是很费性能的，数据也是一样，数组是没有key的，所以更是监听不了的，Vue.$Set也是通过判断是否是数组，是的话再调用那些变异方法来执行更新。
 :::
 ::: tip computed和watch的区别有哪些，computed的缓存是怎么做到的？
 watch和computed一个重要区别就是，监听的属性发生改变时就执行watch函数，计算属性和data里面属性一样，只有在某个地方用到时才会调用计算属性的getter，而getter中包含表达式。然后计算属性是可以缓存的，这个缓存指的是基于它们的响应式依赖进行缓存的，`defin·Reactive`中set中`oldValue`和`newValue`如果不等时就会触发`dep.notify=>dep.update=>this.dirty=true`，在获取计算属性的时候，判断dirty会true时就会调用`this.get`重新获取对应的值。
