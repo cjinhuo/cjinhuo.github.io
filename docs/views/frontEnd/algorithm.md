@@ -305,3 +305,60 @@ console.log(quickSort(arr,0,arr.length-1));
 
 ```
 ## 堆排序
+
+##  字符串解码
+::: tip
+这道题近半年来广受各大公司的青睐，出现非常频繁，在腾讯仅仅半年就出现了17次。
+例子:<br>
+`'2[abc]3[cjh]' => abcabccjhcjhcjh`
+`'2[a2[b]]' => abbabb`
+`'2[a2[b3[c]]]' => abcccbcccabcccbccc`
+思路：一看到这个题首先想到的是递归，因为有无限嵌套的可能，但是每种递归都可以用栈来保存我们所需要的数据，所以这道题至少有两种写法。
+:::
+### 首先用栈来保存收集到的系数和字符串
+```js
+function decodeString(str) {
+  // 系数栈
+  let coefficientStack = []
+  // 结果集栈
+  let resultStack = []
+  let result = ''
+  // 初始化系数为0
+  let coefficient = 0
+  for (let i = 0; i < str.length; i++) {
+    let current = str.charAt(i)
+    switch (current) {
+      case '[':
+      // 当碰到'['就将以前收集字符串和系数的推入栈中
+      // 重新开始收集字符串和系数
+        coefficientStack.push(coefficient)
+        resultStack.push(result)
+        result = ''
+        coefficient = 0
+        break;
+      case ']':
+      // 碰到']'代表结束：计算当前[]中的字符串，和
+        let count = coefficientStack.pop()
+        let tempResult = ''
+        // 将收集到字符串翻成系数倍
+        for (let j = 0; j < count; j++) {
+          tempResult += result
+        }
+        // 和前面已经求得的字符串进行拼接
+        result = resultStack.pop() + tempResult
+        break;
+      default:
+        if (current >= 0 && current <= 9) {
+          // 系数累积 2[ab16[cd]] 下面的代码为了让16能够存下来，current - '0'是为了隐式转换成数字
+          coefficient = coefficient * 10 + (current - '0');
+        } else {
+          // 字母累加 字符串收集
+          result += current;
+        }
+        break;
+    }
+  }
+  return result
+}
+```
+### 用递归的方法来解决
