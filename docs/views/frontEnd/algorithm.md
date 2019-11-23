@@ -362,3 +362,186 @@ function decodeString(str) {
 }
 ```
 ### 用递归的方法来解决
+
+## LRU-缓存机制
+::: tip
+运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制。它应该支持以下操作： 获取数据 get 和 写入数据 put 。
+
+获取数据 get(key) - 如果密钥 (key) 存在于缓存中，则获取密钥的值（总是正数），否则返回 -1。
+写入数据 put(key, value) - 如果密钥不存在，则写入其数据值。当缓存容量达到上限时，它应该在写入新数据之前删除最近最少使用的数据值，从而为新的数据值留出空间。
+
+进阶:
+
+你是否可以在 O(1) 时间复杂度内完成这两种操作？
+:::
+
+```js
+LRUCache cache = new LRUCache( 2 /* 缓存容量 */ );
+
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // 返回  1
+cache.put(3, 3);    // 该操作会使得密钥 2 作废
+cache.get(2);       // 返回 -1 (未找到)
+cache.put(4, 4);    // 该操作会使得密钥 1 作废
+cache.get(1);       // 返回 -1 (未找到)
+cache.get(3);       // 返回  3
+cache.get(4);       // 返回  4
+```
+![](../../.vuepress/public/LRU_doubleLinkList.png)
+
+代码实现:
+```js
+var NodeData = function ({ key = null, value = null }) {
+  this.key = key
+  this.value = value
+}
+var Node = function (data) {
+  this.pre = null
+  this.next = null
+  this.data = new NodeData(data)
+}
+
+/**
+ * @param {number} capacity
+ */
+var LRUCache = function (capacity) {
+
+
+  var DoublyLinkedList = function () {
+    this.head = new Node({ key: 'null', value: 'null' })
+    this.last = new Node({ key: 'null', value: 'null' })
+    this.head.next = this.last
+    this.last.pre = this.head
+    this.length = 0
+  }
+
+  // 在从前往后在指定位置添加节点
+  DoublyLinkedList.prototype.insertWithDataKeyForward = function (position, node) {
+    let current = this.head
+    if (position === 0) {
+      this.insert(current, node)
+    }
+    if (position > 0 && position <= this.length) {
+      for (let i = 0; i < position; i++) {
+        current = current.next
+      }
+      this.insert(current, node)
+    }
+  }
+
+  // 在前一个节点后面插入节点
+  DoublyLinkedList.prototype.insert = function (preNode, currentNode) {
+    // 保存下一个节点
+    nextNode = preNode.next
+    // 当前节点连接上一个节点
+    preNode.next = currentNode
+    currentNode.pre = preNode
+    // 当前节点连接下一个节点
+    currentNode.next = nextNode
+    nextNode.pre = currentNode
+    this.length++
+  }
+
+
+  // 在从后往前在指定位置添加节点
+  DoublyLinkedList.prototype.insertWithDataKeyBackward = function (position, node) {
+    let current = this.last.pre
+    if (position === 0) {
+      this.insert(current, node)
+    }
+    if (position > 0 && position <= this.length) {
+      for (let i = 0; i < position; i++) {
+        current = current.pre
+      }
+      this.insert(current, node)
+    }
+  }
+
+  // 找出位置 从左向右开始找
+  DoublyLinkedList.prototype.findPosition = function (node) {
+
+  }
+
+  // 移除当前节点
+  DoublyLinkedList.prototype.removeCurrentNode = function (currentNode) {
+    let preNode = currentNode.pre
+    let nextNode = currentNode.next
+    preNode.next = nextNode
+    nextNode.pre = preNode
+    this.length--
+  }
+
+  // 根据从到右的位置移除对应节点
+  DoublyLinkedList.prototype.removeWithPosition = function (position) {
+    if (this.length === 0) return
+    if (this.position > 0 && this.position <= this.length) {
+      let currentNode = this.head
+      for (let i = 0; i < position; i++) {
+        currentNode = currentNode.next
+      }
+      this.removeCurrentNode(currentNode)
+    }
+  }
+  this.list = new DoublyLinkedList()
+  this.capacity = capacity
+  // map里面存的是：key:key，value：当前节点
+  this.map = new Map()
+};
+
+/**
+ * @param {number} key
+ * @return {number}
+ */
+LRUCache.prototype.get = function (key) {
+  if (this.map.has(key)){
+    const curentNode = this.map.get(key)
+    this.list.removeCurrentNode(curentNode)
+    this.list.insertWithDataKeyForward(0, curentNode)
+    return this.map.get(key).data.value
+  }
+  return -1
+};
+
+/**
+ * @param {number} key
+ * @param {number} value
+ * @return {void}
+ */
+LRUCache.prototype.put = function (key, value) {
+  // 如果存在的就在双向链表移除，并且在头结点重新添加
+  // 如果不存在就，并且capacity已经满了，删除最后一个节点，然后在头结点重写添加
+
+  // 如果当前链表已经存在密钥，则删除该节点，在头部添加新节点
+  if (this.map.has(key)) {
+    const currentNode = this.map.get(key)
+    this.list.removeCurrentNode(currentNode)
+    this.list.insertWithDataKeyForward(0, new Node({key, value}))
+    this.map.get(key).data.value = value
+  }else if (this.list.length < this.capacity) {
+    // 如果节点长度没有比capacity多则直接在头结点添加新节点
+    const newNode = new Node({ key, value })
+    this.list.insertWithDataKeyForward(0, newNode)
+    this.map.set(key, newNode)
+  } else {
+    // 节点长度和capacity一样长，删除尾节点，在头部添加新节点
+    const newNode = new Node({ key, value })
+    const lastNode = this.list.last.pre
+    this.list.removeCurrentNode(lastNode)
+    this.list.insertWithDataKeyForward(0, newNode)
+    this.map.delete(lastNode.data.key)
+    this.map.set(key, newNode)
+  }
+};
+
+const arr = [[6, 14], [3, 1], [3], [10, 11], [8], [2, 14], [1], [5], [4], [11, 4], [12, 24], [5, 18], [13], [7, 23], [8], [12], [3, 27], [2, 12], [5], [2, 9], [13, 4], [8, 18], [1, 7], [6]]
+arr.forEach(v => {
+  if (v.length > 1){
+    cache.put(v[0], v[1])
+  }
+})
+console.log(cache.map)
+console.log(cache.list.head.next);
+```
+
+
