@@ -370,9 +370,8 @@ function decodeString(str) {
 获取数据 get(key) - 如果密钥 (key) 存在于缓存中，则获取密钥的值（总是正数），否则返回 -1。
 写入数据 put(key, value) - 如果密钥不存在，则写入其数据值。当缓存容量达到上限时，它应该在写入新数据之前删除最近最少使用的数据值，从而为新的数据值留出空间。
 
-进阶:
-
 你是否可以在 O(1) 时间复杂度内完成这两种操作？
+[leetcode地址](https://leetcode-cn.com/problems/lru-cache/)
 :::
 
 ```js
@@ -543,5 +542,199 @@ arr.forEach(v => {
 console.log(cache.map)
 console.log(cache.list.head.next);
 ```
+## 全O(1)操作
+::: tip 题目
+实现一个数据结构支持以下操作：
 
+1. Inc(key) - 插入一个新的值为 1 的 key。或者使一个存在的 key 增加一，保证 key 不为空字符串。
+2. Dec(key) - 如果这个 key 的值是 1，那么把他从数据结构中移除掉。否者使一个存在的 key 值减一。如果这个 key 不存在，这个函数不做任何事情。key 保证不为空字符串。
+3. GetMaxKey() - 返回 key 中值最大的任意一个。如果没有元素存在，返回一个空字符串""。
+4. GetMinKey() - 返回 key 中值最小的任意一个。如果没有元素存在，返回一个空字符串""。
 
+以 O(1) 的时间复杂度实现所有操作。
+[leetcode地址](https://leetcode-cn.com/problems/all-oone-data-structure/submissions/)
+:::
+```js
+// 跟LRU差不多的结构 map + 双向链表
+// map存储 key:key,value：值 1+~~ 插入key时，先在map中对应的key加1，然后判断当前curMax、curMin然后决定是否放入头结点或尾结点
+// 重点是将curMax、curMin利用好
+
+var NodeData = function ({ key = null, value = null }) {
+  this.key = key
+  this.value = value
+}
+var Node = function (data) {
+  this.pre = null
+  this.next = null
+  this.data = new NodeData(data)
+}
+var AllOne = function () {
+  var DoublyLinkedList = function () {
+    this.head = new Node({ key: 'null', value: 'null' })
+    this.last = new Node({ key: 'null', value: 'null' })
+    this.head.next = this.last
+    this.last.pre = this.head
+    this.length = 0
+  }
+
+  // 在从前往后在指定位置添加节点
+  DoublyLinkedList.prototype.insertWithDataKeyForward = function (position, node) {
+    let current = this.head
+    if (position === 0) {
+      this.insert(current, node)
+    }
+    if (position > 0 && position <= this.length) {
+      for (let i = 0; i < position; i++) {
+        current = current.next
+      }
+      this.insert(current, node)
+    }
+  }
+
+  // 在前一个节点后面插入节点
+  DoublyLinkedList.prototype.insert = function (preNode, currentNode) {
+    // 保存下一个节点
+    nextNode = preNode.next
+    // 当前节点连接上一个节点
+    preNode.next = currentNode
+    currentNode.pre = preNode
+    // 当前节点连接下一个节点
+    currentNode.next = nextNode
+    nextNode.pre = currentNode
+    this.length++
+  }
+
+  // 在从后往前在指定位置添加节点
+  DoublyLinkedList.prototype.insertWithDataKeyBackward = function (position, node) {
+    let current = this.last.pre
+    if (position === 0) {
+      this.insert(current, node)
+    }
+    if (position > 0 && position <= this.length) {
+      for (let i = 0; i < position; i++) {
+        current = current.pre
+      }
+      this.insert(current, node)
+    }
+  }
+
+  // 移除当前节点
+  DoublyLinkedList.prototype.removeCurrentNode = function (currentNode) {
+    let preNode = currentNode.pre
+    let nextNode = currentNode.next
+    preNode.next = nextNode
+    nextNode.pre = preNode
+    this.length--
+  }
+
+  // 根据从到右的位置移除对应节点
+  DoublyLinkedList.prototype.removeWithPosition = function (position) {
+    if (this.length === 0) return
+    if (this.position > 0 && this.position <= this.length) {
+      let currentNode = this.head
+      for (let i = 0; i < position; i++) {
+        currentNode = currentNode.next
+      }
+      this.removeCurrentNode(currentNode)
+    }
+  }
+  this.list = new DoublyLinkedList()
+  this.map = new Map()
+  this.curMax = 1
+  this.curMin = 1
+};
+
+/**
+ * Inserts a new key <Key> with value 1. Or increments an existing key by 1.
+ * @param {string} key
+ * @return {void}
+ */
+AllOne.prototype.inc = function (key) {
+  let curNode
+  if (this.map.has(key)){
+    curNode = this.map.get(key)
+    const curValue = ++curNode.data.value
+    // 判断是否在头结点、中间结点、尾结点
+    if (this.curMax <= curValue){
+      this.curMax = curValue
+      this.list.removeCurrentNode(curNode)
+      this.list.insertWithDataKeyForward(0, curNode)
+    }
+    else if (curValue - this.curMin === 1) {
+      // 当前节点本来就在末尾
+      this.curMin = curValue
+      if (curNode.pre && curNode.pre.data.value < this.curMin) {
+        this.list.removeCurrentNode(curNode)
+        this.list.insertWithDataKeyBackward(1, curNode)
+      }
+      // 本身就在最后一个，就没有必要在删除 插入了，跟下面得逻辑一样
+      // this.list.removeCurrentNode(curNode)
+      // this.list.insertWithDataKeyBackward(0, curNode)
+    }
+     else {
+      // 当前值在最大值和最小值中间，所以在第一个位置插入节点
+      this.list.removeCurrentNode(curNode)
+      this.list.insertWithDataKeyBackward(1, curNode)
+    }
+  } else {
+    curNode = new Node(new NodeData({key, value: 1}))
+    this.map.set(key, curNode)
+    this.list.insertWithDataKeyBackward(0, curNode)
+    // 插入新节点 最小值重置成1
+    this.curMin = 1
+  }
+};
+
+/**
+ * Decrements an existing key by 1. If Key's value is 1, remove it from the data structure.
+ * @param {string} key
+ * @return {void}
+ */
+AllOne.prototype.dec = function (key) {
+  if(!this.map.has(key)){
+    return
+  }
+  const curNode = this.map.get(key)
+  const curValue = --curNode.data.value
+  if (curValue === 0) {
+    this.map.delete(key)
+    this.list.removeCurrentNode(curNode)
+  } else {
+    if (this.curMax <= curValue) {
+      this.curMax = curValue
+      // 最大值--，没有必要再次删除 插入，因为本来就是在第一个
+      // this.list.removeCurrentNode(curNode)
+      // this.list.insertWithDataKeyForward(0, curNode)
+    } else if (this.curMin >= curValue) {
+      this.curMin = curValue
+      this.list.removeCurrentNode(curNode)
+      this.list.insertWithDataKeyBackward(0, curNode)
+    } else {
+      this.list.removeCurrentNode(curNode)
+      this.list.insertWithDataKeyBackward(1, curNode)
+    }
+  }
+};
+
+/**
+ * Returns one of the keys with maximal value.
+ * @return {string}
+ */
+AllOne.prototype.getMaxKey = function () {
+  if (this.list.length === 0) {
+    return ''
+  }
+  return this.list.head.next.data.key
+};
+
+/**
+ * Returns one of the keys with Minimal value.
+ * @return {string}
+ */
+AllOne.prototype.getMinKey = function () {
+  if (this.list.length === 0) {
+    return ''
+  }
+  return this.list.last.pre.data.key
+};
+```
