@@ -306,6 +306,105 @@ console.log(quickSort(arr,0,arr.length-1));
 ```
 ## 堆排序
 
+## 两数之和
+::: tip
+给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
+
+你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
+
+```js 示例
+给定 nums = [2, 7, 11, 15], target = 9
+
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+```
+:::
+
+```js
+// 没有预先放入对象中是因为nums里面的值可能有重复的所以key会被覆盖
+var twoSum = function(nums, target) {
+    let obj = {}
+    for (let i = 0; i < nums.length; i++) {
+        const temp = target - nums[i]
+        if (obj[temp]) {
+            return [obj[temp] - 1, i]
+        }
+        obj[nums[i]] = i + 1
+    }
+    return []
+};
+
+console.log(twoSum([3,3], 6)) // [0,1]
+```
+
+## 无重复字符的最长子串
+::: tip
+给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+:::
+::: tip 示例1
+输入: "abcabcbb"
+输出: 3
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+:::
+::: tip 示例2
+输入: "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+:::
+::: tip 示例3
+输入: "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+:::
+
+```js
+var lengthOfLongestSubstring = function (s) {
+  var num = 0;
+  var res = 0;
+  var m = '';
+  for (value of s) {
+    if (!~m.indexOf(value)) {
+      m += value;
+      num++;
+      res = res < num ? num : res;
+    } else {
+      m += value;
+      m = m.slice(m.indexOf(value) + 1) //"acdvdf" 当遇到第二个d时删掉acd保留vdf
+      num = m.length
+    }
+
+  }
+  return res
+};
+```
+
+```js
+// 两种是一样的思路，第一种简洁明了
+var lengthOfLongestSubstring = function (s) {
+  if (s.length === 1) return 1
+  let obj = {}
+  let max = 0
+  for(let v of s){
+    if (obj[v]) {
+      let stack = Object.keys(obj)
+      for (let i = 0; i < stack.length; i++) {
+        delete obj[stack[i]] //"dvdf" 遍历到d时删掉第一个d，然后继续遍历
+        if (stack[i] === v) {
+          obj[stack[i]] = 1
+          break;
+        }
+      }
+    } else {
+      obj[v] = 1
+    }
+    const length = Object.keys(obj).length
+    max = Math.max(max, length)
+  }
+  return max
+};
+```
+
 ##  字符串解码
 ::: tip
 这道题近半年来广受各大公司的青睐，出现非常频繁，在腾讯仅仅半年就出现了17次。

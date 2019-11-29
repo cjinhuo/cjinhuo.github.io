@@ -135,6 +135,8 @@ npx create-react-app my-app
 * ~会匹配最近的小版本依赖包，比如~1.2.3会匹配所有1.2.x版本，但是不包括1.3.0
 * ^会匹配最新的大版本依赖包，比如^1.2.3会匹配所有1.x.x的包，包括1.3.0，但是不包括2.0.0
 * *意味着安装最新版本的依赖包
+### 配置指向源码
+`npm config set registry https://registry.npmjs.org //配置指向源`
 ## JS模块化
 ### CommonJS
 ::: tip
