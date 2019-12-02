@@ -837,3 +837,81 @@ AllOne.prototype.getMinKey = function () {
   return this.list.last.pre.data.key
 };
 ```
+## 回溯
+::: tip
+回溯:在一个函数中执行多次的当前函数，并且每次调用时都会触发调用栈+1，然后在某个时刻return或加判断就会回到某个时刻继续执行下去，下面还有可执行当前函数的语句。
+
+考验对递归的使用:
+给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。
+
+示例:
+
+输入: "25525511135"
+输出: ["255.255.11.135", "255.255.111.35"]
+
+[leetcode地址](https://leetcode-cn.com/problems/restore-ip-addresses)
+:::
+
+```js
+/**
+ * @param {string} s
+ * @return {string[]}
+ */
+var restoreIpAddresses = function (s) {
+  const res = []
+  // 回溯
+  const recursion = (result, surplusStr) => {
+    console.log(result, surplusStr)
+    // 如果surplusStr比剩余的空数（3个）还大的话可以直接return，因为肯定不是一个合格的ip地址
+    if (surplusStr.length > (4 - result.length) * 3) {
+      return
+    }
+    if ((result.length === 4 && surplusStr.length !== 0) || (result.length > 4 || result.length < 4 && surplusStr.length === 0) ) {
+      return
+    }
+    if (result.length === 4 && surplusStr.length === 0) {
+      res.push(result.join('.'))
+      return
+    }
+    recursion([...result, surplusStr[0]], surplusStr.slice(1))
+    if (surplusStr[0] != 0 && surplusStr.length > 1) {
+      recursion([...result, surplusStr.slice(0, 2)], surplusStr.slice(2))
+    }
+    if (surplusStr[0] != 0 && parseInt(surplusStr.slice(0, 3)) <=255 && surplusStr.length > 2) {
+      recursion([...result, surplusStr.slice(0, 3)], surplusStr.slice(3))
+    }
+  }
+  recursion([], s)
+  return res;
+};
+```
+::: tip 去掉第一个if优化判断的输出
+[ '2' ] '5512511135'
+[ '2', '5' ] '512511135'
+[ '2', '5', '5' ] '12511135'
+[ '2', '5', '5', '1' ] '2511135'
+[ '2', '5', '5', '12' ] '511135'
+[ '2', '5', '5', '125' ] '11135'
+[ '2', '5', '51' ] '2511135'
+[ '2', '5', '51', '2' ] '511135'
+[ '2', '5', '51', '25' ] '11135'
+[ '2', '5', '51', '251' ] '1135'
+[ '2', '55' ] '12511135'
+[ '2', '55', '1' ] '2511135'
+[ '2', '55', '1', '2' ] '511135'
+[ '2', '55', '1', '25' ] '11135'
+[ '2', '55', '1', '251' ] '1135'
+[ '2', '55', '12' ] '511135'
+[ '2', '55', '12', '5' ] '11135'
+[ '2', '55', '12', '51' ] '1135'
+[ '2', '55', '125' ] '11135'
+[ '2', '55', '125', '1' ] '1135'
+[ '2', '55', '125', '11' ] '135'
+[ '2', '55', '125', '111' ] '35'
+[ '25' ] '512511135'
+[ '25', '5' ] '12511135'
+[ '25', '5', '1' ] '2511135'
+[ '25', '5', '1', '2' ] '511135'
+[ '25', '5', '1', '25' ] '11135'
+[ '25', '5', '1', '251' ] '1135'
+:::
