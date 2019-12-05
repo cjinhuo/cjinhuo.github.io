@@ -486,7 +486,7 @@ cache.get(1);       // 返回 -1 (未找到)
 cache.get(3);       // 返回  3
 cache.get(4);       // 返回  4
 ```
-![](../../.vuepress/public/LRU_doubleLinkList.png)
+<!-- ![](../../.vuepress/public/LRU_doubleLinkList.png) -->
 
 代码实现:
 ```js
@@ -915,3 +915,174 @@ var restoreIpAddresses = function (s) {
 [ '25', '5', '1', '25' ] '11135'
 [ '25', '5', '1', '251' ] '1135'
 :::
+
+### 回溯的另一道题：
+::: tip
+分类树：
+```js
+* 测试1
+ * 测试2
+  * 测试3
+   * 需要过滤掉
+* 测试4
+ * 这个是父元素
+  * 测试5
+```
+当我输入“测试”时，进行模糊匹配，需要将所有包含“测试”的节点都列出来。结果是这样的。
+```js
+* 测试1
+ * 测试2
+  * 测试3
+* 测试4
+ * 这个是父元素
+  * 测试5
+```
+只要是父元素下面得子元素含有“测试”这个字符串，不管本身是否含有这个字符串都必须保留。
+:::
+时间复杂度将近为O(n2)的写法，简单粗暴
+```js
+// 判断这条分支上有没有匹配到的
+function isNeedBranch (item, keyword) {
+    let flag1 = false,
+        flag2 = false
+    if(item.txt.indexOf(keyword) > -1) {
+        flag1 = true
+    } else if(item.children && item.children.length) {
+        item.children.forEach(child => {
+            if(isNeedBranch(child, keyword)) {
+                flag2 = true
+            }
+        })
+    }
+    return flag1 || flag2
+}
+// 给每个分支上有所匹配的设置isNeed
+function setFlag (data, keyword) {
+    return data.map(item => {
+        item.isNeed = isNeedBranch(item, keyword)
+        if(item.children && item.children.length) {
+            setFlag(item.children, keyword)
+        }
+        return item
+    })
+}
+// 过滤掉分支上isNeed为false的元素
+function treeFilter (data) {
+    return data.filter((item, index) => {
+        if(item && item.children && item.children.length) {
+            item.children = treeFilter(item.children)
+        }
+        return item.isNeed
+    })
+}
+setFlag(data, '测试') // 打上是否需要过滤掉的标签
+treeFilter(data) // 过滤掉分支上isNeed为false的元素
+```
+事件复杂度为O(n)的回溯
+
+假设只有二层节点的时候的时候
+```js
+let isNeed = true
+node.forEach(item => {
+  if (item.txt.includes(keyword)) {
+    node.flag ? '' : node.flag = true
+    item.isNeed = true
+  } else {
+    item.isNeed = false
+  }
+})
+```
+但是在正常情况下不会只有二层，所有我们需要写成递归，因为forEach中的item可能还会有children
+
+```js
+// 利用回溯，优先遍历子节点，遍历完子节点然后给父节点打上标签，时间复杂度为O(n)
+  const setFlag = (nodes, keyword) => {
+    // 给父节点返回的标志
+    let isParentNeed = false
+    nodes.forEach(item => {
+      if (item.children && item.children.length !== 0) {
+        item.isNeed = setFlag(item.children, keyword)
+      }
+      if (item.txt.includes(keyword)) {
+        isParentNeed ? '' : isParentNeed = true
+        item.isNeed = true
+      } else {
+        item.isNeed ? isParentNeed = true : item.isNeed = false
+      }
+    })
+    return isParentNeed
+  }
+```
+接下来就是过滤isNeed为false的节点了，完整代码示例：
+```js
+const data = [{
+  id: 1,
+  txt: '测试1',
+  children: [{
+    id: 11,
+    txt: '测11',
+    children: [{
+      id: 111,
+      txt: '测试111',
+      children: [{
+        id: 1111,
+        txt: '这里就不是',
+        children: []
+      }]
+    }]
+  }, {
+    id: 12,
+    txt: '测试12',
+    children: [{
+      id: 121,
+      txt: '测试121',
+      children: [{
+        id: 1211,
+        txt: '测试1211',
+        children: []
+      }]
+    }]
+  }]
+}, {
+  id: 2,
+  txt: '测试2',
+  children: [{
+    id: 21,
+    txt: '测试21'
+  }]
+}]
+
+
+
+
+function filterTree(nodes, keyword) {
+// 利用回溯，优先遍历子节点，遍历完子节点然后给父节点打上标签，时间复杂度为O(n)
+  const setFlag = (nodes, keyword) => {
+    // 给父节点返回的标志
+    let isParentNeed = false
+    nodes.forEach(item => {
+      if (item.children && item.children.length !== 0) {
+        item.isNeed = setFlag(item.children, keyword)
+      }
+      if (item.txt.includes(keyword)) {
+        isParentNeed ? '' : isParentNeed = true
+        item.isNeed = true
+      } else {
+        item.isNeed ? isParentNeed = true : item.isNeed = false
+      }
+    })
+    return isParentNeed
+  }
+  const filterNotIsNeed = nodes => {
+    return nodes.filter(item => {
+      if (item.children && item.children.length) {
+        item.children = filterNotIsNeed(item.children)
+      }
+      return item.isNeed
+    })
+  }
+  setFlag(nodes, keyword)
+  return filterNotIsNeed(nodes)
+}
+console.log(filterTree(data, '测试'))
+```
