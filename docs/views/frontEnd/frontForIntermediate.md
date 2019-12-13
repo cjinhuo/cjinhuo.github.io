@@ -147,6 +147,251 @@ obj1.internal.a // 'aValue'
 3. 为了实现链式调用，then方法必须返回一个promise
 `promise2=promise1.then(onFulfilled,onRejected)`
 
+下面使用ES6的class写了有个初版的Promise
+```js
+class MyPromise{
+  constructor(callback){
+    this.status = 'pending'
+    this.value = undefined // status为resolved时返回的值
+    this.reason = undefined // status为rejected时返回的值
+    // 用来保存then传进来的函数，当状态改变时调用
+    this.onFullfilledArray = []
+    this.onRejectedArray = []
+    try {
+      // 由于resolve、reject都是在类外面执行的，所以需要绑定this
+      callback(this.resolve.bind(this), this.reject.bind(this))
+    } catch (error) {
+      this.reject(error)
+    }
+  }
+
+  //
+  reject(error) {
+    if (this.status === 'pending') {
+      this.status = 'rejected'
+      this.reason = error
+      this.onRejectedArray.forEach(f => {
+        // 执行then传的函数
+        f(error)
+      })
+    }
+    console.log('reject', error)
+  }
+
+  resolve(value) {
+    if (this.status === 'pending') {
+      this.status = 'resolved'
+      this.value = value
+      this.onFullfilledArray.forEach(f => {
+        // 执行then传的函数
+        f(value)
+      })
+    }
+    console.log('resolved', value)
+  }
+
+  // then函数可以传一个或两个函数
+  then(onFullfilled, onRejected) {
+    let tempPromise,
+        self = this
+    switch(this.status) {
+      case 'pending':
+        tempPromise = new MyPromise((resolve, reject) => {
+          self.onFullfilledArray.push(function (value) {
+            try {
+            let temp = onFullfilled(value)
+              resolve(temp)
+            } catch (error) {
+              reject(error)
+            }
+          });
+          self.onRejectedArray.push(function (reason) {
+            try {
+              let temp = onRejected(reason)
+              reject(temp)
+            } catch (error) {
+              reject(error)
+            }
+          });
+        })
+        break;
+      case 'resolved':
+        tempPromise = new MyPromise((resolve, reject) => {
+          try {
+            let temp = onFullfilled(self.value)
+            resolve(temp)
+          } catch (error) {
+            reject(error)
+          }
+        })
+        break;
+      case 'rejected':
+        tempPromise = new MyPromise((resolve, reject) => {
+          try {
+            let temp = onRejected(self.reason)
+            reject(temp)
+          } catch (error) {
+            reject(error)
+          }
+        })
+
+        break;
+    }
+    return tempPromise
+  }
+}
+
+
+let myPromise = new MyPromise((resolve, reject) => {
+  console.log('请求数据...')
+  setTimeout(() => {
+    resolve(1)
+  }, 1000);
+})
+myPromise.then(res => {
+  console.log('第一个then:',res)
+  return 2
+}).then(res => {
+  console.log('第二个then:', res)
+  return 3
+})
+
+// 输出结果：
+// 请求数据...
+// 第一个then: 1
+// 第二个then: 2
+// resolved 3
+// resolved 2
+// resolved 1
+```
+但是上面还有一个缺点，就是不能在then中return
+
+
+## js中new一个对象的过程
+::: tip
+首先了解new做了什么，使用new关键字调用函数（new ClassA(…)）的具体步骤：
+::: tip MDN原文
+1. Creates a blank, plain JavaScript object;
+2. Links (sets the constructor of) this object to another object;
+3. Passes the newly created object from Step 1 as the this context;
+4. Returns this if the function doesn't return its own object.
+:::
+1. 创建一个空白的纯js对象：var obj = {}
+2. 设置当前空对象的constructor指向另一个对象，设置新对象的__proto__属性指向构造函数的prototype对象；obj.__proto__ = ClassA.prototype
+3. 使用新对象调用函数，函数中的this被指向新实例对象: ClassA.call(obj);
+4. 将初始化完毕的新对象，保存到等号右边的变量中。
+:::
+
+## for与forEach的区别
+```js
+let arr = [1,2,3]
+
+arr.forEach(item => {
+  if(item === 2) {
+    arr.push(4)
+  }
+  console.log(item)
+})
+// 输出： 1 2 3
+
+for (let i = 0; i < arr.length; i++) {
+  if (arr[i] === 2){
+    arr.push(4)
+  }
+  console.log(arr[i])
+}
+// 输出：1 2 3 4
+```
+
+## 装饰器的原理
+::: tip 分类
+装饰器分为两类：作用于类的装饰器、作用于方法的装饰器，底层都是函数。
+:::
+* 作用于类的装饰器，写法举例
+```js
+function log (target) {  // 默认传参为 被修饰的类
+    target.prototype.logger = () => {console.log('装饰器--被调用')};
+}
+
+@log       // log 必须是函数
+class Myclass {};
+
+const test = new Myclass();
+test.logger();          // 装饰器--被调用
+```
+
+* 作用于方法的装饰器，写法举例
+```js
+Object.defineProperty(obj, prop, descriptor);
+class C {
+   @readonly (true);
+   method () {
+      console.log('cat');
+   }
+}
+
+function readonly (value) {
+   // target: 类原型
+   // key:    被修饰的属性或者方法
+   // descriptor: 被修饰的属性或方法的描述符对象
+   return function (target, key, descriptor) {
+      descriptor.writable = !value;
+      return descriptor;
+   }
+}
+
+const c = new C();
+c.method = () => {console.log('dog');} // 重写了method这个类方法
+c.method() // cat  => 设置属性只读成功
+```
+
+## eval&&Function
+::: tip eval
+eval可以取到上下文，但是在ES5后有个硬性规定：通过一个引用来调用它，而不是直接的调用 eval。 从 ECMAScript 5 起，它工作在全局作用域下，而不是局部作用域中。这就意味着，例如，下面的代码的作用声明创建一个全局函数，并且 eval 中的这些代码在执行期间不能在被调用的作用域中访问局部变量
+```js
+function test() {
+  var x = 2, y = 4;
+  console.log(eval('x + y'));  // 直接调用，使用本地作用域，结果是 6
+  var geval = eval; // 等价于在全局作用域调用
+  console.log(geval('x + y')); // 间接调用，使用全局作用域，throws ReferenceError 因为`x`未定义
+  (0, eval)('x + y'); // 另一个间接调用的例子
+​}
+```
+:::
+
+::: tip Function
+与eval不同的是它可以入参，还有不同的就是作用域总是指向全局作用域。
+:::
+
+MDN原文：
+
+Functions created with the Function constructor do not create closures to their creation contexts; they always are created in the global scope. When running them, they will only be able to access their own local variables and global ones, not the ones from the scope in which the Function constructor was created. This is different from using eval with code for a function expression.
+
+翻译：
+
+使用函数构造函数创建的函数不会对其创建上下文创建闭包;它们总是在全局范围内创建的。在运行它们时，它们只能访问自己的局部变量和全局变量，而不能访问创建函数构造函数的作用域中的变量。这不同于对函数表达式的代码使用eval。
+
+```js
+var x = 10;
+
+function createFunction1() {
+    var x = 20;
+    return new Function('return x;'); // 这里的 x 指向最上面全局作用域内的 x
+}
+
+function createFunction2() {
+    var x = 20;
+    function f() {
+        return x; // 这里的 x 指向上方本地作用域内的 x
+    }
+    return f;
+}
+
+var f1 = createFunction1();
+console.log(f1());          // 10
+var f2 = createFunction2();
+console.log(f2());          // 20
+```
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
