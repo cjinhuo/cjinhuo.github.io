@@ -392,6 +392,40 @@ console.log(f1());          // 10
 var f2 = createFunction2();
 console.log(f2());          // 20
 ```
+
+## Map && WeakMap
+::: tip WeakMap存在的意义
+WeakMap的专用场合就是防止内存泄漏，它的键所对应的对象，可能会在将来消失，WeakMap就会自动清除这个引用，而不是额外保留一份。
+:::
+### Map
+让我们先理解Map的基本用法：
+```js
+let obj = { test: 2 } // obj对象引用的计数是1
+let map = new Map()
+map.set(obj, '66') // obj对象引用的计数是2
+console.log(obj) // { test: 2 }
+console.log(map.get(obj))  // '66'
+obj.one = 1
+// 由于对应的是引用地址，所以还是可以取的到
+console.log(obj) // { test: 2, one: 1 }
+console.log(map.get(obj))  // '66'
+obj = { test: 2, one: 1 }
+console.log(map.get(obj))  // 'null'
+obj = null // obj对象引用的计数是1
+console.log(map) // Map { { test: 2, one: 1 } => '66' }
+```
+从上面的例子可以看出，不管`obj`里面的值怎么变，都可以拿到对应的值，除非是赋值然后引用地址变了，才取不到`map`的值。最后将obj置为null，obj对象引用的计数变为1，还是不会被垃圾回收机制回收。
+### WeakMap
+```js
+let obj = { test: 2 } // obj对象引用的计数是1
+let map = new WeakMap() // obj对象引用的计数是1
+map.set(obj, '66')
+console.log(map.get(obj))  // 'null'
+obj = null // obj对象引用的计数是0 随时会被垃圾回收
+console.log(map) // WeakMap { [items unknown] }
+```
+
+
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
