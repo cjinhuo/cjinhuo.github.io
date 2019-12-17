@@ -414,18 +414,26 @@ console.log(map.get(obj))  // 'null'
 obj = null // obj对象引用的计数是1
 console.log(map) // Map { { test: 2, one: 1 } => '66' }
 ```
-从上面的例子可以看出，不管`obj`里面的值怎么变，都可以拿到对应的值，除非是赋值然后引用地址变了，才取不到`map`的值。最后将obj置为null，obj对象引用的计数变为1，还是不会被垃圾回收机制回收。
+从上面的例子可以看出，不管`obj`里面的值怎么变，都可以拿到对应的值，除非是赋值然后引用地址变了，才取不到`map`的值。最后将`obj`置为`null`，`obj`对象引用的计数变为1，还是不会被垃圾回收机制回收。
 ### WeakMap
 ```js
 let obj = { test: 2 } // obj对象引用的计数是1
 let map = new WeakMap() // obj对象引用的计数是1
 map.set(obj, '66')
 console.log(map.get(obj))  // 'null'
-obj = null // obj对象引用的计数是0 随时会被垃圾回收
+obj = null // obj对象引用的计数是0 随时会被垃圾回收，其实map里面也没有了这个键值对
 console.log(map) // WeakMap { [items unknown] }
 ```
+WeakMap经常在保存节点时有用，请看下面例子：
+```js
+const wm = new WeakMap();
+const element = document.getElementById('example');
+wm.set(element, 'some information');
+wm.get(element) // "some information"
+```
+上面代码中，先新建一个 `Weakmap` 实例。然后，将一个 DOM 节点作为键名存入该实例，并将一些附加信息作为键值，一起存放在 `WeakMap` 里面。这时，`WeakMap` 里面对`element`的引用就是弱引用，不会被计入垃圾回收机制。
 
-
+也就是说，上面的 `DOM` 节点对象的引用计数是`1`，而不是`2`。这时，一旦消除对该节点的引用，它占用的内存就会被垃圾回收机制释放。`Weakmap` 保存的这个键值对，也会自动消失。
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
