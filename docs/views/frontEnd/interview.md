@@ -1064,5 +1064,36 @@ JSON.stringify(obj);      // '"bar"'
 JSON.stringify({x: obj}); // '{"x":"bar"}'
 ```
 
+## 浏览器缓存
+::: tip
+强缓存：不与服务器沟通，直接拿浏览器本地的缓存使用：expires、Cache-Control:max-age
+协商缓存：与服务器沟通，对比hash或者时间，看看是否要取浏览器本地的数据：ETag,Last-Modify
+:::
+### Last-Modify
+::: tip
+`Last-Modified`是一个响应头部，其中包含源头服务器认定的资源做出修改的日期及时间。 它通常被用作一个验证器来判断接收到的或者存储的资源是否彼此一致。由于精确度比`ETag`要低，所以这是一个备用机制。包含有`If-Modified-Since`或`If-Unmodified-Since`首部的条件请求会使用这个字段。
+::
+在server端我们还需要加上头Last-Modified。收到带Last-Modified这个头，下次浏览器发送request就会带上If-Modified-Since或者If-Unmodified-Since，服务器收到这个request的If-Modified-Since后，通过读取它的值对比资源存在的地方的Last-Modified，服务器就告诉浏览器是否可以使用缓存。
+### Expires
+无效的日期，比如 0, 代表着过去的日期，即该资源已经过期。
+
+如果在Cache-Control响应头设置了 "max-age" 或者 "s-max-age" 指令，那么 Expires 头会被忽略。
+### Cache-Control
+经常用的以下指令：
+#### no-cache
+在发布缓存副本之前，强制要求缓存把请求提交给原始服务器进行验证。比如响应头的`ETag`和客户端发送的`If-None-Match`字段互相校验判断是否是304状态。
+#### no-store
+缓存不应存储有关客户端请求或服务器响应的任何内容。就是每次都是请求服务器的数据。
+#### max-age=<seconds>
+设置缓存存储的最大周期，超过这个时间缓存被认为过期(单位秒)。与Expires相反，时间是相对于请求的时间。会覆盖Expires属性。
+
+### ETag
+::: tip
+ETagHTTP响应头是资源的特定版本的标识符。这可以让缓存更高效，并节省带宽，因为如果内容没有改变，Web服务器不需要发送完整的响应。而如果内容发生了变化，使用ETag有助于防止资源的同时更新相互覆盖（“空中碰撞”）
+:::
+Etag是一个更加严格的验证，它是根据文件的内容生成Etag（数据签名，最常用做法是对资源内容进行哈希计算），收到带Etag这个头，下次浏览器发送request就会带上If-Match或者If-Non-Match，服务器收到这个request的上If-Match或者If-Non-Match后，通过读取它的值对比资源存在的地方的Etag，服务器就告诉浏览器是否可以使用缓存
+
+
+
 
 

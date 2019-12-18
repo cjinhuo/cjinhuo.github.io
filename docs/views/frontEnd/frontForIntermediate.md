@@ -435,6 +435,7 @@ wm.get(element) // "some information"
 
 也就是说，上面的 `DOM` 节点对象的引用计数是`1`，而不是`2`。这时，一旦消除对该节点的引用，它占用的内存就会被垃圾回收机制释放。`Weakmap` 保存的这个键值对，也会自动消失。
 超链接 [文本](URL)
+
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
 
