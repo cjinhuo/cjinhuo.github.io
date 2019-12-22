@@ -528,6 +528,21 @@ alert(d instanceof Date)  ---------------> true
 alert(f instanceof Function) ------------> true
 alert(f instanceof function) ------------> false
 ```
+
+对象的Symbol.hasInstance属性，指向一个内部方法。当其他对象使用instanceof运算符，判断是否为该对象的实例时，会调用这个方法。比如，foo instanceof Foo在语言内部，实际调用的是`Foo[Symbol.hasInstance](foo)`。
+```js
+let a = {}
+Object[Symbol.hasInstance](a) // true
+```
+```js
+class MyClass {
+  // foo就是[1,2,3]
+  [Symbol.hasInstance](foo) {
+    return foo instanceof Array;
+  }
+}
+[1, 2, 3] instanceof new MyClass() // true
+```
 ### constructor *构造器*
 ```js
 alert(c.constructor === Array) ----------> true
