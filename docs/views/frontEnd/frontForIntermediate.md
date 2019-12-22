@@ -269,6 +269,8 @@ myPromise.then(res => {
 
 ## js中new一个对象的过程
 ::: tip
+new Funtion()
+
 首先了解new做了什么，使用new关键字调用函数（new ClassA(…)）的具体步骤：
 ::: tip MDN原文
 1. Creates a blank, plain JavaScript object;
@@ -277,11 +279,20 @@ myPromise.then(res => {
 4. Returns this if the function doesn't return its own object.
 :::
 1. 创建一个空白的纯js对象：var obj = {}
-2. 设置当前空对象的constructor指向另一个对象，设置新对象的__proto__属性指向构造函数的prototype对象；obj.__proto__ = ClassA.prototype
+2. 设置`obj`的构造器指向`Funtion`（函数本身就是构造器），设置新对象的__proto__属性指向构造函数的prototype对象；obj.__proto__ = ClassA.prototype
 3. 使用新对象调用函数，函数中的this被指向新实例对象: ClassA.call(obj);
 4. 将初始化完毕的新对象，保存到等号右边的变量中。
 :::
+通过上面的解释，我们发现凡是拥有构造器的都可以实例化，看下面的例子：
+```js
+let a = {}
+// a的构造器
+a.constructor // ƒ Object() { [native code] }
+let b = new a() // Uncaught TypeError: a is not a constructor
+```
+`a`的构造器是指向`Object()`函数，不是它自己的，所以不能实例化，所以我们只能这样`let c = Object()`。
 
+`class`也有自己的构造器所以也可以实例化，其他的都没办法实例化
 ## for与forEach的区别
 ```js
 let arr = [1,2,3]
