@@ -887,6 +887,43 @@ promise22
 setTimeout =》 微任务为空回来执行宏任务
 ```
 
+**再来看个例子**
+```js
+let onePromise = new Promise((resolve, reject) => {
+  console.log('请求数据...')
+  setTimeout(() => {
+    reject(1)
+  }, 100);
+})
+// 同步代码执行到这里时 twoPromise的状态为pending
+const twoPromise = onePromise.then(res => {
+  console.log(myPromise)
+  return 2
+})
+twoPromise.catch(error => {
+  console.log('catch', error)
+})
+onePromise.catch(error => {
+  console.log('another', error)
+})
+```
+代码从头执行到尾：
+1. 执行到`new Promise`时直接里面的函数，打印`console.log('请求数据...')`，将`setTimeout`放入`宏队列`['setTimeout']
+2. 执行`onePromise.then`，将函数放入onePromise的resolve状态队列中
+3. 执行到`twoPromise.catch`，将函数放入twoPromise的reject状态队列中
+4. 执行到`onePromise.catch`，将函数放入onePromise的reject状态队列中
+5. 执行宏任务队列中['setTimeout']的setTimeout，执行reject(1)，
+6. 导致`onePromise`状态改变为rejected，执行reject状态队列，也就是执行`onePromise.catch`，把`console.log('another', error)`放入微队列中，此时twoPromise的状态也随着onePromise的改变过渡过来，
+7. twoPromise的状态改变后触发reject状态队列，把`twoPromise.catch`放入微队列中。
+8. 执行微队列中的任务
+执行结果：
+```js
+请求数据...
+another 1
+catch 1
+```
+
+
 ## seal && freeze && preventExtensions
 ### Object.seal
 ::: tip
