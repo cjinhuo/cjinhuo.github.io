@@ -131,30 +131,34 @@ obj1.internal.a // 'aValue'
 :::
 经常被用到indexOf，如果是没有找到返回-1时，可以用`!~-1`表示`true`
 
-## 实现一个完美的Promise
+## 模拟实现一个完美的Promise
+::: tip
+这里说的是模拟，所以用setTimeout来模拟，但是setTimeout是属于宏任务，原生的Promise是微任务。但是可以在调用上面最大程度模拟出来，模拟之前可以看看[PromiseA+规范](https://promisesaplus.com/)，当我写完代码后，又画出了实现Promise的流程图。
+:::
 ### Promise/A+规范
 ::: tip
 1. 'promise'是一个对象或者函数
 2. 'thenable'是一个对象或者函数
 3. 'value'是promise状态成功时的值
 4. 'reason'是promise状态失败时的值
+下面是：promise的属性，当然还有一些静态方法没有给出，比如：`Promise.resolve`、`Promise.race`、`Promise.all`等等
 :::
+![](../../.vuepress/public/mock-promise-property.png)
+
 ### 要求
 1. 一个promise必须有3个状态，pending，fulfilled(resolved)，rejected当处于pending状态的时候，可以转移到fulfilled(resolved)或者rejected状态。当处于fulfilled(resolved)状态或者rejected状态的时候，就不可变。
 2. 一个promise必须有一个then方法，then方法接受两个参数：<br>
 其中onFulfilled方法表示状态从pending——>fulfilled(resolved)时所执行的方法，而onRejected表示状态从pending——>rejected所执行的方法。<br>
 `promise.then(onFulfilled,onRejected)`
-3. 为了实现链式调用，then方法必须返回一个promise
-`promise2=promise1.then(onFulfilled,onRejected)`
-
-下面使用ES6的class写了有个初版的Promise
+3. 为了实现链式调用，then方法必须返回一个新的`Promise`，并且将上一个promise的状态传入到新的promise上，以便后面的链式调用，可以在then返回一个一个promise，`return new Promise()`，所以我们新建了一个`resolvePromise`函数来处理这块逻辑。
+下面使用ES6的class完整的模拟的Promise
 ```js
-class MyPromise{
-  constructor(callback){
+class MyPromise {
+  constructor(callback) {
     this.status = 'pending'
     this.value = undefined // status为resolved时返回的值
     this.reason = undefined // status为rejected时返回的值
-    // 用来保存then传进来的函数，当状态改变时调用
+    // 用来保存then传进来的函数，当状态改变时调用，声明成数组的原因是一个promise可能多处定义then或catch
     this.onFullfilledArray = []
     this.onRejectedArray = []
     try {
@@ -165,7 +169,49 @@ class MyPromise{
     }
   }
 
-  //
+  /** 传入两个promise，将第二个的promise的value或者reason转移到currentPromise
+ * @callback resolve
+ * @callback reject
+ * @param {Promise} currentPromise 当前promise对象
+ * @param {*} x 当前resolve或者reject之后的结果
+ * @param {resolve} resolve 当前promise对象的resolve
+ * @param {reject} reject 当前promise对象的reject
+ */
+  static resolvePromise(currentPromise, x, resolve, reject) {
+    if (currentPromise === x) {
+      reject(new TypeError('Chaining cycle'));
+    }
+    // 如果结果x存在且是对象或者是一个函数
+    if (x && typeof x === 'object' || typeof x === 'function') {
+      let used; // then(cb1,cb2)cb1,cb2两者只能调用其中一个
+      try {
+        let then = x.then;
+        // 如果返回值x有then函数，则
+        if (typeof then === 'function') {
+          then.call(x, (y) => {
+            if (used) return;
+            used = true;
+            MyPromise.resolvePromise(currentPromise, y, resolve, reject);
+          }, (r) => {
+            if (used) return;
+            used = true;
+            reject(r);
+          });
+        } else {
+          if (used) return;
+          used = true;
+          resolve(x);
+        }
+      } catch (e) {
+        if (used) return;
+        used = true;
+        reject(e);
+      }
+    } else {
+      resolve(x);
+    }
+  }
+
   reject(error) {
     if (this.status === 'pending') {
       this.status = 'rejected'
@@ -175,7 +221,7 @@ class MyPromise{
         f(error)
       })
     }
-    console.log('reject', error)
+    // console.log('reject', error)
   }
 
   resolve(value) {
@@ -187,86 +233,78 @@ class MyPromise{
         f(value)
       })
     }
-    console.log('resolved', value)
+    // console.log('resolved', value)
   }
 
   // then函数可以传一个或两个函数
   then(onFullfilled, onRejected) {
+    onFullfilled = typeof onFullfilled === 'function' ? onFullfilled : value => value;
+    onRejected = typeof onRejected === 'function' ? onRejected : err => { throw err };
     let tempPromise,
-        self = this
-    switch(this.status) {
+      self = this
+    switch (this.status) {
       case 'pending':
         tempPromise = new MyPromise((resolve, reject) => {
+          // 保存.then传的第一个函数
           self.onFullfilledArray.push(function (value) {
-            try {
-            let temp = onFullfilled(value)
-              resolve(temp)
-            } catch (error) {
-              reject(error)
-            }
-          });
-          self.onRejectedArray.push(function (reason) {
-            try {
-              let temp = onRejected(reason)
-              reject(temp)
-            } catch (error) {
-              reject(error)
-            }
-          });
+            setTimeout(() => {
+              try {
+                let x = onFullfilled(value)
+                MyPromise.resolvePromise(tempPromise, x, resolve, reject)
+              } catch (error) {
+                reject(error)
+              }
+            })
+          })
+          // 保存.then传的第二个函数
+            self.onRejectedArray.push(function (reason) {
+              setTimeout(() => {
+                try {
+                    let x = onRejected(reason)
+                    MyPromise.resolvePromise(tempPromise, x, resolve, reject)
+                } catch (error) {
+                  reject(error)
+                }
+              })
+            })
         })
         break;
       case 'resolved':
         tempPromise = new MyPromise((resolve, reject) => {
-          try {
-            let temp = onFullfilled(self.value)
-            resolve(temp)
-          } catch (error) {
-            reject(error)
-          }
+          setTimeout(() => {
+            try {
+                let x = onFullfilled(self.value)
+                MyPromise.resolvePromise(tempPromise, x, resolve, reject)
+            } catch (error) {
+              reject(error)
+            }
+          })
         })
         break;
       case 'rejected':
         tempPromise = new MyPromise((resolve, reject) => {
-          try {
-            let temp = onRejected(self.reason)
-            reject(temp)
-          } catch (error) {
-            reject(error)
-          }
+          setTimeout(() => {
+            try {
+              if (onRejected) {
+                let x = onRejected(self.reason)
+                MyPromise.resolvePromise(tempPromise, x, resolve, reject)
+              }
+            } catch (error) {
+              reject(error)
+            }
+          });
         })
-
         break;
     }
     return tempPromise
   }
+  catch(onRejected) {
+    return this.then(null, onRejected);
+  }
 }
-
-
-let myPromise = new MyPromise((resolve, reject) => {
-  console.log('请求数据...')
-  setTimeout(() => {
-    resolve(1)
-  }, 1000);
-})
-myPromise.then(res => {
-  console.log('第一个then:',res)
-  return 2
-}).then(res => {
-  console.log('第二个then:', res)
-  return 3
-})
-
-// 输出结果：
-// 请求数据...
-// 第一个then: 1
-// 第二个then: 2
-// resolved 3
-// resolved 2
-// resolved 1
 ```
-但是上面还有一个缺点，就是不能在then中return
-
-
+为了更好的理解这段代码，画出了一个流程图:
+![](../../.vuepress/public/mock-promise-flowchart.png)
 ## js中new一个对象的过程
 ::: tip
 new Funtion()
@@ -485,7 +523,6 @@ HTTP到达服务器后，服务器进行对应的处理。最终把数据回传�
 不一定。这时候要判断`Connection`字段，如果请求头或响应中包含`Connection: Keep-Alive`，表示建立了持久连接，这样TCP连接会一直保持，之后请求统一站点的资源会复用这个连接。
 
 否则断开TCP连接, 请求-响应流程结束。
-
 
 超链接 [文本](URL)
 
