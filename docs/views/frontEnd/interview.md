@@ -805,7 +805,11 @@ ECMAScript定义了isNaN()函数。这个函数接受一个参数，该参数可
 
 ## Event Loop
 ::: tip
-在`JavaScript`中，任务被分为两种，一种宏任务（MacroTask）也叫Task，一种叫微任务（MicroTask）。
+在`JavaScript`中，任务被分为两种，一种宏任务（MacroTask）也叫Task，一种叫微任务（MicroTask）。JS会创建一个类似while(true)的循环，每执行一次循环体的过程称之为Tick。每次Tick的过程就是查看是否有待处理事件，如果有则取出相关事件及回调函数放入执行栈中有主线程执行。待处理的事件会存储在一个任务队列中，也就是每次Tick会查看任务队列中是否有需要执行的任务。
+
+异步操作会将相关回调添加到任务队列中。而不同的异步操作添加到任务队列的时机也不同，如onClick、setTimeout、ajax处理的方式都不同，这些异步操作是由浏览器内核的`webcore`来执行的，`webcore`包含`DOM Binding`、`network`、`timer`模块
+
+比如: onClick由浏览器内核的DOM Binding模块来处理，当事件触发的时候，回调函数会立即添加到任务队列中。
 :::
 ### MacroTask（宏任务）
 `script`全部代码、setTimeout、setINterval、I/0、UI Rendering
