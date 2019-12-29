@@ -3,7 +3,8 @@ title: '中级前端工程师面试题'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories: frontEnd
+categories:
+- frontEnd
 # 分类 共有三个分类： frontEnd work hobby
 date: 2019-02-12
 # 时间
@@ -523,6 +524,23 @@ HTTP到达服务器后，服务器进行对应的处理。最终把数据回传�
 不一定。这时候要判断`Connection`字段，如果请求头或响应中包含`Connection: Keep-Alive`，表示建立了持久连接，这样TCP连接会一直保持，之后请求统一站点的资源会复用这个连接。
 
 否则断开TCP连接, 请求-响应流程结束。
+
+### 算法篇
+::: tip  Content-Type:text/html
+完成了网络请求和响应，如果响应头中Content-Type的值是text/html，那么接下来就是浏览器的解析和渲染工作了。
+:::
+首先来介绍解析部分，主要分为以下几个步骤：
+* 构建`dom`树
+* 样式计算
+* 生成布局树(layout tree)
+
+构建dom树
+
+由于浏览器无法直接理解`html字符串`，因此将这一系列的字节流转换为一种有意义并且方便操作的数据结构，这种数据结构就是dom树。dom树本质上一个以`document`为根节点的多叉树。
+
+HTML文法的本质
+
+
 
 超链接 [文本](URL)
 
