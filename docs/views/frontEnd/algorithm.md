@@ -1086,3 +1086,102 @@ function filterTree(nodes, keyword) {
 }
 console.log(filterTree(data, '测试'))
 ```
+
+
+## 递归&&动态规划
+### 字符串
+::: tip
+输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+:::
+```js
+function permutationsOfStr2(str, result = '') {
+  if (str.length === 1) {
+    console.log(result + str[0])
+    return
+  }
+  for (let i = 0; i < str.length; i++) {
+    const res = [...str]
+    const s = res.splice(i, 1)
+    permutationsOfStr2(res, result + s)
+  }
+}
+let str = ['a', 'b', 'c']
+permutationsOfStr2(str)
+```
+
+::: tip
+字符串的子序列:比如输入字符串abc,则打印:a,ab,ac,abc,b,bc,c
+:::
+
+```js
+function getSubsequence(str, index = 0, result = '') {
+  if (index === str.length){
+    console.log(result)
+    return
+  }
+  getSubsequence(str, index + 1, result)
+  getSubsequence(str, index + 1, result + str[index])
+}
+```
+### 在一个矩阵中求最短路径
+::: tip
+给定一个包含非负整数的 m x n 网格，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+
+说明：每次只能向下或者向右移动一步。
+
+示例:
+
+输入:
+[
+  [1,3,1],
+  [1,5,1],
+  [4,2,1]
+]
+
+输出: 7
+
+解释: 因为路径 1→3→1→1→1 的总和最小。
+:::
+普通递归 暴力破解 时间复杂度：O(2^i+j) 空间复杂度:m+n（递归深度m+n）
+```js
+function walk(matrix, i, j) {
+  if (i === matrix.length - 1 && j === matrix[0].length - 1) {
+    return matrix[i][j]
+  }
+  if (j === matrix[0].length - 1) {
+    return matrix[i][j] + walk(matrix, i + 1, j)
+  }
+  if (i === matrix.length - 1) {
+    return matrix[i][j] + walk(matrix, i, j + 1)
+  }
+  const right = walk(matrix, i, j + 1)
+  const down = walk(matrix, i + 1, j)
+  return matrix[i][j] + Math.min(right, down)
+}
+```
+动态规划，逆向思维来求出最短路径
+
+两层for循环:时间复杂度:m+n，空间复杂度:m+n
+```js
+function dpOneWalk(matrix) {
+  let dp = JSON.parse(JSON.stringify(matrix))
+  for (let i = matrix.length - 1; i >= 0; i--) {
+    for (let j = matrix[0].length - 1; j >= 0; j--) {
+      if (i === matrix.length - 1 && j !== matrix[0].length - 1) {
+        dp[i][j] = matrix[i][j] + dp[i][j + 1]
+      } else if (j === matrix[0].length - 1 && i !== matrix.length - 1) {
+        dp[i][j] = matrix[i][j] + dp[i + 1][j]
+      } else if (j !== matrix[0].length - 1 && i !== matrix[0].length - 1) {
+        dp[i][j] = matrix[i][j] + Math.min(dp[i + 1][j], dp[i][j + 1])
+      } else {
+        dp[i][j] = matrix[i][j]
+      }
+    }
+  }
+  return dp[0][0]
+}
+```
+上面用的方法是另外新建一个dp数据，但是想想其实也可以不用新建额外的空间，从数组的最后一列最后一个行开始往前走，当前的路径和就是本身加上后面一个，到了倒二层时，就可以用到最后一层的数据了。思路和上面的方法差不多。
+
+
+
