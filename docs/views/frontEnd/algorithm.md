@@ -1141,8 +1141,11 @@ function getSubsequence(str, index = 0, result = '') {
 输出: 7
 
 解释: 因为路径 1→3→1→1→1 的总和最小。
+
+[leetcode地址](https://leetcode-cn.com/problems/minimum-path-sum/)
 :::
 普通递归 暴力破解 时间复杂度：O(2^i+j) 空间复杂度:m+n（递归深度m+n）
+
 ```js
 function walk(matrix, i, j) {
   if (i === matrix.length - 1 && j === matrix[0].length - 1) {
@@ -1181,7 +1184,23 @@ function dpOneWalk(matrix) {
   return dp[0][0]
 }
 ```
-上面用的方法是另外新建一个dp数据，但是想想其实也可以不用新建额外的空间，从数组的最后一列最后一个行开始往前走，当前的路径和就是本身加上后面一个，到了倒二层时，就可以用到最后一层的数据了。思路和上面的方法差不多。
+上面用的方法是另外新建一个dp数据，但是想想其实也可以不用新建额外的空间，从数组的最后一列最后一个行开始往前走，当前的路径和就是本身加上后面一个，到了倒二层时，就可以用到最后一层的数据了。思路和上面的方法差不多，代码如下:
 
+时间复杂度：m+n，空间复杂度: 1
+```js
+function dpTwoWalk(matrix) {
+  for (let i = matrix.length - 1; i >= 0; i--) {
+    for (let j = matrix[0].length - 1; j >= 0; j--) {
+      if (i == matrix.length - 1 && j != matrix[0].length - 1)
+        matrix[i][j] = matrix[i][j] + matrix[i][j + 1];
+      else if (j == matrix[0].length - 1 && i != matrix.length - 1)
+        matrix[i][j] = matrix[i][j] + matrix[i + 1][j];
+      else if (j != matrix[0].length - 1 && i != matrix.length - 1)
+        matrix[i][j] = matrix[i][j] + Math.min(matrix[i + 1][j], matrix[i][j + 1]);
+    }
+  }
+  return matrix[0][0]
+}
+```
 
 

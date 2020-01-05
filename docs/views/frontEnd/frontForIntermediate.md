@@ -1,5 +1,5 @@
 ---
-title: '中级前端工程师面试题'
+title: '中级前端工程师'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
@@ -11,12 +11,9 @@ date: 2019-02-12
 tags:
 - 前端
 - 中级前端工程师
-- 面试题
+# - 面试题
 # 标签
 ---
-
-::: tip 概述
-:::
 
 ## 在JS中定义枚举的首选语法是什么
 ::: tip Object.freeze

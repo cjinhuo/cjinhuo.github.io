@@ -18,6 +18,8 @@ tags:
 # 标签
 ---
 
+本文翻译自`martinfowler`的[Inversion of Control Containers and the Dependency Injection pattern](https://martinfowler.com/articles/injection.html)
+
 ::: tip 概述
 IoC（Inversion of Control）即“控制反转”，不是什么技术，而是一种设计思想。尤其是在OOP的设计思想当中运用相当广泛。
 
@@ -490,3 +492,4 @@ public class MyMovieLister implements MovieLister, Serviceable {
 如果使用依赖项注入，则有许多样式可供选择。我建议您遵循构造函数注入，除非您遇到这种方法的特定问题之一，在这种情况下切换到setter注入。如果选择构建或获取容器，请寻找同时支持构造函数和setter注入的容器。
 
 服务定位器和依赖项注入之间的选择没有将服务配置与应用程序中的服务使用分离开来的原则重要。
+
