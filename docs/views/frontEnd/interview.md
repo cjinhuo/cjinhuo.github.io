@@ -348,17 +348,6 @@ Ob.delete(one)
 Ob.publish('blue')
 
 ```
-## Vue的data是怎么实现
-在Vue早期版本的时候是用
-``` js
-Object.defineProperty(window, 'fetch', {
-  writable: false
-});
-
-Object.defineProperty(key, prop, {
-  //配置
-})
-```
 ## 去重数组
 ``` js
 function dedupe(array) {
@@ -370,12 +359,6 @@ dedupe([1, 1, 2, 3]) // [1, 2, 3]
 1. 在有些情况下可以用路由传参
 2. 用Vuex作为载体传参、监听
 3. 用兄弟的父元素来监听两个子组件的变换统一分配数据
-
-## Vue中的计算属性可以调用计算属性吗？
-
-答案是可以的，因为，在你调用时会触发，在调用后该计算属性的`getter`，而且前后顺序没有函数提示：`Maximum call stack size exceeded`，
-计算属性是在调用后才执行里的语句，跟函数是一样的。
-
 ## 用indexOf来实现简易版的include
 
 ```js
@@ -385,7 +368,6 @@ Array.prototype.myIncludes = function(e){
 ```
 
 ## 排序对象数组
-
 ```js
 const compareAscending = function (propName) {
   return function (obj1, obj2) {

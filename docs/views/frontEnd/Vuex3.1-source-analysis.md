@@ -67,12 +67,6 @@ function applyMixin(Vue) {
   }
 }
 ```
-## 第一个大标题
-
-
-
-
-
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
