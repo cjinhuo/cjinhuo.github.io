@@ -14,7 +14,7 @@ tags:
 ---
 
 ::: tip 概述
-当遇到一些要死记的东西时会记在这边。
+当遇到一些要概念性的东西时会记在这边。
 :::
 
 ## http
@@ -73,7 +73,7 @@ OPTIONS请求方法的主要用途有两个：
 
 ## MutationObserver
 ::: tip MutationObserver API
-Mutation Observer API 用来监视 DOM 变动。DOM 的任何变动，比如节点的增减、属性的变动、文本内容的变动，这个 API 都可以得到通知
+Mutation Observer API 用来监视 DOM 变动。DOM 的任何变动，比如节点的增减、属性的变动、文本内容的变动，这个 API 都可以得到通知，该API是
 :::
 [api地址](https://wangdoc.com/javascript/dom/mutationobserver.html)
 
@@ -158,11 +158,15 @@ console.log(say.say()) // say function'
 ### AMD
 ::: tip
 Asynchronous Module Definition(异步组件定义)，提前加载依赖
+
+需要引入RequireJS包
 :::
 ### CMD
 ::: tip
 Common Module Definition，AMD的优化版，依赖后置，使用时才加载，
 RequireJS提供延迟加载功能
+
+需要引入SeaJS包
 :::
 ### module.exports 、exports、export、export default的区别
 `module.exports`和`exports`属于CommonJS模块规范，`module.exports`和`exports`导出模块，用require引入模块。

@@ -5,7 +5,6 @@ sidebar: auto
 categories:
 - frontEnd
 tags:
-# - 面试
 - 前端
 - 前端基础
 ---
@@ -1140,7 +1139,7 @@ JSON.stringify({x: obj}); // '{"x":"bar"}'
 在发布缓存副本之前，强制要求缓存把请求提交给原始服务器进行验证。比如响应头的`ETag`和客户端发送的`If-None-Match`字段互相校验判断是否是304状态。
 #### no-store
 缓存不应存储有关客户端请求或服务器响应的任何内容。就是每次都是请求服务器的数据。
-#### max-age=<seconds>
+#### max-age=<`seconds`>
 设置缓存存储的最大周期，超过这个时间缓存被认为过期(单位秒)。与Expires相反，时间是相对于请求的时间。会覆盖Expires属性。
 
 ### ETag
