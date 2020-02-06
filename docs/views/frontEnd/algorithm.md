@@ -1054,9 +1054,8 @@ const data = [{
 
 
 
-
 function filterTree(nodes, keyword) {
-// 利用回溯，优先遍历子节点，遍历完子节点然后给父节点打上标签，时间复杂度为O(n)
+  // 利用回溯，优先遍历子节点，遍历完子节点然后给父节点打上标签，时间复杂度为O(n)
   const setFlag = (nodes, keyword) => {
     // 给父节点返回的标志
     let isParentNeed = false
@@ -1064,8 +1063,9 @@ function filterTree(nodes, keyword) {
       if (item.children && item.children.length !== 0) {
         item.isNeed = setFlag(item.children, keyword)
       }
+      // 两种情况：1.自身含有关键字 2.子元素含有关键字
       if (item.txt.includes(keyword)) {
-        isParentNeed ? '' : isParentNeed = true
+        isParentNeed = true
         item.isNeed = true
       } else {
         item.isNeed ? isParentNeed = true : item.isNeed = false
@@ -1084,9 +1084,9 @@ function filterTree(nodes, keyword) {
   setFlag(nodes, keyword)
   return filterNotIsNeed(nodes)
 }
-console.log(filterTree(data, '测试'))
+console.log(filterTree(data, '测试2'))
 ```
-上面的方法是先在每个打上节点标识，表示是否保留，然后再遍历一次过滤那些不需要的节点，下面得算法直接在数组上面删除，复杂度真正做到O(n)
+上面的方法是先在每个打上节点标识，表示是否保留，然后再遍历一次过滤那些不需要的节点，**我原本以为可以做到复杂度为O(n):因为所有元素都是父元素遍历得到的，所以当确定当前子元素不需要时就可以直接删除，但是下标需要通过遍历才能取到（如果用过了splice后，后面的index就乱套了），但是由于下标的问题还是会大于O(n)**
 
 ```js
 function filterTree(nodes, keyword) {
@@ -1105,6 +1105,7 @@ function filterTree(nodes, keyword) {
         item.isNeed ? isParentNeed = true : item.isNeed = false
       }
       if (!item.isNeed) {
+        // 这里有问题，由于用了splice，数组的长度就变换了
         nodes.splice(index, 1)
       }
     })
