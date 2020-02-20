@@ -908,7 +908,72 @@ another 1
 catch 1
 ```
 
+## JS中的捕获和冒泡
+::: tip Dom事件流
+don事件流分成三个阶段：
 
+捕获阶段：通过从目标的祖先中的事件对象传播窗口到目标的父。此阶段也称为捕获阶段。
+
+目标阶段：本次活动对象到达事件对象的事件的目标。此阶段也称为目标阶段。如果事件类型指示事件不会冒泡，则事件对象将在此阶段完成后停止。
+
+气泡阶段：通过以相反的顺序目标的祖先中的事件对象传播，开始与目标的父和与所述结束窗口。此阶段也称为冒泡阶段。
+:::
+捕获阶段：首先只有在`addEventListener`的第三个参数为true时才能触发事件捕获，从当前设置的true的元素，一直往下找并且触发同类型事件。
+
+目标阶段： 捕获一直往下找，直到当前点击的元素。
+
+冒泡阶段：执行完目标本身事件后就开始冒泡阶段，冒泡事件是比较常见的，因为默认`addEventListener`的第三个参数为false，所以平常的所写的ele.onclick事件都是默认冒泡的，冒泡就是从当前点击的元素一级一级往上同类型的事件并且触发。
+
+看个例子：
+```html
+  <div id="div1">
+    <div id="div2">
+      <button id="button1">click me</button>
+    </div>
+  </div>
+  <script>
+    　　var div = document.getElementById("div1");
+      var btn = document.getElementById("button1");
+      var div2 =  document.getElementById("div2");
+      div.addEventListener("click", function () {  alert("1 div1"); }, true);
+      div.addEventListener("click", function () { alert("2 div1"); }, false);
+      div2.addEventListener("click", function () { alert("1 div2"); }, false);
+      btn.onclick = function() {
+        alert("1 button");
+      }
+      btn.addEventListener("click", function () { alert("2 button"); }, false);
+  </script>
+```
+::: tip 点击按钮后，结果：
+捕获阶段：1 div1
+目标阶段：1 button -> 2 button
+冒泡阶段：1 div2 -> 2 div1
+:::
+让我们再改改`addEventListener`的第三个参数:
+```html
+  <div id="div1">
+    <div id="div2">
+      <button id="button1">click me</button>
+    </div>
+  </div>
+  <script>
+    　var div = document.getElementById("div1");
+      var btn = document.getElementById("button1");
+      var div2 =  document.getElementById("div2");
+      div.addEventListener("click", function () {  alert("1 div1"); }, true);
+      div.addEventListener("click", function () { alert("2 div1"); }, false);
+      div2.addEventListener("click", function () { alert("1 div2"); }, true);
+      btn.onclick = function() {
+        alert("1 button");
+      }
+      btn.addEventListener("click", function () { alert("2 button"); }, true);
+  </script>
+```
+::: tip 点击按钮后，结果：
+捕获阶段：1 div1 -> 1 div2
+目标阶段：1 button -> 2 button  // 到了目标阶段，也就是`target`本身，不管`useCapture`是否为true，都不能提升代码中顺序事件的触发
+冒泡阶段：2 div1
+:::
 ## seal && freeze && preventExtensions
 ### Object.seal
 ::: tip
