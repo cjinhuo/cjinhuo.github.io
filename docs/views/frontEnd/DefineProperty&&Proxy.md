@@ -3,14 +3,14 @@ title: 'DefineProperty和Proxy的响应式'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories: frontEnd
+categories:
+- frontEnd
 # 分类 共有三个分类： frontEnd work hobby
 date: 2019-10-31
 # 时间
 tags:
 - Vue
 - 响应式数据
-# 标签
 ---
 
 ::: tip 概览

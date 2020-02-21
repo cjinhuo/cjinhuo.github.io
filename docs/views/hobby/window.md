@@ -1,9 +1,9 @@
 ---
-title: 'win10优化'
+title: 'win10优化&破解'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories: 
+categories:
  - hobby
 # 分类
 date: 2019-02-12
@@ -46,7 +46,9 @@ tags:
 ## win10 破解
 
 ### 网址
-[破解软件](https://www.nsaneforums.com/topic/312871-windows-10-digital-license-hwid-kms38%E2%84%A2-generation/) 
+[最新破解软件](https://github.com/qqj147258/HWIDGen/blob/master/README.md)
+
+[破解软件](https://www.nsaneforums.com/topic/312871-windows-10-digital-license-hwid-kms38%E2%84%A2-generation/)
 打开网址，网页中会出现类似下面图片的内容，把Site和Sharecode的内容拼接起来。
 ![](../../.vuepress/public/crack.png)
 
@@ -54,4 +56,9 @@ tags:
 ## 镜像下载
 
 ### 网址
-[破解软件](https://msdn.itellyou.cn/)
+[window系统](https://msdn.itellyou.cn/)
+
+## U盘启动软件
+::: tip
+rufus
+:::
