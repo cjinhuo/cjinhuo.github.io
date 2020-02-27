@@ -1040,6 +1040,89 @@ var Watcher = function Watcher(
     this.newDeps.length = 0;
 ```
 
+### queueWatcher
+::: tip
+* 推入一个watcher到当前队列queue
+* 根据watcher的id来判断，确保不会重复
+:::
+```js
+  function queueWatcher(watcher) {
+    var id = watcher.id;
+    if (has[id] == null) {
+      has[id] = true;
+      if (!flushing) {
+        queue.push(watcher);
+      } else {
+        // if already flushing, splice the watcher based on its id
+        // if already past its id, it will be run next immediately.
+        var i = queue.length - 1;
+        while (i > index && queue[i].id > watcher.id) {
+          i--;
+        }
+        queue.splice(i + 1, 0, watcher);
+      }
+      // queue the flush
+      if (!waiting) {
+        waiting = true;
+
+        if (!config.async) {
+          flushSchedulerQueue();
+          return
+        }
+        nextTick(flushSchedulerQueue);
+      }
+    }
+  }
+```
+举个例子：
+```html
+<body>
+    <div id="app">
+        <p ref="message">{{message}}</p>
+        <p ref="code">{{code}}</p>
+        <p>{{realArr}}</p>
+        <button @click="onClick">click</button>
+    </div>
+    <script>
+        var app = new Vue({
+            el:'#app',
+            data: {
+                message: 'origin',
+                code: 1,
+            },
+            watch:{
+                message(newVal, oldVal) {
+                    console.log(newVal, oldVal)
+                },
+                code(value){
+                    console.log('t:', value)
+                }
+            },
+            methods:{
+                onClick() {
+                    this.message = 'changed'
+                    this.$nextTick(() => console.log(this.$refs.code))
+                    this.code = 2'
+                }
+            }
+        })
+    </script>
+</body>
+```
+点击按钮时（注意queue = []、callBack = []是全局变量）
+1. 执行到`this.message = 'changed'`
+
+`queue`会`push`两个watcher，一个是`message`对应的`user watcher`，一个是`render wacther`，`callBack`有一个包含执行`queue`的函数
+
+2. 执行到`this.$nextTick(() => console.log(this.$refs.code))`
+
+`queue`还是两个`watcher`，`callBack`会`push`一个函数也就是`() => console.log(this.$refs.code)`
+
+3. 执行到`this.code = 2`
+
+`queue`增加一个`code`对应的`user watcher`，想再次加入`render watcher`时，发现里面已经有一个`render watcher`就不会重复添加（根据`watcher.id`来判断）
+
+4. 这时同步代码都执行完，现在开始执行`flushCallbacks()`，里面依次执行`callBack`函数，`callBack[0]`包含执行queue的函数，执行`queue`里面的所有的`watcher.run`，这个时候页面节点就已经发生改变了，由于`this.code`对应的`watcher`也在当前`queue`里面，所以执行`callBack[1]`时，就可以取到最新的节点内容。
 ### flushSchedulerQueue
 ```js
 function flushSchedulerQueue () {
