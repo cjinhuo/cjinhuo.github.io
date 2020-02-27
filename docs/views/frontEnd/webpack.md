@@ -78,6 +78,16 @@ path.join('foo', {}, 'bar');
 ## 入口
 ### 多入口
 
+## hash、chunkHash、contentHash的区别
+### hash
+如果都使用hash的话，即每次修改任何一个文件，所有文件名的hash至都将改变。所以一旦修改了任何一个文件，整个项目的文件缓存都将失效。
+
+### chunkHash
+chunkHash根据不同的入口文件(entry)进行依赖文件解析、构建对应的chunk，生成对应的哈希值。在生产环境里把一些公共库和程序入口文件区分开，单独打包构建，接着我们采用`chunkhash`的方式生成哈希值，那么只要我们不改动公共库的代码，就可以保证其哈希值不会受影响。
+
+### contentHash
+contenthash是针对文件内容级别的，只有你自己模块的内容变了，那么hash值才改变，所以我们可以通过contenthash解决上诉问题。
+
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
