@@ -556,8 +556,48 @@ HTML文法的本质
 利用flex可以实现
 
 ## import && require
-::: tip 
+::: import
+编译时调用，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值。
+```js
+// lib.js
+var counter = 3;
+function incCounter() {
+  counter++;
+}
+module.exports = {
+  counter: counter,
+  incCounter: incCounter,
+};
 
+// main.js
+var mod = require('./lib');
+
+console.log(mod.counter);  // 3
+mod.incCounter();
+console.log(mod.counter); // 4
+```
+:::
+
+::: require
+运行时调用，输出的是一个值的拷贝，一旦输出一个值，模块内部的变化就影响不到这个值。
+```js
+// lib.js
+var counter = 3;
+function incCounter() {
+  counter++;
+}
+module.exports = {
+  counter: counter,
+  incCounter: incCounter,
+};
+
+// main.js
+var mod = require('./lib');
+
+console.log(mod.counter);  // 3
+mod.incCounter();
+console.log(mod.counter); // 3
+```
 :::
 
 超链接 [文本](URL)
