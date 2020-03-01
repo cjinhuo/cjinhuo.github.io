@@ -303,6 +303,73 @@ class MyPromise {
 ```
 为了更好的理解这段代码，画出了一个流程图:
 ![](../../.vuepress/public/mock-promise-flowchart.png)
+## 继承的几种方式
+```js
+function Father(name) {
+  // 属性
+  this.name = name || 'father',
+    // 实例方法
+    this.sleep = function () {
+      console.log(this.name + "正在睡觉");
+    }
+}
+// 原型方法
+Father.prototype.look = function (book) {
+  console.log(this.name + "正在看:" + book);
+}
+```
+### 原型继承
+父类中私有的和公有的都继承到了子类原型上
+```js
+function Son(){}
+Son.prototype = new Father() // 重写了Son的原型
+Son.prototype.constructor = Son
+```
+### 构造继承
+只是将Father的私有属性拷贝一份给Son，并没有将原型链指向Father
+```js
+function Son() {
+  Father.call(this)
+}
+```
+### 混合模式
+有点弊端，会实例化两次Father，而且Father的私有属性也会在Son的原型上
+```js
+function Son() {
+  Father.call(this)
+}
+Son.prototype = new Father()
+Son.prototype.constructor = Son
+```
+
+### 寄生组合模式
+解决了混合模式的弊端
+```js
+function Son() {
+  Father.call(this)
+}
+// Object.create的Polyfill
+function myCreate(proto) {
+  function fn() {}
+  fn.prototype = proto
+  return fn
+}
+Son.prototype = myCreate(Father.prototype)
+Son.constructor = Son
+```
+::: tip 注意
+ 如果将`Son.prototype = myCreate(Father.prototype)`改成`Son.prototype = Father.prototype`，虽然还是继承了，但是Father的原型和Son的原型是同一个引用地址，所以改动Son.prototype时就会将Father一起改动。
+:::
+### ES6中extends的实现
+```js
+function Son() {
+  Father.call(this)
+}
+Son.prototype = Object.create(Father.prototype,
+  { constructor: { value: Son, writable: true, configurable: true } });
+Son.__proto__ = Father
+```
+
 ## js中new一个对象的过程
 ::: tip
 new Funtion()
