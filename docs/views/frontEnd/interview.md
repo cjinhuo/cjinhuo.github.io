@@ -1173,7 +1173,7 @@ JSON.stringify({x: obj}); // '{"x":"bar"}'
 :::
 ### Last-Modify
 ::: tip
-`Last-Modified`是一个响应头部，其中包含源头服务器认定的资源做出修改的日期及时间。 它通常被用作一个验证器来判断接收到的或者存储的资源是否彼此一致。由于精确度比`ETag`要低，所以这是一个备用机制。包含有`If-Modified-Since`或`If-Unmodified-Since`首部的条件请求会使用这个字段。
+`Last-Modified`是一个响应头部，其中包含源头服务器认定的资源做出修改的日期及时间。 它通常被用作一个验证器来判断接收到的或者存储的资源是否彼此一致。由于精确度比`ETag`要低（因为日期只能精确到秒，而服务器更改文件可以在一秒内更改多次），所以这是一个备用机制。包含有`If-Modified-Since`或`If-Unmodified-Since`首部的条件请求会使用这个字段。
 ::
 在server端我们还需要加上头Last-Modified。收到带Last-Modified这个头，下次浏览器发送request就会带上If-Modified-Since或者If-Unmodified-Since，服务器收到这个request的If-Modified-Since后，通过读取它的值对比资源存在的地方的Last-Modified，服务器就告诉浏览器是否可以使用缓存。
 ### Expires
