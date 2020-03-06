@@ -615,6 +615,18 @@ this.$route.query.type
 可以传对象，但是地址栏会出现一些乱码，目标页也可以接收的到对象，但是目标页刷新下就会失去这个对象因为地址栏不支持保存对象，所以传过去的时候用JSON.stringify转成字符串，接收的时候再转成对象。
 :::
 
+## extends vue
+类似mixin，允许声明扩展另一个组件(可以是一个简单的选项对象或构造函数)
+
+## 父组件与子组件的钩子函数执行顺序：
+父beforeCreated->父created->父beforeMount->子created->子beforeMount->子mounted->父mounted
+### 子组件更新过程
+父beforeUpdate->子beforeUpdate->子updated->父updated
+### 父组件更新过程
+父beforeUpdate->父updated
+### 销毁过程
+父beforeDestroy->子beforeDestroy->子destroyed->父destroyed
+
 ## 什么时候用到Vuex
 如果数据传到后台，不同的组件使用的话，都可以从后台拿到数据，只是网络请求开销比较大，父子组件通信的话，可以直接emit,而多层嵌套组件通信就需要有vuex这样的解决方案，公共数据托管在state里，不同的组件都可以拿到这个数据。
 
