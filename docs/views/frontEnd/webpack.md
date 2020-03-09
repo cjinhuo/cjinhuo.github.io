@@ -109,6 +109,9 @@ contenthash是针对文件内容级别的，只有你自己模块的内容变了
 ### 插件
 `terser-webpack-plugin`优化打包后的js、css
 
+## 项目优化策略
+
+
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
