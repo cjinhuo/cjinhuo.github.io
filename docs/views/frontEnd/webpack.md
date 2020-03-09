@@ -88,6 +88,27 @@ chunkHash根据不同的入口文件(entry)进行依赖文件解析、构建对�
 ### contentHash
 contenthash是针对文件内容级别的，只有你自己模块的内容变了，那么hash值才改变，所以我们可以通过contenthash解决上诉问题。
 
+## Optimization
+### splitChunks
+::: tip
+缓存组的公共配置
+:::
+### runtimeChunk
+::: tip
+解决了文件名变换，导致缓存失效的问题。
+:::
+```js
+  optimization: {
+    runtimeChunk: {
+      name: entrypoint => `runtimechunk~${entrypoint.name}`
+    }
+  }
+```
+当打包后生成a,b,c模块，每个模块都自己的hash值，其中a引用了c，b引用了c，当c发生改变时，c对应的hash变了，正常情况下a,b的hash也会变，这时需要runtimeChunk来作为一个文件中心（包含每个文件的hash值），a，b只要向runtimeChunk获取c的文件内容就行，这样就浏览器就不会重新请求a，b文件。
+
+### 插件
+`terser-webpack-plugin`优化打包后的js、css
+
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
