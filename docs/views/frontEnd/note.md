@@ -346,6 +346,111 @@ HTTP/2成功的关键在于，它实现了显著的性能改善，同时保持�
 3. Get请求会被浏览器主动cache，而POST不会，除非手动设置。
 4. GET请求是幂等的，意味着不论执行多少次，产生的效果和返回的结果都是一样的，客户端可以向服务器重复地发送GET请求而不会产生负面影响，反之，POST请求是非幂等的。
 5. `get`产生一个`tcp`数据包，浏览器会把`http header`和`data`一并发送出去，服务器响应200（返回数据），`post`产生两个tcp数据包，浏览器会先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200（返回数据）**(并不是所有浏览器都会在POST中发送两次包，Firefox就只发送一次)**
+
+## 字节跳动面试-2020-03-12
+### http1.0 http1.1 http2.0
+::: tip
+我说了漏了一个http0.9
+:::
+### cookie不同域名下怎么取
+::: tip 不同域名下怎么取
+a.com下面种的cookie，在b.a.com下怎么取a.com的cookie
+:::
+1. domain表示的是cookie所在的域，默认为请求的地址，如网址为www.jb51.net/test/test.aspx，那么domain默认为www.jb51.net。而跨域访问，如域A为t1.test.com，域B为t2.test.com，那么在域A生产一个令域A和域B都能访问的cookie就要将该cookie的domain设置为.test.com；如果要在域A生产一个令域A不能访问而域B能访问的cookie就要将该cookie的domain设置为t2.test.com。
+
+2. path表示cookie所在的目录，asp.net默认为/，就是根目录。在同一个服务器上有目录如下：/test/,/test/cd/,/test/dd/，现设一个cookie1的path为/test/，cookie2的path为/test/cd/，那么test下的所有页面都可以访问到cookie1，而/test/和/test/dd/的子页面不能访问cookie2。这是因为cookie能让其path路径下的页面访问
+
+3. 浏览器会将domain和path都相同的cookie保存在一个文件里，cookie间用*隔开
+
+4. 含值键值对的cookie：以前一直用的是nam=value单键值对的cookie，一说到含多个子键值对的就蒙了。现在总算弄清楚了。含多个子键值对的cookie格式是name=key1=value1&key2=value2。可以理解为单键值对的值保存一个自定义的多键值字符串，其中的键值对分割符为&，当然可以自定义一个分隔符，但用asp.net获取时是以&为分割符。
+
+### cookie和localStorage的区别
+cookie: 如果没有设置过期时间的话会浏览器关闭后会自动清除、大小只有4k、请求头会带上cookie1的path是
+
+localStorage: 没有过期时间的属性，只能手动清除、大小可以有5M，请求头不会自动带
+### 跨域的方式
+1. cors:服务端设置的字段是哪个：Access-Control-Allow-Origin:''
+
+2. jsonp，函数实现方式
+```js
+function jsonp(url, callback){
+    window.getData = callback
+    let script = document.createElement('script')
+    script.setAttribute('src', `${url}?callbackName=getData`)
+    document.body.appendChild(script)
+}
+```
+
+### http中有哪几种请求方式
+1. OPTIONS 预检请求
+2. Get
+3. POST
+4. PUT
+5. DELETE
+6. TRACE 回馈服务器收到的请求，用于远程诊断服务器
+7. CONNECT 用于代理进行传输，如使用ssl
+8. HEAD 与GET很像，但是不返回响应体信息，用于检查对象是否存在，并获取包含在响应头中的消息
+
+### 请求头和响应头的字段
+脑子短路，只回答了content-type、cookie、请求源
+::: tip 请求头
+1. Accept
+2. Accept-Encoding
+3. Accept-Language
+4. Connection
+5. Content-type
+6. Cookie
+7. Host
+8. Origin
+9. Referer
+10. User-Agent
+:::
+
+::: tip 响应头
+1. Access-Control-Allow-Credentials
+2. Access-Control-Allow-Headers
+3. Access-Control-Allow-Methods
+4. Access-Control-Allow-Origin
+5. Access-Control-Expose-Headers
+6. Access-Control-Max-Age
+7. Connection
+8. Content-Length
+9. Content-Type
+10. Date
+11. Vary: Accept-Encoding =>
+:::
+
+## 域名
+### 顶级域
+也叫国际顶级域
+<br/>>.com 供商业机构使用，但无限制最常用
+　　<br/>.net 原供网络服务供应商使用，现无限制
+　　<br/>.org 原供不属于其他通用顶级域类别的组织使用，现无限制
+　　<br/>.edu /.gov / .mil 供美国教育机构/美国政府机关/美国军事机构。因历史遗留问题一般只在美国专用
+　　<br/>.aero 供航空运输业使用
+　　<br/>.biz 供商业使用
+　　<br/>.coop 供联合会（cooperatives）使用
+　　<br/>.info 供信息性网站使用，但无限制
+　　<br/>.museum 供博物馆使用
+　　<br/>.name 供家庭及个人使用
+　　<br/>.pro 供部分专业使用
+　　<br/>.asia 供亚洲社区使用
+　　<br/>.tel 供连接电话网络与因特网的服务使用
+　　<br/>.post 供邮政服务使用
+　　<br/>.mail 供邮件网站使用
+
+国家顶级域名：cn（中国大陆）、de（德国）、eu（欧盟）、jp（日本）、hk（中国香港）、tw（中国台湾）、uk（英国）、us（美国）
+### 一级域名
+又叫顶级域名，一串字符串中间一个点隔开，例如baidu.com，这里说明一下，www.baidu.com不是一级域名！！而是二级域名！
+### 二级域名
+com 顶级域名/一级域名
+baidu.com 二级域名。
+tieba.baidu.com 三级域名。
+detail.tieba.baidu.com 四级域名。。。以此类推
+### 子域名
+子域名（或子域；英语：Subdomain）是在域名系统等级中，属于更高一层域的域。比如，mail.example.com和calendar.example.com是example.com的两个子域，而example.com则是顶级域.com的子域。凡顶级域名前加前缀的都是该顶级域名的子域名，而子域名根据技术的多少分为二级子域名，三级子域名以及多级子域名。
+### .com.cn && .cn
+按理说.com是一个顶级域，但是在`.com.cn`下面就是一个二级域名，表示中国商业的意思，.cn还是一个一级域名，表示中国大陆
 ## 后端返回流下载
 ::: tip
 正常情况下window.open可以解决下载问题，但是有时候要在请求头里面加参数，比如一些权限验证，就可以用下面的代码
