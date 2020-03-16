@@ -908,6 +908,35 @@ another 1
 catch 1
 ```
 
+## 形参&&默认参数
+函数作用域里面优先找变量
+```js
+const data = {test:1}
+function test(data) {
+    console.log(data)
+}
+test() // undefined
+```
+
+`data={...data}`相当于`let a = a`导致定义`a`变量时同时赋值`a`变量所以会报错
+```js
+const data = {test:1}
+function test(data={...data}) {
+    console.log(data)
+}
+test() // {...data} => data is not defined
+```
+
+默认参数相当于是赋值，向上函数外面寻找变量
+```js
+const data = {test:1}
+function test(x={...data}) {
+    conso
+    console.log(x)
+}
+test() // { test: 1 }
+```
+
 ## JS中的捕获和冒泡
 ::: tip Dom事件流
 don事件流分成三个阶段：
@@ -1039,6 +1068,7 @@ console.log(obj.prop);
 obj.__proto__ = {test:1}
 // expected output: Uncaught TypeError: #<Object> is not extensible
 ```
+
 
 ### Object.preventExtensions
 ::: tip
