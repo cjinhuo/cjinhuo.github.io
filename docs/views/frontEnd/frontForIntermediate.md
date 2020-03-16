@@ -676,6 +676,35 @@ console.log(mod.counter); // 3
 所以我们使用判断奇偶数的时候用`8 & 1`或`8 % 2`就有区别了，机器码其实就是二进制，所以`8 & 1`只需要运算`1000 & 0001`，而`8 % 2`中%需要转成机器码能识别的运算符，所以位运算就会快一点。
 
 
+## console.log是异步还是同步
+我们先看下面得例子：
+```js
+let a = {
+  b : {
+    c: 1
+  }
+}
+console.log(a)
+a.b.c = 2
+```
+![](../../.vuepress/public/console-1.png)
+咋一看好像是异步的，但是为什么数字就是同步的呢？其实里面有个坑，我们都知道对象是引用类型，所以`console.log`打印引用类型的时候是打印指针指向的引用地址的内容，我们手动展开的时候其实是调用了当前对象的`get`方法，这是才去读取改引用地址里面的内容，导致一些人说console.log是异步。
+![](../../.vuepress/public/console-2.png)
+
+### node环境下的console.log
+::: tip node下的console.log
+我们首先要知道Node.js中实现console.log的原理
+function log() { process.stdout.write( util.format.apply(this, arguments); )}
+等同于问process.stdout.write是同步还是异步的？
+其实官方文档已经给出了答案,A note on process I/O
+process.stdout和process.stderr是根据系统环境来判定的同步还是异步的
+Files: synchronous on Windows and Linux
+TTYs (Terminals): asynchronous on Windows, synchronous on Unix
+Pipes (and sockets): synchronous on Windows, asynchronous on Unix
+那么console.log也是根据系统环境来判定同步还是异步的。
+:::
+
+
 ## 在请求帧动画中会经常操作dom节点，操作dom需要时间，怎么优化
 
 <!-- ../../.vuepress/public/line-height.png) -->

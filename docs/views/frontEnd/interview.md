@@ -475,6 +475,15 @@ Number('abc') // NaN
 ### 解决跨域的方法
 * cors:最普遍的就是CORS，就是后端允许我们的本地的请求地址或线上域名
 * jsonp:不经常用，通过script标签无视同源策略来向后端发送参数，后端返回类似函数的形式传给前端，然后前端就是调用这个函数
+```js
+function jsonp(url, callback){
+    window.getData = callback
+    let script = document.createElement('script')
+    script.setAttribute('src', `${url}?callbackName=getData`)
+    document.body.appendChild(script)
+}
+```
+然后这个script里面的值就是`<script>getData(data)</script>`
 ## js有哪几种方式里检查数据类型：
 ```js
 let a = "cjh";
