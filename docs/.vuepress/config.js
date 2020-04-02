@@ -1,84 +1,104 @@
 module.exports = {
-  title: "豆豆",
-  description: '在前端的路上越走越远',
-  dest: 'dist',
-  head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }],
-    ['meta', { name: 'viewport', content: 'width=device-width,initial-scale=1,user-scalable=no' }]
+  "title": "doudou",
+  "description": "生活不只有前端",
+  "dest": "dist",
+  "head": [
+    [
+      "link",
+      {
+        "rel": "icon",
+        "href": "/favicon.ico"
+      }
+    ],
+    [
+      "meta",
+      {
+        "name": "viewport",
+        "content": "width=device-width,initial-scale=1,user-scalable=no"
+      }
+    ]
   ],
-  theme: 'reco',
-  themeConfig: {
-    nav: [
-      { text: '首页', link: '/', icon: 'reco-home' },
-      { text: '时间线', link: '/timeLine/', icon: 'reco-date' },
-      { text: '联系我',
-        icon: 'reco-message',
-        items: [
-          // { text: 'NPM', link: 'https://www.npmjs.com/~reco_luan', icon: 'reco-npm' },
+  "theme": "reco",
+  "themeConfig": {
+    "nav": [
+      {
+        "text": "Home",
+        "link": "/",
+        "icon": "reco-home"
+      },
+      {
+        "text": "TimeLine",
+        "link": "/timeline/",
+        "icon": "reco-date"
+      },
+      {
+        "text": "Contact",
+        "icon": "reco-message",
+        "items": [
+          // {
+          //   "text": "NPM",
+          //   "link": "https://www.npmjs.com/~reco_luan",
+          //   "icon": "reco-npm"
+          // },
           { text: 'GitHub', link: 'https://github.com/TypeInfos', icon: 'reco-github' },
-          // { text: '简书', link: 'https://www.jianshu.com/u/cd674a19515e', icon: 'reco-jianshu' },
-          // { text: 'CSDN', link: 'https://blog.csdn.net/recoluan', icon: 'reco-csdn' },
           { text: '博客圆', link: 'https://www.cnblogs.com/doudoublog/', icon: 'reco-bokeyuan' },
-          // { text: 'WeChat', link: 'https://mp.weixin.qq.com/s/mXFqeUTegdvPliXknAAG_A', icon: 'reco-wechat' },
+          // {
+          //   "text": "博客圆",
+          //   "link": "https://www.cnblogs.com/luanhewei/",
+          //   "icon": "reco-bokeyuan"
+          // },
+          // {
+          //   "text": "WeChat",
+          //   "link": "https://mp.weixin.qq.com/s/mXFqeUTegdvPliXknAAG_A",
+          //   "icon": "reco-wechat"
+          // }
         ]
       }
     ],
-    // 博客设置
-    blogConfig: {
-      category: {
-        location: 2, // 在导航栏菜单中所占的位置，默认2
-        text: '分类' // 默认 “分类”
+    "type": "blog",
+    "blogConfig": {
+      "category": {
+        "location": 2,
+        "text": "Category"
       },
-      tag: {
-        location: 3, // 在导航栏菜单中所占的位置，默认3
-        text: '标签' // 默认 “标签”
+      "tag": {
+        "location": 3,
+        "text": "Tag"
       }
     },
-    logo: '/head.png',
+    // 首页右下键的友链
+    "friendLink": [
+      // {
+      //   "title": "doudou",
+      //   "desc": "Enjoy when you can, and endure when you must.",
+      //   "email": "1156743527@qq.com",
+      //   "avatar": "https://vuepress-theme-reco.recoluan.com/icon_vuepress_reco.png",
+      //   "link": "https://www.recoluan.com"
+      // },
+    ],
+    "logo": "/avatar.png",
     // 搜索设置
-    search: true,
-    searchMaxSuggestions: 10,
+    "search": true,
+    "searchMaxSuggestions": 10,
     // 自动形成侧边导航
-    sidebar: 'auto',
-    // 最后更新时间
-    // lastUpdated: 'Last Updated',
-    // 作者
-    author: 'kent',
-    // 备案号
-    // record: 'xxxx',
-    // 项目开始时间
-    startYear: '2019-陈金伙',
-    /**
-     * 密钥 (if your blog is private)
-     */
-
-    // keyPage: {
-    //   keys: ['your password'],
-    //   color: '#42b983',
-    //   lineColor: '#42b983'
-    // },
-
-    /**
-     * valine 设置 (if you need valine comment )
-     */
-
+    "sidebar": "auto",
+    // 显示所有页面的标题链接
+    displayAllHeaders: false,
+    // 活动的标题链接
+    activeHeaderLinks: true,
+    "lastUpdated": "Last Updated",
+    "author": "doudou",
+    "authorAvatar": "/avatar.png",
+    // "record": "xxxx",
+    startYear: '陈金伙',
+    // 评论
     valineConfig: {
       appId: 'WVINvnvFXAbxAjirQzbDruKP-gzGzoHsz', // your appId
       appKey: 'gar8bppl0vEVOiawaJUXrRM2', // your appKey
-    }
+    },
+    plugins: ['@vuepress/medium-zoom', 'flowchart', '@vuepress/last-updated']
   },
-  markdown: {
-    lineNumbers: true
-  },
-  plugins: ['@vuepress/medium-zoom', 'flowchart']
+  "markdown": {
+    "lineNumbers": true
+  }
 }
-
-  // 谷歌 adsence
-  // <script async
-  //         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  // <script>
-  //   (adsbygoogle = window.adsbygoogle || []).push({
-  //     google_ad_client: "ca-pub-3501052071865973",
-  //     enable_page_level_ads: true
-  //   });
-  // </script>
