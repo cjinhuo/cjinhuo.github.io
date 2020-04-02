@@ -1,19 +1,14 @@
 ---
-title: '买车'
-  # 大标题
-sidebarDepth: 2
-sidebar: auto
-categories: 
-- hobby
+title: '提车'
+categories: hobby
 date: 2019-03-20
 # 时间
 tags:
-- 买车
 - 提车
 # 标签
 ---
 
-::: tip 
+::: tip
 买车是人生的第二大买卖，第一大买卖是买房，结婚是人生第一大事。
 :::
 

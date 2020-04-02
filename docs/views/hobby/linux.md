@@ -3,8 +3,7 @@ title: 'linux常用命令和概念'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories:
-# 分类 共有三个分类： frontEnd work hobby
+categories: hobby
 date: 2019-09-16
 # 时间
 tags:

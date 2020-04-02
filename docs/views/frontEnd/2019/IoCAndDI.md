@@ -4,16 +4,10 @@ title: 'IoC和DI'
 sidebarDepth: 2
 sidebar: auto
 categories: hobby
-# 分类 共有三个分类： frontEnd work hobby
 date: 2019-09-10
 # 时间
 tags:
 - 依赖注入
-- 控制反转
-- nest
-- IoC
-- DI
-- Martin Fowler
 - 翻译
 # 标签
 ---

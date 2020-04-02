@@ -3,9 +3,7 @@ title: '前端小笔记'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories:
-- frontEnd
-# 分类 共有三个分类： frontEnd work else
+categories: fronRend
 date: 2019-05-24
 # 时间
 tags:

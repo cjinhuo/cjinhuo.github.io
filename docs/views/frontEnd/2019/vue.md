@@ -2,16 +2,11 @@
 title: 'Vue的一些理解'
 sidebarDepth: 2
 sidebar: auto
-categories:
-- frontEnd
-# 分类 共有三个分类： frontEnd work else
+categories: frontEnd
 date: 2019-02-12
 # 时间
 tags:
 - Vue
-- Config
-- 前端
-- 框架
 # 标签
 ---
 

@@ -2,8 +2,7 @@
 title: '初级前端工程师'
 sidebarDepth: 2
 sidebar: auto
-categories:
-- frontEnd
+categories: frontEnd
 tags:
 - 前端基础
 ---

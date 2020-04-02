@@ -3,7 +3,7 @@ title: '记得有一次同步网络的面试(为了佳明)'
 sidebarDepth: 2
 sidebar: auto
 categories:
-# - frontEnd
+# fronRend
 date: 2019-05-29
 # 时间
 tags:

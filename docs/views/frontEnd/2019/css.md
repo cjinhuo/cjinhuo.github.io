@@ -1,12 +1,9 @@
 ---
 title: '深入CSS'
-sidebar: auto
-sidebarDepth: 2
-categories: 
-- frontEnd
+categories: frontEnd
 date: 2019-05-24
 # 时间
-tags: 
+tags:
 - 前端
 - CSS
 ---

@@ -3,9 +3,7 @@ title: 'VPN搭建'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories:
-- hobby
-# 分类 共有三个分类： frontEnd work hobby
+categories: hobby
 date: 2019-05-29
 # 时间
 tags:

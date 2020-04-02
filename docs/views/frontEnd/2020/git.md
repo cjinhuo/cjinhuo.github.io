@@ -2,8 +2,7 @@
 title: 'Git'
 sidebarDepth: 2
 sidebar: auto
-categories:
- - frontEnd
+categories: frontEnd
 date: 2019-05-29
 tags:
 - Git

@@ -3,9 +3,7 @@ title: '练习过的一些算法题'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories:
-- frontEnd
-# 分类 共有三个分类： frontEnd work hobby
+categories: frontEnd
 date: 2019-05-24
 # 时间
 tags:
@@ -17,6 +15,10 @@ tags:
 ::: tip 概述
 前端也需要学习算法，算法是每个程序员的内功，内功越强学习新知识越快。
 :::
+
+<!-- more -->
+
+
 ## 找出字符串中最高key的数量并显示
 ```js
 /**

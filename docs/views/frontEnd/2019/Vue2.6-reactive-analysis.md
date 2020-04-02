@@ -2,9 +2,8 @@
 title: 'Vue2.6响应式分析'
 categories: frontEnd
 date: 2019-11-01
-readingTime: { text: "理解响应式原理", minutes: 30 }
 tags:
-- frontEnd
+- fronRend
 - 源码解读
 - Vue2.6 响应式分析
 - Vue
@@ -18,6 +17,9 @@ tags:
 5. computed和watch的区别有哪些，computed的缓存是怎么做到的？
 6. 社区经常提到的watcher和dep到底为响应式数据提供了怎么样的逻辑？
 :::
+
+<!-- more -->
+
 
 需要解答上面一系列问题，需要从Vue的_init开始走起。下面得是Vue2.6的源码照搬过来的，基本上每一行都会有注释，但是有一些通过命名就看出来的就没有注释了，可能源码较多，所以我花了流程图，推荐是拿着Vue提供的开发版源码[Vue开发版源码地址](https://cdn.jsdelivr.net/npm/vue/dist/vue.js)，然后在new Vue()断点，慢慢的走一遍，然后再回来看这边文章，可能会解答更多的困惑。
 ## _init

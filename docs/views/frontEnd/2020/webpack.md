@@ -4,7 +4,6 @@ title: 'webpack'
 sidebarDepth: 3
 sidebar: auto
 categories: frontEnd
-# 分类 共有三个分类： frontEnd work hobby
 date: 2019-02-12
 # 时间
 tags:

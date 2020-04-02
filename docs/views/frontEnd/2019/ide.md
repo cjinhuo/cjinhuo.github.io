@@ -2,9 +2,7 @@
 title: '前端开发环境'
 sidebarDepth: 2
 sidebar: auto
-categories:
-- frontEnd
-# 分类 共有三个分类： frontEnd work else
+categories: frontEnd
 date: 2019-04-24
 # 时间
 tags:

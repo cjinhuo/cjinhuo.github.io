@@ -3,9 +3,7 @@ title: 'DefineProperty和Proxy的响应式'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories:
-- frontEnd
-# 分类 共有三个分类： frontEnd work hobby
+categories: fronRend
 date: 2019-10-31
 # 时间
 tags:

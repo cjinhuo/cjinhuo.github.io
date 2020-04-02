@@ -1,17 +1,12 @@
 ---
 title: 'Vuex源码分析'
-  # 大标题
-sidebarDepth: 2
-sidebar: auto
 categories: frontEnd
-# 分类 共有三个分类： frontEnd work hobby
 date: 2019-12-17
 # 时间
 tags:
 - Vue
 - Vuex3.1.2
 - 源码解读
-# 标签
 ---
 
 

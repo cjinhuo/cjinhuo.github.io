@@ -3,9 +3,7 @@ title: '中级前端工程师'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories:
-- frontEnd
-# 分类 共有三个分类： frontEnd work hobby
+categories: fronRend
 date: 2019-02-12
 # 时间
 tags:

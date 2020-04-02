@@ -3,8 +3,7 @@ title: '题目名字'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories:
-# 分类 共有三个分类： frontEnd work hobby
+categories: hobby
 date: 2019-02-12
 # 时间
 tags:
