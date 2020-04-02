@@ -20,6 +20,8 @@ module.exports = {
   ],
   "theme": "reco",
   "themeConfig": {
+    themePicker: true,
+    smoothScroll: true,
     "nav": [
       {
         "text": "Home",
@@ -96,7 +98,7 @@ module.exports = {
       appId: 'WVINvnvFXAbxAjirQzbDruKP-gzGzoHsz', // your appId
       appKey: 'gar8bppl0vEVOiawaJUXrRM2', // your appKey
     },
-    plugins: ['@vuepress/medium-zoom', 'flowchart', '@vuepress/last-updated']
+    plugins: ['@vuepress/medium-zoom', 'flowchart', '@vuepress/last-updated', 'vuepress-plugin-reading-time']
   },
   "markdown": {
     "lineNumbers": true

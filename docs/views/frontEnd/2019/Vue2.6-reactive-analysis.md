@@ -2,6 +2,7 @@
 title: 'Vue2.6响应式分析'
 categories: frontEnd
 date: 2019-11-01
+readingTime: { text: "理解响应式原理", minutes: 30 }
 tags:
 - frontEnd
 - 源码解读
