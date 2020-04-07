@@ -159,5 +159,24 @@ ln -s /home/groot/nodejs/bin/node /usr/local/bin // 将node的二进制文件和
 node -v // 检查node版本,如果没有报错并且显示出来版本号说明成功了
 ```
 
+### on-my-zsh
+`Oh My Zsh 默认自带了一些默认主题，存放在 ~/.oh-my-zsh/themes 目录中。我们可以查看这些主题`
+~/.oh-my-zsh/themes
+
+有时候需要PowerLine fonts，安装完成后需要去Item2里面的`profile->text->Font`选择你已安装的Powerline font，vscode需要去setting里面添加:`terminal.integrated.fontFamily": "Source Code Pro for Powerline`
+
+`安装命令插件`
+
+`git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions`
+
+`vi ~/.zshrc`
+
+`plugins=(git zsh-autosuggestions)`
+
+
+[ohmyzsh命令提示插件](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md)
+``
+
+
 
 

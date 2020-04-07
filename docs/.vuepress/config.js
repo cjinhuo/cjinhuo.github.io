@@ -1,5 +1,5 @@
 module.exports = {
-  "title": "doudou",
+  "title": "Peaner",
   "description": "生活不只有前端",
   "dest": "dist",
   "head": [
@@ -71,7 +71,7 @@ module.exports = {
     // 首页右下键的友链
     "friendLink": [
       // {
-      //   "title": "doudou",
+      //   "title": "Peaner",
       //   "desc": "Enjoy when you can, and endure when you must.",
       //   "email": "1156743527@qq.com",
       //   "avatar": "https://vuepress-theme-reco.recoluan.com/icon_vuepress_reco.png",
@@ -89,7 +89,7 @@ module.exports = {
     // 活动的标题链接
     activeHeaderLinks: true,
     "lastUpdated": "Last Updated",
-    "author": "doudou",
+    "author": "Peaner",
     "authorAvatar": "/avatar.png",
     // "record": "xxxx",
     startYear: '陈金伙',
