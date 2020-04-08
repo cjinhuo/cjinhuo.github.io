@@ -177,6 +177,48 @@ node -v // 检查node版本,如果没有报错并且显示出来版本号说明�
 [ohmyzsh命令提示插件](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md)
 ``
 
+### 小飞机终端代理
+`vi ~/.zshrc`添加
 
+```js
+alias setproxy="export ALL_PROXY=socks5://127.0.0.1:1086"
+alias unsetproxy="unset ALL_PROXY"
+```
 
+`127.0.0.1:1086`中的1086是小飞机的本地Socks5的监听端口
+
+### Nginx反向代理
+`brew nginx`
+
+`vi /usr/local/etc/nginx/nginx.config`进行配置更改
+
+```js
+server{
+    listen 80;
+    server_name *.qa.91jkys.com;
+    if ($http_host ~* "^(.*?)\.qa\.91jkys\.com$") {
+        set $domain $1;
+    }
+    location / {
+        if ($domain ~* "trycatch") {
+            proxy_pass http://127.0.0.1:3000;
+        }
+        if ($domain ~* "operate-admin") {
+            proxy_pass http://127.0.0.1:1024;
+        }
+        if ($domain ~* "oa.mock") {
+            proxy_pass http://127.0.0.1:1024;
+        }
+        proxy_redirect     off;
+        proxy_set_header   Host             $http_host;
+        proxy_set_header   X-Real-IP        $remote_addr;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+启动Nginx` brew services start nginx`
+重启Nginx` brew services restart nginx`
+暂停Nginx` brew services stop nginx`
 
