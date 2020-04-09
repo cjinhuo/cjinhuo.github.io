@@ -23,6 +23,10 @@ tags:
 ### suppress
 * v: 封锁、压制
 
+### discount
+* n: 折扣
+* adj: 认为。。。不重要
+
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)

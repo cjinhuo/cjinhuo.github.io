@@ -14,14 +14,11 @@ tags:
 国产好用的MVVM框架（View的状态和行为抽象化），相对于react比较好入门，一些是一些自己的理解和笔记。
 :::
 
-## Vue命名规范
-### click
-`click`+事件行为
-### change
-
-### focus
-### keyup
+## filters
 ###
+获取当前组件的filters`this.$options.filters`，获取全局filters`this.$root.constructor.options.filters`或者`Vue..options.filters`，可以看出来全局filters是放在Vue的原型链上，而不是在根实例上。
+
+
 ## 点击事件
 ### 鼠标右击事件
 ```js
