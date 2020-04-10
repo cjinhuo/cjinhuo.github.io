@@ -705,6 +705,68 @@ Pipes (and sockets): synchronous on Windows, asynchronous on Unix
 
 ## 在请求帧动画中会经常操作dom节点，操作dom需要时间，怎么优化
 
+
+## 如何在 Array.forEach 中正确使用 Async
+```js
+const arr = [1, 2, 3]
+
+const sleep = (delay, v) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(1)
+    }, delay)
+  })
+}
+
+arr.forEach(async (v, i) => {
+  await sleep(1000 - (i * 100), i)
+  console.log(v)
+})
+// 输出：
+// 3
+// 2
+// 1
+```
+ 上面输出3、2、1，说明await是没有生效的，看了forEach的Polyfill就知道，是在一个while循环里面执行的，相当于上面是三个函数一起执行，我们想要的效果是第一个函数执行完再执行第二个函数，我们可以用reduce
+ ```js
+ const arr = [1, 2, 3]
+
+const sleep = (delay, v) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(1)
+    }, delay)
+  })
+}
+arr.reduce(async (initial, v, i) => {
+  // 因为此时的initial是上一个函数的返回值，如果没有promise没有执行完，会在await的关键字下停顿
+  await initial
+  await sleep(1000 - (i * 100), i)
+  console.log(v)
+}, 0)
+// 输出：
+// 1
+// 2
+// 3
+ ```
+ 我们可以看到reduce的Polyfill:
+ ```js
+ if (!Array.prototype.reduce) {
+  Object.defineProperty(Array.prototype, 'reduce', {
+    value: function (callback /*, initialValue */) {
+      // ...more
+      while (k < len) {
+        if (k in o) {
+          value = callback(value, o[k], k, o)
+        }
+        k++
+      }
+      return value
+    }
+  })
+}
+ ```
+ 可以看到value就是`initial`，从`value = callback(value, o[k], k, o)`可以看出来initial保存这上一个函数的返回值，由于我们用了`aysnc`所以会返回一个`promise`对象，然后用`await initial`后可以在当前函数停顿。
 <!-- ../../../.vuepress/public/line-height.png) -->
 图片 ![](url)
 

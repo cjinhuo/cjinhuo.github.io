@@ -27,6 +27,20 @@ tags:
 * n: 折扣
 * adj: 认为。。。不重要
 
+### combination
+* n: 组合、结合、混合体
+
+### hexadecimal
+* adj: 十六进制的
+
+### octal
+* adj: 八进制的
+
+### backquote
+* 网络释义：反引号：``（quote是引文的意思）
+
+### represent
+* v: 表示、代表、意味着
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
