@@ -378,11 +378,16 @@ new Funtion()
 2. Links (sets the constructor of) this object to another object;
 3. Passes the newly created object from Step 1 as the this context;
 4. Returns this if the function doesn't return its own object.
+
+1. 创建一个空的简单JavaScript对象（即{}）；
+2. 链接该对象（即设置该对象的构造函数）到另一个对象 ；
+3. 将步骤1新创建的对象作为this的上下文 ；
+4. 如果该函数没有返回对象，则返回this。
 :::
 1. 创建一个空白的纯js对象：var obj = {}
-2. 设置`obj`的构造器指向`Funtion`（函数本身就是构造器），设置新对象的__proto__属性指向构造函数的prototype对象；obj.__proto__ = ClassA.prototype
+2. 设置`obj`的构造器指向`Funtion`（函数本身就是构造器），设置新对象的__proto__属性指向构造函数的prototype对象；即obj.__proto__ = ClassA.prototype
 3. 使用新对象调用函数，函数中的this被指向新实例对象: ClassA.call(obj);
-4. 将初始化完毕的新对象，保存到等号右边的变量中。
+4. 将初始化完毕的新对象，保存到等号左边的变量中。
 :::
 通过上面的解释，我们发现凡是拥有构造器的都可以实例化，看下面的例子：
 ```js
@@ -393,7 +398,7 @@ let b = new a() // Uncaught TypeError: a is not a constructor
 ```
 `a`的构造器是指向`Object()`函数，不是它自己的，所以不能实例化，所以我们只能这样`let c = Object()`。
 
-`class`也有自己的构造器所以也可以实例化，其他的都没办法实例化
+`class`也有自己的构造器（class其实就是function），所以也可以实例化，其他的都没办法实例化
 ## for与forEach的区别
 ::: tip
 for循环每一次遍历都会重新检查跳出的条件，比如数组的长度，但是forEach只会保存第一次的数组长度。
