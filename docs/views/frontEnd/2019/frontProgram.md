@@ -255,3 +255,44 @@ let b = { test: 1, two: [{ test: { test: 1 }, reg: new RegExp(/asd/gi) }] }
 console.log(isEualObject(a, b))
 ```
 
+### 同事阿里（二面编程题）
+::: tip
+输入：[1, [2, 3, [4]], 5]
+
+输出：['a', ['b', ['c'], 'e'], 'd']
+
+:::
+```js
+function dismantleArray(a, b) {
+  const recurse = (item1, item2, result = {}) => {
+    if (Array.isArray(item2)) {
+      let curIndex = 0
+      item2.forEach(item => {
+        if (Array.isArray(item) && Array.isArray(item1[curIndex])) {
+          recurse(item1[curIndex], item, result)
+          curIndex++
+        } else if (Array.isArray(item) && !Array.isArray(item1[curIndex])) {
+          for (let i = curIndex; i < item1.length; i++) {
+            if (Array.isArray(item1[i])) {
+              curIndex = i
+              recurse(item1[curIndex], item, result)
+              curIndex++
+              break
+            }
+          }
+        } else {
+          recurse(item1[curIndex], item, result)
+          curIndex++
+        }
+      })
+      return result
+    } else {
+      return (result[item2] = item1)
+    }
+  }
+  return recurse(a, b)
+}
+const res = dismantleArray([1, [2, 3, [4]], 5], ['a', ['b', ['c'], 'e'], 'd'])
+console.log(res) // res: { a: 1, b: 2, c: 4, e: undefined, d: 5 }
+```
+

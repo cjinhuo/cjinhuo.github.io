@@ -41,6 +41,29 @@ tags:
 
 ### represent
 * v: 表示、代表、意味着
+
+### caution
+* n: 小心、慎重、警告
+* v: 警告、告诫、提醒
+
+### explicit
+* adj: 清晰的、明确的
+
+### vague
+* adj: 含糊的、不明确的、粗略的
+
+### capable of
+* （事务）可以。。。的
+
+### consistent
+
+* adj: 一致的、符合的、持续的、
+
+### Disclaimer
+* n: 免责声明、弃权声明（书）
+
+### Compliant
+* adj: 顺从的、（与系列规则相）符合的、一致的
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
