@@ -3,7 +3,7 @@ title: 'DefineProperty和Proxy的响应式'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories: fronRend
+categories: frontEnd
 date: 2019-10-31
 # 时间
 tags:

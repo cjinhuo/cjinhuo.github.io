@@ -257,13 +257,23 @@ console.log(isEualObject(a, b))
 
 ### 同事阿里（二面编程题）
 ::: tip
-输入：[1, [2, 3, [4]], 5]
+输入：a:[1, [2, 3, [4]], 5] b:'[a, [b, [c], e], d]'
 
-输出：['a', ['b', ['c'], 'e'], 'd']
+输出：{ a: 1, b: 2, c: 4, e: undefined, d: 5 }
 
 :::
 ```js
+/**
+ * 实现类似解构赋值的算法
+ * 输入：a:[1, [2, 3, [4]], 5] b:'[a, [b, [c], e], d]'
+ * 输出：{ a: 1, b: 2, c: 4, e: undefined, d: 5 }
+ * @param {Array} a
+ * @param {String} b
+ */
 function dismantleArray(a, b) {
+  if (typeof b === 'string') {
+    b = JSON.parse(b.replace(/\w+/g, str => `"${str}"`))
+  }
   const recurse = (item1, item2, result = {}) => {
     if (Array.isArray(item2)) {
       let curIndex = 0
@@ -292,7 +302,7 @@ function dismantleArray(a, b) {
   }
   return recurse(a, b)
 }
-const res = dismantleArray([1, [2, 3, [4]], 5], ['a', ['b', ['c'], 'e'], 'd'])
+const res = dismantleArray([1, [2, 3, [4]], 5], '[a, [b, [c], e], d]')
 console.log(res) // res: { a: 1, b: 2, c: 4, e: undefined, d: 5 }
 ```
 

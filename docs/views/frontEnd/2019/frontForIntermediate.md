@@ -3,7 +3,7 @@ title: '中级前端工程师'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories: fronRend
+categories: frontEnd
 date: 2019-02-12
 # 时间
 tags:

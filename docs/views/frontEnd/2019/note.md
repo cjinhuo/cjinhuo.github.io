@@ -3,7 +3,7 @@ title: '前端小笔记'
   # 大标题
 sidebarDepth: 2
 sidebar: auto
-categories: fronRend
+categories: frontEnd
 date: 2019-05-24
 # 时间
 tags:
