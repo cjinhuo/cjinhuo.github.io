@@ -1473,7 +1473,7 @@ dep.subs[watcher:{id:1}]<br>
 在源码`arrayMethods`可以看出来，Vue2.6是先截取了原生的Array.prototype的方法，然后重写方法获取用户传入的参数，在重写方法内部先是调用原方法，然后调用`ob.dep.notify()`来更新对应`watcher`。
 :::
 ::: tip 为什么通过this.$set就可以触发数组下标更新导致更新视图？
-在这一篇[DefineProperty和Proxy](https://chenjinhuo.netlify.com/views/frontend/defineproperty&&proxy.html)中讲过它们两个的区别，因为Vue2.6中用的是`DefineProperty`，而这个方法必须要传入目标对象`obj`,目标对象的键`Key`，这就造成了很难动态的添加属性，为什么说很难呢？因为这个是可以实现的，比如本来data里面有数据message，message是执行过`defineReactive`的，所以可以监听到getter、setter，但是你想新建一个flag，直接`data.flag = 10`，每次调用前都需要判断是否定义过，没有定义的就执行`defineReactive`，无疑是很费性能的，数据也是一样，数组是没有key的，所以更是监听不了的，Vue.$Set也是通过判断是否是数组，是的话再调用那些变异方法来执行更新。
+在这一篇[DefineProperty和Proxy](https://chenjinhuo.netlify.com/views/frontEnd/2019/DefineProperty&&Proxy.html)中讲过它们两个的区别，因为Vue2.6中用的是`DefineProperty`，而这个方法必须要传入目标对象`obj`,目标对象的键`Key`，这就造成了很难动态的添加属性，为什么说很难呢？因为这个是可以实现的，比如本来data里面有数据message，message是执行过`defineReactive`的，所以可以监听到getter、setter，但是你想新建一个flag，直接`data.flag = 10`，每次调用前都需要判断是否定义过，没有定义的就执行`defineReactive`，无疑是很费性能的，数据也是一样，数组是没有key的，所以更是监听不了的，Vue.$Set也是通过判断是否是数组，是的话再调用那些变异方法来执行更新。
 :::
 ::: tip computed和watch的区别有哪些，computed的缓存是怎么做到的？
 watch和computed一个重要区别就是，监听的属性发生改变时就执行watch函数，计算属性和data里面属性一样，只有在某个地方用到时才会调用计算属性的getter，而getter中包含表达式。然后计算属性是可以缓存的，这个缓存指的是基于它们的响应式依赖进行缓存的，`defin·Reactive`中set中`oldValue`和`newValue`如果不等时就会触发`dep.notify=>dep.update=>this.dirty=true`，在获取计算属性的时候，判断dirty会true时就会调用`this.get`重新获取对应的值。
@@ -1481,10 +1481,6 @@ watch和computed一个重要区别就是，监听的属性发生改变时就执�
 ::: tip 社区经常提到的watcher和dep到底为响应式数据提供了怎么样的逻辑
 Vue2.6中只会在computed、watch、页面渲染时实例化Watcher，具体看dep与watcher是如何建立联系的可以看<a style="color:rgb(122, 214, 253);" href="#如何建立联系">dep与watcher是如何建立联系</a>
 :::
-
-<!-- 超链接 [文本](URL) -->
-
-<!-- ![](../../../.vuepress/public/line-height.png) -->
 
 
 
