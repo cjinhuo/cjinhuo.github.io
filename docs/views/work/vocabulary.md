@@ -64,6 +64,9 @@ tags:
 
 ### Compliant
 * adj: 顺从的、（与系列规则相）符合的、一致的
+
+### integration
+* n: 结合、整合、一体化
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
