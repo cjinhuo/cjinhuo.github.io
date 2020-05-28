@@ -12,7 +12,15 @@ tags:
 :::
 
 <!-- more -->
+::: tip
+v:verb 动词
 
+n:noun 名词
+
+adj:adjective 形容词
+
+ph:phrase 短语、词组、惯用语
+:::
 ### manual
 * adj: 手工的、体力的、用手操作的
 * n: 使用手册、说明书、指南
@@ -67,6 +75,12 @@ tags:
 
 ### integration
 * n: 结合、整合、一体化
+
+### deriving classes
+* ph: 派生类
+
+### instantiated
+* v: 被实例化
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)

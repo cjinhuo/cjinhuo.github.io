@@ -399,6 +399,14 @@ let b = new a() // Uncaught TypeError: a is not a constructor
 `a`的构造器是指向`Object()`函数，不是它自己的，所以不能实例化，所以我们只能这样`let c = Object()`。
 
 `class`也有自己的构造器（class其实就是function），所以也可以实例化，其他的都没办法实例化
+### 箭头函数是否可以实例化
+```js
+const fun1 = () => {}
+function fun2() {}
+console.log(fun1.prototype) // undefined
+console.log(fun2.prototype) // {constructor: ƒ}
+```
+箭头函数没有prototype、没有自己的this指向、不可以使用arguments，而new的过程中有个操作是将__proto__指向prototype，所以不能用new实例化箭头函数
 ## for与forEach的区别
 ::: tip
 for循环每一次遍历都会重新检查跳出的条件，比如数组的长度，但是forEach只会保存第一次的数组长度。
