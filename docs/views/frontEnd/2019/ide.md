@@ -190,7 +190,7 @@ alias unsetproxy="unset ALL_PROXY"
 ### Nginx反向代理
 `brew nginx`
 
-`vi /usr/local/etc/nginx/nginx.config`进行配置更改
+`vi /usr/local/etc/nginx/nginx.config`进行配置更改，也可以在`/usr/local/etc/nginx/servers`里面添加配置
 
 ```js
 server{

@@ -81,6 +81,15 @@ ph:phrase 短语、词组、惯用语
 
 ### instantiated
 * v: 被实例化
+
+### mechanism
+* n: 机制、机械装置
+
+### anonymous
+* adj: 匿名的、不具名的、没有特色的
+
+### instruments
+* n: 器械、仪器
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)

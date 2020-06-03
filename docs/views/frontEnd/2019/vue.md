@@ -563,6 +563,10 @@ let clipBoard = new Clipboard('#copy-code')
 
 ```
 
+## 取出全局filter
+::: tip
+vue是挂在到Vue的跟根实例上，也就是`Vue.options.filters`，如果子组件想获取的话需要用`this.$root.constructor.options.filters`来获取
+:::
 
 ## minxin vue
 ::: tip
