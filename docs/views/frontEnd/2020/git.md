@@ -158,8 +158,12 @@ Commit 信息应符合如下规则，建议使用工具 comitzen(git cz) 代替 
 不受影响)
 `git reset –soft HEAD~1`
 回退一个版本,不清空暂存区,将已提交的内容恢复到暂存区,不影响原来本地的文件(未提交的也不受影响)
+
+将头指针移指定位置上面（比如向前移动5个commit），但是指针前面的commit内容还是存在的，且这commit的内容还是存在的，在staged change（暂存区）里面，当前如果commit后，在`git push -f`，那么这5个commit就会变成当前一个commit。
 `git reset –hard HEAD~1`
 回退一个版本,清空暂存区,将已提交的内容的版本恢复到本地,本地的文件也将被恢复的版本替换
+
+将本地的头指针移到指定位置，但是指针前面的commit内容还是存在的，这是需要`git push -f`强制推上去，那些commit就被删除了
 ## git checkout
 在commit层面，`git checkout <branch name>`表示切换至另一个分支，这个命令实际上是将HEAD指向另外一个分支，并且将工作区更新到那个分支。和git reset不同，git checkout不会移动分支。<br>
 git checkout也可以指定某个commit，这就像切换一个分支一样：git会将HEAD指向那个commit，形成`detached HEAD`，查了下资料发现这个`detached HEAD`是个临时指向，并没有新建分支，所以并没有什用。这对于快速查看文件旧版本来说非常方便，但如果你当前的HEAD没有任何分支引用，那么这会造成HEAD分离。因此，在为分离的HEAD添加新的提交时候你应该创建一个新的分支。

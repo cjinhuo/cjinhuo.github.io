@@ -718,7 +718,6 @@ Pipes (and sockets): synchronous on Windows, asynchronous on Unix
 
 ## 在请求帧动画中会经常操作dom节点，操作dom需要时间，怎么优化
 
-
 ## 如何在 Array.forEach 中正确使用 Async
 ```js
 const arr = [1, 2, 3]
