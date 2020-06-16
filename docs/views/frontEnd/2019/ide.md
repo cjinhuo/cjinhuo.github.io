@@ -15,11 +15,16 @@ tags:
 :::
 
 ## brew
+::: tip
+官网的命令是:`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
 
+正常情况下，`https://raw.githubusercontent.com`这个域名会被墙，但是如果你有科学上网就可以用端口代理的是方式来处理这个网址：`export ALL_PROXY=socks5://127.0.0.1:1086`
+
+这里的1086是小飞机的端口，这样拉取这个文件就走代理了。
+:::
+或者用更传统的方法：
 * 第一步，获取install文件
-把官网给的脚本拿下来，将下面这个地址的源码放入名为brew_install的文件里面，并保存在当前目录
-`curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install >> brew_install`
-
+把官网给的脚本拿下来，将下面这个地址的`install.sh`下载到本地，并且将权限改为777：`sudo chmod 777 install.sh`，然后执行.sh文件:`./install.sh`
 * 第二步，更改脚本中的资源链接，替换成清华大学的镜像
 就是把这两句<br/>
 `BREW_REPO = “https://github.com/Homebrew/brew“.freeze`<br/>
@@ -160,22 +165,21 @@ node -v // 检查node版本,如果没有报错并且显示出来版本号说明�
 ```
 
 ### on-my-zsh
-`Oh My Zsh 默认自带了一些默认主题，存放在 ~/.oh-my-zsh/themes 目录中。我们可以查看这些主题`
-~/.oh-my-zsh/themes
+`Oh My Zsh` 默认自带了一些默认主题，存放在 `~/.oh-my-zsh/themes` 目录中。我们可以查看这些主题`cd ~/.oh-my-zsh/themes`
+
+一般情况下，我们自己下载的主题或插件都会放在`~/.oh-my-zsh/themes` or `~/.oh-my-zsh/plugins`
 
 有时候需要PowerLine fonts，安装完成后需要去Item2里面的`profile->text->Font`选择你已安装的Powerline font，vscode需要去setting里面添加:`terminal.integrated.fontFamily": "Source Code Pro for Powerline`
 
-`安装命令插件`
-
+#### 个人强烈推荐的插件
+**zsh-autosuggestions**
 `git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions`
 
 `vi ~/.zshrc`
 
 `plugins=(git zsh-autosuggestions)`
 
-
 [ohmyzsh命令提示插件](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md)
-``
 
 ### 小飞机终端代理
 `vi ~/.zshrc`添加
@@ -196,9 +200,13 @@ alias unsetproxy="unset ALL_PROXY"
 server{
     listen 80;
     server_name *.qa.91jkys.com;
+    access_log /var/log/nginx/zhiyun_access.log;
+    error_log  /var/log/nginx/zhiyun_error.log;
+
     if ($http_host ~* "^(.*?)\.qa\.91jkys\.com$") {
         set $domain $1;
     }
+
     location / {
         if ($domain ~* "trycatch") {
             proxy_pass http://127.0.0.1:3000;
@@ -206,8 +214,11 @@ server{
         if ($domain ~* "operate-admin") {
             proxy_pass http://127.0.0.1:1024;
         }
-        if ($domain ~* "oa.mock") {
-            proxy_pass http://127.0.0.1:1024;
+        if ($domain ~* "metabase-admin") {
+            proxy_pass http://127.0.0.1:1025;
+        }
+        if ($domain ~* "supply"){
+            proxy_pass http://127.0.0.1:9999;
         }
         proxy_redirect     off;
         proxy_set_header   Host             $http_host;

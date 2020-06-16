@@ -108,6 +108,12 @@ Mutation Observer API 用来监视 DOM 变动。DOM 的任何变动，比如节�
 [api地址](https://wangdoc.com/javascript/dom/mutationobserver.html)
 
 ## npm
+### 设置源
+`npm config set registry`，设置的地址会放在`~/.npmrc`配置文件中
+### 查看当前npm源
+`npm config get registry`
+### 单次安装设置源
+`npm xxx --registry=https://registry.npm.taobao.org`
 ### 查看本地（该仓库）安装了哪些包
 `npm list --depth=0`
 ### 查看全局（-g）安装了哪些包
