@@ -50,6 +50,10 @@ cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
 
 git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
 ```
+## node
+可以利用`brew`安装`node`后，`npm xx -g`就不会有权限问题：`brew install node`
+
+如果是官网下载安装包的话，默认是在`/usr/local`，可以用`npm config get prefix`查下，所以需要我们修改文件夹的权限：`sudo chown -R $USER /usr/local/{lib/node_modules,bin,share}`：表示把`/usr/local`下的`lib/node_modules`、`bin`、`share`所有权更改为当前用户，即拥有`root`权限
 ## Terminal
 
 一个好看又好用的终端，往往可以节省很多工作时间。推荐iTerm2 + oh-my-zsh。

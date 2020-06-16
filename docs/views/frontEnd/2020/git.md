@@ -91,10 +91,11 @@ git push origin master
 查看远程分支`git branch -r` <br>
 查看所有分支`git branch -a` <br>
 * 切换分支
-`git checkout 'name'`
+切换本地分支`git checkout 'name'`<br>
+切换远程分支`git checkout -b name origin/name`
 * 删除分支
-删除远程分支`git push origin --delete 'name'`
-删除本地分支`git branch -D 'name'`
+删除远程分支`git push origin --delete 'name'`<br>
+删除本地分支`git branch -D 'name'`<br>
 ## 分支合并
 从master新建一个分支来新建功能有三个步骤
 1. 新建dev分支
