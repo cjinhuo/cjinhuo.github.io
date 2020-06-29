@@ -90,6 +90,16 @@ ph:phrase 短语、词组、惯用语
 
 ### instruments
 * n: 器械、仪器
+
+### corporate
+* n: 企业、
+* adj: 社团的、法人的
+
+
+### train
+* n: 训练、练习、培训
+* adj: 教学的、
+
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
