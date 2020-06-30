@@ -173,6 +173,16 @@ git checkout也可以指定某个commit，这就像切换一个分支一样：gi
 git merge –no-ff 可以保存你之前的分支历史。能够更好的查看 merge历史，以及branch 状态。<br>
 git merge 则不会显示 feature，只保留单条分支记录。
 :::
+### -s ours
+假设当前在分支A上
+
+`git merge -s ours B`的结果是，遇到冲突时采用A分支的结果
+
+### -s theirs
+假设当前在分支A上
+
+`git merge -s theirs B`的结果是，遇到冲突时采用B分支的结果，没有试验过，猜测是这样的
+
 ![](../../../.vuepress/public/git_merge.png)
 
 
