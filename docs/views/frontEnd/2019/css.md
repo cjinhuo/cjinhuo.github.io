@@ -43,4 +43,47 @@ tags:
 ![](../../../.vuepress/public/line-height.png)
 从上图我们就可以看出，行距、font-size与line-height之间的关系：行距 = font-size - line-height
 
+## last-child && last-of-type
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>last-child 和 last-of-type区别</title>
+    <style type="text/css">
+        p:last-child{
+            color: red;
+        }
+
+        p:last-of-type{
+            color: blue;
+        }
+        div > *:last-child {
+        color: pink;
+      }
+    </style>
+</head>
+<body>
+    <div>
+        <p>第一行</p>
+        <p>第二行</p>
+        <p>第三行</p>
+        <span>我是测试行</span>
+    </div>
+</body>
+</html>
+```
+运行结果：
+![](../../../.vuepress/public/css_lastChild.png)
+### last-child
+可能会很奇怪，为什么没有红色，`last-child`代表父节点最后一个子节点，并且与选择器进行匹配， 父节点div的最后一个节点是span，而匹配的选择器是p，两者不对应所以匹配不上
+### last-of-type
+选择属于其父元素的最后 <p> 元素，所以会匹配到第三个p元素
+### 拿到最后一个标签，但是不知道标签名、class
+```css
+div > *:last-child {
+        color: pink;
+      }
+```
+
 
