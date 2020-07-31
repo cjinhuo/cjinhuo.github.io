@@ -100,6 +100,9 @@ ph:phrase 短语、词组、惯用语
 * n: 训练、练习、培训
 * adj: 教学的、
 
+### interactive
+adj: 合作的、交互的、
+
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
