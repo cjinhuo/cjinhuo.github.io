@@ -1091,30 +1091,33 @@ console.log(filterTree(data, '测试2'))
 ```
 上面的方法是先在每个打上节点标识，表示是否保留，然后再遍历一次过滤那些不需要的节点，**我原本以为可以做到复杂度为O(n):因为所有元素都是父元素遍历得到的，所以当确定当前子元素不需要时就可以直接删除，但是下标需要通过遍历才能取到（如果用过了splice后，后面的index就乱套了），但是由于下标的问题还是会大于O(n)**
 
+**2020-08-01更新**
+
+用for循环代替forEach，可以直接删除某个下标，然后i--，可以做到O(n)的时间复杂度
+
 ```js
-function filterTree(nodes, keyword) {
-  // 利用回溯，优先遍历子节点，遍历完子节点然后给父节点打上标签，时间复杂度为O(n)
-  const setFlagAndSplice = (nodes, keyword) => {
-    // 给父节点返回的标志
+function filterTreeOne(nodes, keyword) {
+  const setFlagAndRemoveDeepChild = curNodes => {
     let isParentNeed = false
-    nodes.forEach((item, index) => {
+    for (let i = 0; i < curNodes.length; i++) {
+      const item = curNodes[i]
       if (item.children && item.children.length !== 0) {
-        item.isNeed = setFlag(item.children, keyword)
+        item.isNeed = setFlagAndRemoveDeepChild(item.children)
       }
       if (item.txt.includes(keyword)) {
-        isParentNeed ? '' : isParentNeed = true
+        isParentNeed ? '' : (isParentNeed = true)
         item.isNeed = true
       } else {
-        item.isNeed ? isParentNeed = true : item.isNeed = false
+        item.isNeed ? (isParentNeed = true) : (item.isNeed = false)
       }
       if (!item.isNeed) {
-        // 这里有问题，由于用了splice，数组的长度就变换了
-        nodes.splice(index, 1)
+        curNodes.splice(i, 1)
+        i--
       }
-    })
+    }
     return isParentNeed
   }
-  setFlagAndSplice(nodes, keyword)
+  setFlagAndRemoveDeepChild(nodes)
   return nodes
 }
 ```
