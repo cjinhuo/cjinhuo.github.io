@@ -191,6 +191,13 @@ exports.blog = {
 let say = require('./say').blog
 console.log(say.say()) // say function'
 ```
+### 发包
+1. npm login
+2. npm publish 第一次发包或者更新包都用这个命令
+
+package中的name：'@组名/包名'，npm本来是没有组的概念的，可以先把包发到自己组然后再组织中加入自己的包
+3. unpublish
+
 ### AMD
 ::: tip
 Asynchronous Module Definition(异步组件定义)，提前加载依赖

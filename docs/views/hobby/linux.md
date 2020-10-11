@@ -76,6 +76,24 @@ grep命令是查找
 比如查看nginx的命令：`ps -ef|grep nginx`
 
 
+### nginx的log文件新建
+
+```bash
+
+```
+
+## docker
+### -p端口映射
+外部映射容器端口：
+```bash
+docker run -it -p 7009:7009 try-end/node:12 /bin/bash
+```
+执行`try-end/node:12`这个镜像，`/bin/bash`是进入到当前容器当中，容器里面的所有端口服务，容器外面默认是没有办法访问到的，`-p 7009:7009`：用外面的`7009`端口来映射容器内的`7009`，从而可以在容器外访问容器内的`7009`服务
+
+
+
+
+
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)

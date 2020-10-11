@@ -1071,6 +1071,8 @@ function filterTree(nodes, keyword) {
         isParentNeed = true
         item.isNeed = true
       } else {
+        // 精髓所在
+        // item的子元素有isNeed，当前元素不能改为false
         item.isNeed ? isParentNeed = true : item.isNeed = false
       }
     })
