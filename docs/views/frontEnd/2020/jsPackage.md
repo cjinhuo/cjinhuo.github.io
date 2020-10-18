@@ -96,16 +96,19 @@ setTimeout(() => {
 节流是让某个事件在执行完后过一段时间才能再次被触发，比如用来限制刷新按钮，当用户疯狂刷新，比如一秒刷新100次，我们就得向后端发送100次的请求，加了节流后端，可以自定义当第一次刷新后过几秒才能再次发起刷新事件。
 :::
 ```js
-export const throttle = (fn: Function, delay: number) => {
-  let canRun = true
-  return function (...args: any) {
-    if (!canRun) return
-    fn.apply(this, args)
-    canRun = false
-    setTimeout(() => {
-      canRun = true
-    }, delay)
-  }
+export const throttle = (fn: Function, delay: number, isImmediate: boolean) => {
+    let canRun = true
+    return function (...args: any) {
+        if (canRun === false) return
+        if (canRun === null && isImmediate) {
+            fn.apply(this, args)
+        }
+        fn.apply(this, args)
+        canRun = false
+        setTimeout(() => {
+            canRun = true
+        }, delay)
+    }
 }
 ```
 
