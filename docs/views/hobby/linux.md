@@ -76,11 +76,11 @@ grep命令是查找
 比如查看nginx的命令：`ps -ef|grep nginx`
 
 
-### nginx的log文件新建
+### 查找当前文件下面文件
+` find . -name min* -maxdepth 1`
+-name: 表示查找的是文件
 
-```bash
-
-```
+-maxdepth：表示查找层数是一层
 
 ## docker
 ### -p端口映射
