@@ -784,6 +784,6 @@ arr.reduce(async (initial, v, i) => {
 }
  ```
  可以看到value就是`initial`，从`value = callback(value, o[k], k, o)`可以看出来initial保存这上一个函数的返回值，由于我们用了`aysnc`所以会返回一个`promise`对象，然后用`await initial`后可以在当前函数停顿。
-<!-- ../../../.vuepress/public/line-height.png) -->
-图片 ![](url)
+
+
 

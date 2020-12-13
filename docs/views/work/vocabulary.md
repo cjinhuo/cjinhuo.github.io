@@ -103,6 +103,8 @@ ph:phrase 短语、词组、惯用语
 ### interactive
 adj: 合作的、交互的、
 
+### precision
+n: 精确、细致
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
