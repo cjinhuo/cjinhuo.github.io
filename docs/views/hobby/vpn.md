@@ -18,6 +18,9 @@ tags:
 3. 搭建vpn（适用于所有的client，包括browser）
 :::
 
+<!-- more -->
+
+
 1. [vultr](https://my.vultr.com/)
 2. `ssh root@ip`（用于mac链接linux服务器）
 3. `vim /etc/ssh/sshd_config`（更改#port 22 => port 20000）

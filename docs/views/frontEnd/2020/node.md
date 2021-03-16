@@ -14,6 +14,9 @@ tags:
 nodo与nestjs的知识点
 :::
 
+<!-- more -->
+
+
 ## 概览
 
 ### CPU密集型(CPU-bound)
@@ -28,9 +31,18 @@ IO密集型指的是系统的CPU性能相对硬盘、内存要好很多，此时
 
 I/O bound的程序一般在达到性能极限时，CPU占用率仍然较低。这可能是因为任务本身需要大量I/O操作，而pipeline做得不是很好，没有充分利用处理器能力。
 
+## 进程
+### 守护进程
+后台运行的特殊进程，不受任何终端控制的进程
 
+避免出现错误时，程序异常退出，可以开启守护进程，监控程序，若退出exit，立马重启服务程序，防止服务器崩掉
 
-超链接 [文本](URL)
-<!-- ../../.vuepress/public/line-height.png) -->
-图片 ![](url)
+### 开启守护进程的方式
+* pm2 pm2 start index.js
+* forever forever start index.js
+* node child_process cluster fork子进程
 
+### nohup
+nohup node XXX.js >/dev/null 2>&1 &
+
+nohup不是严格意义上的守护进程，只是后台启动服务，当前终端停掉之后还是可以在后台运行的，需要kill端口才能终止该服务

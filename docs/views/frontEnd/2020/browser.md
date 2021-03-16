@@ -12,14 +12,11 @@ tags:
 ---
 
 ::: tip 概述
-。。。
+浏览器的一些原理
 :::
 
-## 第一个大标题
+<!-- more -->
 
-超链接 [文本](URL)
-<!-- ../../.vuepress/public/line-height.png) -->
-图片 ![](url)
 
 ## EventTarget
 ::: tip

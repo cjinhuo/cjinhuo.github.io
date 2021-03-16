@@ -13,8 +13,11 @@ tags:
 ---
 
 ::: tip 概述
-前端工程化的工具
+实践前端工程化的工具：webpack
 :::
+
+<!-- more -->
+
 
 ## 常用node命令
 ### path.relative

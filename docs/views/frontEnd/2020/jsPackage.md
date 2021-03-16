@@ -15,6 +15,9 @@ tags:
 常用的一些JS封装函数、精妙的函数封装
 :::
 
+<!-- more -->
+
+
 ### isInContainer
 ::: tip
 判断当前元素是否在可视区域
@@ -111,8 +114,4 @@ export const throttle = (fn: Function, delay: number, isImmediate: boolean) => {
     }
 }
 ```
-
-超链接 [文本](URL)
-<!-- ../../.vuepress/public/line-height.png) -->
-图片 ![](url)
 

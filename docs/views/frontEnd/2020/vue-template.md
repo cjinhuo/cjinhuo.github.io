@@ -16,6 +16,9 @@ tags:
 本文推荐的项目结构实践：[财务后台](https://gitlab.91jkys.com/web/finance-admin/tree/qatest)
 :::
 
+<!-- more -->
+
+
 ## 传统Vue项目结构
 
 ```js

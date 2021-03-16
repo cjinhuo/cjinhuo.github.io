@@ -105,6 +105,11 @@ adj: 合作的、交互的、
 
 ### precision
 n: 精确、细致
+
+### Specification
+n:规格、说明书、详述
+
+Unit Testing Specification 单元测试基准
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)

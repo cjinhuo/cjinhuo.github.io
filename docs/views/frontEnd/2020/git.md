@@ -1,5 +1,5 @@
 ---
-title: 'Git'
+title: 'Git常用命令'
 sidebarDepth: 2
 sidebar: auto
 categories: frontEnd
@@ -7,6 +7,13 @@ date: 2020-04-01
 tags:
 - Git
 ---
+
+
+::: tip
+Git和其他版本控制系统如SVN的一个不同之处就是有暂存区的概念。
+:::
+
+
 
 ## 工作区和暂存区
 ::: tip
@@ -173,6 +180,9 @@ git checkout也可以指定某个commit，这就像切换一个分支一样：gi
 git merge –no-ff 可以保存你之前的分支历史。能够更好的查看 merge历史，以及branch 状态。<br>
 git merge 则不会显示 feature，只保留单条分支记录。
 :::
+
+## git rebase
+
 ### -s ours
 假设当前在分支A上
 
