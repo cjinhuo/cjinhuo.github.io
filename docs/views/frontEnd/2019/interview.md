@@ -768,7 +768,7 @@ ECMAScript定义了isNaN()函数。这个函数接受一个参数，该参数可
 比如: onClick由浏览器内核的DOM Binding模块来处理，当事件触发的时候，回调函数会立即添加到任务队列中。
 :::
 ### MacroTask（宏任务）
-`script`全部代码、setTimeout、setINterval、I/0、UI Rendering
+`script`全部代码、setTimeout、setINterval、I/0、UI Rendering、setImmediate
 ### MicroTask（微任务）
 Process.nextTick（Node独有）、Promise、MutationObserver（具体使用方式[查看](http://javascript.ruanyifeng.com/dom/mutationobserver.html)）
 ### 浏览器中的Event Loop

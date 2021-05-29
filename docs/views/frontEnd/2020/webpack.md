@@ -248,7 +248,11 @@ export defaut{
 ```
 
 
-超链接 [文本](URL)
-<!-- ../../../.vuepress/public/line-height.png) -->
-图片 ![](url)
+## loader&plugins
+loader：主要是在打包的时候转换文件，loader是在打包文件之前会执行的,比如babel-loader和babel-core模块时为了把ES6的代码转成ES5
+
+plugins:在整个编译周期都起作用，比如html-webpack-plugin，是在打包完后将.html文件生成并追加那些资源文件
+
+##
+
 

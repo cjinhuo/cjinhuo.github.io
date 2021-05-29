@@ -110,6 +110,20 @@ n: 精确、细致
 n:规格、说明书、详述
 
 Unit Testing Specification 单元测试基准
+
+### i.e.(id est)拉丁语的缩写
+用来特指某些事物，可以和"specifically"、"namely"的交换
+
+例子：
+* “Only one city, i.e., London, has hosted the Summer Olympics three times.”
+* “Every genetics student learns the two basic methodologies in the field, i.e., forward genetics and reverse genetics.”
+
+### e.g.(exempli gratia)拉丁语的缩写
+类似"for example"、"such as"，没有特指某些
+
+* “The Summer Olympics is composed of a variety of sports (e.g., gymnastics, swimming, and tennis).”
+* “Many genes are involved in neural tube development, e.g., Sonic Hedgehog, BMPs, and the Hox genes.”
+
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
