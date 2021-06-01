@@ -487,6 +487,18 @@ function jsonp(url, callback){
 }
 ```
 
+node端
+```js
+  @Get('jsonp')
+  async jsonp(@Query() query: { callbackName: string }) {
+    // get请求 拿到callbackName 然后将数据库的信息塞入，并返回执行函数的字符串
+    const dataBaseData = {
+      test: 1,
+    };
+    return `${callbackName}(${dataBaseData})`;
+  }
+```
+
 ### http中有哪几种请求方式
 1. OPTIONS 预检请求
 2. Get
@@ -562,15 +574,6 @@ detail.tieba.baidu.com 四级域名 etc.
 按理说.com是一个顶级域，但是在`.com.cn`下面就是一个二级域名，表示中国商业的意思，.cn还是一个一级域名，表示中国大陆
 ### cookie跨域取值
 `b.a.com`是`a.com`的子域名，所以`b.a.com`可以取到`a.com`，但是`a.com`是取不到`b.a.com`
-
-### 手写一个JSONP函数
-
-### js事件循环的输出结果
-
-### 最后一道算法题
-```
-
-```
 
 ## 后端返回流下载
 ::: tip

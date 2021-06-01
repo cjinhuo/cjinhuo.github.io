@@ -50,7 +50,19 @@ React.createElement(Comp, null, /*#__PURE__*/React.createElement("div", null, "1
 React.createElement("div", null, "123");
 ```
 
-超链接 [文本](URL)
-<!-- ../../.vuepress/public/line-height.png) -->
-图片 ![](url)
+### React.memo
+默认情况下，只会做浅层比较，如果想控制对比过程，可以传入第二个参数：比较函数，return`true`不更新渲染，return`false`更新渲染
+```js
+function MyComponent(props) {
+  /* 使用 props 渲染 */
+}
+function areEqual(prevProps, nextProps) {
+  /*
+  如果把 nextProps 传入 render 方法的返回结果与
+  将 prevProps 传入 render 方法的返回结果一致则返回 true，
+  否则返回 false
+  */
+}
+export default React.memo(MyComponent, areEqual);
+```
 

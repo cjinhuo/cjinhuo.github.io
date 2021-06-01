@@ -124,6 +124,14 @@ Unit Testing Specification 单元测试基准
 * “The Summer Olympics is composed of a variety of sports (e.g., gymnastics, swimming, and tennis).”
 * “Many genes are involved in neural tube development, e.g., Sonic Hedgehog, BMPs, and the Hox genes.”
 
+### revocable
+adj:可撤销的、可废除的
+
+revocable beneficiary 可撤销受益人
+
+revocability 撤销
+
+
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
 图片 ![](url)
