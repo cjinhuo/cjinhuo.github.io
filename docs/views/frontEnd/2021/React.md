@@ -66,3 +66,45 @@ function areEqual(prevProps, nextProps) {
 export default React.memo(MyComponent, areEqual);
 ```
 
+### 封装原生input
+```js
+import React, { useLayoutEffect, useRef } from 'react'
+import { useEffect } from 'react'
+
+interface PropsType {
+  defaultValue?: string
+  value?: string
+  onChange?: (str: string) => void
+}
+const MyInput = (props: PropsType) => {
+  const { defaultValue, value, onChange } = props
+  const inputRef = useRef(null)
+  function setValueToInput(val: string) {
+    inputRef.current.value = val
+  }
+  useEffect(() => {
+    if (value) {
+      setValueToInput(value)
+    }
+  }, [value])
+  useEffect(() => {
+    console.log('empty effect')
+    inputRef.current.oninput = function (e) {
+      if (onChange) {
+        onChange(e.target.value)
+      }
+    }
+    setValueToInput(defaultValue || value)
+  }, [])
+  // 通过 useLayoutEffect 可以拿到最新的 DOM 节点，并且在此时对 DOM 进行样式上的修改，假设修改了元素的 height，
+  // 这些修改会在步骤 11 和 react 做出的更改一起被一次性渲染到屏幕上，依旧只有一次回流、重绘的代价
+  // useLayoutEffect
+  return (
+    <div>
+      <input ref={inputRef}></input>
+    </div>
+  )
+}
+
+export default MyInput
+```
