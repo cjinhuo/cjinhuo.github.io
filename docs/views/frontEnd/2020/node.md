@@ -137,6 +137,32 @@ A:after next
 由于多个直线模型里面的异步函数执行的顺序可能不是我们意料的那样，所以洋葱模型出来的原因是为了让那些方法更有顺序的进入调用栈中。
 
 
+## node 如何实现进程间的状态共享，或者数据共享
+```js
+var cluster = require('cluster')
+
+var data = 0 //这里定义数据不会被所有进程共享，各个进程有各自的内存区域
+
+if (cluster.isMaster) {
+  //主进程
+  var numCPUs = require('os').cpus().length
+  for (var i = 0; i < numCPUs; i++) {
+    var worker = cluster.fork()
+  }
+  data++
+  // 这边会打印 1
+  console.log('DATA VALUE in MainProcess: %d ', data)
+} else {
+  //子进程,会被调用numCPUs次
+  data++
+  // 这边也会打印1 所以说明data不会共享
+  console.log('DATA VALUE in ChildProcess %d: %d ' + cluster.worker.id, data)
+}
+```
+
+
+
+
 
 
 

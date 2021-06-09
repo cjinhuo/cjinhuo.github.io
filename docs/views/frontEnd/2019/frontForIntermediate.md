@@ -365,7 +365,7 @@ function Son() {
 }
 Son.prototype = Object.create(Father.prototype,
   { constructor: { value: Son, writable: true, configurable: true } });
-Son.__proto__ = Father
+// Son.__proto__ = Father
 ```
 
 ## js中new一个对象的过程
