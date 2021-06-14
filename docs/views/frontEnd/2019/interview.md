@@ -588,6 +588,8 @@ console.log(obj.name);//get it
  Vue3.0更新后，用ES6的proxy代替了Object.defineProperty。
  ## Array.prototype.sort
  Google Chrome 对 sort 做了特殊处理，对于长度 <= 10 的数组使用的是插入排序(稳定排序算法) ，length >10 的数组使用的是快速排序。快速排序是不稳定的排序算法。
+
+[详解文章](https://segmentfault.com/a/1190000010648740)
 ## 闭包
 ::: tip 闭包
 变量的作用域与非就是两种：全局变量、局部变量<br>

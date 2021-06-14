@@ -449,7 +449,13 @@ HTTP/2成功的关键在于，它实现了显著的性能改善，同时保持�
 详情看[http2.0详解](https://www.ibm.com/developerworks/cn/web/wa-http2-under-the-hood/index.html)
 ## DNS
 它作为将域名与IP地址相互映射的一个分布式数据库，能够使人更方便地访问互联网。DNS使用TCP和UDP端口
-###
+
+### 用到的协议
+* DNS服务器间进行域传输的时候用TCP
+* 客户端查询DNS服务器时用 UDP
+*
+
+
 ## get&&post
 1. GET在浏览器回退时是无害的，而POST会再次提交请求的。
 2. get 请求参数会被完整保留在浏览器历史记录里，而post中参数不会被保留
@@ -649,6 +655,12 @@ const download = async (url, sessionId) => {
 2. 避免对资源的多重占用
 
 缺点： 没有接口，不能继承，与单一职责原则冲突，一个类应该只关心内部逻辑，而不关心外面怎么样来实例化的。
+
+
+## websocket
+WebSocket同HTTP一样也是应用层的协议，但是它是一种双向通信协议，是建立在TCP之上的。
+
+
 
 ## SOCKS代理
 ::: tip
