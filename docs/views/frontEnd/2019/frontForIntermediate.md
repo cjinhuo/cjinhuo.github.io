@@ -369,11 +369,9 @@ Son.prototype = Object.create(Father.prototype,
 ```
 
 ## js中new一个对象的过程
-::: tip
-new Funtion()
-
-首先了解new做了什么，使用new关键字调用函数（new ClassA(…)）的具体步骤：
 ::: tip MDN原文
+首先了解new做了什么，使用new关键字调用函数（new ClassA(…)）的具体步骤：
+
 1. Creates a blank, plain JavaScript object;
 2. Links (sets the constructor of) this object to another object;
 3. Passes the newly created object from Step 1 as the this context;
@@ -384,12 +382,7 @@ new Funtion()
 3. 将步骤1新创建的对象作为this的上下文 ；
 4. 如果该函数没有返回对象，则返回this。
 :::
-1. 创建一个空白的纯js对象：var obj = {}
-2. 设置`obj`的构造器指向`Funtion`（函数本身就是构造器），设置新对象的__proto__属性指向构造函数的prototype对象；即obj.__proto__ = ClassA.prototype
-3. 使用新对象调用函数，函数中的this被指向新实例对象: ClassA.call(obj);
-4. 将初始化完毕的新对象，保存到等号左边的变量中。
-:::
-通过上面的解释，我们发现凡是拥有构造器的都可以实例化，看下面的例子：
+
 ```js
 let a = {}
 // a的构造器
@@ -399,6 +392,24 @@ let b = new a() // Uncaught TypeError: a is not a constructor
 `a`的构造器是指向`Object()`函数，不是它自己的，所以不能实例化，所以我们只能这样`let c = Object()`。
 
 `class`也有自己的构造器（class其实就是function），所以也可以实例化，其他的都没办法实例化
+
+### 实现new
+```js
+function myNew(target, ...args) {
+  const protoObj = Object.create(target.prototype)
+  const result = target.apply(protoObj, args)
+  return typeof result === 'object' ? result : protoObj
+}
+
+function A(name, age) {
+  this.name = name || 'aa'
+  this.age = age || 18
+}
+
+const a = myNew(A, 'cjh', 16)
+console.log(a) // A { name: 'cjh', age: 16 }
+```
+
 ### 箭头函数是否可以实例化
 ```js
 const fun1 = () => {}
@@ -651,47 +662,51 @@ HTML文法的本质
 利用flex可以实现
 
 ## import && require
-::: import
+::: tip import
 编译时调用，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值。由于是在编译时调用，所以`webpack`可以通过`import`的特性来产生依赖图谱。
-```js
-// lib.js
-var counter = 3;
-function incCounter() {
-  counter++;
-}
-module.exports = {
-  counter: counter,
-  incCounter: incCounter,
-};
-
-// main.js
-var mod = require('./lib');
-
-console.log(mod.counter);  // 3
-mod.incCounter();
-console.log(mod.counter); // 4
-```
 :::
+```js
+// dep.js
+export let a = 1
+setTimeout(() => a += 1, 500)
 
-::: require
-运行时调用，输出的是一个值的拷贝，一旦输出一个值，模块内部的变化就影响不到这个值。
+// app.js
+import { a } from 'dep'
+setTimeout(function () {
+  console.log(a)
+}, 1000)
+```
+在`import {a} from f`的时候，他其实在你引用的地方和倒出的地方的`a`之间建立了连接，即它们是指向同一内存的，即便是原始数据类型，你修改模块中的指也会导致引用处的变化
+
+
+
+::: tip require
+运行时调用，输出的是一个值的拷贝（浅拷贝），一旦输出一个值，模块内部的变化就影响不到这个值，由于是浅拷贝所以改对象中的值还是会对应更改的
 ```js
 // lib.js
-var counter = 3;
+var counter = 3
+const obj = {
+  test: 1,
+}
 function incCounter() {
-  counter++;
+  counter++
+  obj.test++
 }
 module.exports = {
   counter: counter,
   incCounter: incCounter,
-};
+  obj,
+}
 
 // main.js
-var mod = require('./lib');
+// main.js
+var mod = require('./demo')
 
-console.log(mod.counter);  // 3
-mod.incCounter();
-console.log(mod.counter); // 3
+console.log(mod.counter) // 1
+console.log(mod.obj.test) // 1
+mod.incCounter()
+console.log(mod.counter) // 1
+console.log(mod.obj.test) // 2
 ```
 :::
 

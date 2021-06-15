@@ -1,14 +1,12 @@
 ---
 title: '浏览器基础知识'
-  # 大标题
 sidebarDepth: 2
 sidebar: auto
 categories: frontEnd
 date: 2020-04-30
 # 时间
 tags:
-- 模板
-# 标签
+- 浏览器
 ---
 
 ::: tip 概述
