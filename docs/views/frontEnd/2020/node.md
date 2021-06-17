@@ -138,6 +138,7 @@ A:after next
 
 
 ## node 如何实现进程间的状态共享，或者数据共享
+以下示例表明在公共同一个文件中不同进程是不会共享内存的
 ```js
 var cluster = require('cluster')
 
@@ -159,6 +160,10 @@ if (cluster.isMaster) {
   console.log('DATA VALUE in ChildProcess %d: %d ' + cluster.worker.id, data)
 }
 ```
+
+所以只能通过process.send
+
+
 
 
 

@@ -18,6 +18,65 @@ tags:
 
 <!-- more -->
 
+## loader 和 plugin
+通俗点讲loader是转换，plugin是执行比转换更复杂的任务，比如合并压缩等
+
+
+### loader
+对于loader，它是一个转换器，将A文件进行编译形成B文件，这里操作的是文件，比如将A.scss转换为A.css，单纯的文件转换过程，比如babel-loader和babel-core模块时为了把ES6的代码转成ES5
+
+```js
+module.exports = function(source) {
+  // 当前的this指向可以取出很多的属性和方法
+  // 比如：this.addDependency
+  // 关闭该 Loader 的缓存功能：this.cacheable(false);
+  console.log(this)
+  // 如果返回undefined的话，就必须调用this.callback()，也就是去这个回调函数的值
+  return source;
+};
+```
+
+### plugin
+是用于在webpack打包编译过程里，在对应的事件节点里执行自定义操作，比如资源管理、bundle文件优化等操作，plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后，webpack打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack打包过程中的某些节点，执行广泛的任务**在整个编译周期都起作用**，比如html-webpack-plugin，是在打包完后将.html文件生成并追加那些资源文件
+
+常用的hooks:
+
+entry-option 初始化 option
+
+run 开始编译
+
+compile 真正开始的编译，在创建 compilation 对象之前
+
+compilation 生成好了 compilation 对象
+
+make 从 entry 开始递归分析依赖，准备对每个模块进行 build
+
+after-compile 编译 build 过程结束
+
+emit 在将内存中 assets 内容写到磁盘文件夹之前
+
+after-emit 在将内存中 assets 内容写到磁盘文件夹之后
+
+done 完成所有的编译过程
+
+failed 编译失败的时候
+
+## 与rollup的对比
+rollup中没有`loader`的概念，但是也是可以通过插件中的`hooks`来完成代码转换[rollup-transform](https://rollupjs.org/guide/en/#transform)
+```js
+function annotatingPlugin() {
+  return {
+    name: 'annotating',
+    transform(code, id) {
+      // code 就是每个模块的代码
+      // id 就是每个模块的路径
+      return {meta: {annotating: {special: true}}}
+    }
+  }
+}
+```
+
+至于其他的为什么`webpack`把loader和插件分开，我猜的是webpack想更好的解耦两者的功能。
 
 ## 常用node命令
 ### path.relative
@@ -248,11 +307,7 @@ export defaut{
 ```
 
 
-## loader&plugins
-loader：主要是在打包的时候转换文件，loader是在打包文件之前会执行的,比如babel-loader和babel-core模块时为了把ES6的代码转成ES5
 
-plugins:在整个编译周期都起作用，比如html-webpack-plugin，是在打包完后将.html文件生成并追加那些资源文件
 
-##
 
 
