@@ -82,6 +82,28 @@ console.log('baz',baz) // baz { a: 1, b: { one: 10, two: 2 } }
 console.log('bar',bar) // bar { a: 1, b: { one: 1, two: 2 } }
 ```
 现在就是深拷贝了。但是这样有很多问题，比如当对象里面的值是函数、正则表达式循环引用时就会出现BUG。
+
+**简单版的深拷贝（大多在面试中写出来）**
+```js
+function deepClone(source) {
+  // WeakSet 适合临时存放一组对象，以及存放跟对象绑定的信息。只要这些对象在外部消失，它在 WeakSet 里面的引用就会自动消失
+  const hashStack = new WeakSet()
+  const recursion = obj => {
+    const result = Array.isArray(obj) ? [] : {}
+    if (hashStack.has(obj)) return obj
+    hashStack.add(obj)
+    for (const key in obj) {
+      let value = obj[key]
+      // 假设只考虑object array
+      result[key] = typeof value === 'object' ? recursion(value) : value
+    }
+    return result
+  }
+  return recursion(source)
+}
+```
+
+
 ```js
 // 构造函数
 function person(pname) {
@@ -216,6 +238,8 @@ console.log(newObj.b, oldObj.b); // { a: [Function: say], c: /ab+c/i, d: person 
 console.log(newObj.c, oldObj.c); // /ab+c/i /ab+c/i
 console.log(newObj.d.constructor, oldObj.d.constructor); // [Function: person] [Function: person]
 ```
+
+
 
 ### 数组的扩展运算符
 
