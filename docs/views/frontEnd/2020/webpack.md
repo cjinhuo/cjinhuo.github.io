@@ -37,6 +37,21 @@ module.exports = function(source) {
 ```
 
 ### plugin
+```js
+class ConsoleLogOnBuildWebpackPlugin {
+  apply(compiler) {
+    compiler.hooks.run.tap(pluginName, (compilation) => {
+      console.log('The webpack build process is starting!!!');
+    });
+  }
+}
+
+// 在plugins中调用
+plugins:[
+  new ConsoleLogOnBuildWebpackPlugin()
+]
+```
+
 是用于在webpack打包编译过程里，在对应的事件节点里执行自定义操作，比如资源管理、bundle文件优化等操作，plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后，webpack打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack打包过程中的某些节点，执行广泛的任务**在整个编译周期都起作用**，比如html-webpack-plugin，是在打包完后将.html文件生成并追加那些资源文件
 
 常用的hooks:

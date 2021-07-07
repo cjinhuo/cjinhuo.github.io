@@ -2,7 +2,7 @@
 title: '2021年 前端->高级前端 面经'
 sidebarDepth: 2
 sidebar: auto
-categories: hobby
+categories: frontEnd
 date: 2021-06-23
 tags:
 - 面试
