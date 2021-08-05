@@ -131,6 +131,23 @@ revocable beneficiary 可撤销受益人
 
 revocability 撤销
 
+### latency
+n: 潜伏
+
+### QPS（Query Per Second）
+每秒查询率，是一台服务器每秒能够响应的查询次数
+
+### TPS（Transaction Per Second）
+事务率，事务数/秒，一个事务是指一个客户机向服务器发送请求然后服务器做出反应的过程
+
+### QOS(Quality of Service)
+
+
+### metrics
+计算机词汇：衡量指标
+
+
+
 
 超链接 [文本](URL)
 <!-- ../../.vuepress/public/line-height.png) -->
