@@ -7,6 +7,7 @@ date: 2021-06-23
 tags:
 - 面试
 - 高级前端工程师
+sticky: 1
 ---
 
 
@@ -14,6 +15,8 @@ tags:
 本人19年**双非**本科毕业，无大厂背景加持，借着上一年自研前端监控系统的经历认真写了简历。目前监控SDK已开源：[mitojs](https://github.com/mitojs/mitojs)（已有部分公司开发者正使用该SDK在构建自己的监控平台），为了更好的开源，将[老版SDK](https://github.com/clouDr-f2e/mitojs)迁到[新版mitojs](https://github.com/mitojs/mitojs)，迁到新的[MITO组织](https://github.com/mitojs)，后续会在[MITO组织](https://github.com/mitojs)里开源前后端项目、docker私有化部署、**免费saas**服务等等，敬请期待~
 
 如有意想一起共建的小伙伴可私聊我~
+
+[该篇掘金文章地址](https://juejin.cn/post/6990174096554360869)
 :::
 
 <!-- more -->

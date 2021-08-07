@@ -37,23 +37,18 @@ module.exports = {
         text: "Contact",
         icon: "reco-message",
         items: [
-          // {
-          //   "text": "NPM",
-          //   "link": "https://www.npmjs.com/~reco_luan",
-          //   "icon": "reco-npm"
-          // },
           { text: "GitHub", link: "https://github.com/cjinhuo", icon: "reco-github" },
+          {
+            text: "掘金",
+            link: "https://juejin.cn/user/3421335917434744/posts",
+            icon: "reco-juejin"
+          },
+          {
+            text: "NPM",
+            link: "https://www.npmjs.com/~chenjinhuo",
+            icon: "reco-npm"
+          },
           { text: "博客圆", link: "https://www.cnblogs.com/doudoublog/", icon: "reco-bokeyuan" }
-          // {
-          //   "text": "博客圆",
-          //   "link": "https://www.cnblogs.com/luanhewei/",
-          //   "icon": "reco-bokeyuan"
-          // },
-          // {
-          //   "text": "WeChat",
-          //   "link": "https://mp.weixin.qq.com/s/mXFqeUTegdvPliXknAAG_A",
-          //   "icon": "reco-wechat"
-          // }
         ]
       }
     ],
@@ -85,7 +80,7 @@ module.exports = {
     // 自动形成侧边导航
     sidebar: "auto",
     // 显示所有页面的标题链接
-    displayAllHeaders: false,
+    displayAllHeaders: true,
     // 活动的标题链接
     activeHeaderLinks: true,
     lastUpdated: "Last Updated",
