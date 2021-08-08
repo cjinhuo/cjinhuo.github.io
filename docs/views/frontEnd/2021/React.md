@@ -1,11 +1,9 @@
 ---
 title: 'React深入'
-  # 大标题
 sidebarDepth: 2
 sidebar: auto
 categories: hobby
 date: 2021-04-01
-# 时间
 tags:
 - 模板
 ---

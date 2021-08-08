@@ -1,14 +1,11 @@
 ---
 title: 'mysql'
-  # 大标题
 sidebarDepth: 2
 sidebar: auto
 categories: end
 date: 2021-06-01
-# 时间
 tags:
 - mysql
-# 标签
 ---
 
 ::: tip 概述
