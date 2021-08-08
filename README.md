@@ -9,3 +9,8 @@
 <a href="https://cjinhuo.netlify.app/categories/hobby/" target="_blank">爱好文章列表</a>
 
 <a href="https://cjinhuo.netlify.app/categories/work/" target="_blank">工作文章列表</a>
+
+## 联系我
+微信：cjinhuo
+邮箱：cjinhuo@qq.com
+
