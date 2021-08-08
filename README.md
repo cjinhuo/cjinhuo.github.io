@@ -1,7 +1,5 @@
 # 概览
-个人博客
-## 首页
-https://cjinhuo.netlify.app/
+个人博客:https://cjinhuo.netlify.app/
 
 ## 分类
 <a href="https://cjinhuo.netlify.app/categories/frontEnd/" target="_blank">前端文章列表</a>
