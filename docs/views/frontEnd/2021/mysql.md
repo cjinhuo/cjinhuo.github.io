@@ -21,3 +21,7 @@ mysql的一些笔记
 
 ### 第三范式
 要求一个数据库中不包含已在其他表中已包含的非主键的信息。（表中不允许存在其他表的非主键）
+
+
+## mac安装
+[brew install mysql](https://www.cnblogs.com/georgeleoo/p/11478416.html)
