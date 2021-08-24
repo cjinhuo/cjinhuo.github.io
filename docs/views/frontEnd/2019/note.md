@@ -189,6 +189,8 @@ Mutation Observer API 用来监视 DOM 变动。DOM 的任何变动，比如节�
 `npm install -g nrm`
 
 `nrm use`
+
+`nrm add company http://npm.company.com/ `
 ### 设置源
 `npm config set registry`，设置的地址会放在`~/.npmrc`配置文件中
 ### 查看当前npm源

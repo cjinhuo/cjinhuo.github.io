@@ -146,10 +146,16 @@ n: 潜伏
 ### metrics
 计算机词汇：衡量指标
 
+### revamp
+v: 改变、修改（通常指）改进外观、翻新
+n: 改进
 
+### RFC（Request For Comments）
+译：征求意见书，我理解的是出alpha版前会先出RFC的说明，会给别人先看看文档，说明此次的功能说明书
 
+### alphabetical
+adj: 按字母(表)顺序的
 
-超链接 [文本](URL)
-<!-- ../../.vuepress/public/line-height.png) -->
-图片 ![](url)
+combination:alphabetical order 按照字母表排序
+
 
