@@ -158,4 +158,20 @@ adj: 按字母(表)顺序的
 
 combination:alphabetical order 按照字母表排序
 
+### scenario
+n: 场景、设想、设想
 
+e.g.:common scenario 常见的场景
+
+### correct
+adj:（政治或思想）正确的；恰当的；端正的
+
+v: 改正、校正、
+
+### size
+* xm: extra samll 特小号
+* sm: small 小号
+* md: medium 中号
+* lg: large 大号
+* xl: extra large 特大号
+* xxl: extra extar large 超特大号
