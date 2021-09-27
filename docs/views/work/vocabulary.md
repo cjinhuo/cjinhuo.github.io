@@ -175,3 +175,15 @@ v: 改正、校正、
 * lg: large 大号
 * xl: extra large 特大号
 * xxl: extra extar large 超特大号
+
+
+### Peace out
+译："再见"，常用在道别，或者结聊天结束
+
+### Complexity
+n: 复杂性、难懂、难题
+
+<!-- ###  -->
+
+
+

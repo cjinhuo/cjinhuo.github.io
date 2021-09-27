@@ -82,6 +82,10 @@ grep命令是查找
 
 -maxdepth：表示查找层数是一层
 
+### 设置组别权限
+`sudo chown -R $(whoami) <Path to Code>`
+
+
 ## docker
 ### -p端口映射
 外部映射容器端口：

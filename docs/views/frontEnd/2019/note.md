@@ -185,6 +185,12 @@ Mutation Observer API 用来监视 DOM 变动。DOM 的任何变动，比如节�
 [api地址](https://wangdoc.com/javascript/dom/mutationobserver.html)
 
 ## npm
+
+### login
+`npm login`
+
+### 查看当前user和email
+
 ### nrm
 `npm install -g nrm`
 
