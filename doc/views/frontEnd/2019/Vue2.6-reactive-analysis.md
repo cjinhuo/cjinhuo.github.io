@@ -159,10 +159,10 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
 * handler.get()<br>
 在读取代理对象的某个属性时触发该操作，比如在执行 proxy.foo 时。
 ## initProxy的流程
-![](../../../.vuepress/public/vue2.6-initProxy.jpg)
+![](../../../.vuepress/public/vue2.6-init-proxy.jpg)
 ## initState
 自己理解initState后面的一些流程，省略了其他的模块：
-![](../../../.vuepress/public/vue2.6-initState.png)
+![](../../../.vuepress/public/vue2.6-init-state.png)
 ```js
   function initState (vm) {
     // 定义vm的watchers，便于在new Watcher时收集已经实例化的watcher
@@ -312,7 +312,7 @@ computed:{
   }
 ```
 ### computed流程图
-![](../../../.vuepress/public/vue2.6-initComputed.png)
+![](../../../.vuepress/public/vue2.6-init-computed.png)
 
 ### createComputedGetter
 ```js
@@ -443,7 +443,7 @@ function createWatcher (
   }
 }
 ```
-![](../../../.vuepress/public/vue2.6-initWatch.png)
+![](../../../.vuepress/public/vue2.6-init-watch.png)
 ## observe（判断是否需要观察）
 ::: tip
 尝试为value创建一个观察者实例，如果成功就返回新Observer的实例或返回当前已存在Observer
