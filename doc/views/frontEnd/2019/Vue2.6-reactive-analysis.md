@@ -162,7 +162,7 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
 ![](../../../.vuepress/public/vue2-init-proxy.jpg)
 ## initState
 自己理解initState后面的一些流程，省略了其他的模块：
-![](../../../.vuepress/public/vue2·-init-state.png)
+![](../../../.vuepress/public/vue2-init-state.png)
 ```js
   function initState (vm) {
     // 定义vm的watchers，便于在new Watcher时收集已经实例化的watcher
