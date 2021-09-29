@@ -388,4 +388,4 @@ watcher(() => {
 data[0] = 10 // =>sum: 10
 data.push(2) // =>sum: 12
 ```
-Vue2.6的源码[点击链接](https://chenjinhuo.netlify.com/views/frontEnd/Vue2.6%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB.html)
+Vue2.6的源码[点击链接](./Vue2.6-reactive-analysis.md)

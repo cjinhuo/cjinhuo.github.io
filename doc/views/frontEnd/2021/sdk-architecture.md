@@ -2,12 +2,10 @@
 title: 'JS监控SDK手摸手教学-架构篇（已开源）'
 sidebarDepth: 2
 sidebar: auto
-categories: front
+categories: frontEnd
 date: 2021-10-01
-# 时间
 tags:
 - 前端
-# 标签
 ---
 
 **本文作者：[cjinhuo](https://github.com/cjinhuo)，未经授权禁止转载。**
