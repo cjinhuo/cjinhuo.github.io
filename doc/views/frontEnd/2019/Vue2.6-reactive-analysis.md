@@ -159,10 +159,10 @@ proxy所有的traps是可选的。如果某个trap没有定义，那么默认的
 * handler.get()<br>
 在读取代理对象的某个属性时触发该操作，比如在执行 proxy.foo 时。
 ## initProxy的流程
-![](../../../.vuepress/public/vue2.6-init-proxy.jpg)
+![](../../../.vuepress/public/vue2-init-proxy.jpg)
 ## initState
 自己理解initState后面的一些流程，省略了其他的模块：
-![](../../../.vuepress/public/vue2.6-init-state.png)
+![](../../../.vuepress/public/vue2·-init-state.png)
 ```js
   function initState (vm) {
     // 定义vm的watchers，便于在new Watcher时收集已经实例化的watcher
@@ -312,7 +312,7 @@ computed:{
   }
 ```
 ### computed流程图
-![](../../../.vuepress/public/vue2.6-init-computed.png)
+![](../../../.vuepress/public/vue2-init-computed.png)
 
 ### createComputedGetter
 ```js
@@ -443,7 +443,7 @@ function createWatcher (
   }
 }
 ```
-![](../../../.vuepress/public/vue2.6-init-watch.png)
+![](../../../.vuepress/public/vue2-init-watch.png)
 ## observe（判断是否需要观察）
 ::: tip
 尝试为value创建一个观察者实例，如果成功就返回新Observer的实例或返回当前已存在Observer
@@ -552,7 +552,7 @@ function observe(value, asRootData) {
 **上面在data里面每个对象挂载了setter、getter方法，但是在之前的proxy也有挂载getter、setter方法，会不会被覆盖呢？**
 
 答案是不会，因为`Object.defineProperty(obj, key)`中虽然key相同，但是obj是不同的，所以两次挂载是不重复，第一次在proxy中设置getter、setter是为了新建一个内存空间来放入getter、setter的值用的，这边是为了截取用户调用data中属性而设置的getter、setter。
-![](../../../.vuepress/public/Vue2.6-defineReactive-getter&setter.png)
+![](../../../.vuepress/public/Vue2-defineReactive-getter&setter.png)
 * 如果你是按照流程走，现在已经走完`initData()`了，返回<a style="color:rgb(122, 214, 253);" href="#initstate">initState</a>继续走<a style="color:rgb(122, 214, 253);" href="#initcomputed">initComputed</a>
 
 * 如果你是从`this.getter.call`跳过来的话，执行的是`getter`函数，里面先判断Dep.targt是否存在，然后就开始建立关系<a style="color:rgb(122, 214, 253);" href="#dep-prototype-depend">dep.depend()</a>
@@ -799,7 +799,7 @@ function def(obj, key, val, enumerable) {
 ```
 
 下面这个例子讲的是，我们平时在取`this.message`的时候其实取的是`this._data.messgae`，当前setter也是一样的效果。
-![](../../../.vuepress/public/Vue2.6-proxy-getter&setter.png)
+![](../../../.vuepress/public/Vue2-proxy-getter&setter.png)
 
 ## Dep与Watcher
 ::: tip 联系
@@ -1295,7 +1295,7 @@ dep.subs[watcher:{id:1}]<br>
 
 上面的过程用一个流程图表示：
 
-![](../../../.vuepress/public/Vue2.6-addDep-cleanupDeps.png)
+![](../../../.vuepress/public/Vue2-addDep-cleanupDeps.png)
 
 #### 总结dep&&watcher
 为了在每次更新时都保持dep与watcher都有相同的依赖和订阅，所以dep和watcher都有相互的变量可以访问到对方，做到你中有我，我中有你的状态。
@@ -1450,15 +1450,15 @@ dep.subs[watcher:{id:1}]<br>
 ```
 
 
-![](../../../.vuepress/public/Vue2.6-nexttick-arrayDemo1.png)
+![](../../../.vuepress/public/Vue2-nexttick-arrayDemo1.png)
 
 看上图，点击按钮后页面是不会重新渲染的，这很正常，因为前面讲过，Vue只提供那些变异方法才能促使页面更新，vm.$Set也是这样的，但是看下面一张图
 
-![](../../../.vuepress/public/Vue2.6-nexttick-arrayDemo2.png)
+![](../../../.vuepress/public/Vue2-nexttick-arrayDemo2.png)
 点击测试，页面数据变换了，为什么？可以看出代码多加了一行`this.message = 'hello'`，当执行到这一句时会调用`dep.notify`，触发`render watcher`，但是没有马上执行只是放在nexttick队列中，等待宏任务执行完在执行nexttick宏任务，再执行到`this.realArr[0] = '111'`，没有触发`dep.notify`，但是对应的引用地址中的值确实变了，所以在后面执行render watcher时，再次调用this.realArr的时候值就变了。
 
 ## 原理图
-![](../../../.vuepress/public/Vue2.6-theory.png)
+![](../../../.vuepress/public/Vue2-theory.png)
 
 解读：
 在实例化`data`对象时，递归遍历，将每个数据都对应的实例化一个`Dep`类，并且在`defineReactive`的get函数中设置`dep.depend`,在`set`函数设置`dep.notify`，在页面渲染、`computed`或`watch`的时候会触发`get`然后就会设置依赖，在数据更新时就通过`set`中的`dep.notify`来通知在`get`中设置的依赖，达到响应式更新数据的效果，更新数据或页面这一操作是放到全局变量`callback`栈中，当宏任务结束后就以微任务的形式挨个执行`callback`的更新回调。所以数据是部分更新的，并不是单个更新的。

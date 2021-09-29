@@ -198,3 +198,10 @@ git merge 则不会显示 feature，只保留单条分支记录。
 ![](../../../.vuepress/public/git_merge.png)
 
 
+## git cz
+规范提交`commit`的工具，初始化项目指南：[making-your-repo-commitizen-friendly](https://github.com/commitizen/cz-cli#making-your-repo-commitizen-friendly)
+
+
+
+
+
