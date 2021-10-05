@@ -7,8 +7,6 @@ categories: hobby
 date: 2019-05-29
 # 时间
 tags:
-- VPN
-- 服务器
 # 标签
 ---
 

@@ -7,7 +7,7 @@ categories: frontEnd
 date: 2019-02-12
 # 时间
 tags:
-- 面试题
+- 面试
 # 标签
 ---
 
