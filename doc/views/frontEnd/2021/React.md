@@ -2,7 +2,7 @@
 title: 'React深入'
 sidebarDepth: 2
 sidebar: auto
-categories: hobby
+categories: frontEnd
 date: 2021-04-01
 tags:
 - 模板

@@ -7,8 +7,6 @@ categories: frontEnd
 date: 2019-02-12
 # 时间
 tags:
-- 前端
-- 中级前端工程师
 - 面试题
 # 标签
 ---

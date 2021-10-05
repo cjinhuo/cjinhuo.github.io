@@ -5,9 +5,7 @@ sidebarDepth: 2
 sidebar: auto
 categories: hobby
 date: 2019-09-10
-# 时间
 tags:
-- 依赖注入
 - 翻译
 # 标签
 ---
