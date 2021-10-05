@@ -4,10 +4,8 @@ title: 'webpack'
 sidebarDepth: 3
 sidebar: auto
 categories: frontEnd
-date: 2019-02-12
-# 时间
+date: 2020-09-12
 tags:
-- webpack
 - 前端工程化
 # 标签
 ---

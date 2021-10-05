@@ -4,8 +4,7 @@ categories: frontEnd
 date: 2019-12-17
 # 时间
 tags:
-- Vue
-- Vuex3.1.2
+- Vue2.6
 - 源码解读
 ---
 

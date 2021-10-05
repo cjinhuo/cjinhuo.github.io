@@ -1,3 +1,13 @@
+---
+title: 'type vs interface'
+sidebarDepth: 2
+sidebar: auto
+categories: frontEnd
+date: 2020-11-10
+tags:
+- 翻译
+---
+
 **本文作者：[cjinhuo](https://github.com/cjinhuo)，未经授权禁止转载。**
 
 <h1 style="padding: 0px; font-weight: bold; color: black; font-size: 24px; text-align: center; line-height: 60px; margin-top: 10px; margin-bottom: 10px;">
@@ -6,7 +16,7 @@
 
 翻译自：[TypeScript: type vs interface](https://dev.to/stereobooster/typescript-type-vs-interface-2n0c)
 
-<h2 style="margin-top: 25px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px;" data-id="heading-7"><span style="display: none;" class="prefix"></span><span style="color: #2db7f5; display: inline-block; padding-left: 10px;" class="content">相似之处</span><span style="display: none;" class="suffix"></span></h2>	
+<h2 style="margin-top: 25px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px;" data-id="heading-7"><span style="display: none;" class="prefix"></span><span style="color: #2db7f5; display: inline-block; padding-left: 10px;" class="content">相似之处</span><span style="display: none;" class="suffix"></span></h2>
 
 <h3 style="margin-top: 20px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px;" data-id="heading-7"><span style="display: none;" class="prefix"></span><span style="font-size: 16px; color: #2db7f5; display: inline-block; padding-left: 10px; border-left: 4px solid #2db7f5;" class="content">Records（声明）</span><span style="display: none;" class="suffix"></span></h3>
 
@@ -144,7 +154,7 @@ interface IStringRecord {
 }
 ```
 
-<h2 style="margin-top: 25px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px;" data-id="heading-7"><span style="display: none;" class="prefix"></span><span style="color: #2db7f5; display: inline-block; padding-left: 10px;" class="content">不同之处</span><span style="display: none;" class="suffix"></span></h2>	
+<h2 style="margin-top: 25px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px;" data-id="heading-7"><span style="display: none;" class="prefix"></span><span style="color: #2db7f5; display: inline-block; padding-left: 10px;" class="content">不同之处</span><span style="display: none;" class="suffix"></span></h2>
 
 <h3 style="margin-top: 20px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px;" data-id="heading-7"><span style="display: none;" class="prefix"></span><span style="font-size: 16px; color: #2db7f5; display: inline-block; padding-left: 10px; border-left: 4px solid #2db7f5;" class="content">Primitive types（基础类型）</span><span style="display: none;" class="suffix"></span></h3>
 
@@ -159,7 +169,7 @@ interface INewNumber extends number {}
 // this works
 interface INewNumber extends Number {}
 // but don't forget that 1 instanceof Number === false;
-	
+
 ```
 
 <h3 style="margin-top: 20px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px;" data-id="heading-7"><span style="display: none;" class="prefix"></span><span style="font-size: 16px; color: #2db7f5; display: inline-block; padding-left: 10px; border-left: 4px solid #2db7f5;" class="content">Tuples（元组）</span><span style="display: none;" class="suffix"></span></h3>

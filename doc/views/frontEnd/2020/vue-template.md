@@ -5,8 +5,7 @@ sidebar: auto
 categories: frontEnd
 date: 2020-07-30
 tags:
-- vue2.6
-- 项目结构
+- Vue2.6
 # 标签
 ---
 

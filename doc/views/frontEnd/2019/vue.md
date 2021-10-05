@@ -6,7 +6,7 @@ categories: frontEnd
 date: 2019-02-12
 # 时间
 tags:
-- Vue
+- Vue2.6
 # 标签
 ---
 

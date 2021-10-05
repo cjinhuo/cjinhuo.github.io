@@ -7,7 +7,7 @@ categories: frontEnd
 date: 2019-10-31
 # 时间
 tags:
-- Vue
+- Vue2.6
 - 响应式数据
 ---
 

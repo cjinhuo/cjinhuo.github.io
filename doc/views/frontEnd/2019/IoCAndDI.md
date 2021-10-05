@@ -1,13 +1,11 @@
 ---
 title: 'IoC和DI'
-  # 大标题
 sidebarDepth: 2
 sidebar: auto
 categories: hobby
 date: 2019-09-10
 tags:
 - 翻译
-# 标签
 ---
 
 本文翻译自`martinfowler`的[Inversion of Control Containers and the Dependency Injection pattern](https://martinfowler.com/articles/injection.html)
