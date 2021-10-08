@@ -58,7 +58,7 @@ tags:
 
 ### 包与包之间的关系
 
-![包与包间的关系.png](https://tva1.sinaimg.cn/large/008i3skNly1guvmt3hysqj60uk0u075l02.jpg)
+![包与包间的关系.png](https://files.catbox.moe/00of0w.png)
 
 
 ### 多包打包与发布
@@ -100,7 +100,7 @@ interface BasePluginType<T extends EventTypes = EventTypes, C extends BaseClient
   consumer?: (this: C, transformedData: any) => void
 }
 ```
-![baseplugin.png](https://tva1.sinaimg.cn/large/008i3skNly1guw5jsozvxj61t80g2gno02.jpg)
+![baseplugin.png](https://files.catbox.moe/tti6z1.png)
 
 
 这时就会有人说了，如果我的业务比这复杂多了，那这个架构还能撑住吗？是可以的，将上面插件中的3个hooks:`monitor、transform、consumer`分成更多hooks，可以是5个也可以是10个，只要你分的颗粒度足够细，且完全按照这些hooks的对应功能来编写代码，不管你的项目代码有多几十万行，你的代码层次结构都是很清晰的
@@ -111,7 +111,7 @@ interface BasePluginType<T extends EventTypes = EventTypes, C extends BaseClient
 
 ### 插件实际在代码中的使用
 
-![browserClient](https://tva1.sinaimg.cn/large/008i3skNly1guw8datft7j61d80ik0uk02.jpg)
+![browserClient](https://files.catbox.moe/8k4tdh.png)
 
 ### 在Vue3使用@mitojs/vue
 
@@ -135,17 +135,17 @@ const MitoInstance = init({
 
 上面讲完插件是构成整个`SDK`的主要链路，现在讲下最基本的一些工具类，来串联这些插件，由于需要支持多个端，每个端需要监听的事件、上报方式、可配置项的是不同的，所以需要抽离多个抽象类，方便扩展。如下是[@mitojs/core](https://github.com/mitojs/mitojs/tree/master/packages/core)的整体思维导图
 
-![core.png](https://tva1.sinaimg.cn/large/008i3skNly1guw76vrmtsj611h0u0mzr02.jpg)
+![core.png](https://files.catbox.moe/rtv75h.png)
 
 
 ## 浏览器的整体思维导图
 
-![browser-architecture](https://tva1.sinaimg.cn/large/008i3skNly1guw7f0b21zj60z40u0wh202.jpg)
+![browser-architecture](https://files.catbox.moe/g57hci.png)
 
 
 ## 微信小程序的整体思维导图
 
-![wx-mini-architecture](https://tva1.sinaimg.cn/large/008i3skNly1guw87jvjjqj618f0u0whj02.jpg)
+![wx-mini-architecture](https://files.catbox.moe/bsl1h2.png)
 
 ## 可迭代性
 后续如果有人想`pull request` `node监控`或`其他小程序的监控`，只要按照这个插件模式开发，可迭代性便会大大提高
