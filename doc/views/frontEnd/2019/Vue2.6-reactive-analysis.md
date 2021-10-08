@@ -5,7 +5,7 @@ date: 2019-11-01
 tags:
 - 源码解读
 - Vue2.6
-# stcky: 2
+# sticky: 2
 ---
 
 :::tip

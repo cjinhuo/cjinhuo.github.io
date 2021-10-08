@@ -1,5 +1,5 @@
 ---
-title: '前端监控:JS监控SDK手摸手教学-架构篇(已开源)'
+title: '前端监控:监控SDK手摸手Teach-架构篇(已开源)'
 sidebarDepth: 2
 sidebar: auto
 categories: frontEnd
@@ -12,7 +12,7 @@ tags:
 
 
 # 概要
-已开源的前端监控SDK:[mitojs](https://github.com/mitojs/mitojs)，有兴趣的小伙伴可以去瞅瞅~
+本文的主要目的是介绍一种可扩展性较好的SDK架构，让后续业务迭代的代码更清晰明朗。这种架构已经在开源监控SDK:[mitojs](https://github.com/mitojs/mitojs)实践，有兴趣的小伙伴可以去瞅瞅~
 
 来到正文，本文分成四个部分
 
@@ -35,25 +35,25 @@ tags:
 
 
 
-## 为什么不选择上面四个监控平台或者其他监控平台，为什么要自己搞？
+## 自研的优势
 
-1. `fundebug`需要投入大量金钱来作为支持，而`webfunny`和`sentry`虽是可以用`docker`私有化部署，但由于其源代码没有开源，二次开发受限
-2. 自己开发可以将公司所有的SDK统一成一个，包括但不限于：埋点平台SDK、性能监控SDK
-3. 统一SDK的好处是可以共享采集到的信息，比如错误信息可以和埋点信息联动，便可拿到更细的用户行为栈，更快的排查线上错误
+1. `阿里云前端监控(ARMS)`和`fundebug`需要投入大量金钱来作为支持，而`webfunny`和`sentry`虽是可以用`docker`私有化部署，但由于其源代码没有开源，二次开发受限
+2. 可以将公司所有的SDK统一成一个，包括但不限于：埋点平台SDK、性能监控SDK、录屏SDK
+3. 可以共享采集到的信息，比如错误信息可以和埋点信息联动，便可拿到更细的用户行为栈，更快的排查线上错误
 
 ## 监控平台的组成
 
 ![整体流程](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ebf9ce746d034a209429a694655f1ffa~tplv-k3u1fbpfcp-zoom-1.image)
 
 # SDK的架构与迭代
-了解前端监控的原理其实就那么几个，比如拦截http请求就是重写原生函数:fetch、XMLHttpRequest，监控代码错误：window.onerror，但SDK也是一个工程，是需要不断迭代追加功能的，所以架构就尤为重要
+前端监控的原理其实就那么几个，比如拦截http请求就是重写原生函数:fetch、XMLHttpRequest，监控代码错误：window.onerror，但SDK也是一个工程，是需要不断迭代追加功能的，所以架构就尤为重要
 
 ## monorepo
-借鉴了`sentry`和`vue-next`的代码结构，采用的也是[monorepo](https://en.wikipedia.org/wiki/Monorepo)
+借鉴了`sentry`和`vue-next`的代码目录结构，最终也是采用[monorepo](https://en.wikipedia.org/wiki/Monorepo)
 
 它的优势：
 
-1. 分模块打包、分模块热更新（提高开发体验）
+1. 分模块打包、分模块热更新、分包发布（提高开发体验）
 2. 抽离抽象类、工具类到某个包，代码结构清晰（降低耦合性，提高代码可读性）
 
 ### 包与包之间的关系
@@ -62,7 +62,7 @@ tags:
 
 
 ### 多包打包与发布
-使用了[lerna](https://github.com/lerna/lerna)后，发现它的功能太多了，我想要的只是一个打包和发布的功能，所以就自己用脚步写了根据命令行的入参来调用`rollup`的`api`和`npm`的`api`来打包和发布，具体[打包脚本](https://github.com/mitojs/mitojs/blob/master/script/build.js)
+试用了[lerna](https://github.com/lerna/lerna)后，发现它的功能太多，我想要的只是一个打包和发布的功能，最终是用js脚步编写根据命令行的入参来调用`rollup`的`api`和`npm`的`api`来打包和发布，具体[打包脚本](https://github.com/mitojs/mitojs/blob/master/script/build.js)
 
 ## 可插拔的插件思路
 该思路是从[rollup](https://rollupjs.org/guide/en/#plugins-overview)和监控开源库[dora](https://github.com/dora-projects/dora/tree/master/packages/browser/src/plugins)中借鉴。
@@ -102,9 +102,11 @@ interface BasePluginType<T extends EventTypes = EventTypes, C extends BaseClient
 ```
 ![baseplugin.png](https://tva1.sinaimg.cn/large/008i3skNly1guw5jsozvxj61t80g2gno02.jpg)
 
+
+这时就会有人说了，如果我的业务比这复杂多了，那这个架构还能撑住吗？是可以的，将上面插件中的3个hooks:`monitor、transform、consumer`分成更多hooks，可以是5个也可以是10个，只要你分的颗粒度足够细，且完全按照这些hooks的对应功能来编写代码，不管你的项目代码有多几十万行，你的代码层次结构都是很清晰的
 ### 举个🌰：监听unhandlerejection的插件
 
-![unhandlerejectionPlugin.png](https://tva1.sinaimg.cn/large/008i3skNly1guw648m4k4j60vu0u0q6l02.jpg)
+![unhandlerejectionPlugin.png](https://files.catbox.moe/86e8gp.png)
 
 
 ### 插件实际在代码中的使用
@@ -150,26 +152,22 @@ const MitoInstance = init({
 
 # 结尾
 
+## 🤔 小结
+
+该架构的思想可适用于任何SDK，不同SDK中对应插件的个数和作用不同。这篇讲的是架构篇，下篇讲的是实现篇，也就是在各个插件中具体编写的代码
+
 ## 🧐 开源
 
-老仓库[monitor](https://github.com/clouDr-f2e/monitor)的错误监控原作者已不再维护，推荐到新的仓库[mitojs](https://github.com/mitojs/mitojs)，新SDK重构后，包的体积更小、代码架构更清晰，耦合性更低，功能上完全包含了老仓库，也推出了最新的[mitojs文档](https://mitojs.github.io/mito-doc/#/sdk/guide/introduction)，目前有部分人在用[mitojs](https://github.com/mitojs/mitojs)在做自己的监控平台或者埋点相关业务，如果你感兴趣可以，不妨过来瞅瞅，顺便点个star 😘
-
-
-
-## 🤔 预告
-
-下篇将会发布：前端监控:JS监控SDK手摸手教学-实现篇
-
+老仓库[monitor](https://github.com/clouDr-f2e/monitor)的错误监控原作者已不再维护，推荐到新的仓库[mitojs](https://github.com/mitojs/mitojs)，新SDK重构后，包的体积更小、代码架构更清晰，耦合性更低，功能上完全包含了老仓库，也推出了最新的[mitojs文档](https://mitojs.github.io/mito-doc/#/sdk/guide/introduction)，目前有部分人在用[mitojs](https://github.com/mitojs/mitojs)在做自己的监控平台或者埋点相关业务，如果你感兴趣可以，不妨过来瞅瞅 😘
 
 
 ## 📞 联系&内推
 
-如果你对前端错误监控、埋点、性能监控、前端八卦感兴趣可以点[联系我](https://mitojs.github.io/mito-doc/#/help)，里面有我的详细联系方式和前端交流群
+字节架构前端大量招人，内推可帮助修改简历和实时查询面试进度，欢迎砸简历到我的**邮箱:chenjinhuo@bytedance.com**
 
-**微信:**cjinhuo
+如果你对字节架构前端、错误监控、埋点感兴趣、也直接联系我的**微信:cjinhuo**
 
-字节架构前端大量招人，内推可帮助修改简历和实时查询面试进度，欢迎砸简历到我的邮箱:chenjinhuo@bytedance.com
-
+**Have A Good Day!!!**
 
 
 
