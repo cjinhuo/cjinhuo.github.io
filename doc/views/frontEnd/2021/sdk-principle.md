@@ -11,6 +11,7 @@ tags:
 **本文作者：[cjinhuo](https://github.com/cjinhuo)，未经授权禁止转载。**
 
 # 概要
+
 已开源的前端监控SDK:[mitojs](https://github.com/mitojs/mitojs)，有兴趣的小伙伴可以去瞅瞅~
 
 来到正文，本文分成四个部分
@@ -20,3 +21,4 @@ tags:
 * 结尾
 
 # 背景
+上一篇讲的是SDK的整体架构，也就是把，这一篇讲的是
