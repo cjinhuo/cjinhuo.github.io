@@ -22,7 +22,7 @@ tags:
 
 
 # 背景
-传统模式下，一个前端项目发到正式环境后，所有报错信息只能通过用户使用时截图、口头描述发送到开发者，然后开发者来根据用户所描述的场景去模拟这个错误的产生，这效率肯定超级低，所以很多开源或收费的前端监控平台就应运而生，比如:
+传统模式下，前端项目发到正式环境后就变成了一个黑盒子，所有报错信息只能通过用户使用时截图、口头描述发送到开发者，然后开发者来根据用户所描述的场景去模拟这个错误的产生，这效率特低，所以很多开源或收费的前端监控平台就应运而生，比如:
 
 * [sentry](https://github.com/getsentry/sentry)
 * [webfunny](https://github.com/a597873885/webfunny_monitor)
@@ -31,18 +31,19 @@ tags:
 
 等等一些优秀的监控平台
 
-## 自研SDK的优势
+## 自研的优势
 
 1. `阿里云前端监控(ARMS)`和`fundebug`需要投入大量金钱来作为支持，而`webfunny`和`sentry`虽是可以用`docker`私有化部署，但由于其源代码没有开源，二次开发受限
 2. 可以将公司所有的SDK统一成一个，包括但不限于：埋点平台SDK、性能监控SDK、录屏SDK
 3. 可以无缝共享采集到的信息，比如错误信息可以和埋点信息联动，便可拿到更细的用户行为栈，更快的排查线上错误
+4. 可以设计更好的服务端结构，相同服务器的性能，不同的架构可以抗住不同的QPS
 
 ## 监控平台的组成
 
 ![整体流程](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ebf9ce746d034a209429a694655f1ffa~tplv-k3u1fbpfcp-zoom-1.image)
 
 # SDK的架构与迭代
-前端监控的原理其实就那么几个，比如拦截http请求就是重写原生函数:fetch、XMLHttpRequest，监控代码错误：window.onerror，但SDK也是一个工程，是需要不断迭代追加功能的，所以架构就尤为重要
+前端监控的原理其实就那么几个，比如拦截http请求就是重写原生函数:fetch、XMLHttpRequest，监控代码错误：window.onerror，但SDK也是一个工程，是需要不断迭代追加功能的，所以良好的架构可以为后期迭代打下不错的地基
 
 ## monorepo
 借鉴了`sentry`和`vue-next`的代码目录结构，最终也是采用[monorepo](https://en.wikipedia.org/wiki/Monorepo)
@@ -125,7 +126,7 @@ const MitoInstance = init({
   maxBreadcrumbs: 100
 },[vuePlugin])
 ```
-[vue3 接入指南](https://mitojs.github.io/mito-doc/#/sdk/guide/vue)
+可以去[vue3 Demo](https://mitojs.github.io/vue3-sdk-demo/#/page-one)体验一下sdk收集的数据，更多信息可以访问[vue3 接入指南](https://mitojs.github.io/mito-doc/#/sdk/guide/vue)
 
 ## @mitojs/core
 
@@ -151,6 +152,8 @@ const MitoInstance = init({
 ## 🤔 小结
 
 该架构的思想可适用于任何SDK，不同SDK中对应插件的个数和作用不同。总而言之，把一个大功能分隔成几个小功能区域，在指定的区域写指定功能的代码，让代码逻辑有规律可循。
+
+下一篇「监控SDK手摸手Teach-实现篇」会讲具体在插件代码的编写，敬请期待~
 
 ## 🧐 开源
 
