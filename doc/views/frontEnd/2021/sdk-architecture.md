@@ -157,7 +157,7 @@ const MitoInstance = init({
 
 ## 🧐 开源
 
-老仓库[monitor](https://github.com/clouDr-f2e/monitor)的错误监控原作者已不再维护，推荐到新的仓库[mitojs](https://github.com/mitojs/mitojs)，新SDK重构后，包的体积更小、代码架构更清晰，耦合性更低，功能上完全包含了老仓库，也推出了最新的[mitojs文档](https://mitojs.github.io/mito-doc/#/sdk/guide/introduction)，目前有部分人在用[mitojs](https://github.com/mitojs/mitojs)在做自己的监控平台或者埋点相关业务，如果你感兴趣可以，不妨过来瞅瞅 😘
+github仓库[mitojs](https://github.com/mitojs/mitojs)，新SDK重构后，包的体积更小、代码架构更清晰，耦合性更低，文档：[mitojs文档](https://mitojs.github.io/mito-doc/#/sdk/guide/introduction)，目前有部分人在用[mitojs](https://github.com/mitojs/mitojs)在做自己的监控平台或者埋点相关业务，如果你感兴趣可以，不妨过来瞅瞅 😘
 
 
 ## 📞 联系&内推
