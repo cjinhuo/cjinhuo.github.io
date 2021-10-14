@@ -12,7 +12,7 @@ tags:
 
 # 概要
 
-已开源的前端监控SDK:[mitojs](https://github.com/mitojs/mitojs)，有兴趣的小伙伴可以去瞅瞅~
+已开源的前端监控SDK:[mitojs](https://github.com/mitojs/mitojs)，有兴趣的小伙伴可以去瞅瞅~([SDK在线Demo](https://mitojs.github.io/react-sdk-demo/#/page-one))
 
 来到正文，本文分成四个部分
 
@@ -68,10 +68,6 @@ replaceOld(_global, BrowserEventTypes.FETCH, (originalFetch: voidFun) => {
       time: sTime,
       response: {}
     }
-    const headers = new Headers(config.headers || {})
-    Object.assign(headers, {
-      setRequestHeader: headers.set
-    })
     return originalFetch.apply(_global, [url, config]).then(
       (res: Response) => {
         // 需要克隆一下对象，不然会被标记该对象已经被使用过
@@ -99,7 +95,7 @@ replaceOld(_global, BrowserEventTypes.FETCH, (originalFetch: voidFun) => {
   }
 })
 ```
-**关于接口跨域、超时的问题**：这两种情况发生的时候，接口返回的响应体和响应头里面都是空的，`status`等于0，所以很难区分两者，但是正常情况下，一般项目中都的请求都是复杂请求，所以在正式请求会先进行`option`进行预请求，如果是跨域的话基本几十毫秒就会返回来，可以以此作为临界值来判断跨域与超时的问题（如果是接口不存在也会被判断成接口跨域）。
+**关于接口跨域、超时的问题**：这两种情况发生的时候，接口返回的响应体和响应头里面都是空的，`status`等于0，所以很难区分两者，但是正常情况下，一般项目中都的请求都是复杂请求，所以在正式请求会先进行`option`进行预请求，如果是跨域的话基本几十毫秒就会返回来，可以以此作为临界值来判断跨域与超时的问题（如果是接口不存在也会被判断成接口跨域）
 
 
 上面代码就是重写`fetch`的基本操作，拿到收集到数据后就可以做一步数据处理，数据下面再讲。同理可得**以下列表**的重写方式都是如此，重写的过程中拿到入参并收集到你想要的数据，具体代码实现点击下面的链接
@@ -174,7 +170,7 @@ Vue.config.errorHandler = function (err: Error, vm: ViewModel, info: string): vo
 当然Vue2和Vue3拿到的数据格式是不一样的，具体的处理逻辑可以[点击这里](https://github.com/mitojs/mitojs/blob/master/packages/vue/src/vuePlugin.ts)
 
 
-## react的错误
+## react的render错误捕捉
 React16.13中提供了[componentDidCatch](https://zh-hans.reactjs.org/docs/react-component.html#componentdidcatch)钩子函数来回调错误信息，所以我们可以新建一个类`ErrorBoundary`来继承React，然后然后声明`componentDidCatch`钩子函数，可以拿到错误信息
 
 ```js
@@ -213,8 +209,10 @@ class ErrorBoundaryWrapped extends PureComponent<ErrorBoundaryProps, ErrorBounda
 然后将组件抛出来，具体的[代码实现](https://github.com/mitojs/mitojs/blob/master/packages/react/src/components/ErrorBoundary.tsx)
 
 
+**注意：如果是在react中出现代码错误，但是不在render函数中，将会被全局的`onerror`捕捉到**
+
 ## 插件
-实现差不多就这了，具体代码可以去[仓库](https://github.com/mitojs/mitojs/tree/master/packages)里面看看，上一篇[前端监控:监控SDK手摸手Teach-架构篇(已开源)]((./sdk-architecture.md))中有讲过插件这个概念，插件是用来规范代码分层的一个思想，在指定的区域编写指定功能的代码，可读性和可迭代性会大大提高
+实现差不多就这了，具体代码可以去[仓库](https://github.com/mitojs/mitojs/tree/master/packages)里面看看，上一篇[前端监控:监控SDK手摸手Teach-架构篇(已开源)](./sdk-architecture.md)中有讲过插件这个概念，插件是用来规范代码分层的一个思想，在指定的区域编写指定功能的代码，可读性和可迭代性会大大提高
 ```js
 export interface BasePluginType<T extends EventTypes = EventTypes, C extends BaseClientType = BaseClientType> {
   // 事件枚举
@@ -341,9 +339,9 @@ const domPlugin: BasePluginType<BrowserEventTypes, BrowserClient> = {
 
 ## 📞 联系&内推
 
-字节架构前端大量招人，内推可帮助修改简历和实时查询面试进度，欢迎砸简历到我的**邮箱:chenjinhuo@bytedance.com**
+字节前端大量招人，内推可帮助修改简历和实时查询面试进度，欢迎砸简历到我的**邮箱:chenjinhuo@bytedance.com**
 
-如果你对字节架构前端、错误监控、埋点感兴趣、也直接联系我的**微信:cjinhuo**
+如果你对字节前端、错误监控、埋点感兴趣、也直接联系我的**微信:cjinhuo**
 
 **Have A Good Day!!!**
 
