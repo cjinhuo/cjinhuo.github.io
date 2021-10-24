@@ -1,9 +1,9 @@
 ---
-title: '程序员的Mac有哪些好用的工具：一'
+title: '程序员Mac好用的工具：一'
 sidebarDepth: 2
 sidebar: auto
 categories: frontEnd
-date: 2019-04-24
+date: 2021-10-21
 # 时间
 tags:
 - 开发环境
@@ -74,9 +74,7 @@ brew install mysql
 * npm npm的命令提示，[安装指南](https://github.com/lukechilds/zsh-better-npm-completion)
 * yarn yarn的命令提示，[安装指南](https://github.com/chrisands/zsh-yarn-completions)
 
-
-
-### 终端快捷键
+### 常用终端快捷键
 1. 将光标移动到行首：ctrl + a
 
 2. 将光标移动到行尾：ctrl + e
@@ -95,12 +93,52 @@ brew install mysql
 
 9. CTRL+Y：粘贴之前（CTRL+U/K/W）删除的内容
 
-10. ESC+B：光标向左移动一个单词
+10. ESC+B：光标向左移动一个单词，移动完要放开ESC和B键
 
-11. ESC+F：光标向右移动一个单词
+11. ESC+F：光标向右移动一个单词，移动完要放开ESC和F键
+
+## fig
+[fig](https://fig.io/)搭配item2使用更佳
+
+<video src="https://fig.io/videos/main-demo-grey.mp4" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
+
+## BetterAndBetter
+更好是使用你的键盘和触摸板，例如：
+1. 用快捷键将App快速分屏
+2. 用手势将App变成全屏
+等等，自定义属于自己的快捷键，例如我常用的快捷键：
+
+![](https://files.catbox.moe/pvogof.jpg)
 
 
-### Nginx反向代理
+## utool 与
+国内版的utool
+
+### utool
+[utool](https://u.tools/)有很多好用的插件列表：
+* hosts：更改本机的host文件
+* 翻译：整合了网易、搜狗、腾讯翻译（本来是有谷歌的，后面更新给没了）
+* 网页快开：快速搜索 关键字
+* 图床：免费的图片上传工具
+
+
+### raycast
+[raycast](https://www.raycast.com/)很类似utool，功能也超多，风格会更好看一点。
+
+## 邮件
+
+![mail_add_group](https://files.catbox.moe/oytx3n.jpg)
+
+
+![](https://files.catbox.moe/6nnvhq.jpg)
+
+## nginx
+安装:`brew nginx`
+
+### 正向代理
+
+
+### 反向代理
 `brew nginx`
 
 `vi /usr/local/etc/nginx/nginx.config`进行配置更改，也可以在`/usr/local/etc/nginx/servers`里面添加配置
@@ -142,3 +180,9 @@ server{
 重启Nginx` brew services restart nginx`
 暂停Nginx` brew services stop nginx`
 
+# 结尾
+
+## 🤔 小结
+Mac好用的软件特别多，如果你觉得有更好的技巧和工具可在评论中贴出，不胜感激~
+
+**Have A Good Day!!!**
