@@ -111,7 +111,7 @@ brew install mysql
 ![](https://files.catbox.moe/pvogof.jpg)
 
 
-## utool 与
+## utool 与 raycast
 国内版的utool
 
 ### utool
@@ -121,9 +121,10 @@ brew install mysql
 * 网页快开：快速搜索 关键字
 * 图床：免费的图片上传工具
 
+插件中心还有好多
 
 ### raycast
-[raycast](https://www.raycast.com/)很类似utool，功能也超多，风格会更好看一点。
+[raycast](https://www.raycast.com/)很类似utool，功能也超多，风格会更好看一点，里面还包含了剪切
 
 ## 邮件
 
@@ -131,6 +132,40 @@ brew install mysql
 
 
 ![](https://files.catbox.moe/6nnvhq.jpg)
+
+## typora
+[typora](https://typora.io/)一款免费的MD文件编辑器，快速插入表格、图片、超链接等等快捷键，可以作为主力写作工具
+
+<video src="https://typora.io/img/beta.mp4" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
+
+## codelf
+[codelf](https://unbug.github.io/codelf/)是在线变量命名工具，很多时候为想一个优雅的变量名而苦恼，试试这个[网站](https://unbug.github.io/codelf/)，说不定你就爱上它了
+
+
+## 影视森林
+[影视森林](https://549.tv/)里面包含了许多不错的追剧网站，不需要会员个人比较中意里面的一个影视推荐网站:[mvcat](https://www.mvcat.com/)，会将所有电影分类，有点像豆瓣电影的那种感觉，网站的创意感觉是花了心思的。
+
+
+## Paste
+[Paste](https://pasteapp.io/)会存储你当前复制的所有内容，还可以上传到云端（这样我们的信息都泄露了-_-!），当你没有及时保存，你就可以追溯以前复制过的代码或网址，复制后还有会声音提示，当然这么好用的东西肯定要💰的~
+
+
+## Dash
+[Dash](https://kapeli.com/dash)可以预先下载文档，然后再搜索，由于是在本地，所以速度超快，是API工程师的一把手
+
+![dash](https://files.catbox.moe/rppvxs.jpg)
+
+## toggl
+[toggl](https://toggl.com/)是Mac上任务追踪的软件，可以追踪到你每天使用每个App的时间，比如你在vscode的时间、浏览器的某个tab的停留时间等等，用了一周下来，你再回看你的记录，就可以清楚的知道你的时间是浪费在哪，进而改善
+
+
+## GIPHY CAPTURE
+[GIPHY CAPTURE](https://giphy.com/apps/giphycapture)一款超好用并简单的屏幕录制，可以将你录制的片段转换成`MP4`、`GIF`，还可以在上面加字母，是`super mini`版的`Final Cut`，例如下图就是用该软件录制的
+
+![react-sdk-demo-gif](https://tva1.sinaimg.cn/large/008i3skNly1gvs20pkphtg31ds0miu14.gif)
+
+
+
 
 ## nginx
 安装:`brew nginx`
