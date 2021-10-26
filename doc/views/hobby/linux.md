@@ -95,6 +95,54 @@ docker run -it -p 7009:7009 try-end/node:12 /bin/bash
 执行`try-end/node:12`这个镜像，`/bin/bash`是进入到当前容器当中，容器里面的所有端口服务，容器外面默认是没有办法访问到的，`-p 7009:7009`：用外面的`7009`端口来映射容器内的`7009`，从而可以在容器外访问容器内的`7009`服务
 
 
+## nginx
+安装:`brew nginx`
+
+### 正向代理
+
+
+### 反向代理
+`brew nginx`
+
+`vi /usr/local/etc/nginx/nginx.config`进行配置更改，也可以在`/usr/local/etc/nginx/servers`里面添加配置
+
+```js
+server{
+    listen 80;
+    server_name *.qa.91jkys.com;
+    access_log /var/log/nginx/zhiyun_access.log;
+    error_log  /var/log/nginx/zhiyun_error.log;
+
+    if ($http_host ~* "^(.*?)\.qa\.91jkys\.com$") {
+        set $domain $1;
+    }
+
+    location / {
+        if ($domain ~* "trycatch") {
+            proxy_pass http://127.0.0.1:3000;
+        }
+        if ($domain ~* "operate-admin") {
+            proxy_pass http://127.0.0.1:1024;
+        }
+        if ($domain ~* "metabase-admin") {
+            proxy_pass http://127.0.0.1:1025;
+        }
+        if ($domain ~* "supply"){
+            proxy_pass http://127.0.0.1:9999;
+        }
+        proxy_redirect     off;
+        proxy_set_header   Host             $http_host;
+        proxy_set_header   X-Real-IP        $remote_addr;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+启动Nginx` brew services start nginx`
+重启Nginx` brew services restart nginx`
+暂停Nginx` brew services stop nginx`
+
 
 
 

@@ -142,7 +142,28 @@ const enum WxRouteEvents {
 
 ## 监控onerror
 类似`Web`的`window.onerror`，不过小程序返回的是不是一个错误对象，而是一个字符串，需要自行解析其中的值（注意：[小程序官方文档](https://developers.weixin.qq.com/miniprogram/dev/reference/api/App.html#onError-String-error)上写的是`string`，但是我也有在某个开发者电脑中出现过`Error`对象）
-
+```js
+const originApp = App
+App = function (appOptions: WechatMiniprogram.App.Option) {
+  replaceOld(
+    appOptions,
+    'onError',
+    function (originMethod: voidFun) {
+      return function (...args: any): void {
+        // 让原本的函数比抛出的hooks先执行，便于埋点判断是否重复
+        if (originMethod) {
+          originMethod.apply(this, args)
+        }
+        // 拿到args信息
+        // notify
+      }
+    },
+    true
+  )
+  return originApp(appOptions)
+}
+```
+重写App中的`onError`方法， 并拿到错误信息随后进行数据解析，[完整代码](https://github.com/mitojs/mitojs/blob/master/packages/wx-mini/src/plugins/wxApp.ts)
 
 ## 获取小程序的tab、touch等事件
 由于小程序是不能全局监听`tab`、`touch`等事件和获取不到页面的dom结构的，所以只能从方法参数入手。主要思路：所有的事件会有个`e`的参数，这个`e`中会有类型、节点信息等等，这个`e`一般情况是函数的第一个参数，所以只要重写`Page`下的所有函数，并判断函数的第一个参数是否包含`type`和`currentTarget`，比如这样判断:`e && e.type && e.currentTarget`

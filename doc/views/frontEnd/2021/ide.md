@@ -1,5 +1,5 @@
 ---
-title: '程序员Mac好用的工具：一'
+title: '程序员应该知道的Mac工具'
 sidebarDepth: 2
 sidebar: auto
 categories: frontEnd
@@ -26,7 +26,7 @@ tags:
 * 结尾
 
 # 背景
-对程序猿👨🏻‍💻而言，除了部分大佬喜欢用`linux`外，`Mac`拥有着高分辨率、超好用的`Touch Bar`和`MacOS`无疑是最佳选择，下面来介绍一些个人觉得好用的工具
+对程序猿👨🏻‍💻而言，除了部分大佬喜欢用`linux`外，`Mac`拥有着高分辨率、超好用的`Touch Bar`和`MacOS`无疑是最佳选择，下面来介绍一些个人觉得在`Mac`好用的工具以及配置，让你编码和工作效率提升
 
 # 工具
 
@@ -64,17 +64,18 @@ brew install mysql
 
 * 下载[oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
 
-* 安装[spaceship]主题(https://spaceship-prompt.sh/zh/getting-started/)
+* 安装[spaceship](https://spaceship-prompt.sh/zh/getting-started/)主题
 装完`spaceship`需要在终端启用`powerline font`,此时你需要在选择下载某些字体，比如如下：
-  * FiraCode: https://github.com/tonsky/FiraCode
-  * source-code-pro: https://github.com/adobe-fonts/source-code-pro
+
+  * FiraCode: [https://github.com/tonsky/FiraCode](https://github.com/tonsky/FiraCode)
+  * source-code-pro: [https://github.com/adobe-fonts/source-code-pro](https://github.com/adobe-fonts/source-code-pro)
 
 ### plugins
 * zsh-autosuggestions 命令行提供功能，会缓存你最近输入过的命令并给出提示，[安装指南](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md)
 * npm npm的命令提示，[安装指南](https://github.com/lukechilds/zsh-better-npm-completion)
 * yarn yarn的命令提示，[安装指南](https://github.com/chrisands/zsh-yarn-completions)
 
-### 常用终端快捷键
+### 推荐超实用的快捷键
 1. 将光标移动到行首：ctrl + a
 
 2. 将光标移动到行尾：ctrl + e
@@ -98,9 +99,10 @@ brew install mysql
 11. ESC+F：光标向右移动一个单词，移动完要放开ESC和F键
 
 ## fig
-[fig](https://fig.io/)搭配item2使用更佳
+[fig](https://fig.io/)搭配item2使用更佳~
 
-<video src="https://fig.io/videos/main-demo-grey.mp4" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
+
+![](https://files.catbox.moe/sgrtuc.gif)
 
 ## BetterAndBetter
 更好是使用你的键盘和触摸板，例如：
@@ -127,11 +129,17 @@ brew install mysql
 [raycast](https://www.raycast.com/)很类似utool，功能也超多，风格会更好看一点，里面还包含了剪切
 
 ## 邮件
+Mac自带的邮件其实已经满足我们大部分的需求了，比如可以添加多个邮件，在每个邮件下面可以新增分组：
 
-![mail_add_group](https://files.catbox.moe/oytx3n.jpg)
+1. 在QQ邮箱目录下新增一个分组：Github
+2. 打开邮件-偏好设置-规则
+3. 添加规则，将发件人包含@github.com的都移动到Github组里面
 
+![mail_add_group](https://files.catbox.moe/amcez9.jpg)
 
-![](https://files.catbox.moe/6nnvhq.jpg)
+4. 你将会看到所有Github发送的邮件都会被归纳到Github组中，当然你可以自定义规则来分组
+
+![github_rule_after](https://files.catbox.moe/c50zjc.jpg)
 
 ## typora
 [typora](https://typora.io/)一款免费的MD文件编辑器，快速插入表格、图片、超链接等等快捷键，可以作为主力写作工具
@@ -140,6 +148,8 @@ brew install mysql
 
 ## codelf
 [codelf](https://unbug.github.io/codelf/)是在线变量命名工具，很多时候为想一个优雅的变量名而苦恼，试试这个[网站](https://unbug.github.io/codelf/)，说不定你就爱上它了
+
+![codelf](https://files.catbox.moe/5vzs9b.jpg)
 
 
 ## 影视森林
@@ -151,12 +161,12 @@ brew install mysql
 
 
 ## Dash
-[Dash](https://kapeli.com/dash)可以预先下载文档，然后再搜索，由于是在本地，所以速度超快，是API工程师的一把手
+[Dash](https://kapeli.com/dash)可以预先下载文档，然后再搜索，由于是在本地，所以速度超快，是`高级API工程师`的左膀右臂
 
 ![dash](https://files.catbox.moe/rppvxs.jpg)
 
 ## toggl
-[toggl](https://toggl.com/)是Mac上任务追踪的软件，可以追踪到你每天使用每个App的时间，比如你在vscode的时间、浏览器的某个tab的停留时间等等，用了一周下来，你再回看你的记录，就可以清楚的知道你的时间是浪费在哪，进而改善
+[toggl](https://toggl.com/)是Mac上任务追踪的软件，可以追踪到你每天使用每个App的时间，比如你在`vscode`、浏览器的某个`tab`的停留时间等等，用了一周下来，你再回看你的记录，就可以清楚的知道在哪划水的时间多，进而改进，做到**雨露均沾**
 
 
 ## GIPHY CAPTURE
@@ -164,56 +174,17 @@ brew install mysql
 
 ![react-sdk-demo-gif](https://tva1.sinaimg.cn/large/008i3skNly1gvs20pkphtg31ds0miu14.gif)
 
+## postman
+[postman](https://www.postman.com/)是构建和使用API的API平台，当你写完服务端接口时可以`postman`来发起接口请求，最重要的是还可以保存以前设置过的请求头和参数在云端。
+
+
+## itsycal
+[itsycal](https://www.mowglii.com/itsycal/)是一个很小的菜单栏日历,它会将您的事件显示为 Mac 日历应用程序的伴侣，用来快速查看和创建事件在日历中
+
+![itsycal](https://www.mowglii.com/itsycal/itsycalbanner2@2x.png?v=1631382507)
 
 
 
-## nginx
-安装:`brew nginx`
-
-### 正向代理
-
-
-### 反向代理
-`brew nginx`
-
-`vi /usr/local/etc/nginx/nginx.config`进行配置更改，也可以在`/usr/local/etc/nginx/servers`里面添加配置
-
-```js
-server{
-    listen 80;
-    server_name *.qa.91jkys.com;
-    access_log /var/log/nginx/zhiyun_access.log;
-    error_log  /var/log/nginx/zhiyun_error.log;
-
-    if ($http_host ~* "^(.*?)\.qa\.91jkys\.com$") {
-        set $domain $1;
-    }
-
-    location / {
-        if ($domain ~* "trycatch") {
-            proxy_pass http://127.0.0.1:3000;
-        }
-        if ($domain ~* "operate-admin") {
-            proxy_pass http://127.0.0.1:1024;
-        }
-        if ($domain ~* "metabase-admin") {
-            proxy_pass http://127.0.0.1:1025;
-        }
-        if ($domain ~* "supply"){
-            proxy_pass http://127.0.0.1:9999;
-        }
-        proxy_redirect     off;
-        proxy_set_header   Host             $http_host;
-        proxy_set_header   X-Real-IP        $remote_addr;
-        proxy_set_header   X-Forwarded-Proto $scheme;
-        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
-    }
-}
-```
-
-启动Nginx` brew services start nginx`
-重启Nginx` brew services restart nginx`
-暂停Nginx` brew services stop nginx`
 
 # 结尾
 
