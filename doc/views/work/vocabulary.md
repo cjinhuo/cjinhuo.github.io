@@ -153,6 +153,9 @@ n: 改进
 ### RFC（Request For Comments）
 译：征求意见书，我理解的是出alpha版前会先出RFC的说明，会给别人先看看文档，说明此次的功能说明书
 
+### SFC
+
+
 ### alphabetical
 adj: 按字母(表)顺序的
 
@@ -182,6 +185,18 @@ v: 改正、校正、
 
 ### Complexity
 n: 复杂性、难懂、难题
+
+
+### spaghetti
+n: 意大利面
+
+**spaghetti code：表示耦合性比较强的代码，意大利代码**
+
+
+### lasagna
+n: 千层面
+
+
 
 <!-- ###  -->
 
