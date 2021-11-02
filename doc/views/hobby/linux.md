@@ -1,18 +1,15 @@
 ---
 title: 'linux常用命令和概念'
-  # 大标题
 sidebarDepth: 2
 sidebar: auto
 categories: hobby
 date: 2019-09-16
-# 时间
 tags:
 - linux
-# 标签
 ---
 
 ::: tip 概述
-
+linux常用的命令
 :::
 
 ## 软硬链接
@@ -144,9 +141,13 @@ server{
 暂停Nginx` brew services stop nginx`
 
 
+## 更改组权限
+用`ls -ll`查看当期文件夹下的组权限
+![](../../.vuepress/public/linux/group_auth_.jpg)
 
 
-超链接 [文本](URL)
-<!-- ../../.vuepress/public/line-height.png) -->
-图片 ![](url)
+`sudo chown -R $USER .pnpm-state`
+![](../../.vuepress/public/linux/after_group_auth.jpg)
+
+如果组是root的话，需要用sudo才能对其更改
 
