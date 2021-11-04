@@ -151,3 +151,35 @@ server{
 
 如果组是root的话，需要用sudo才能对其更改
 
+
+## node
+可以利用`brew`安装`node`后，`npm xx -g`就不会有权限问题：`brew install node`
+
+如果是官网下载安装包的话，默认是在`/usr/local`，可以用`npm config get prefix`查下，所以需要我们修改文件夹的权限：`sudo chown -R $USER /usr/local/{lib/node_modules,bin,share}`：表示把`/usr/local`下的`lib/node_modules`、`bin`、`share`所有权更改为当前用户，即拥有`root`权限
+
+
+
+
+
+## 配置linux的node服务
+
+1. 下载node文件到本地，桌面的文件夹/upload/node-v10.16.2-linux-x64.tar.xz
+2. 用scp从本地拷贝到linux，现在linux的/home目录下新建一个文件夹，这里叫groot
+
+```
+scp ~/Desktop/upload/node-v10.16.2-linux-x64.tar.xz root@ip:/home/groot
+```
+
+如果有端口的话在scp后面加 -P 20000(端口号)
+3. 在linux解压，并且安装
+
+```
+cd /home/groot
+tar -xvf node-v10.16.2-linux-x64.tar.xz // 解压
+mv node-v10.16.2-linux-x64 nodejs // 重命名文件夹
+ln -s /home/groot/nodejs/bin/npm /usr/local/bin // 将node的二进制文件和linux的二进制文件建立软连接
+ln -s /home/groot/nodejs/bin/node /usr/local/bin // 将node的二进制文件和linux的二进制文件建立软连接
+node -v // 检查node版本,如果没有报错并且显示出来版本号说明成功了
+```
+
+

@@ -196,9 +196,18 @@ n: 意大利面
 ### lasagna
 n: 千层面
 
+### wishy-washy
+adj: 优柔寡断的（指人）
 
+### decisive
+adj: 果断的、决定性的、有判断力的
 
-<!-- ###  -->
+### hasty
+adj: 猛烈的、急躁的
+
+### effective
+adj: 有效的、有效率的
+
 
 
 
