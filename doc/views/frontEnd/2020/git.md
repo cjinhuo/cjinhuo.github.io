@@ -177,6 +177,7 @@ Commit 信息应符合如下规则，建议使用工具 comitzen(git cz) 代替 
 ## git checkout
 在commit层面，`git checkout <branch name>`表示切换至另一个分支，这个命令实际上是将HEAD指向另外一个分支，并且将工作区更新到那个分支。和git reset不同，git checkout不会移动分支。<br>
 git checkout也可以指定某个commit，这就像切换一个分支一样：git会将HEAD指向那个commit，形成`detached HEAD`，查了下资料发现这个`detached HEAD`是个临时指向，并没有新建分支，所以并没有什用。这对于快速查看文件旧版本来说非常方便，但如果你当前的HEAD没有任何分支引用，那么这会造成HEAD分离。因此，在为分离的HEAD添加新的提交时候你应该创建一个新的分支。
+
 ## git merge
 ::: tip –no-ff参数的作用
 git merge –no-ff 可以保存你之前的分支历史。能够更好的查看 merge历史，以及branch 状态。<br>
@@ -184,6 +185,24 @@ git merge 则不会显示 feature，只保留单条分支记录。
 :::
 
 ## git rebase
+
+
+
+## git cherry-pick
+用来将其他分支的`commit`拷贝到当前分支
+
+用法：
+拷贝单个commit：
+`git cherry-pick <commit>`
+
+拷贝多个commit：
+`git cherry-pick commitId_1..commitId_2`
+
+注意：`commitId_1`一定要在`commitId_2`前面提交，
+
+
+
+
 
 ### -s ours
 假设当前在分支A上

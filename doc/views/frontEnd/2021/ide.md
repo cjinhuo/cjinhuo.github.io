@@ -184,6 +184,26 @@ Mac自带的邮件其实已经满足我们大部分的需求了，比如可以�
 ![itsycal](https://www.mowglii.com/itsycal/itsycalbanner2@2x.png?v=1631382507)
 
 
+## exa
+[exa](https://github.com/ogham/exa)代替ls的一个工具
+
+
+## fd
+[fd](https://github.com/chinanf-boy/fd-zh)代替find的一个命令行工具
+
+
+
+
+### httpie
+[httpie](https://github.com/httpie/httpie)代替curl的一个工具
+
+
+### asciinema
+[asciinema](https://asciinema.org/)录制终端的一个工具
+
+
+
+
 
 
 # 结尾

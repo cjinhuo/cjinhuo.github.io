@@ -208,6 +208,35 @@ adj: 猛烈的、急躁的
 ### effective
 adj: 有效的、有效率的
 
+### isolated
+adj: 单独的、隔离的
+
+
+### equivalent
+adj: 等价的、相等的
+n: 等价物
+eg: here is the equivalent example
+
+### synopsis
+n: 前言、前言文、大纲、概要
+eg: 大部分用做前言，或者在一篇文章的开头，提供文章的简要内容（少部分）
+
+### overview
+n: 概览、概述
+eg: 大部分用做文章的开头，提供文章的简要内容
+
+### significant
+adj: 重要的、有意义的
+eg: 在一个概念上，significant是指某个概念的重要性，而不是某个概念的有效性
+
+
+### That's a wrap folks!
+译："小伙伴，到这就结束啦 || 这就是一个结束的标志"，常用在结束一个活动，或者结束一个讨论
+
+
+### involves
+v: 包含、涉及、涉及到
+
 
 
 
