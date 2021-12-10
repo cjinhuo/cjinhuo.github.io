@@ -237,6 +237,19 @@ eg: 在一个概念上，significant是指某个概念的重要性，而不是�
 ### involves
 v: 包含、涉及、涉及到
 
+### ability to scale
+n: 扩展能力
 
 
+### criticize
+v: 评论、批评
+
+### criticism
+n: 批评、批判
+
+### imitate
+v: 模仿、仿造
+
+### skeleton
+n: 骨架、骨架屏
 
