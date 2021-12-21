@@ -105,6 +105,16 @@ git push origin master
 * 删除分支
 删除远程分支`git push origin --delete 'name'`<br>
 删除本地分支`git branch -D 'name'`<br>
+
+* 修改远程仓库地址
+`git remote set-url origin [url]`
+
+* 删除本地远程仓库地址&添加新的仓库地址
+`git remote rm origin`
+
+`git remote add origin [url]`
+
+
 ## 分支合并
 从master新建一个分支来新建功能有三个步骤
 1. 新建dev分支
