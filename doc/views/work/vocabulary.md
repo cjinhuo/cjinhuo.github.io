@@ -141,6 +141,7 @@ n: 潜伏
 事务率，事务数/秒，一个事务是指一个客户机向服务器发送请求然后服务器做出反应的过程
 
 ### QOS(Quality of Service)
+质量服务
 
 
 ### metrics
@@ -152,8 +153,6 @@ n: 改进
 
 ### RFC（Request For Comments）
 译：征求意见书，我理解的是出alpha版前会先出RFC的说明，会给别人先看看文档，说明此次的功能说明书
-
-### SFC
 
 
 ### alphabetical
@@ -253,3 +252,20 @@ v: 模仿、仿造
 ### skeleton
 n: 骨架、骨架屏
 
+
+
+### leverage
+v: 利用、使用、使用某种工具、技术、手段
+
+
+### academy
+n: 学院、大学
+eg: tech academy 技术学院
+
+### kick off
+v: 开始、启动
+
+
+### pseudo
+adj: 假的、伪造的
+n: 伪君子、假冒的人
