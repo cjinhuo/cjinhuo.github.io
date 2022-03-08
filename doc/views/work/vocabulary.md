@@ -8,7 +8,7 @@ tags:
 ---
 
 ::: tip
-在学习中碰到常用的英语单词做下记录
+make a note of the common words in learning
 :::
 
 <!-- more -->
@@ -44,7 +44,7 @@ ph:phrase 短语、词组、惯用语
 ### octal
 * adj: 八进制的
 
-### backquote
+### back quote
 * 网络释义：反引号：``（quote是引文的意思）
 
 ### represent
@@ -191,7 +191,6 @@ n: 意大利面
 
 **spaghetti code：表示耦合性比较强的代码，意大利代码**
 
-
 ### lasagna
 n: 千层面
 
@@ -253,7 +252,6 @@ v: 模仿、仿造
 n: 骨架、骨架屏
 
 
-
 ### leverage
 v: 利用、使用、使用某种工具、技术、手段
 
@@ -269,3 +267,15 @@ v: 开始、启动
 ### pseudo
 adj: 假的、伪造的
 n: 伪君子、假冒的人
+
+### curly braces
+n: 花括号
+
+### ownership
+n: 所有权、所有制
+eg: give me the ownership of this code
+
+### tricky
+adj: 棘手的、难以理解的
+eg: tricky code（与hack意思相近，表示用”奇技淫巧“的方法写代码）
+
