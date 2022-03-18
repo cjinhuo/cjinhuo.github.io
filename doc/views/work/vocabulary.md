@@ -279,3 +279,19 @@ eg: give me the ownership of this code
 adj: 棘手的、难以理解的
 eg: tricky code（与hack意思相近，表示用”奇技淫巧“的方法写代码）
 
+
+### process into
+v: 加工（将过程转化为结果）
+
+### despite
+prep: 然而、不过、虽然、尽管
+
+### investigate
+v: 调查、探索、调研
+
+
+### deprecated
+adj: 已弃用的、已废弃的
+
+### duplicated
+adj: 重复的、复制的
