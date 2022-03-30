@@ -295,3 +295,18 @@ adj: 已弃用的、已废弃的
 
 ### duplicated
 adj: 重复的、复制的
+
+
+### occurred
+v: 发生; 出现; 存在于; 出现在
+
+### malformed
+adj: 畸形的
+
+### hierarchy
+n: 层次结构、层次结构、等级制度
+
+### decouple
+v: 解耦、解除关联、
+
+
