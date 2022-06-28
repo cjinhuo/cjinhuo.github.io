@@ -320,3 +320,111 @@ v: 解耦、解除关联、
 收到了
 * 只是单纯说明收到你的意思，会不会照做就说不定
 * 一般是上级对下级
+
+
+### make for sb./sth.
+phr: 有助于某人/某事物
+
+
+### in a crisis
+phr: 在危机中
+
+
+### paralyze
+v: 使瘫痪、使麻痹
+
+
+### legacy
+n: 遗产、遗留物
+
+### corresponding
+adj: 相对的、相应的
+eg: a corresponding test file for this code
+
+
+### Caveat
+n: 免责声明、警告
+eg: Caveat: 用做文章的title
+
+### CLI(Command Line Interface)
+n: 命令行界面
+
+### excerpt
+n: 片段、摘要
+
+### differentiate
+v: 区分、区别
+
+### perspective
+n: 观点、观念、观点
+
+### engage
+v: 参与、接受
+
+### collaboration
+n: 合作、协作
+
+### equip with
+phr: 配备有...
+
+### viable
+adj: 可行的
+
+### attainable
+adj: 可达的(只强调目标最终是否能达成，没有涉及中间所需要的努力，翻译成中文，就是可取性)
+
+### feasible
+adj: 可行的(评估目的达到的可能性，译成中文就是难易性)
+
+### doable
+adj: 可行的(实施的可能性；强调的是具体实施的可能性，至于是否能最终达到目前或既定目标，则没有说明)
+
+### flesh out
+phr: 使充实、使丰满
+
+
+### version Bumps
+phr:版本号加一(eg:New fields can be added to the end with minor version bumps)
+
+### granularity
+n: 粒度、粒度级别
+
+### for instance
+phr: 例如
+
+### whereas & however
+whereas:一般用于句中，引导一个从句
+phr: 然而、鉴于
+egs: some of the studies show positive result, whereas others do not
+however:一般用于开头，引导一个单独的句子
+phr: 然而、尽管
+egs: It’s raining hard; however, I think we should go out
+
+### idempotent
+adj: 幂等的（计算机）、可无果的、可无损的
+
+
+### manipulate
+v: 操纵、操作、操作
+eg: manipulate the dom
+
+### consolidate
+v: 合并、巩固
+eg：consolidating duplicate code
+
+
+### predicate
+v:断言
+n:谓语
+eg: Array.filter(),第一个参数解释：Function is a predicate, to test each element of the array.可以解释成这个函数用来测试/断定/断言某个条件成不成立
+
+### document && documentation
+document:
+* n:文档,可以用在电脑桌面，表示一堆文件的文档，或者在wps中save成document
+
+v:记录、记载，可以
+
+documentation:
+* n:文档、文献， 只有名词，可以用在某个库的使用文档，表示用来看的文档
+
+

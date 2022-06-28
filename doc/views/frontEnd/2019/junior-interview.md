@@ -18,6 +18,39 @@ for(let index in aArray){
 
 输出: 0 1 2 说明遍历的是index，
 
+## for in && hasOwnProperty
+for ... in是为遍历对象属性而构建的并且会遍历到原型的属性，hasOwnProperty则只对『对象本身』属性判断为true，原型继承则为false
+```js
+function ObjWithProto() {
+    this.foo = 'foo_val';
+}
+
+ObjWithProto.prototype = {bar: 'bar_val'};
+
+var dict = new ObjWithProto();
+dict.foobar = 'foobar_val';
+
+
+function forEach(dict) {
+    var key;
+    for (key in dict) {
+        if (dict.hasOwnProperty(key))
+            console.log('has', key, dict[key]);
+        else
+            console.log('not', key, dict[key]);
+    }
+}
+forEach(dict);
+```
+
+打印结果：
+```js
+has foo foo_val
+has foobar foobar_val
+not bar bar_val
+```
+
+
 ## 扩展运算符...
 
 ::: tip 对扩展运算符的理解
