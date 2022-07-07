@@ -20,6 +20,10 @@ n:noun 名词
 adj:adjective 形容词
 
 ph:phrase 短语、词组、惯用语
+
+det:determiner 限定词，包括冠词(a/an，the)，指示代词（this/these,that/those），物主代词（my）
+
+conj:conjunction 连词
 :::
 ### manual
 * adj: 手工的、体力的、用手操作的
@@ -427,4 +431,15 @@ v:记录、记载，可以
 documentation:
 * n:文档、文献， 只有名词，可以用在某个库的使用文档，表示用来看的文档
 
+### refine
+* v:完善、改进
 
+eg:next week, I'll refine the unit test of program.
+
+### complete
+* adj: 完整的（almost in this）
+* v:完成
+
+eg: Have you completed your homework?
+
+eg: There is a complete file on the disk.
