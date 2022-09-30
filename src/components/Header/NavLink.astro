@@ -1,0 +1,41 @@
+---
+export interface Props extends astroHTML.JSX.AnchorHTMLAttributes {}
+
+const { href, class: className, ...props } = Astro.props
+const NavList = [
+  {
+    label: 'blog',
+    href: '/blog',
+  },
+  {
+    label: 'resume',
+    href: '/resume',
+  },
+  {
+    label: 'github',
+    href: 'https://github.com/cjinhuo',
+  },
+]
+---
+
+<div class='flex gap-6'>
+  {
+    NavList.map(item => {
+      const isActive = Astro.url.pathname === item.href
+      return (
+        <a href={item.href} class:list={['text-slate-400	', 'hover:text-slate-800', isActive ? 'text-slate-800' : 'text-slate-400']} {...props}>
+          {item.label}
+        </a>
+      )
+    })
+  }
+</div>
+<style>
+  a {
+    display: inline-block;
+    text-decoration: none;
+  }
+  a.active {
+    font-weight: bolder;
+  }
+</style>
