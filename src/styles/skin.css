@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  :root {
+    --color-text-nav-base: gray;
+    --color-text-nav-hover: black;
+  }
+}
+
+.theme-dark {
+  --color-text-nav-base: #d1d5db;
+  --color-text-nav-hover: #f9fafb;
+}

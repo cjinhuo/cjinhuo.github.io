@@ -3,10 +3,17 @@
   https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
+
+ @import url('./components.css');
+ @import url('./skin.css');
+ html,body{
+	height: 100%;
+	width: 100%;
+ }
 body {
 	font-family: Verdana, sans-serif;
 	margin: auto;
-	padding: 16px;
+	padding: 20px;
 	width: 100%;
 	text-align: left;
 	background-color: #fff;
