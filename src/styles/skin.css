@@ -3,14 +3,29 @@
 @tailwind utilities;
 
 
+
+
+.theme-light {
+  --color-neutral-1: #171717;
+  --color-neutral-2: #404040;
+  --color-neutral-3: #737373;
+  --color-neutral-4: #a3a3a3;
+  --color-neutral-5: #e5e5e5;
+  --color-neutral-6: #fafafa;
+
+}
+
 @layer base {
   :root {
-    --color-text-nav-base: gray;
-    --color-text-nav-hover: black;
+    @apply theme-light
   }
 }
 
 .theme-dark {
-  --color-text-nav-base: #d1d5db;
-  --color-text-nav-hover: #f9fafb;
+  --color-neutral-1: #fafafa;
+  --color-neutral-2: #e5e5e5;
+  --color-neutral-3: #a3a3a3;
+  --color-neutral-4: #737373;
+  --color-neutral-5: #404040;
+  --color-neutral-6: #171717;
 }

@@ -6,10 +6,12 @@ module.exports = {
     extend: {
       textColor: {
         skin: {
-          nav: {
-            base: 'var(--color-text-nav-base)',
-            hover: 'var(--color-text-nav-hover)',
-          },
+          'neutral-1': 'var(--color-neutral-1)',
+          'neutral-2': 'var(--color-neutral-2)',
+          'neutral-3': 'var(--color-neutral-3)',
+          'neutral-4': 'var(--color-neutral-4)',
+          'neutral-5': 'var(--color-neutral-5)',
+          'neutral-6': 'var(--color-neutral-6)',
         },
       },
     },

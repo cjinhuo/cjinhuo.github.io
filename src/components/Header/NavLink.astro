@@ -26,13 +26,13 @@ export function onClickChangeTheme() {
     NavList.map(item => {
       const isActive = Astro.url.pathname === item.href
       return (
-        <a href={item.href} class:list={['hover:text-skin-nav-hover', isActive ? 'text-skin-nav-hover' : 'text-skin-nav-base']} {...props}>
+        <a href={item.href} class:list={['hover:text-skin-neutral-1', isActive ? 'text-skin-neutral-1' : 'text-skin-neutral-3']} {...props}>
           {item.label}
         </a>
       )
     })
   }
-  <a class:list={['text-slate-400	', 'hover:text-slate-800']}>切换</a>
+  <a class:list={['text-skin-neutral-3', 'hover:text-skin-neutral-1']}>切换</a>
 </div>
 <style>
   a {
