@@ -40,10 +40,10 @@ export default function TypeWriter() {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <div className='h-10'>
-        <div className='inline w-auto text-skin-neutral-1 text-2xl font-semibold antialiased typed-name' ref={nameTypedDom}></div>
+        <div className='inline w-auto text-skin-neutral-1 text-2xl font-mono font-semibold antialiased typed-name' ref={nameTypedDom}></div>
       </div>
       <div>
-        <div className='inline w-auto text-skin-neutral-1' ref={descriptionTypedDom}></div>
+        <div className='inline w-auto text-skin-neutral-3 font-mono' ref={descriptionTypedDom}></div>
       </div>
     </div>
   )
