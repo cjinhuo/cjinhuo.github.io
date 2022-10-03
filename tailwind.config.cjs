@@ -4,6 +4,11 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      backgroundColor: {
+        skin: {
+          background: 'var(--color-normal-bg)',
+        },
+      },
       textColor: {
         skin: {
           'neutral-1': 'var(--color-neutral-1)',

@@ -12,13 +12,13 @@ import TypeWriter from '@/components/TypeWriter'
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
-  <body>
+  <body class='bg-skin-background'>
     <Header />
     <main class='px-7 py-10'>
-      <div style='max-width: 65ch;' class='mb-6 mt-16 m-auto h-36'>
+      <div class='max-w-[60%] mb-6 mt-16 m-auto h-36'>
         <TypeWriter client:only='react' />
       </div>
-      <article style='max-width: 65ch;' class='m-auto'>
+      <article class='max-w-[60%] m-auto'>
         <p>waiting for writing</p>
       </article>
     </main>

@@ -16,24 +16,9 @@ body {
 	padding: 20px;
 	width: 100%;
 	text-align: left;
-	background-color: #fff;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	line-height: 1.5;
-	color: #444;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-strong,
-b {
-	color: #222;
-}
-a {
-	color: #3273dc;
 }
 nav a {
 	margin-right: 10px;
@@ -57,18 +42,10 @@ img {
 }
 code {
 	padding: 2px 5px;
-	background-color: #f2f2f2;
 }
 pre {
 	padding: 1rem;
 }
 pre > code {
 	all: unset;
-}
-blockquote {
-	border: 1px solid #999;
-	color: #222;
-	padding: 2px 0px 2px 20px;
-	margin: 0px;
-	font-style: italic;
 }
