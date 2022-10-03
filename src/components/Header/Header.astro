@@ -1,10 +1,11 @@
 ---
-import NavLink from './NavLink.astro'
+import '@icon-park/react/styles/index.css'
+import NavLink from './NavLink'
 ---
 
 <header class='flex justify-between'>
-  <a href='/'>Shanks</a>
-  <NavLink />
+  <a class='text-skin-neutral-1' href='/'>Shanks</a>
+  <NavLink pathname={Astro.url.pathname} />
 </header>
 
 <style>
