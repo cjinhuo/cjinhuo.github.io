@@ -1,11 +1,18 @@
 ---
 import '@icon-park/react/styles/index.css'
 import NavLink from './NavLink'
+import ToggleTheme from './ToggleTheme'
 ---
 
 <header class='flex justify-between'>
+  <script src='https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_3.539a1aa27822bc292a39fefa8a026354.js'></script>
   <a class='text-skin-neutral-1' href='/'>Shanks</a>
-  <NavLink pathname={Astro.url.pathname} />
+  <div class='flex gap-6'>
+    <NavLink pathname={Astro.url.pathname} />
+    <div>
+      <ToggleTheme client:only='react' />
+    </div>
+  </div>
 </header>
 
 <style>

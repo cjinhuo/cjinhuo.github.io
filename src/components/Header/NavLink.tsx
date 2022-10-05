@@ -10,17 +10,15 @@ const NavList = [
   {
     label: 'github',
     href: 'https://github.com/cjinhuo',
+    icon: <iconpark-icon name='github-one'></iconpark-icon>,
   },
 ]
 interface TypeProps {
   pathname: string
 }
 export default function NavLink({ pathname }: TypeProps) {
-  const onClickChangeTheme = () => {
-    console.log('onClickChangeTheme')
-  }
   return (
-    <div className='flex gap-6'>
+    <>
       {NavList.map(item => {
         const isActive = pathname === item.href
         return (
@@ -29,9 +27,6 @@ export default function NavLink({ pathname }: TypeProps) {
           </a>
         )
       })}
-      <a href='#' className='text-skin-neutral-3 hover:text-skin-neutral-1' onClick={onClickChangeTheme}>
-        切换
-      </a>
-    </div>
+    </>
   )
 }
