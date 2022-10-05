@@ -8,8 +8,8 @@ interface PropsType extends React.HTMLAttributes<any> {
 }
 export default function IconPark({ name, ...props }: PropsType) {
   return (
-    <div {...props}>
-      <iconpark-icon name={name}></iconpark-icon>
+    <div style={{ width: '20px', height: '20px' }} {...props}>
+      <iconpark-icon style={{ fontSize: '20px', verticalAlign: 'middle' }} name={name}></iconpark-icon>
     </div>
   )
 }
