@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    
+    <script>
+  const theme = (() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('__shanks__theme')) {
+      return localStorage.getItem('__shanks__theme')
+    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark'
+    }
+    return 'light'
+  })()
+  if (theme && theme === 'moon') {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
+</script>
 <!-- Global Metadata -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -30,7 +45,7 @@
 
   <link rel="stylesheet" href="/assets/2bed45fd.29a14156.css" />
 <link rel="stylesheet" href="/assets/aa30886c.3ca3803b.css" />
-<link rel="stylesheet" href="/assets/4ceda832.1c372a27.css" /><script type="module" src="/hoisted.863d244a.js"></script></head>
+<link rel="stylesheet" href="/assets/4ceda832.1c372a27.css" /><script type="module" src="/hoisted.ab436f0f.js"></script></head>
   <body class="bg-skin-background">
     <header class="flex justify-between">
   
@@ -45,7 +60,7 @@
     <main class="max-w-prose mb-6 mt-16 m-auto">
       <h1 class="text-4xl text-skin-neutral-1 font-extrabold mb-16">Shanks' Blog</h1>
       <section>
-        <div class="w-full h-auto mb-6"><a href="/blogs/first-post" class="text-3xl text-skin-neutral-1 font-semibold block mb-2 hover:underline">First post</a><time class="font-semibold text-skin-neutral-2">October 07,2022</time><span class="text-skin-neutral-2 italic mb-1">,by<!-- --> <a class="hover:underline" style="color:#64a0fb;" href="https://github.com/cjinhuo" target="_blank">Shanks</a></span><p class="text-xl text-skin-neutral-3">this is description</p></div><div class="w-full h-auto mb-6"><a href="/blogs/using-mdx" class="text-3xl text-skin-neutral-1 font-semibold block mb-2 hover:underline">Using MDX</a><time class="font-semibold text-skin-neutral-2">July 02,2022</time><p class="text-xl text-skin-neutral-3">Lorem ipsum dolor sit amet</p></div><div class="w-full h-auto mb-6"><a href="/blogs/markdown-style-guide" class="text-3xl text-skin-neutral-1 font-semibold block mb-2 hover:underline">Markdown Style Guide</a><time class="font-semibold text-skin-neutral-2">July 01,2022</time><p class="text-xl text-skin-neutral-3">Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.</p></div>
+        <div class="w-full h-auto mb-6"><a href="/blogs/first-post" class="text-3xl text-skin-neutral-1 font-semibold block mb-2 hover:underline">First post</a><time class="font-semibold text-skin-neutral-2">October 07,2022</time><span class="text-skin-neutral-2 italic mb-1">,by<!-- --> <a class="hover:underline" style="color:#64a0fb" href="https://github.com/cjinhuo" target="_blank">Shanks</a></span><p class="text-xl text-skin-neutral-3">this is description</p></div><div class="w-full h-auto mb-6"><a href="/blogs/using-mdx" class="text-3xl text-skin-neutral-1 font-semibold block mb-2 hover:underline">Using MDX</a><time class="font-semibold text-skin-neutral-2">July 02,2022</time><p class="text-xl text-skin-neutral-3">Lorem ipsum dolor sit amet</p></div><div class="w-full h-auto mb-6"><a href="/blogs/markdown-style-guide" class="text-3xl text-skin-neutral-1 font-semibold block mb-2 hover:underline">Markdown Style Guide</a><time class="font-semibold text-skin-neutral-2">July 01,2022</time><p class="text-xl text-skin-neutral-3">Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.</p></div>
       </section>
     </main>
     <footer class="text-skin-neutral-2 astro-FRWYW6KA">
