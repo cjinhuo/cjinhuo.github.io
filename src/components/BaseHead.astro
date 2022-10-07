@@ -12,7 +12,7 @@ export interface Props {
 const { title = SITE_TITLE, description = SITE_DESCRIPTION, image = '/placeholder-social.jpg' } = Astro.props
 ---
 
-<script>
+<script is:inline>
   const theme = (() => {
     if (typeof localStorage !== 'undefined' && localStorage.getItem('__shanks__theme')) {
       return localStorage.getItem('__shanks__theme')

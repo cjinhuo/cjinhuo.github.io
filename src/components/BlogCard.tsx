@@ -11,7 +11,7 @@ export default function BlogCard({ url, frontmatter }: MarkdownInstance<BlogType
       {author && (
         <span className='text-skin-neutral-2 italic mb-1'>
           ,by{' '}
-          <a className='hover:underline' style={{ color: '#64a0fb;' }} href={authorHref} target='_blank'>
+          <a className='hover:underline' style={{ color: '#64a0fb' }} href={authorHref} target='_blank'>
             {author}
           </a>
         </span>
