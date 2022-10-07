@@ -1,26 +1,35 @@
 {
-  "name": "cjinhuo-blog",
-  "version": "1.0.0",
-  "author": "cjinhuo",
+  "name": "Shanks-blog",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "dev": "vuepress dev doc",
-    "build": "vuepress build doc",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
     "commit": "git add . && git cz"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cjinhuo/cjinhuo.github.io",
-    "branch": "master",
-    "platform": "github"
+  "dependencies": {
+    "@astrojs/mdx": "^0.11.3",
+    "@astrojs/react": "^1.1.4",
+    "@astrojs/rss": "^1.0.2",
+    "@astrojs/sitemap": "^1.0.0",
+    "@astrojs/tailwind": "^2.0.2",
+    "@icon-park/react": "^1.4.2",
+    "astro": "^1.4.0",
+    "dayjs": "^1.11.5",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "tailwindcss": "^3.1.8",
+    "typed.js": "^2.0.12",
+    "cz-conventional-changelog": "^3.3.0"
   },
   "devDependencies": {
-    "cz-conventional-changelog": "3.3.0",
-    "vuepress": "1.3.1",
-    "vuepress-plugin-reading-time": "^0.1.1",
-    "vuepress-theme-reco": "1.4.2"
+    "@tailwindcss/typography": "^0.5.7",
+    "@types/react": "^18.0.21"
   },
-  "description": "cjinhuo's blog",
-  "config": {
+    "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
