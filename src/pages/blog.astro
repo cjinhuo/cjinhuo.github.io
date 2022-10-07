@@ -15,7 +15,7 @@ const posts = (await Astro.glob('./blog/*.{md,mdx}')).sort((a, b) => new Date(b.
   </head>
   <body class='bg-skin-background'>
     <Header />
-    <main>
+    <main class='max-w-[60%] mb-6 mt-16 m-auto'>
       <section>
         <ul>
           {
