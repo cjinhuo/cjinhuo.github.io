@@ -3,7 +3,7 @@ import IconPark, { NameTypes } from '../IconPark'
 const NavList = [
   {
     label: 'Blog',
-    href: '/blog',
+    href: '/blogs',
   },
   // {
   //   label: 'Resume',
