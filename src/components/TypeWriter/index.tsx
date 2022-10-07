@@ -8,7 +8,7 @@ export default function TypeWriter() {
   const startDescriptionTyped = () => {
     if (descriptionTypedDom.current) {
       new typed(descriptionTypedDom.current, {
-        strings: ['I like to design SDK architecture and really into new tech things. ^1000 Focusing on Monitoring of Web and Mini Program recently.'],
+        strings: ['I like designing SDK architecture and really into new tech things. ^1000 Now focusing on Monitoring of Web and Mini Program at Bytedance.'],
         typeSpeed: 30,
         loop: false,
       })
