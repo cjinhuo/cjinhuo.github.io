@@ -2,24 +2,13 @@
 import BaseHead from '../components/BaseHead.astro'
 import Header from '@/components/Header/Header.astro'
 import Footer from '../components/Footer.astro'
-
-export interface IFrontmatter {
-  title: string
-  description: string
-  pubDate: string
-  imgSrc: string
-  imgAlt: string
-}
-
-export type MarkdownInstance<T> = import('astro').MarkdownInstance<T>
+import type { BlogType, MarkdownInstance } from '@/types'
+import BlogCard from '@/components/BlogCard'
 
 // Use Astro.glob() to fetch all posts, and then sort them by date.
-const posts = (await Astro.glob<MarkdownInstance<IFrontmatter>>('./blogs/*.{md,mdx}')).sort(
+const posts = (await Astro.glob<MarkdownInstance<BlogType>>('./blogs/*.{md,mdx}')).sort(
   (a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf()
 )
-posts.map(item => {
-  console.log('item', item.frontmatter)
-})
 ---
 
 <!DOCTYPE html>
@@ -29,24 +18,10 @@ posts.map(item => {
   </head>
   <body class='bg-skin-background'>
     <Header />
-    <main class='max-w-[60%] mb-6 mt-16 m-auto'>
+    <main class='max-w-prose mb-6 mt-16 m-auto'>
+      <h1 class='text-4xl font-extrabold mb-16'>Shanks' Blog</h1>
       <section>
-        <ul>
-          {
-            posts.map(post => (
-              <li>
-                <time datetime={post.frontmatter.pubDate}>
-                  {new Date(post.frontmatter.pubDate).toLocaleDateString('en-us', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  })}
-                </time>
-                <a href={post.url}>{post.frontmatter.title}</a>
-              </li>
-            ))
-          }
-        </ul>
+        {posts.map(post => <BlogCard {...post} />)}
       </section>
     </main>
     <Footer />

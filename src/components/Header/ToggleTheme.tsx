@@ -6,7 +6,6 @@ export default function ToggleTheme() {
   const [theme, setTheme] = useState(NameTypes.sun)
   useEffect(() => {
     const item = localStorage.getItem(`${PREFIX}theme`)
-    console.log('item', item)
     if (item) {
       item === NameTypes.sun ? setTheme(NameTypes.sun) : setTheme(NameTypes.moon)
     }

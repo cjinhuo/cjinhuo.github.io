@@ -26,9 +26,6 @@ export default function TypeWriter() {
         backSpeed: 36,
         smartBackspace: true,
         loop: false,
-        onStop(arrayPos, self) {
-          console.log('arrayPos, self', arrayPos, self)
-        },
       })
       setTimeout(() => {
         const lastElement = nameTypedDom.current?.parentElement?.lastElementChild
