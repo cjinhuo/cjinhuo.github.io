@@ -11,13 +11,13 @@ export default function ToggleTheme() {
     }
   }, [])
 
-  useEffect(() => {
+  const removeDocumentClassWithType = (theme: NameTypes) => {
     if (theme === NameTypes.moon) {
       document.documentElement.classList.add('dark')
     } else {
       document.documentElement.classList.remove('dark')
     }
-  }, [theme])
+  }
 
   const onClickToggleTheme = () => {
     let currentTheme = NameTypes.sun
@@ -28,6 +28,7 @@ export default function ToggleTheme() {
     }
     localStorage.setItem(`${PREFIX}theme`, currentTheme)
     setTheme(currentTheme)
+    removeDocumentClassWithType(currentTheme)
   }
   return (
     <div>

@@ -12,6 +12,22 @@ export interface Props {
 const { title = SITE_TITLE, description = SITE_DESCRIPTION, image = '/placeholder-social.jpg' } = Astro.props
 ---
 
+<script>
+  const theme = (() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('__shanks__theme')) {
+      return localStorage.getItem('__shanks__theme')
+    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark'
+    }
+    return 'light'
+  })()
+  if (theme && theme === 'moon') {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
+</script>
 <!-- Global Metadata -->
 <meta charset='utf-8' />
 <meta name='viewport' content='width=device-width,initial-scale=1' />
@@ -34,11 +50,12 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION, image = '/placeholde
 <meta data-react-helmet='true' name='keywords' content='前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,' />
 <!-- description -->
 <meta data-react-helmet='true' name='description' content='shank blog' />
+
 <!-- sharecontent -->
 <meta
   data-react-helmet='true'
   name='sharecontent'
   data-msg-img='https://portal.volccdn.com/obj/volcfe/misc/favicon.png'
-  data-msg-title='火山引擎-云上增长新动力'
-  data-msg-content='火山引擎是字节跳动旗下的云服务平台，将字节跳动快速发展过程中积累的增长方法、技术能力和应用工具开放给外部企业，提供云基础、视频与内容分发、数智平台、人工智能、开发与运维等服务，帮助企业在数字化升级中实现持续增长。'
+  data-msg-title='Shanks Blog'
+  data-msg-content='前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs'
 />

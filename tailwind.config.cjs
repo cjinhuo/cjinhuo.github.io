@@ -9,6 +9,11 @@ module.exports = {
           background: 'var(--color-normal-bg)',
         },
       },
+      maxWidth: {
+        custom: {
+          prose: 'var(--max-w-65)',
+        },
+      },
       textColor: {
         skin: {
           'neutral-1': 'var(--color-neutral-1)',
