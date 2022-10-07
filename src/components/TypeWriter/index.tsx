@@ -36,7 +36,7 @@ export default function TypeWriter() {
   }, [nameTypedDom])
   return (
     <div style={{ height: '100%', width: '100%' }}>
-      <div className='h-10'>
+      <div>
         <div className='inline w-auto text-skin-neutral-1 text-2xl font-mono font-semibold antialiased typed-name' ref={nameTypedDom}></div>
       </div>
       <div>
