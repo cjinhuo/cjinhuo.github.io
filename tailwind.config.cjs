@@ -22,6 +22,7 @@ module.exports = {
           'neutral-4': 'var(--color-neutral-4)',
           'neutral-5': 'var(--color-neutral-5)',
           'neutral-6': 'var(--color-neutral-6)',
+          link: 'var(--color-link-href)',
         },
       },
     },

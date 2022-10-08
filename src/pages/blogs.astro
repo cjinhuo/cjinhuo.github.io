@@ -19,7 +19,7 @@ const posts = (await Astro.glob<MarkdownInstance<BlogType>>('./blogs/*.{md,mdx}'
   <body class='bg-skin-background'>
     <Header />
     <main class='max-w-prose mb-6 mt-16 m-auto'>
-      <h1 class='text-4xl text-skin-neutral-1 font-extrabold mb-16'>Shanks' Blog</h1>
+      <h1 class='text-3xl text-skin-neutral-1 font-extrabold mb-16'>Shanks' Blog</h1>
       <section>
         {posts.map(post => <BlogCard {...post} />)}
       </section>

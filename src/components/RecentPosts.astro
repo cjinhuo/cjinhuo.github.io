@@ -1,0 +1,13 @@
+---
+import type { BlogType, MarkdownInstance } from '@/types'
+import BlogCard from '@/components/BlogCard'
+
+// Use Astro.glob() to fetch all posts, and then sort them by date.
+const posts = (await Astro.glob<MarkdownInstance<BlogType>>('../pages/blogs/*.{md,mdx}'))
+  .sort((a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf())
+  .slice(0, 3)
+---
+
+<section>
+  {posts.map(post => <BlogCard {...post} />)}
+</section>

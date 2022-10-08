@@ -7,7 +7,7 @@
 	min-height: 100vh;
  }
 body {
-	font-family: Verdana, sans-serif;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 	margin: auto;
 	padding: 20px;
 	width: 100%;
