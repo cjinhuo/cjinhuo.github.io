@@ -1,9 +1,10 @@
- /* @import url('./components.css'); */
  @import url('./skin.css');
  
  html,body{
 	height: 100%;
 	width: 100%;
+	height: auto;
+	min-height: 100vh;
  }
 body {
 	font-family: Verdana, sans-serif;
@@ -14,6 +15,7 @@ body {
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	line-height: 1.5;
+	background-image: linear-gradient(var(--color-linear-bg-start) 0%, var(--color-linear-bg-end) 100%);
 }
 nav a {
 	margin-right: 10px;
