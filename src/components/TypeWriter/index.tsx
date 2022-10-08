@@ -40,7 +40,7 @@ export default function TypeWriter() {
         <div className='inline w-auto text-skin-neutral-1 text-2xl font-semibold antialiased typed-name' ref={nameTypedDom}></div>
       </div>
       <div>
-        <div className='inline w-auto text-skin-neutral-3' ref={descriptionTypedDom}></div>
+        <div className='inline w-auto text-skin-neutral-4' ref={descriptionTypedDom}></div>
       </div>
     </div>
   )
