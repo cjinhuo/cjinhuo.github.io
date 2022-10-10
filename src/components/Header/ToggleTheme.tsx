@@ -32,8 +32,7 @@ export default function ToggleTheme() {
   }
   return (
     <div>
-      <IconPark onClick={onClickToggleTheme} className='text-skin-neutral-3 hover:text-skin-neutral-1 hover:cursor-pointer' name={theme}></IconPark>
-      {/* <iconpark-icon name='moon'></iconpark-icon> */}
+      <IconPark onClick={onClickToggleTheme} className='text-skin-neutral-5 hover:text-skin-neutral-1 hover:cursor-pointer' name={theme}></IconPark>
     </div>
   )
 }
