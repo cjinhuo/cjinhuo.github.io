@@ -1,0 +1,10 @@
+:root {
+
+}
+
+/* Dark Mode (OS-level) */
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+
+  }
+}

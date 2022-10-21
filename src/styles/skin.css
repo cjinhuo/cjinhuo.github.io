@@ -43,10 +43,10 @@ html {
   --max-w-65: 65ch;
 }
 
-::selection {
+/* ::selection {
   color: var(--color-neutral-9);
   background-color: var(--color-normal-bg-reverse);
-}
+} */
 
 /* scrollbar */
 ::-webkit-scrollbar {
