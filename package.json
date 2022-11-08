@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "commit": "git add . && git cz",
-    "preinstall": "only-allow pnpm"
+    "preinstall": "npx only-allow pnpm"
   },
   "engines": {
     "node": ">=16",
