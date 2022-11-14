@@ -3,16 +3,16 @@ import { useEffect, useState } from 'react'
 import IconPark, { NameTypes } from '../IconPark'
 
 export default function ToggleTheme() {
-  const [theme, setTheme] = useState(NameTypes.sun)
+  const [theme, setTheme] = useState(NameTypes.Light)
   useEffect(() => {
     const item = localStorage.getItem(`${PREFIX}theme`)
     if (item) {
-      item === NameTypes.sun ? setTheme(NameTypes.sun) : setTheme(NameTypes.moon)
+      item === NameTypes.Light ? setTheme(NameTypes.Light) : setTheme(NameTypes.Dark)
     }
   }, [])
 
   const removeDocumentClassWithType = (theme: NameTypes) => {
-    if (theme === NameTypes.moon) {
+    if (theme === NameTypes.Dark) {
       document.documentElement.classList.add('dark')
     } else {
       document.documentElement.classList.remove('dark')
@@ -20,11 +20,11 @@ export default function ToggleTheme() {
   }
 
   const onClickToggleTheme = () => {
-    let currentTheme = NameTypes.sun
-    if (theme === NameTypes.sun) {
-      currentTheme = NameTypes.moon
+    let currentTheme = NameTypes.Light
+    if (theme === NameTypes.Light) {
+      currentTheme = NameTypes.Dark
     } else {
-      currentTheme = NameTypes.sun
+      currentTheme = NameTypes.Light
     }
     localStorage.setItem(`${PREFIX}theme`, currentTheme)
     setTheme(currentTheme)

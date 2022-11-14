@@ -13,19 +13,36 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION, image = '/placeholde
 ---
 
 <script is:inline>
+  const Dark = 'dark'
+  const Light = 'light'
+  const localStorageKey = '__shanks__theme'
+  const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+  const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+  const media = window.matchMedia('(prefers-color-scheme: dark)')
+  const colorSchemeChange = e => {
+    if (e.matches) {
+      localStorage.setItem(localStorageKey, Dark)
+      addDarkToClassList()
+    } else {
+      localStorage.setItem(localStorageKey, Light)
+      removeDarkToClassList()
+    }
+  }
+  if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
   const theme = (() => {
-    if (typeof localStorage !== 'undefined' && localStorage.getItem('__shanks__theme')) {
-      return localStorage.getItem('__shanks__theme')
+    if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+      return localStorage.getItem(localStorageKey)
     }
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark'
+    if (media.matches) {
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
     }
-    return 'light'
+    return Light
   })()
-  if (theme && theme === 'moon') {
-    document.documentElement.classList.add('dark')
+  if (theme && theme === Dark) {
+    addDarkToClassList()
   } else {
-    document.documentElement.classList.remove('dark')
+    removeDarkToClassList()
   }
 </script>
 <!-- Global Metadata -->

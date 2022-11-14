@@ -1,6 +1,6 @@
 export enum NameTypes {
-  sun = 'sun',
-  moon = 'moon',
+  Light = 'light',
+  Dark = 'dark',
   github = 'github',
 }
 interface PropsType extends React.HTMLAttributes<any> {
