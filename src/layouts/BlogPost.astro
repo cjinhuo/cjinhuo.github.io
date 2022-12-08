@@ -1,17 +1,15 @@
 ---
-import BaseHead from '../components/BaseHead.astro'
-import Header from '@/components/Header/Header.astro'
-import Footer from '../components/Footer.astro'
-import 'github-markdown-css'
-import { Code } from 'astro/components'
+import BaseHead from "../components/BaseHead.astro";
+import Header from "@/components/Header/Header.astro";
+import Footer from "../components/Footer.astro";
+import "github-markdown-css";
+import { Code } from "astro/components";
 const {
   content: { title, duration, description, pubDate, updatedDate, heroImage },
-} = Astro.props
-console.log('slot', Astro.slots.has('default'))
-console.log('render', await Astro.slots.render('default'))
+} = Astro.props;
 ---
 
-<html lang='en'>
+<html lang="en">
   <head>
     <BaseHead title={title} description={description} />
     <style>
@@ -26,14 +24,17 @@ console.log('render', await Astro.slots.render('default'))
     </style>
   </head>
 
-  <body class='bg-skin-background'>
-    <Header />-
+  <body class="bg-skin-background">
+    <Header />
     <main>
       <article
-        class='prose prose-slate prose-h1:my-5 prose-h2:my-4 prose-h3:my-3 prose-h4:my-2 prose-h5:my-1 prose-img:rounded-md dark:prose-invert max-w-content m-auto my-6'>
-        {heroImage && <img src={heroImage} alt='' />}
-        <h1 class='title'>{title}</h1>
-        <span>{pubDate && <time>{pubDate}</time>}{duration && `,${duration}`}</span>
+        class="prose prose-slate prose-h1:my-5 prose-h2:my-4 prose-h3:my-3 prose-h4:my-2 prose-h5:my-1 prose-img:rounded-md dark:prose-invert max-w-content m-auto my-6"
+      >
+        {heroImage && <img src={heroImage} alt="" />}
+        <h1 class="title">{title}</h1>
+        <span
+          >{pubDate && <time>{pubDate}</time>}{duration && `,${duration}`}</span
+        >
         <Code
           code={`const initMiniProgram = () => {
   let adapter = {} as PlatformAdapterType
@@ -49,8 +50,8 @@ console.log('render', await Astro.slots.render('default'))
   const get = () => adapter
   return [set, get] as const
 }`}
-          lang='ts'
-          theme='dark-plus'
+          lang="ts"
+          theme="dark-plus"
         />
         {
           updatedDate && (
