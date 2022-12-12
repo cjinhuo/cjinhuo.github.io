@@ -1,27 +1,33 @@
 ---
-import BaseHead from '../components/BaseHead.astro'
-import Header from '@/components/Header/Header.astro'
-import Footer from '../components/Footer.astro'
-import type { BlogType, MarkdownInstance } from '@/types'
-import BlogCard from '@/components/BlogCard'
+import BaseHead from "../components/BaseHead.astro";
+import Header from "@/components/Header/Header.astro";
+import Footer from "../components/Footer.astro";
+import type { BlogType, MarkdownInstance } from "@/types";
+import BlogCard from "@/components/BlogCard";
 
 // Use Astro.glob() to fetch all posts, and then sort them by date.
-const posts = (await Astro.glob<MarkdownInstance<BlogType>>('./blogs/*.{md,mdx}')).sort(
-  (a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf()
-)
+const posts = (
+  await Astro.glob<MarkdownInstance<BlogType>>("./blogs/**/*.{md,mdx}")
+).sort(
+  (a, b) =>
+    new Date(b.frontmatter.pubDate).valueOf() -
+    new Date(a.frontmatter.pubDate).valueOf()
+);
 ---
 
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
   <head>
-    <BaseHead title='Blogs' />
+    <BaseHead title="Blogs" />
   </head>
-  <body class='bg-skin-background'>
+  <body class="bg-skin-background">
     <Header />
-    <main class='max-w-prose mb-6 mt-16 m-auto'>
-      <h1 class='text-3xl text-skin-neutral-1 font-extrabold mb-16'>Shanks' Blog</h1>
+    <main class="max-w-prose mb-6 mt-16 m-auto">
+      <h1 class="text-3xl text-skin-neutral-1 font-extrabold mb-16">
+        Shanks' Blog
+      </h1>
       <section>
-        {posts.map(post => <BlogCard {...post} />)}
+        {posts.map((post) => <BlogCard {...post} />)}
       </section>
     </main>
     <Footer />
