@@ -1,28 +1,30 @@
 ---
-import BaseHead from '../components/BaseHead.astro'
-import Footer from '@/components/Footer.astro'
-import Header from '@/components/Header/Header.astro'
-import TypeWriter from '@/components/TypeWriter'
-import RecentPosts from '@/components/RecentPosts.astro'
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header/Header.astro";
+import TypeWriter from "@/components/TypeWriter";
+import RecentPosts from "@/components/RecentPosts.astro";
 ---
 
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
   <head>
     <BaseHead />
   </head>
-  <body class='bg-skin-background'>
+  <body class="bg-skin-background">
     <Header />
-    <main class='px-7 py-10'>
-      <div style='min-height: 9rem;' class='max-w-prose mb-6 mt-16 m-auto'>
-        <TypeWriter client:only='react' />
+    <main class="px-7 py-10">
+      <div style="min-height: 9rem;" class="max-w-prose mb-6 mt-16 m-auto">
+        <TypeWriter client:only="react" />
       </div>
-      <article class='max-w-prose m-auto'>
-        <div class='flex justify-between'>
-          <h1 class='text-lg font-semibold text-skin-neutral-3 mb-10'>Posts</h1>
+      <article class="max-w-prose m-auto">
+        <div class="flex justify-between">
+          <h1 class="text-lg font-semibold text-skin-neutral-3 mb-10">Posts</h1>
         </div>
         <RecentPosts />
-        <a target='_blank' class='hover:underline text-skin-link' href='/blogs'>View all posts</a>
+        <a target="_blank" class="hover:underline text-skin-link" href="/blogs"
+          >View all posts</a
+        >
       </article>
     </main>
     <Footer />
