@@ -35,24 +35,15 @@ const {
         <span
           >{pubDate && <time>{pubDate}</time>}{duration && `,${duration}`}</span
         >
-        <Code
+        <!-- <Code
           code={`const initMiniProgram = () => {
   let adapter = {} as PlatformAdapterType
   const set = (platformAdapterContainers: InitialAdapterParamType) => {
     if (!getInstanceInfo().platform) throw Error(NotSupportMsg)
-    if (!Array.isArray(platformAdapterContainers) || !platformAdapterContainers.length) return null
-
-    const adapterContainer = platformAdapterContainers.find(
-      (adapterContainer) => adapterContainer.platform === getInstanceInfo().platform,
-    )
-    return adapterContainer && (adapter = adapterContainer.adapterCtor())
-  }
-  const get = () => adapter
-  return [set, get] as const
 }`}
           lang="ts"
           theme="dark-plus"
-        />
+        /> -->
         {
           updatedDate && (
             <div>

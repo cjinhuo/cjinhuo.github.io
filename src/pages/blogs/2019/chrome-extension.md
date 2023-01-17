@@ -146,7 +146,8 @@ window.fetch = function (url, options) {
 };
 ```
 
-::: tip clone()的用法
+| clone()的用法
+
 Response 接口的 clone() 方法创建了一个响应对象的克隆，这个对象在所有方面都是相同的，但是存储在一个不同的变量中。
 
 如果已经使用了响应 Body，clone() 会抛出 TypeError。 实际上，clone()存在的主要原因是允许多次使用 Body 对象(当它们是一次性使用的时候)。
