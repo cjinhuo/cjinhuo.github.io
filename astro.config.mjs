@@ -10,4 +10,5 @@ export default defineConfig({
   site: 'https://cjinhuo.netlify.app/',
   syntaxHighlight: 'prism',
   integrations: [mdx(), sitemap(), tailwind(), react()],
+  compressHTML: true
 })
