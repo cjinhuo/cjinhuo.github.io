@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" class="astro-BVZIHDZO"><head><script>
+  const Dark = 'dark'
+  const Light = 'light'
+  const localStorageKey = '__shanks__theme'
+  const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+  const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+  const media = window.matchMedia('(prefers-color-scheme: dark)')
+  const colorSchemeChange = e => {
+    if (e.matches) {
+      localStorage.setItem(localStorageKey, Dark)
+      addDarkToClassList()
+    } else {
+      localStorage.setItem(localStorageKey, Light)
+      removeDarkToClassList()
+    }
+  }
+  if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
+  const theme = (() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+      return localStorage.getItem(localStorageKey)
+    }
+    if (media.matches) {
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    }
+    return Light
+  })()
+  if (theme && theme === Dark) {
+    addDarkToClassList()
+  } else {
+    removeDarkToClassList()
+  }
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v2.5.3"><!-- Primary Meta Tags --><title>Markdown Style Guide</title><meta name="title" content="Markdown Style Guide"><meta name="description" content="Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro."><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/markdown-style-guide/"><meta property="twitter:title" content="Markdown Style Guide"><meta property="twitter:description" content="Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro."><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="https://portal.volccdn.com/obj/volcfe/misc/favicon.png" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><link rel="stylesheet" href="/_astro/about.ae37fb10.css" />
+<link rel="stylesheet" href="/_astro/chrome-extension.0ec3c20e.css" /><script type="module" src="/_astro/hoisted.4118abf6.js"></script></head><body class="bg-skin-background astro-BVZIHDZO"><header class="flex justify-between"><a class="text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold" href="/">Shanks</a><div class="flex gap-6"><a target="_self" href="/blogs" class="hover:text-skin-neutral-1 transition-colors text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" class="hover:text-skin-neutral-1 transition-colors text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 transition-colors"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.1s" name="github"></iconpark-icon></div></a><div class="w-5 h-5"><style>astro-island,astro-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();;(()=>{var l;{let c={0:t=>t,1:t=>JSON.parse(t,o),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(JSON.parse(t,o)),5:t=>new Set(JSON.parse(t,o)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(JSON.parse(t)),9:t=>new Uint16Array(JSON.parse(t)),10:t=>new Uint32Array(JSON.parse(t))},o=(t,s)=>{if(t===""||!Array.isArray(s))return s;let[e,n]=s;return e in c?c[e](n):void 0};customElements.get("astro-island")||customElements.define("astro-island",(l=class extends HTMLElement{constructor(){super(...arguments);this.hydrate=()=>{if(!this.hydrator||this.parentElement&&this.parentElement.closest("astro-island[ssr]"))return;let s=this.querySelectorAll("astro-slot"),e={},n=this.querySelectorAll("template[data-astro-template]");for(let r of n){let i=r.closest(this.tagName);!i||!i.isSameNode(this)||(e[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of s){let i=r.closest(this.tagName);!i||!i.isSameNode(this)||(e[r.getAttribute("name")||"default"]=r.innerHTML)}let a=this.hasAttribute("props")?JSON.parse(this.getAttribute("props"),o):{};this.hydrator(this)(this.Component,a,e,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),window.removeEventListener("astro:hydrate",this.hydrate),window.dispatchEvent(new CustomEvent("astro:hydrate"))}}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((s,e)=>{e.disconnect(),this.childrenConnectedCallback()}).observe(this,{childList:!0})}async childrenConnectedCallback(){window.addEventListener("astro:hydrate",this.hydrate);let s=this.getAttribute("before-hydration-url");s&&await import(s),this.start()}start(){let s=JSON.parse(this.getAttribute("opts")),e=this.getAttribute("client");if(Astro[e]===void 0){window.addEventListener(`astro:${e}`,()=>this.start(),{once:!0});return}Astro[e](async()=>{let n=this.getAttribute("renderer-url"),[a,{default:r}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),i=this.getAttribute("component-export")||"default";if(!i.includes("."))this.Component=a[i];else{this.Component=a;for(let d of i.split("."))this.Component=this.Component[d]}return this.hydrator=r,this.hydrate},s,this)}attributeChangedCallback(){this.hydrator&&this.hydrate()}},l.observedAttributes=["props"],l))}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.52ed1956.js" component-export="default" renderer-url="/_astro/client.8093b80e.js" props="{}" ssr="" client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island></div></div></header><main class="astro-BVZIHDZO"><article class="prose prose-slate prose-h1:my-5 prose-h2:my-4 prose-h3:my-3 prose-h4:my-2 prose-h5:my-1 prose-img:rounded-md dark:prose-invert max-w-content m-auto my-6 astro-BVZIHDZO"><img src="/placeholder-hero.jpg" alt="" class="astro-BVZIHDZO"><h1 class="title astro-BVZIHDZO">Markdown Style Guide</h1><span class="astro-BVZIHDZO"><time class="astro-BVZIHDZO">Jul 01 2022</time></span><!-- <Code
+          code={`const initMiniProgram = () => {
+  let adapter = {} as PlatformAdapterType
+  const set = (platformAdapterContainers: InitialAdapterParamType) => {
+    if (!getInstanceInfo().platform) throw Error(NotSupportMsg)
+}`}
+          lang="ts"
+          theme="dark-plus"
+        /> --><hr class="astro-BVZIHDZO"><p>Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.</p>
+<h2 id="headings">Headings</h2>
+<p>The following HTML <code>&#x3C;h1></code>—<code>&#x3C;h6></code> elements represent six levels of section headings. <code>&#x3C;h1></code> is the highest section level while <code>&#x3C;h6></code> is the lowest.</p>
+<h1 id="h1">H1</h1>
+<h2 id="h2">H2</h2>
+<h3 id="h3">H3</h3>
+<h4 id="h4">H4</h4>
+<h5 id="h5">H5</h5>
+<h6 id="h6">H6</h6>
+<h2 id="paragraph">Paragraph</h2>
+<p>Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.</p>
+<p>Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.</p>
+<h2 id="images">Images</h2>
+<p><img src="/placeholder-social.jpg" alt="This is a placeholder image description"></p>
+<h2 id="blockquotes">Blockquotes</h2>
+<p>The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a <code>footer</code> or <code>cite</code> element, and optionally with in-line changes such as annotations and abbreviations.</p>
+<blockquote>
+<p>— <cite>Rob Pike<sup><a href="#user-content-fn-1" id="user-content-fnref-1" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup></cite></p>
+</blockquote>
+<h4 id="blockquote-without-attribution">Blockquote without attribution</h4>
+<blockquote>
+<p>Tiam, ad mint<sup><a href="#user-content-fn-2" id="user-content-fnref-2" data-footnote-ref="" aria-describedby="footnote-label">2</a></sup> andaepu dandae nostion secatur sequo quae.<br>
+<strong>Note</strong> that you can use <em>Markdown syntax</em> within a blockquote.</p>
+</blockquote>
+<h4 id="blockquote-with-attribution">Blockquote with attribution</h4>
+<blockquote>
+<p>Don’t communicate by sharing memory, share memory by communicating.<br></p>
+</blockquote>
+<h2 id="tables">Tables</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Italics</th><th>Bold</th><th>Code</th></tr></thead><tbody><tr><td><em>italics</em></td><td><strong>bold</strong></td><td><code>code</code></td></tr></tbody></table>
+<h2 id="code-blocks">Code Blocks</h2>
+<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">&#x3C;!</span><span style="color: #85E89D">DOCTYPE</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">html</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;</span><span style="color: #85E89D">html</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">lang</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"en"</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">head</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">    &#x3C;</span><span style="color: #85E89D">meta</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">charset</span><span style="color: #E1E4E8">=</span><span style="color: #9ECBFF">"utf-8"</span><span style="color: #E1E4E8"> /></span></span>
+<span class="line"><span style="color: #E1E4E8">    &#x3C;</span><span style="color: #85E89D">title</span><span style="color: #E1E4E8">>Example HTML5 Document&#x3C;/</span><span style="color: #85E89D">title</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;/</span><span style="color: #85E89D">head</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;</span><span style="color: #85E89D">body</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">    &#x3C;</span><span style="color: #85E89D">p</span><span style="color: #E1E4E8">>Test&#x3C;/</span><span style="color: #85E89D">p</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">  &#x3C;/</span><span style="color: #85E89D">body</span><span style="color: #E1E4E8">></span></span>
+<span class="line"><span style="color: #E1E4E8">&#x3C;/</span><span style="color: #85E89D">html</span><span style="color: #E1E4E8">></span></span></code></pre>
+<h2 id="list-types">List Types</h2>
+<h4 id="ordered-list">Ordered List</h4>
+<ol>
+<li>First item</li>
+<li>Second item</li>
+<li>Third item</li>
+</ol>
+<h4 id="unordered-list">Unordered List</h4>
+<ul>
+<li>List item</li>
+<li>Another item</li>
+<li>And another item</li>
+</ul>
+<h4 id="nested-list">Nested list</h4>
+<ul>
+<li>Fruit
+<ul>
+<li>Apple</li>
+<li>Orange</li>
+<li>Banana</li>
+</ul>
+</li>
+<li>Dairy
+<ul>
+<li>Milk</li>
+<li>Cheese</li>
+</ul>
+</li>
+</ul>
+<h2 id="other-elements--abbr-sub-sup-kbd-mark">Other Elements — abbr, sub, sup, kbd, mark</h2>
+<p><abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.</p>
+<p>H<sub>2</sub>O</p>
+<p>X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup></p>
+<p>Press <kbd><kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd></kbd> to end the session.</p>
+<p>Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.</p>
+<section data-footnotes="" class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
+<ol>
+<li id="user-content-fn-1">
+<p>The above quote is excerpted from Rob Pike’s <a href="https://www.youtube.com/watch?v=PAAkCSZUG1c">talk</a> during Gopherfest, November 18, 2015. <a href="#user-content-fnref-1" data-footnote-backref="" class="data-footnote-backref" aria-label="Back to content">↩</a></p>
+</li>
+<li id="user-content-fn-2">
+<p>this is two footnote <a href="#user-content-fnref-2" data-footnote-backref="" class="data-footnote-backref" aria-label="Back to content">↩</a></p>
+</li>
+</ol>
+</section></article></main><footer class="text-skin-neutral-4 astro-SZ7XMLTE">
+Shanks &copy; 2023 All rights reserved.
+</footer></body></html>
