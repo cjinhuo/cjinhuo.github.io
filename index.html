@@ -78,8 +78,9 @@
         console.log('direct', JSON.stringify(e.payload)) // {}
         console.log('test', JSON.stringify(test)) // {}
         if (e.payload.toJSON) {
-          console.log('toJSON', e.payload.toJSON())
+          console.log('has toJSON', e.payload.toJSON())
         }
+        console.log('toJSON data', e.payload.toJSON())
       }
       return e
     })
