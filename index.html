@@ -64,14 +64,14 @@
       useLocalConfig: true,
     })
     setTimeout(function () {
-      const xhr = new XMLHttpRequest()
-      const url = 'http://10.86.124.38:8080/input.js'
+      var xhr = new XMLHttpRequest()
+      var url = 'http://10.86.124.38:8080/input.js'
       xhr.open('GET', url, true)
       xhr.send()
     }, 2000)
     window.apmPlus('on', 'beforeSend', function (e) {
       if (e.ev_type === 'resource') {
-        const test = {
+        var test = {
           test: 1,
           timing: e.payload,
         }
