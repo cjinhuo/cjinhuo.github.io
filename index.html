@@ -75,10 +75,11 @@
           test: 1,
           timing: e.payload,
         }
-        console.log(JSON.stringify(e.payload)) // {}
+        console.log('direct', JSON.stringify(e.payload)) // {}
         console.log('test', JSON.stringify(test)) // {}
-        console.log(JSON.stringify(e))
-        console.log(e.payload.toJSON())
+        if (e.payload.toJSON) {
+          console.log('toJSON', e.payload.toJSON())
+        }
       }
       return e
     })
