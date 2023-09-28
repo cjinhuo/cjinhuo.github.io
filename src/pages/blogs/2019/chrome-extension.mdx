@@ -1,17 +1,19 @@
 ---
-layout: "../../../layouts/BlogPost.astro"
-title: "初入 Chrome Extension"
-description: "基于 Chrome Extension 爬虫"
-pubDate: "2019-01-12"
-author: "Shanks"
-authorHref: "https://github.com/cjinhuo"
-heroImage: "/placeholder-hero.jpg"
-heroImageAlt: "heroImage"
+layout: '../../../layouts/BlogPost.astro'
+title: '初入 Chrome Extension'
+description: '基于 Chrome Extension 爬虫'
+pubDate: '2019-02-12'
+updatedDate: '2019-01-12'
+author: 'Shanks'
+authorHref: 'https://github.com/cjinhuo'
+heroImage: '/placeholder-hero.jpg'
+heroImageAlt: 'heroImage'
 ---
 
 ## 谷歌插件的大致内容
 
-background.js:背景页，当你的插件被挂载在浏览器的一瞬间开始执行，当你刷新插件和浏览器重启时，也会重新执行里面的代码<br>
+background.js:背景页，当你的插件被挂载在浏览器的一瞬间开始执行，当你刷新插件和浏览器重启时，也会重新执行里面的代码
+
 content.js:content 可能不止一个，因为 manifest.json 里面的 content_scripts 配置项可以加好几个 content.js，它是用来插入到某个网页的代码，比如当 manifest.json 的配置如下:
 
 ```js
@@ -52,16 +54,12 @@ chrome.runtime.sendMessage({
 background.js
 
 ```js
-chrome.extension.onMessage.addListener(function (
-  request,
-  sender,
-  sendResponse
-) {
+chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
   // request就是上面content发送过来的type: 'checkInfo',一个对象可以是任何数据
-  if (request.type == "checkInfo") {
-    sendResponse({ type: "ok", username: "test" });
+  if (request.type == 'checkInfo') {
+    sendResponse({ type: 'ok', username: 'test' })
   }
-});
+})
 ```
 
 上面的代码是 content 主动与 background 通讯，相反也是可以的，background 也可以主动与 content 通讯，把代码换下就 OK 了
@@ -71,32 +69,28 @@ chrome.extension.onMessage.addListener(function (
 前端页面.js
 
 ```js
-let extensionId = ""; //你要通讯的插件的id，每个插件的id都是唯一的
+let extensionId = '' //你要通讯的插件的id，每个插件的id都是唯一的
 chrome.runtime.sendMessage(
   extensionId,
   {
-    type: "getMessage",
+    type: 'getMessage',
   },
-  (response) => {
+  response => {
     if (!response) {
-      console.log(response); //这是background的sendMessage返回来得信息
+      console.log(response) //这是background的sendMessage返回来得信息
     }
   }
-);
+)
 ```
 
 background.js
 
 ```js
-chrome.runtime.onMessageExternal.addListener(function (
-  request,
-  sender,
-  sendMessage
-) {
-  if (request.type === "getMessage") {
-    sendMessage("接受成功，返回对象"); // 把前端需要的信息填在sendMessage即可，
+chrome.runtime.onMessageExternal.addListener(function (request, sender, sendMessage) {
+  if (request.type === 'getMessage') {
+    sendMessage('接受成功，返回对象') // 把前端需要的信息填在sendMessage即可，
   }
-});
+})
 ```
 
 既然前端可以访问 background，那么 background 也可以访问前端页面，这个我没试过，详情可查看[通讯 API](https://crxdoc-zh.appspot.com/extensions/runtime)（中文版谷歌插件 API，需防墙）
@@ -108,11 +102,11 @@ chrome.runtime.onMessageExternal.addListener(function (
 ```js
 chrome.webRequest.onBeforeRequest.addListener(
   function (details) {
-    return { cancel: details.url.indexOf("www.baidu.com") != -1 };
+    return { cancel: details.url.indexOf('www.baidu.com') != -1 }
   },
-  { urls: ["<all_urls>"] },
-  ["blocking"]
-);
+  { urls: ['<all_urls>'] },
+  ['blocking']
+)
 ```
 
 将这段代码插入到某个页面时，会拦截所有包含"www.baidu.com"的ajax请求，详情可查看[操作请求API](https://crxdoc-zh.appspot.com/extensions/webRequest)，看到最后，虽然插件可以拦截、阻止或修改请求，但是获取不到请求的结果，这是最坑爹的，所以有什么办法呢？既然我们可以在任何时间对页面进行代码注入，所以我们就可以重写网页的内置函数。
@@ -122,28 +116,28 @@ chrome.webRequest.onBeforeRequest.addListener(
 我们在网页上面的 head 节点一加载完就插入如下代码：
 
 ```js
-let myFetch = window.fetch; // 把原本的fetch存在变量，下面重写fetch函数
+let myFetch = window.fetch // 把原本的fetch存在变量，下面重写fetch函数
 window.fetch = function (url, options) {
   return new Promise(function (resolve, reject) {
-    let fetchPromise = myFetch(url, options);
+    let fetchPromise = myFetch(url, options)
     fetchPromise.then(function (response) {
       if (index) {
         response
           .clone()
           .json()
-          .then((data) => {
+          .then(data => {
             // 这是获取请求返回来的结果
             //你可以对结果进行操作
-          });
+          })
       }
-      return resolve(response);
-    });
+      return resolve(response)
+    })
 
-    fetchPromise.catch((err) => {
-      return reject(err);
-    });
-  });
-};
+    fetchPromise.catch(err => {
+      return reject(err)
+    })
+  })
+}
 ```
 
 | clone()的用法
