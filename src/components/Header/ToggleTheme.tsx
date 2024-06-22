@@ -1,4 +1,4 @@
-import { PREFIX } from '@/constants'
+import { PREFIX } from '@/shared'
 import { useEffect, useState } from 'react'
 import IconPark, { NameTypes } from '../IconPark'
 
@@ -32,7 +32,10 @@ export default function ToggleTheme() {
   }
   return (
     <div>
-      <IconPark onClick={onClickToggleTheme} className='text-skin-neutral-5 hover:text-skin-neutral-1 hover:cursor-pointer' name={theme}></IconPark>
+      <IconPark
+        onClick={onClickToggleTheme}
+        className='text-skin-neutral-5 hover:text-skin-neutral-1 hover:cursor-pointer'
+        name={theme}></IconPark>
     </div>
   )
 }
