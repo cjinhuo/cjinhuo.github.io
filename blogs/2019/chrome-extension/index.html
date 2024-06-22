@@ -1,37 +1,43 @@
-<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo><head><script>
-  const Dark = 'dark'
-  const Light = 'light'
-  const localStorageKey = '__shanks__theme'
-  const addDarkToClassList = () => document.documentElement.classList.add(Dark)
-  const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
-  const media = window.matchMedia('(prefers-color-scheme: dark)')
-  const colorSchemeChange = e => {
-    if (e.matches) {
-      localStorage.setItem(localStorageKey, Dark)
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const colorSchemeChange = (e) => {
+      if (e.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        addDarkToClassList()
+      } else {
+        localStorage.setItem(localStorageKey, Light)
+        removeDarkToClassList()
+      }
+    }
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      if (media.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        return Dark
+      }
+      return Light
+    })()
+    if (theme && theme === Dark) {
       addDarkToClassList()
     } else {
-      localStorage.setItem(localStorageKey, Light)
       removeDarkToClassList()
     }
   }
-  if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
-  const theme = (() => {
-    if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
-      return localStorage.getItem(localStorageKey)
-    }
-    if (media.matches) {
-      localStorage.setItem(localStorageKey, Dark)
-      return Dark
-    }
-    return Light
-  })()
-  if (theme && theme === Dark) {
-    addDarkToClassList()
-  } else {
-    removeDarkToClassList()
-  }
-</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v3.1.4"><!-- Primary Meta Tags --><title>初入 Chrome Extension</title><meta name="title" content="初入 Chrome Extension"><meta name="description" content="基于 Chrome Extension 爬虫"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2019/chrome-extension/"><meta property="twitter:title" content="初入 Chrome Extension"><meta property="twitter:description" content="基于 Chrome Extension 爬虫"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="https://portal.volccdn.com/obj/volcfe/misc/favicon.png" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><link rel="stylesheet" href="/_astro/about.3276a012.css" />
-<link rel="stylesheet" href="/_astro/chrome-extension.d78e1f62.css" /><script type="module" src="/_astro/hoisted.fafb535b.js"></script></head><body class="bg-skin-background" data-astro-cid-bvzihdzo><header class="flex justify-between"><a class="text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold" href="/">Shanks</a><div class="flex gap-6"><a target="_self" href="/blogs" class="hover:text-skin-neutral-1 transition-colors text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" class="hover:text-skin-neutral-1 transition-colors text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 transition-colors"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.1s" name="github"></iconpark-icon></div></a><div class="w-5 h-5"><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();;(()=>{var b=Object.defineProperty;var f=(a,s,i)=>s in a?b(a,s,{enumerable:!0,configurable:!0,writable:!0,value:i}):a[s]=i;var d=(a,s,i)=>(f(a,typeof s!="symbol"?s+"":s,i),i);var u;{let a={0:t=>m(t),1:t=>i(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(i(t)),5:t=>new Set(i(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t)},s=t=>{let[e,r]=t;return e in a?a[e](r):void 0},i=t=>t.map(s),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([e,r])=>[e,s(r)]));customElements.get("astro-island")||customElements.define("astro-island",(u=class extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var l;if(!this.hydrator||!this.isConnected)return;let e=(l=this.parentElement)==null?void 0:l.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),c={},h=this.querySelectorAll("template[data-astro-template]");for(let n of h){let o=n.closest(this.tagName);o!=null&&o.isSameNode(this)&&(c[n.getAttribute("data-astro-template")||"default"]=n.innerHTML,n.remove())}for(let n of r){let o=n.closest(this.tagName);o!=null&&o.isSameNode(this)&&(c[n.getAttribute("name")||"default"]=n.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(n){let o=this.getAttribute("component-url")||"<unknown>",y=this.getAttribute("component-export");throw y&&(o+=` (export ${y})`),console.error(`[hydrate] Error parsing props for component ${o}`,this.getAttribute("props"),n),n}await this.hydrator(this)(this.Component,p,c,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){!this.hasAttribute("await-children")||this.firstChild?this.childrenConnectedCallback():new MutationObserver((e,r)=>{r.disconnect(),setTimeout(()=>this.childrenConnectedCallback(),0)}).observe(this,{childList:!0})}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}Astro[r](async()=>{let c=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),c?import(c):()=>()=>{}]),l=this.getAttribute("component-export")||"default";if(!l.includes("."))this.Component=h[l];else{this.Component=h;for(let n of l.split("."))this.Component=this.Component[n]}return this.hydrator=p,this.hydrate},e,this)}attributeChangedCallback(){this.hydrate()}},d(u,"observedAttributes",["props"]),u))}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.d17f7402.js" component-export="default" renderer-url="/_astro/client.bb1cf6b8.js" props="{}" ssr="" client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island></div></div><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"></header><main data-astro-cid-bvzihdzo><article class="prose prose-slate prose-h1:my-5 prose-h2:my-4 prose-h3:my-3 prose-h4:my-2 prose-h5:my-1 prose-img:rounded-md dark:prose-invert max-w-content m-auto my-6" data-astro-cid-bvzihdzo><img src="/placeholder-hero.jpg" alt="" data-astro-cid-bvzihdzo><h1 class="title" data-astro-cid-bvzihdzo>初入 Chrome Extension</h1><span data-astro-cid-bvzihdzo><time data-astro-cid-bvzihdzo>2019-01-12</time></span><!-- <Code
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script> <!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v4.11.0"><!-- Primary Meta Tags --><title>初入 Chrome Extension</title><meta name="title" content="初入 Chrome Extension"><meta name="description" content="基于 Chrome Extension 爬虫"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2019/chrome-extension/"><meta property="twitter:title" content="初入 Chrome Extension"><meta property="twitter:description" content="基于 Chrome Extension 爬虫"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="https://portal.volccdn.com/obj/volcfe/misc/favicon.png" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><link rel="stylesheet" href="/_astro/about.CuP_MAX8.css">
+<link rel="stylesheet" href="/_astro/first-post.FFEaN3aL.css"><script type="module" src="/_astro/hoisted.B89IlM-H.js"></script></head> <body class="bg-skin-background" data-astro-cid-bvzihdzo> <header class="flex justify-between">  <a class="text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold" href="/">Shanks</a> <div class="flex gap-6"> <a target="_self" href="/blogs" class="hover:text-skin-neutral-1 transition-colors text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" class="hover:text-skin-neutral-1 transition-colors text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 transition-colors"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.1s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();;(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t)},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.D5zTZfxN.js" component-export="default" renderer-url="/_astro/client.BIGLHmRd.js" props="{}" ssr="" client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"> </header> <main data-astro-cid-bvzihdzo> <article class="prose prose-slate prose-h1:my-5 prose-h2:my-4 prose-h3:my-3 prose-h4:my-2 prose-h5:my-1 prose-img:rounded-md dark:prose-invert max-w-content m-auto my-6" data-astro-cid-bvzihdzo> <img src="/placeholder-hero.jpg" alt="" loading="eager" data-astro-cid-bvzihdzo width="720" height="360" decoding="async"> <h1 class="title" data-astro-cid-bvzihdzo>初入 Chrome Extension</h1> <span data-astro-cid-bvzihdzo><time data-astro-cid-bvzihdzo>2019-02-12</time></span> <!-- <Code
           code={`const initMiniProgram = () => {
   let adapter = {} as PlatformAdapterType
   const set = (platformAdapterContainers: InitialAdapterParamType) => {
@@ -39,108 +45,108 @@
 }`}
           lang="ts"
           theme="dark-plus"
-        /> --><hr data-astro-cid-bvzihdzo><h2 id="谷歌插件的大致内容">谷歌插件的大致内容</h2>
-<p>background.js:背景页，当你的插件被挂载在浏览器的一瞬间开始执行，当你刷新插件和浏览器重启时，也会重新执行里面的代码<br>
-content.js:content 可能不止一个，因为 manifest.json 里面的 content_scripts 配置项可以加好几个 content.js，它是用来插入到某个网页的代码，比如当 manifest.json 的配置如下:</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">    </span><span style="color: #9ECBFF">"content_scripts"</span><span style="color: #E1E4E8">: [{</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #9ECBFF">"matches"</span><span style="color: #E1E4E8">: [</span><span style="color: #9ECBFF">"https://www.baidu.com"</span><span style="color: #E1E4E8">],  </span><span style="color: #6A737D">//必选，指定内容脚本要插入到哪些页面中去</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #9ECBFF">"exclude_matches"</span><span style="color: #E1E4E8">: [</span><span style="color: #9ECBFF">"https://www.baidu.com/test/"</span><span style="color: #E1E4E8">], </span><span style="color: #6A737D">//可选。排除不需要插入内容脚本的页面</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #9ECBFF">"js"</span><span style="color: #E1E4E8">: [</span><span style="color: #9ECBFF">"content.js"</span><span style="color: #E1E4E8">], </span><span style="color: #6A737D">//可选。要插入匹配页面的 JavaScript 文件列表，它们将按照数组中指定的顺序插入</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #9ECBFF">"css"</span><span style="color: #E1E4E8">:[</span><span style="color: #9ECBFF">"global.css"</span><span style="color: #E1E4E8">],</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #9ECBFF">"run_at"</span><span style="color: #E1E4E8">: </span><span style="color: #9ECBFF">"document_start"</span><span style="color: #E1E4E8">, </span><span style="color: #6A737D">//</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #9ECBFF">"all_frames"</span><span style="color: #E1E4E8">: </span><span style="color: #79B8FF">false</span><span style="color: #E1E4E8"> </span><span style="color: #6A737D">//默认为 false，意味着仅在顶层框架中运行</span></span>
-<span class="line"><span style="color: #E1E4E8">    }],</span></span></code></pre>
+        /> --> <div data-astro-cid-bvzihdzo>
+Last updated on <time data-astro-cid-bvzihdzo>2019-01-12</time> </div> <hr data-astro-cid-bvzihdzo> <h2 id="谷歌插件的大致内容">谷歌插件的大致内容</h2>
+<p>background.js:背景页，当你的插件被挂载在浏览器的一瞬间开始执行，当你刷新插件和浏览器重启时，也会重新执行里面的代码</p>
+<p>content.js:content 可能不止一个，因为 manifest.json 里面的 content_scripts 配置项可以加好几个 content.js，它是用来插入到某个网页的代码，比如当 manifest.json 的配置如下:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#9ECBFF">    &quot;content_scripts&quot;</span><span style="color:#E1E4E8">: [{</span></span>
+<span class="line"><span style="color:#9ECBFF">      &quot;matches&quot;</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">&quot;https://www.baidu.com&quot;</span><span style="color:#E1E4E8">],  </span><span style="color:#6A737D">//必选，指定内容脚本要插入到哪些页面中去</span></span>
+<span class="line"><span style="color:#9ECBFF">      &quot;exclude_matches&quot;</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">&quot;https://www.baidu.com/test/&quot;</span><span style="color:#E1E4E8">], </span><span style="color:#6A737D">//可选。排除不需要插入内容脚本的页面</span></span>
+<span class="line"><span style="color:#9ECBFF">      &quot;js&quot;</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">&quot;content.js&quot;</span><span style="color:#E1E4E8">], </span><span style="color:#6A737D">//可选。要插入匹配页面的 JavaScript 文件列表，它们将按照数组中指定的顺序插入</span></span>
+<span class="line"><span style="color:#9ECBFF">      &quot;css&quot;</span><span style="color:#E1E4E8">:[</span><span style="color:#9ECBFF">&quot;global.css&quot;</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#9ECBFF">      &quot;run_at&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;document_start&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">//</span></span>
+<span class="line"><span style="color:#9ECBFF">      &quot;all_frames&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span><span style="color:#6A737D"> //默认为 false，意味着仅在顶层框架中运行</span></span>
+<span class="line"><span style="color:#E1E4E8">    }],</span></span>
+<span class="line"></span></code></pre>
 <p>::: tip
-content_scripts 是一个数组，说明可以对多个网站进行代码嵌入<br>
-“run_at”表示你的 content.js 要在什么时候嵌入到网站<br>
+content_scripts 是一个数组，说明可以对多个网站进行代码嵌入<br/>
+“run_at”表示你的 content.js 要在什么时候嵌入到网站<br/>
 “document_start”:这些文件将在 css 中指定的文件之后，但是在所有其他 DOM 构造或脚本运行之前插入，也就是目标页的文档节点加载完之前就注入 content.js 了，这或许会让你代码里面的 document.querySelector()不会达到你预期的效果，详情可查看<a href="https://crxdoc-zh.appspot.com/extensions/content_scripts">ContentAPI</a>
 :::</p>
 <h2 id="插件的内部通讯">插件的内部通讯</h2>
 <p>我涉及到的有 background 主动与 content 通讯，content 主动与 background 通讯，前端页面主动与 backgr</p>
 <h3 id="background-与-content-通讯">background 与 content 通讯</h3>
 <p>content.js</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">chrome.runtime.</span><span style="color: #B392F0">sendMessage</span><span style="color: #E1E4E8">({</span></span>
-<span class="line"><span style="color: #E1E4E8">    type: </span><span style="color: #9ECBFF">'checkInfo'</span><span style="color: #E1E4E8">     </span><span style="color: #6A737D">// 这个是你想发送到background的参数对象</span></span>
-<span class="line"><span style="color: #E1E4E8">  }, </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span><span style="color: #FFAB70">response</span><span style="color: #E1E4E8">) {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> (response.type </span><span style="color: #F97583">===</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">'ok'</span><span style="color: #E1E4E8">) {</span></span>
-<span class="line"><span style="color: #E1E4E8">      console.</span><span style="color: #B392F0">log</span><span style="color: #E1E4E8">(response.username) </span><span style="color: #6A737D">// test</span></span>
-<span class="line"><span style="color: #E1E4E8">    }</span></span>
-<span class="line"><span style="color: #E1E4E8">  };</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">chrome.runtime.</span><span style="color:#B392F0">sendMessage</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    type: </span><span style="color:#9ECBFF">&#39;checkInfo&#39;</span><span style="color:#6A737D">     // 这个是你想发送到background的参数对象</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">response</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (response.type </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> &#39;ok&#39;</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(response.username) </span><span style="color:#6A737D">// test</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"></span></code></pre>
 <p>background.js</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">chrome.extension.onMessage.</span><span style="color: #B392F0">addListener</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #FFAB70">request</span><span style="color: #E1E4E8">,</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #FFAB70">sender</span><span style="color: #E1E4E8">,</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #FFAB70">sendResponse</span></span>
-<span class="line"><span style="color: #E1E4E8">) {</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #6A737D">// request就是上面content发送过来的type: 'checkInfo',一个对象可以是任何数据</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> (request.type </span><span style="color: #F97583">==</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">"checkInfo"</span><span style="color: #E1E4E8">) {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #B392F0">sendResponse</span><span style="color: #E1E4E8">({ type: </span><span style="color: #9ECBFF">"ok"</span><span style="color: #E1E4E8">, username: </span><span style="color: #9ECBFF">"test"</span><span style="color: #E1E4E8"> });</span></span>
-<span class="line"><span style="color: #E1E4E8">  }</span></span>
-<span class="line"><span style="color: #E1E4E8">});</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">chrome.extension.onMessage.</span><span style="color:#B392F0">addListener</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">request</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sender</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sendResponse</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">  // request就是上面content发送过来的type: &#39;checkInfo&#39;,一个对象可以是任何数据</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (request.type </span><span style="color:#F97583">==</span><span style="color:#9ECBFF"> &#39;checkInfo&#39;</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">    sendResponse</span><span style="color:#E1E4E8">({ type: </span><span style="color:#9ECBFF">&#39;ok&#39;</span><span style="color:#E1E4E8">, username: </span><span style="color:#9ECBFF">&#39;test&#39;</span><span style="color:#E1E4E8"> })</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"></span></code></pre>
 <p>上面的代码是 content 主动与 background 通讯，相反也是可以的，background 也可以主动与 content 通讯，把代码换下就 OK 了</p>
 <h3 id="前端页面与-background-通讯">前端页面与 background 通讯</h3>
 <p>前端页面.js</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">let</span><span style="color: #E1E4E8"> extensionId </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">""</span><span style="color: #E1E4E8">; </span><span style="color: #6A737D">//你要通讯的插件的id，每个插件的id都是唯一的</span></span>
-<span class="line"><span style="color: #E1E4E8">chrome.runtime.</span><span style="color: #B392F0">sendMessage</span><span style="color: #E1E4E8">(</span></span>
-<span class="line"><span style="color: #E1E4E8">  extensionId,</span></span>
-<span class="line"><span style="color: #E1E4E8">  {</span></span>
-<span class="line"><span style="color: #E1E4E8">    type: </span><span style="color: #9ECBFF">"getMessage"</span><span style="color: #E1E4E8">,</span></span>
-<span class="line"><span style="color: #E1E4E8">  },</span></span>
-<span class="line"><span style="color: #E1E4E8">  (</span><span style="color: #FFAB70">response</span><span style="color: #E1E4E8">) </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> (</span><span style="color: #F97583">!</span><span style="color: #E1E4E8">response) {</span></span>
-<span class="line"><span style="color: #E1E4E8">      console.</span><span style="color: #B392F0">log</span><span style="color: #E1E4E8">(response); </span><span style="color: #6A737D">//这是background的sendMessage返回来得信息</span></span>
-<span class="line"><span style="color: #E1E4E8">    }</span></span>
-<span class="line"><span style="color: #E1E4E8">  }</span></span>
-<span class="line"><span style="color: #E1E4E8">);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> extensionId </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;&#39;</span><span style="color:#6A737D"> //你要通讯的插件的id，每个插件的id都是唯一的</span></span>
+<span class="line"><span style="color:#E1E4E8">chrome.runtime.</span><span style="color:#B392F0">sendMessage</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">  extensionId,</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">    type: </span><span style="color:#9ECBFF">&#39;getMessage&#39;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#FFAB70">  response</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">response) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(response) </span><span style="color:#6A737D">//这是background的sendMessage返回来得信息</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span></code></pre>
 <p>background.js</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">chrome.runtime.onMessageExternal.</span><span style="color: #B392F0">addListener</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #FFAB70">request</span><span style="color: #E1E4E8">,</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #FFAB70">sender</span><span style="color: #E1E4E8">,</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #FFAB70">sendMessage</span></span>
-<span class="line"><span style="color: #E1E4E8">) {</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> (request.type </span><span style="color: #F97583">===</span><span style="color: #E1E4E8"> </span><span style="color: #9ECBFF">"getMessage"</span><span style="color: #E1E4E8">) {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #B392F0">sendMessage</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">"接受成功，返回对象"</span><span style="color: #E1E4E8">); </span><span style="color: #6A737D">// 把前端需要的信息填在sendMessage即可，</span></span>
-<span class="line"><span style="color: #E1E4E8">  }</span></span>
-<span class="line"><span style="color: #E1E4E8">});</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">chrome.runtime.onMessageExternal.</span><span style="color:#B392F0">addListener</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">request</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sender</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">sendMessage</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (request.type </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> &#39;getMessage&#39;</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">    sendMessage</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;接受成功，返回对象&#39;</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// 把前端需要的信息填在sendMessage即可，</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"></span></code></pre>
 <p>既然前端可以访问 background，那么 background 也可以访问前端页面，这个我没试过，详情可查看<a href="https://crxdoc-zh.appspot.com/extensions/runtime">通讯 API</a>（中文版谷歌插件 API，需防墙）</p>
 <h2 id="插件拦截-ajax-请求">插件拦截 ajax 请求</h2>
 <p>插件可以实时地拦截、阻止或修改请求，比如下面的代码可以拦截请求，让某个请求的响应不能返回给页面。</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #E1E4E8">chrome.webRequest.onBeforeRequest.</span><span style="color: #B392F0">addListener</span><span style="color: #E1E4E8">(</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span><span style="color: #FFAB70">details</span><span style="color: #E1E4E8">) {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> { cancel: details.url.</span><span style="color: #B392F0">indexOf</span><span style="color: #E1E4E8">(</span><span style="color: #9ECBFF">"www.baidu.com"</span><span style="color: #E1E4E8">) </span><span style="color: #F97583">!=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">-</span><span style="color: #79B8FF">1</span><span style="color: #E1E4E8"> };</span></span>
-<span class="line"><span style="color: #E1E4E8">  },</span></span>
-<span class="line"><span style="color: #E1E4E8">  { urls: [</span><span style="color: #9ECBFF">"&#x3C;all_urls>"</span><span style="color: #E1E4E8">] },</span></span>
-<span class="line"><span style="color: #E1E4E8">  [</span><span style="color: #9ECBFF">"blocking"</span><span style="color: #E1E4E8">]</span></span>
-<span class="line"><span style="color: #E1E4E8">);</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">chrome.webRequest.onBeforeRequest.</span><span style="color:#B392F0">addListener</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">details</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> { cancel: details.url.</span><span style="color:#B392F0">indexOf</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;www.baidu.com&#39;</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">!=</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { urls: [</span><span style="color:#9ECBFF">&#39;&lt;all_urls&gt;&#39;</span><span style="color:#E1E4E8">] },</span></span>
+<span class="line"><span style="color:#E1E4E8">  [</span><span style="color:#9ECBFF">&#39;blocking&#39;</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span></code></pre>
 <p>将这段代码插入到某个页面时，会拦截所有包含”<a href="http://www.baidu.com%22%E7%9A%84ajax%E8%AF%B7%E6%B1%82%EF%BC%8C%E8%AF%A6%E6%83%85%E5%8F%AF%E6%9F%A5%E7%9C%8B">www.baidu.com”的ajax请求，详情可查看</a><a href="https://crxdoc-zh.appspot.com/extensions/webRequest">操作请求API</a>，看到最后，虽然插件可以拦截、阻止或修改请求，但是获取不到请求的结果，这是最坑爹的，所以有什么办法呢？既然我们可以在任何时间对页面进行代码注入，所以我们就可以重写网页的内置函数。</p>
 <h3 id="拦截请求并且获取请求返回来的结果">拦截请求并且获取请求返回来的结果</h3>
 <p>我们在网页上面的 head 节点一加载完就插入如下代码：</p>
-<pre is:raw="" class="astro-code github-dark" style="background-color: #24292e; overflow-x: auto;" tabindex="0"><code><span class="line"><span style="color: #F97583">let</span><span style="color: #E1E4E8"> myFetch </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> window.fetch; </span><span style="color: #6A737D">// 把原本的fetch存在变量，下面重写fetch函数</span></span>
-<span class="line"><span style="color: #E1E4E8">window.</span><span style="color: #B392F0">fetch</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span><span style="color: #FFAB70">url</span><span style="color: #E1E4E8">, </span><span style="color: #FFAB70">options</span><span style="color: #E1E4E8">) {</span></span>
-<span class="line"><span style="color: #E1E4E8">  </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #F97583">new</span><span style="color: #E1E4E8"> </span><span style="color: #79B8FF">Promise</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span><span style="color: #FFAB70">resolve</span><span style="color: #E1E4E8">, </span><span style="color: #FFAB70">reject</span><span style="color: #E1E4E8">) {</span></span>
-<span class="line"><span style="color: #E1E4E8">    </span><span style="color: #F97583">let</span><span style="color: #E1E4E8"> fetchPromise </span><span style="color: #F97583">=</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">myFetch</span><span style="color: #E1E4E8">(url, options);</span></span>
-<span class="line"><span style="color: #E1E4E8">    fetchPromise.</span><span style="color: #B392F0">then</span><span style="color: #E1E4E8">(</span><span style="color: #F97583">function</span><span style="color: #E1E4E8"> (</span><span style="color: #FFAB70">response</span><span style="color: #E1E4E8">) {</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #F97583">if</span><span style="color: #E1E4E8"> (index) {</span></span>
-<span class="line"><span style="color: #E1E4E8">        response</span></span>
-<span class="line"><span style="color: #E1E4E8">          .</span><span style="color: #B392F0">clone</span><span style="color: #E1E4E8">()</span></span>
-<span class="line"><span style="color: #E1E4E8">          .</span><span style="color: #B392F0">json</span><span style="color: #E1E4E8">()</span></span>
-<span class="line"><span style="color: #E1E4E8">          .</span><span style="color: #B392F0">then</span><span style="color: #E1E4E8">((</span><span style="color: #FFAB70">data</span><span style="color: #E1E4E8">) </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> {</span></span>
-<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #6A737D">// 这是获取请求返回来的结果</span></span>
-<span class="line"><span style="color: #E1E4E8">            </span><span style="color: #6A737D">//你可以对结果进行操作</span></span>
-<span class="line"><span style="color: #E1E4E8">          });</span></span>
-<span class="line"><span style="color: #E1E4E8">      }</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">resolve</span><span style="color: #E1E4E8">(response);</span></span>
-<span class="line"><span style="color: #E1E4E8">    });</span></span>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> myFetch </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> window.fetch </span><span style="color:#6A737D">// 把原本的fetch存在变量，下面重写fetch函数</span></span>
+<span class="line"><span style="color:#E1E4E8">window.</span><span style="color:#B392F0">fetch</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">url</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">options</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> fetchPromise </span><span style="color:#F97583">=</span><span style="color:#B392F0"> myFetch</span><span style="color:#E1E4E8">(url, options)</span></span>
+<span class="line"><span style="color:#E1E4E8">    fetchPromise.</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">response</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (index) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        response</span></span>
+<span class="line"><span style="color:#E1E4E8">          .</span><span style="color:#B392F0">clone</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">          .</span><span style="color:#B392F0">json</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">          .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">data</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">            // 这是获取请求返回来的结果</span></span>
+<span class="line"><span style="color:#6A737D">            //你可以对结果进行操作</span></span>
+<span class="line"><span style="color:#E1E4E8">          })</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#B392F0"> resolve</span><span style="color:#E1E4E8">(response)</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #E1E4E8">    fetchPromise.</span><span style="color: #B392F0">catch</span><span style="color: #E1E4E8">((</span><span style="color: #FFAB70">err</span><span style="color: #E1E4E8">) </span><span style="color: #F97583">=></span><span style="color: #E1E4E8"> {</span></span>
-<span class="line"><span style="color: #E1E4E8">      </span><span style="color: #F97583">return</span><span style="color: #E1E4E8"> </span><span style="color: #B392F0">reject</span><span style="color: #E1E4E8">(err);</span></span>
-<span class="line"><span style="color: #E1E4E8">    });</span></span>
-<span class="line"><span style="color: #E1E4E8">  });</span></span>
-<span class="line"><span style="color: #E1E4E8">};</span></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">    fetchPromise.</span><span style="color:#B392F0">catch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">err</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#B392F0"> reject</span><span style="color:#E1E4E8">(err)</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
 <p>| clone()的用法</p>
 <p>Response 接口的 clone() 方法创建了一个响应对象的克隆，这个对象在所有方面都是相同的，但是存储在一个不同的变量中。</p>
 <p>如果已经使用了响应 Body，clone() 会抛出 TypeError。 实际上，clone()存在的主要原因是允许多次使用 Body 对象(当它们是一次性使用的时候)。</p>
 <p>简单来说，当你没加 clone()时，response 是一次性用品，用过了再返回给原本网页，它就不接受，加了 clone()后，就可以多次使用。
-:::</p></article></main><footer class="text-skin-neutral-4" data-astro-cid-sz7xmlte>
-Shanks &copy; 2023 All rights reserved.
-</footer></body></html>
+:::</p> </article> </main> <footer class="text-skin-neutral-4" data-astro-cid-sz7xmlte>
+Shanks &copy; 2024 All rights reserved.
+</footer>  </body></html>
