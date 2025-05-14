@@ -1,7 +1,13 @@
 export enum NameTypes {
   Light = 'light',
   Dark = 'dark',
-  github = 'github',
+  Github = 'github',
+  Resume = 'resume',
+  WeChat = 'wechat',
+  Email = 'email',
+  Skill = 'skill',
+  WorkExperience = 'work-experience',
+  PersonalProfile = 'personal-profile',
 }
 interface PropsType extends React.HTMLAttributes<any> {
   name: NameTypes

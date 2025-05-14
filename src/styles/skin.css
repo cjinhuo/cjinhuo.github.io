@@ -11,6 +11,7 @@ html {
   --color-neutral-10: #fafafa;
 
   --color-normal-bg: rgb(230, 236, 242);
+  --color-resume-bg: rgb(230, 236, 242, 0.5);
   --color-normal-bg-reverse: rgb(6, 12, 18);
 
   --color-linear-bg-start: rgb(255, 255, 255);
@@ -32,6 +33,7 @@ html {
   --color-neutral-1: #fafafa;
 
   --color-normal-bg: rgb(6, 12, 18);
+  --color-resume-bg: rgb(6, 12, 18, 1);
   --color-normal-bg-reverse: rgb(230, 236, 242);
 
   --color-linear-bg-start: rgb(6, 12, 18);
@@ -45,7 +47,7 @@ html {
 
 ::selection {
   color: var(--color-neutral-9);
-  background-color: var(--color-neutral-3);
+  background-color: var(--color-neutral-4);
 }
 
 

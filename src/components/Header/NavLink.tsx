@@ -5,12 +5,14 @@ const NavList = [
     label: 'Blog',
     href: '/blogs',
   },
-  // {
-  //   label: 'Resume',
-  //   href: '/resume',
-  // },
+  {
+    label: 'Resume',
+    href: '/resume',
+    icon: NameTypes.Resume,
+  },
   {
     label: 'Github',
+    icon: NameTypes.Github,
     href: 'https://github.com/cjinhuo',
     isBlank: true,
   },
@@ -25,8 +27,8 @@ export default function NavLink({ pathname }: TypeProps) {
         const isActive = pathname === item.href
         const textClassName = isActive ? 'text-skin-neutral-1' : 'text-skin-neutral-5'
         let label
-        if (item.label === 'Github') {
-          label = <IconPark className='hover:text-skin-neutral-1' name={NameTypes.github}></IconPark>
+        if (item.icon) {
+          label = <IconPark className={`hover:text-skin-neutral-1 ${textClassName}`} name={item.icon}></IconPark>
         }
         return (
           <a
