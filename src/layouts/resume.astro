@@ -1,0 +1,41 @@
+---
+import BaseHead from '../components/BaseHead.astro'
+import Header from '@/components/Header/Header.astro'
+import Footer from '../components/Footer.astro'
+import DownloadPdfButton from '@/components/download-pdf-button'
+
+const {
+  content: { title, description },
+} = Astro.props
+---
+
+<html lang='en'>
+  <head>
+    <BaseHead title={title} description={description} />
+    <script
+      src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'
+      integrity='sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=='
+      crossorigin='anonymous'
+      referrerpolicy='no-referrer'>
+    </script>
+  </head>
+
+  <body class='bg-skin-background'>
+    <Header />
+    <main class='flex flex-col justify-center items-center min-h-[calc(100vh-200px)]'>
+      <div class='max-w-content w-full mx-auto my-8 px-4'>
+        <div class='bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden relative p-4 m-auto max-w-[700px]'>
+          <div class='absolute top-4 right-4 z-10'>
+            <DownloadPdfButton client:only elementId='resume-container' />
+          </div>
+          <article
+            id='resume-container'
+            class='prose prose-slate prose-h1:my-5 prose-h2:my-4 prose-h3:my-3 prose-h4:my-2 prose-h5:my-1 prose-p:my-1 prose-img:rounded-md hover:prose-a:text-slate-400 prose-a:font-bold prose-a:underline prose-a:transition-colors dark:prose-invert w-full'>
+            <slot />
+          </article>
+        </div>
+      </div>
+      <Footer />
+    </main>
+  </body>
+</html>
