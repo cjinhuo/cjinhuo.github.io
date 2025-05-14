@@ -33,6 +33,9 @@ export default function NavLink({ pathname }: TypeProps) {
             key={item.href}
             target={item.isBlank ? '_blank' : '_self'}
             href={item.href}
+            title={item.label}
+            aria-label={item.label}
+            rel={item.isBlank ? "noopener noreferrer" : undefined}
             className={`hover:text-skin-neutral-1 transition duration-75 text-base ${textClassName}`}>
             {label || item.label}
           </a>

@@ -2,7 +2,7 @@
 import '@icon-park/react/styles/index.css'
 import NavLink from './NavLink'
 import ToggleTheme from './ToggleTheme'
-import { ViewTransitions } from 'astro:transitions'
+import { ClientRouter } from 'astro:transitions'
 ---
 
 <header class='flex justify-between'>
@@ -15,5 +15,5 @@ import { ViewTransitions } from 'astro:transitions'
       <ToggleTheme client:only='react' />
     </div>
   </div>
-  <ViewTransitions />
+  <ClientRouter />
 </header>

@@ -1,7 +1,7 @@
  @import url('./skin.css');
 
  * {
-	transition: color 0.3s;
+	transition: color 0.1s;
  }
  html,body{
 	height: 100%;
