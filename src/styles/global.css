@@ -10,7 +10,7 @@
 	min-height: 100vh;
  }
 body {
-	font-family: "Poppins", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	font-family: 'Roboto Variable', sans-serif;
 	margin: auto;
 	padding: 20px;
 	width: 100%;

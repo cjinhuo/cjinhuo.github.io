@@ -23,9 +23,9 @@ importers:
       '@astrojs/tailwind':
         specifier: ^5.1.0
         version: 5.1.0(astro@5.7.12(@types/node@20.14.8)(jiti@1.21.6)(rollup@4.40.2)(typescript@5.2.2)(yaml@2.4.5))(tailwindcss@3.4.4(ts-node@10.9.1(@types/node@20.14.8)(typescript@5.2.2)))(ts-node@10.9.1(@types/node@20.14.8)(typescript@5.2.2))
-      '@fontsource/poppins':
-        specifier: ^5.2.6
-        version: 5.2.6
+      '@fontsource-variable/roboto':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@icon-park/react':
         specifier: ^1.4.2
         version: 1.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -409,8 +409,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@fontsource/poppins@5.2.6':
-    resolution: {integrity: sha512-NFr0121+vWCfzLDVvSZOzwAjRUaNj6QHA9gtUh/KHHoWf1Qn23EkwVFs63XZ6UtF5K1b3UNmCx77YEMGgV7BOQ==}
+  '@fontsource-variable/roboto@5.2.5':
+    resolution: {integrity: sha512-csqBSOWXv0h5IbPhEqYJua6/nxl7dSNZbBOMeXSO9aqzgPw3GpfgC9kL5M6ULFLRaoDoBD4U9QctoDLKMaTyMg==}
 
   '@icon-park/react@1.4.2':
     resolution: {integrity: sha512-+MtQLjNiRuia3fC/NfpSCTIy5KH5b+NkMB9zYd7p3R4aAIK61AjK0OSraaICJdkKooU9jpzk8m0fY4g9A3JqhQ==}
@@ -3278,7 +3278,7 @@ snapshots:
   '@esbuild/win32-x64@0.25.4':
     optional: true
 
-  '@fontsource/poppins@5.2.6': {}
+  '@fontsource-variable/roboto@5.2.5': {}
 
   '@icon-park/react@1.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
