@@ -23,7 +23,7 @@
     "@astrojs/tailwind": "^5.1.0",
     "@fontsource-variable/roboto": "^5.2.5",
     "@icon-park/react": "^1.4.2",
-    "astro": "^5.7.12",
+    "astro": "^5.12.8",
     "cz-conventional-changelog": "^3.3.0",
     "dayjs": "^1.11.11",
     "github-markdown-css": "^5.6.1",
