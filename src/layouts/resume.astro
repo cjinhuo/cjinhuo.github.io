@@ -16,26 +16,249 @@ const {
       src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'
       integrity='sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=='
       crossorigin='anonymous'
-      referrerpolicy='no-referrer'>
-    </script>
+      referrerpolicy='no-referrer'
+    ></script>
   </head>
 
   <body style='background-color: var(--color-resume-bg); background-image: none;'>
     <Header />
     <main class='flex flex-col'>
       <div class='max-w-content w-full mx-auto my-8 px-4'>
-        <div class='bg-white dark:bg-gray-900 rounded-lg overflow-hidden relative p-10 m-auto max-w-[750px]'>
-          <div class='absolute top-4 right-4 z-10'>
+        <div
+          class='bg-white dark:bg-gray-900 rounded-lg overflow-hidden relative shadow-lg border border-gray-200 dark:border-gray-700 p-10 m-auto max-w-[750px]'>
+          <div class='absolute top-4 right-4 z-10 flex gap-2'>
             <DownloadPdfButton client:only elementId='resume-container' />
           </div>
           <article
             id='resume-container'
-            class='prose prose-slate prose-h1:my-5 prose-h2:my-4 prose-h3:my-3 prose-h4:my-2 prose-h5:my-1 prose-p:my-1 prose-ul:my-2 prose-li:my-1 prose-img:rounded-md hover:prose-a:text-slate-400 prose-a:font-bold prose-a:underline prose-a:transition-colors dark:prose-invert w-full'>
+            class='prose prose-slate prose-h1:my-5 prose-h2:my-4 prose-h3:my-3 prose-h4:my-2 prose-h5:my-1 prose-p:my-1 prose-ul:my-2 prose-li:my-1 prose-img:rounded-md hover:prose-a:text-slate-400 prose-a:font-bold prose-a:underline prose-a:transition-colors dark:prose-invert max-w-none'>
+            <div class='border-b border-gray-200 dark:border-gray-700 pb-6 mb-6'>
+              <div class='flex flex-col md:flex-row items-center gap-6'>
+                <!-- <div class='flex-shrink-0'>
+                  <div
+                    class='w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold'>
+                    陈金伙
+                  </div>
+                </div> -->
+                <div class='flex-grow text-center md:text-left'>
+                  <h1 class='text-3xl font-bold text-gray-900 dark:text-white mb-2'>John Doe</h1>
+                  <p class='text-xl text-gray-600 dark:text-gray-300 mb-3'>Senior Frontend Developer</p>
+                  <div
+                    class='flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-500 dark:text-gray-400'>
+                    <span class='flex items-center gap-1'>📧 john.doe@email.com</span>
+                    <span class='flex items-center gap-1'>📱 +1 (555) 123-4567</span>
+                    <span class='flex items-center gap-1'>🌍 San Francisco, CA</span>
+                  </div>
+                </div>
+              </div>
+            </div>
             <slot />
           </article>
         </div>
       </div>
       <Footer />
     </main>
+
+    <style>
+      @media print {
+        header,
+        footer {
+          display: none !important;
+        }
+
+        .max-w-content {
+          max-width: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        body {
+          background: white !important;
+          color: black !important;
+        }
+
+        #resume-container {
+          box-shadow: none !important;
+          border: none !important;
+          padding: 20px !important;
+        }
+
+        .absolute {
+          display: none !important;
+        }
+
+        /* 移除所有边框分隔线 */
+        .border-b {
+          border-bottom: none !important;
+        }
+
+        .border-l-4 {
+          border-left: none !important;
+        }
+
+        .border,
+        .border-gray-200,
+        .border-gray-700 {
+          border: none !important;
+        }
+
+        /* 为PDF优化间距 */
+        section {
+          margin-bottom: 1.5rem !important;
+        }
+
+        /* 优化标题样式 */
+        h1,
+        h2,
+        h3 {
+          color: black !important;
+          break-after: avoid;
+        }
+
+        /* 优化列表和段落 */
+        ul,
+        p {
+          break-inside: avoid;
+        }
+
+        /* 移除阴影和圆角 */
+        .rounded-lg {
+          border-radius: 0 !important;
+        }
+
+        .shadow-lg {
+          box-shadow: none !important;
+        }
+
+        /* 确保文字可读性 */
+        .text-gray-500,
+        .text-gray-600,
+        .text-gray-700 {
+          color: #374151 !important;
+        }
+
+        .text-blue-600,
+        .text-blue-400 {
+          color: #1e40af !important;
+        }
+
+        .text-green-600,
+        .text-green-400 {
+          color: #16a34a !important;
+        }
+
+        /* 优化背景色 */
+        .bg-gray-50,
+        .bg-gray-100 {
+          background-color: #f9fafb !important;
+        }
+
+        /* 技能标签优化 */
+        .bg-blue-100 {
+          background-color: #dbeafe !important;
+          border: 1px solid #93c5fd !important;
+        }
+
+        .bg-green-100 {
+          background-color: #dcfce7 !important;
+          border: 1px solid #86efac !important;
+        }
+      }
+
+      /* 专门为PDF生成优化的样式 */
+      .pdf-optimized {
+        .border-b,
+        .border-l-4,
+        .border {
+          border: none !important;
+        }
+      }
+
+      /* PDF生成时的全局样式 */
+      body.pdf-generating {
+        /* 确保PDF生成时的背景是白色 */
+        background: white !important;
+      }
+
+      body.pdf-generating #resume-container {
+        /* 移除所有装饰性元素 */
+        box-shadow: none !important;
+        border: none !important;
+        background: white !important;
+      }
+
+      body.pdf-generating .border-b {
+        border-bottom: none !important;
+        padding-bottom: 1rem !important;
+        margin-bottom: 1.5rem !important;
+      }
+
+      body.pdf-generating .border-l-4 {
+        border-left: none !important;
+        padding-left: 1rem !important;
+        position: relative;
+      }
+
+      /* 为工作经历添加简洁的视觉分隔 */
+      body.pdf-generating .border-l-4::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: #e5e7eb;
+      }
+
+      /* 移除时间轴点 */
+      body.pdf-generating .absolute {
+        display: none !important;
+      }
+
+      /* 优化技能标签 */
+      body.pdf-generating .rounded-full {
+        border-radius: 4px !important;
+        border: 1px solid #d1d5db !important;
+      }
+
+      /* 确保文字对比度 */
+      body.pdf-generating .text-blue-600,
+      body.pdf-generating .text-blue-400 {
+        color: #1d4ed8 !important;
+      }
+
+      body.pdf-generating .text-green-600,
+      body.pdf-generating .text-green-400 {
+        color: #16a34a !important;
+      }
+
+      body.pdf-generating .text-gray-500,
+      body.pdf-generating .text-gray-600 {
+        color: #6b7280 !important;
+      }
+
+      /* 优化标题间距 */
+      body.pdf-generating h2 {
+        margin-top: 2rem !important;
+        margin-bottom: 1rem !important;
+        font-weight: 600 !important;
+      }
+
+      body.pdf-generating h3 {
+        margin-top: 1rem !important;
+        margin-bottom: 0.5rem !important;
+      }
+
+      /* 优化列表样式 */
+      body.pdf-generating ul {
+        margin-top: 0.5rem !important;
+        margin-bottom: 1rem !important;
+      }
+
+      body.pdf-generating li {
+        margin-bottom: 0.25rem !important;
+        line-height: 1.5 !important;
+      }
+    </style>
   </body>
 </html>

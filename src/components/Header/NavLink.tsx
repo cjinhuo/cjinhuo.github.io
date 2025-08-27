@@ -5,11 +5,11 @@ const NavList = [
     label: 'Blog',
     href: '/blogs',
   },
-  {
-    label: 'Resume',
-    href: '/resume',
-    icon: NameTypes.Resume,
-  },
+  // {
+  //   label: 'Resume',
+  //   href: '/resume',
+  //   icon: NameTypes.Resume,
+  // },
   {
     label: 'Github',
     icon: NameTypes.Github,

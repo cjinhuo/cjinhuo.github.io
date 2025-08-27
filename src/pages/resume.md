@@ -4,70 +4,54 @@ title: '陈金伙的简历'
 description: '陈金伙的简历'
 ---
 
-## 个人信息
-福建理工大学-软件工程
-Email：cjinhuo@qq.com [开源前端监控 SDK](https://github.com/mitojs/mitojs)
-[掘金](https://juejin.cn/user/1210958492176284) [个人网站](https://cjinhuo.netlify.app/)
+## 陈金伙
 
+📧 cjinhuo@qq.com &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🔗 [github.com/cjinhuo](https://github.com/cjinhuo)  
+
+🎓 福建理工大学-软件工程 &nbsp;&nbsp;&nbsp;&nbsp;  📍浙江杭州
+💼 [掘金](https://juejin.cn/user/1210958492176284)    👤[个人网站](https://cjinhuo.netlify.app/)
+
+## 工作经历
+
+### **字节跳动-APM** &nbsp;&nbsp;&nbsp;&nbsp; *资深前端工程师* <span style="float: right">2021.8 ~ 至今</span>
+
+**Web/Node.js/小程序监控 SDK**
+
+主导设计和实现字节内部 Web、小程序、Node.js 监控 SDK，支持错误收集、性能监控、用户行为追踪、自定义埋点等功能。SDK 架构采用插件化设计，支持按需加载，核心包体积控制在 15KB 以内。覆盖字节系 200+ 业务线，日均处理错误日志 10 亿+，帮助业务提升稳定性 30%。
+
+**技术栈：** TypeScript、Rollup、Lerna、Jest
+
+### **智云健康** &nbsp;&nbsp;&nbsp;&nbsp; *高级前端工程师* <span style="float: right">2020.4 ~ 2021.7</span>
+
+**前端监控系统**
+
+从 0 到 1 搭建公司级前端监控平台，包含 SDK、数据处理、可视化平台三大模块。项目覆盖公司 95% 的 H5 项目，成功定位并解决线上故障 5 次以上，将故障平均修复时间从 2 小时缩短至 30 分钟。
+
+- **SDK 开发：** 基于 Rollup + TypeScript 开发，支持错误捕获、性能监控、用户行为记录、页面录制回放等功能。开源版本获得 1000+ Star
+- **数据处理：** 使用 NestJS + Redis + MySQL + RocketMQ 构建高性能数据处理管道，支持实时告警和批量数据分析
+- **可视化平台：** React + Recoil 开发，提供错误详情、SourceMap 还原、录制回放、多维度数据分析等功能
+
+**团队建设**
+
+主导团队技术分享机制，推动团队成员输出技术文章，获得掘金 2020 年度人气团队 No.3
+
+### **奇点云** &nbsp;&nbsp;&nbsp;&nbsp; *前端工程师* <span style="float: right">2019.3 ~ 2020.4</span>
+
+**数据中台**
+
+- 设计基于 Vue Router 的统一配置中心，整合侧边栏、头部、面包屑导航，提升开发效率 40%
+- 开发基于 Swagger 的代码生成工具，自动生成 Services 层代码，减少 60% 的接口对接工作量
 
 ## 技能清单
 
-- 熟悉 React Hook、jotai、
-- 熟悉 小程序、Web、node.js 监控领域、nestjs、redis(hash、set、list、bitmap)、mysql
-- 熟悉全栈开发，
-- 熟悉大型 SDK 架构搭建、jest 单测编写、puppetter 或 cypress 的 e2e 编写
-- 了解 HTTP/TCP 协议与数据结构、docker、nginx
+- **前端技术：** 精通 React/Vue、TypeScript、Webpack/Rollup、微前端架构
+- **监控领域：** 深入理解前端监控原理，熟悉性能优化、错误追踪、用户行为分析
+- **后端技术：** 熟悉 Node.js、NestJS、Redis、MySQL、消息队列
+- **工程化：** 熟悉 CI/CD、Docker、K8s、自动化测试
+- **其他：** 了解 Python、LangChain/LangGraph，有 LLM 应用开发经验
 
-## 👴🏻 工作经历
+## 开源贡献
 
-### 字节跳动-APM
-<!-- 用一个组件来搞 -->
-| 2021 年 8 月 ~ 至今 资深前端工程师
-
-### 智云健康（2020 年 4 月 ~ 至今 高级前端工程师）
-
-### 前端监控系统
-
-**项目概述：收集线上报错信息、自定义埋点、接口报错（关联网关层）、用户行为栈、PvUv、录制页面操作并告警到对应前端开发者，支持 h5、微信小程序。覆盖公司 95%的 h5 项目，解决线上故障至少 5 次**
-
-负责内容：上报数据、数据消费、数据聚合的可行性方案调研、产出表结构和技术方案思维导图、prd 设计、全栈核心代码开发
-
-**SDK：rollup+ts，[github 已开源](https://github.com/clouDr-f2e/mitojs)，目前有 1000+star**
-
-主要功能：收集页面的用户操作行为栈、路由跳转、接口报错、代码报错（Js、Vue、react 代码错误）,微信小程序:生命周期 hooks 暴露、全局用户行为事件拦截、请求和资源拦截、代码报错。目前至少 5 家公司正在使用该 SDK 进行错误收集并自主搭建公司内部监控系统
-
-**服务端：nestjs+Sequelize+redis+mysql+rocketMq+docker**
-
-主要功能：接收客户端上报信息，存入 redis.list 与 rocketMq，并定时批量处理错误日志，将计算后的结果批量入库并通知对应开发者。以及错误等级配置与告警规则引擎、sourcemap 还原、错误查询、可配置团队成员、项目成员等等接口
-
-**前端：react + ts + recoil**
-
-主要功能：展示项目的 PvUv、错误列表、错误详情、接口信息、资源信息、代码错误信息、线上 sourcemap 代码还原、录制回放、错误标签集合（手机型号、浏览器型号、地理位置、ip 等等）
-
-## 公司战略项目
-
-owner 过两个公司战略项目需求，带过三人小团队在一个月半的时间里面按时完成业务需求，并得到该战略项目奖金
-
-## 技术氛围&社区
-
-主导团队内部技术分享机制。个人输出四篇高质量原创文章，并推动团队其他成员输出原创和翻译文章，年底获得掘金社区的 2020 年度人气团队 No.3
-
-## rollup monorepo 打包模板
-
-**项目概述：基于 rollup 的多包打包、发布、e2e、单测的模板，[github 已开源](https://github.com/cjinhuo/rollup-monorepo-ts-jest-boilerplate)**
-
-主要功能：配有 jest 的单测、jest+puppetter（无头浏览器）的 e2e 测试、多包打包的脚本、多包发布的脚本、多包版本更改与验证的脚本
-
-在内部被其他业务组接入两次并完成开发上线
-
-## 奇点云 （ 2019 年 3 月 ~ 2020 年 4 月份 前端工程师）
-
-### 数据中台（Web）
-技术栈：Vue + Vuex + Vue Router + Element 等
-
-负责内容：
-
-1.设计基于 Vue router 的侧边栏、头部、面包屑的一体化配置中心，以便其他开发人员开发新需求时仅需关注业务功能的开发。
-
-2.设计基于 swagger 生成 services 层代码的[工具](https://github.com/TypeInfos/groot-front)，统一 services 层代码规范和减少人工代码量。
+- **[mitojs](https://github.com/mitojs/mitojs)** - 前端监控 SDK，1000+ Star
+- **[groot-front](https://github.com/TypeInfos/groot-front)** - 基于 Swagger 的代码生成工具
 
