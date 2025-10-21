@@ -7,13 +7,26 @@ import 'github-markdown-css'
 import { Image } from 'astro:assets'
 
 const {
-  content: { title, duration, description, pubDate, updatedDate, heroImage },
+  content: { title, duration, description, pubDate, updatedDate, heroImage, author, authorHref },
 } = Astro.props
+
+// 从文章内容中提取标签（如果有的话）
+const tags = ['前端', '开发工具', '浏览器插件', 'AI', '搜索']
 ---
 
 <html lang='en'>
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead 
+      title={title} 
+      description={description} 
+      image={heroImage}
+      author={author}
+      authorHref={authorHref}
+      pubDate={pubDate}
+      updatedDate={updatedDate}
+      type="article"
+      tags={tags}
+    />
     <style>
       .title {
         font-size: 2em;

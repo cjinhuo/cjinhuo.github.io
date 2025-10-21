@@ -1,7 +1,7 @@
 ---
 layout: "../../../layouts/BlogPost.astro"
 title: "极致丝滑的模糊搜索 & AI 标签分组插件 "
-description: ""
+description: "标签页、书签太多找不到？AI 分组 + 拼音模糊搜索，开源插件秒解切换难题！"
 pubDate: '2025-10-21'
 updatedDate: '2025-10-21'
 author: 'Shanks'
