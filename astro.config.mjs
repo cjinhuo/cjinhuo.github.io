@@ -10,5 +10,13 @@ export default defineConfig({
   site: 'https://cjinhuo.netlify.app/',
   syntaxHighlight: 'prism',
   integrations: [mdx(), sitemap(), tailwind(), react()],
-  compressHTML: true
+  compressHTML: true,
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+      config: {
+        limitInputPixels: false // 移除像素限制，允许处理大图片
+      }
+    }
+  }
 })
