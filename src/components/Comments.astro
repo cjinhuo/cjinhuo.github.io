@@ -1,19 +1,57 @@
 <section class='giscus mx-auto mt-10 w-full'></section>
 
-<script
-  src='https://giscus.app/client.js'
-  data-repo='cjinhuo/cjinhuo.github.io'
-  data-repo-id='MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=='
-  data-category='General'
-  data-category-id='DIC_kwDOBCuUB84Cx9F9'
-  data-mapping='title'
-  data-strict='0'
-  data-reactions-enabled='1'
-  data-emit-metadata='0'
-  data-input-position='top'
-  data-theme='preferred_color_scheme'
-  data-lang='zh-CN'
-  data-loading='eager'
-  crossorigin='anonymous'
-  async>
+<script is:inline>
+  const initGiscus = () => {
+    // 检查容器是否存在，如果不存在说明 Comments 组件不在当前页面，直接退出
+    const container = document.querySelector('.giscus')
+    if (!container) {
+      // 如果容器不存在，清理可能残留的脚本
+      const oldScript = document.querySelector('script[src="https://giscus.app/client.js"]')
+      if (oldScript) {
+        oldScript.remove()
+      }
+      return
+    }
+
+    // 清理旧的 giscus 容器内容
+    container.innerHTML = ''
+
+    // 移除旧的 giscus 脚本（如果存在）
+    const oldScript = document.querySelector('script[src="https://giscus.app/client.js"]')
+    if (oldScript) {
+      oldScript.remove()
+    }
+
+    // 创建新的 giscus 脚本
+    const script = document.createElement('script')
+    script.src = 'https://giscus.app/client.js'
+    script.setAttribute('data-repo', 'cjinhuo/cjinhuo.github.io')
+    script.setAttribute('data-repo-id', 'MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw==')
+    script.setAttribute('data-category', 'General')
+    script.setAttribute('data-category-id', 'DIC_kwDOBCuUB84Cx9F9')
+    script.setAttribute('data-mapping', 'title')
+    script.setAttribute('data-strict', '0')
+    script.setAttribute('data-reactions-enabled', '1')
+    script.setAttribute('data-emit-metadata', '0')
+    script.setAttribute('data-input-position', 'top')
+    script.setAttribute('data-theme', 'preferred_color_scheme')
+    script.setAttribute('data-lang', 'zh-CN')
+    script.setAttribute('data-loading', 'eager')
+    script.crossOrigin = 'anonymous'
+    script.async = true
+
+    // 将脚本添加到页面
+    document.body.appendChild(script)
+  }
+
+  // 首次加载时初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGiscus)
+  } else {
+    initGiscus()
+  }
+
+  // 监听 Astro View Transitions 事件，在页面切换后重新初始化
+  document.addEventListener('astro:page-load', initGiscus)
+  document.addEventListener('astro:after-swap', initGiscus)
 </script>
