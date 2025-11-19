@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro'
 import 'github-markdown-css'
 // import { Code } from 'astro/components'
 import { Image } from 'astro:assets'
+import Comments from '../components/Comments.astro'
 
 const {
   content: { title, duration, description, pubDate, updatedDate, heroImage, author, authorHref },
@@ -16,15 +17,15 @@ const tags = ['前端', '开发工具', '浏览器插件', 'AI', '搜索']
 
 <html lang='en'>
   <head>
-    <BaseHead 
-      title={title} 
-      description={description} 
+    <BaseHead
+      title={title}
+      description={description}
       image={heroImage}
       author={author}
       authorHref={authorHref}
       pubDate={pubDate}
       updatedDate={updatedDate}
-      type="article"
+      type='article'
       tags={tags}
     />
     <style>
@@ -65,6 +66,7 @@ const tags = ['前端', '开发工具', '浏览器插件', 'AI', '搜索']
         }
         <hr />
         <slot />
+        <Comments />
       </article>
     </main>
     <Footer />
