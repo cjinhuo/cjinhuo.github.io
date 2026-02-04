@@ -32,6 +32,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 const socialImageURL = new URL(image, Astro.url)
 ---
 
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+<link rel='dns-prefetch' href='https://giscus.app' />
+<link rel='dns-prefetch' href='https://lf1-cdn-tos.bytegoofy.com' />
+
 <script is:inline>
   const initThemeFromLocalStorage = () => {
     const Dark = 'dark'

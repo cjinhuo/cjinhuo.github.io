@@ -2,13 +2,15 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "@/components/Header/Header.astro";
 import Footer from "../components/Footer.astro";
-import type { BlogType, MarkdownInstance } from "@/types";
+import type { BlogType } from "@/types";
 import BlogCard from "@/components/BlogCard";
 
-// Use Astro.glob() to fetch all posts, and then sort them by date.
-const posts = (
-  await Astro.glob<MarkdownInstance<BlogType>>("./blogs/**/*.{md,mdx}")
-).sort(
+const postFiles = import.meta.glob<{ frontmatter: BlogType; url: string }>(
+  "./blogs/**/*.{md,mdx}",
+  { eager: true }
+);
+
+const posts = Object.values(postFiles).sort(
   (a, b) =>
     new Date(b.frontmatter.pubDate).valueOf() -
     new Date(a.frontmatter.pubDate).valueOf()
@@ -27,7 +29,9 @@ const posts = (
         Shanks' Blog
       </h1>
       <section>
-        {posts.map((post) => <BlogCard {...post} />)}
+        {posts.map((post) => (
+          <BlogCard url={post.url} frontmatter={post.frontmatter} />
+        ))}
       </section>
     </main>
     <Footer />

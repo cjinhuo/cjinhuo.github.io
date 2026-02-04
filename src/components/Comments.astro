@@ -1,11 +1,13 @@
-<section class='giscus mx-auto mt-10 w-full'></section>
+<section class='giscus mx-auto mt-10 w-full'>
+  <div id='giscus-loading' class='text-skin-neutral-5 text-center py-4'>
+    Loading comments...
+  </div>
+</section>
 
-<script is:inline>
+<script>
   const initGiscus = () => {
-    // 检查容器是否存在，如果不存在说明 Comments 组件不在当前页面，直接退出
     const container = document.querySelector('.giscus')
     if (!container) {
-      // 如果容器不存在，清理可能残留的脚本
       const oldScript = document.querySelector('script[src="https://giscus.app/client.js"]')
       if (oldScript) {
         oldScript.remove()
@@ -13,45 +15,59 @@
       return
     }
 
-    // 清理旧的 giscus 容器内容
-    container.innerHTML = ''
+    const loadGiscus = () => {
+      const loadingEl = document.getElementById('giscus-loading')
+      if (loadingEl) loadingEl.remove()
 
-    // 移除旧的 giscus 脚本（如果存在）
-    const oldScript = document.querySelector('script[src="https://giscus.app/client.js"]')
-    if (oldScript) {
-      oldScript.remove()
+      const oldScript = document.querySelector('script[src="https://giscus.app/client.js"]')
+      if (oldScript) {
+        oldScript.remove()
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://giscus.app/client.js'
+      script.setAttribute('data-repo', 'cjinhuo/cjinhuo.github.io')
+      script.setAttribute('data-repo-id', 'MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw==')
+      script.setAttribute('data-category', 'General')
+      script.setAttribute('data-category-id', 'DIC_kwDOBCuUB84Cx9F9')
+      script.setAttribute('data-mapping', 'title')
+      script.setAttribute('data-strict', '0')
+      script.setAttribute('data-reactions-enabled', '1')
+      script.setAttribute('data-emit-metadata', '0')
+      script.setAttribute('data-input-position', 'top')
+      script.setAttribute('data-theme', 'preferred_color_scheme')
+      script.setAttribute('data-lang', 'zh-CN')
+      script.setAttribute('data-loading', 'lazy')
+      script.crossOrigin = 'anonymous'
+      script.async = true
+
+      document.body.appendChild(script)
     }
 
-    // 创建新的 giscus 脚本
-    const script = document.createElement('script')
-    script.src = 'https://giscus.app/client.js'
-    script.setAttribute('data-repo', 'cjinhuo/cjinhuo.github.io')
-    script.setAttribute('data-repo-id', 'MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw==')
-    script.setAttribute('data-category', 'General')
-    script.setAttribute('data-category-id', 'DIC_kwDOBCuUB84Cx9F9')
-    script.setAttribute('data-mapping', 'title')
-    script.setAttribute('data-strict', '0')
-    script.setAttribute('data-reactions-enabled', '1')
-    script.setAttribute('data-emit-metadata', '0')
-    script.setAttribute('data-input-position', 'top')
-    script.setAttribute('data-theme', 'preferred_color_scheme')
-    script.setAttribute('data-lang', 'zh-CN')
-    script.setAttribute('data-loading', 'eager')
-    script.crossOrigin = 'anonymous'
-    script.async = true
-
-    // 将脚本添加到页面
-    document.body.appendChild(script)
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              loadGiscus()
+              observer.disconnect()
+            }
+          })
+        },
+        { rootMargin: '200px' }
+      )
+      observer.observe(container)
+    } else {
+      loadGiscus()
+    }
   }
 
-  // 首次加载时初始化
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initGiscus)
   } else {
     initGiscus()
   }
 
-  // 监听 Astro View Transitions 事件，在页面切换后重新初始化
   document.addEventListener('astro:page-load', initGiscus)
   document.addEventListener('astro:after-swap', initGiscus)
 </script>

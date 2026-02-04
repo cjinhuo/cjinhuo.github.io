@@ -3,7 +3,6 @@ import BaseHead from '../components/BaseHead.astro'
 import Header from '@/components/Header/Header.astro'
 import Footer from '../components/Footer.astro'
 import 'github-markdown-css'
-// import { Code } from 'astro/components'
 import { Image } from 'astro:assets'
 import Comments from '../components/Comments.astro'
 
@@ -11,7 +10,6 @@ const {
   content: { title, duration, description, pubDate, updatedDate, heroImage, author, authorHref },
 } = Astro.props
 
-// 从文章内容中提取标签（如果有的话）
 const tags = ['前端', '开发工具', '浏览器插件', 'AI', '搜索']
 ---
 
@@ -37,6 +35,9 @@ const tags = ['前端', '开发工具', '浏览器插件', 'AI', '搜索']
         border-top: 1px solid #ddd;
         margin: 1rem 0;
       }
+      article img {
+        content-visibility: auto;
+      }
     </style>
   </head>
 
@@ -45,7 +46,7 @@ const tags = ['前端', '开发工具', '浏览器插件', 'AI', '搜索']
     <main>
       <article
         class='prose prose-slate prose-h1:my-5 prose-h2:my-4 prose-h3:my-3 prose-h4:my-2 prose-h5:my-1 prose-img:rounded-md dark:prose-invert max-w-content m-auto my-6'>
-        {heroImage && <Image src={heroImage} alt='' width={720} height={360} loading='eager' />}
+        {heroImage && <Image src={heroImage} alt={title} width={720} height={360} loading='eager' fetchpriority='high' />}
         <h1 class='title'>{title}</h1>
         <span>{pubDate && <time>{pubDate}</time>}{duration && `,${duration}`}</span>
         <!-- <Code

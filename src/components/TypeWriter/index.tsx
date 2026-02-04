@@ -1,10 +1,13 @@
 import { useEffect, useRef, useCallback } from 'react'
 import Typed from 'typed.js'
 import './index.css'
+
 const TypedCursorClassName = 'typed-cursor'
+
 export default function TypeWriter() {
   const nameTypedDom = useRef<HTMLDivElement>(null)
   const descriptionTypedDom = useRef<HTMLDivElement>(null)
+
   const startDescriptionTyped = useCallback(() => {
     if (descriptionTypedDom.current) {
       new Typed(descriptionTypedDom.current, {
@@ -22,6 +25,7 @@ export default function TypeWriter() {
       }, 8000)
     }
   }, [])
+
   useEffect(() => {
     if (nameTypedDom.current) {
       new Typed(nameTypedDom.current, {
@@ -40,6 +44,7 @@ export default function TypeWriter() {
       }, 4000)
     }
   }, [startDescriptionTyped])
+
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <div>
