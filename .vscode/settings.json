@@ -1,6 +1,34 @@
 {
-  "tailwindCSS.experimental.configFile": "./src/styles/tailwind.css",
-  "files.associations": {
-    "*.css": "tailwindcss"
-  }
+	"tailwindCSS.experimental.configFile": "./src/styles/tailwind.css",
+	"files.associations": {
+		"*.css": "tailwindcss",
+		"*.json": "jsonc" // 通配符匹配所有 JSON 文件
+	},
+	"biome.enabled": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"editor.formatOnSave": true
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"editor.formatOnSave": true
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"editor.formatOnSave": true
+	},
+	"[json]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"editor.formatOnSave": true
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"editor.formatOnSave": true
+	},
+	"editor.codeActionsOnSave": {
+		"source.organizeImports.biome": "explicit",
+		"source.organizeImports": "never",
+		"source.sortImports": "never"
+	},
+	"typescript.tsdk": "node_modules/typescript/lib"
 }
