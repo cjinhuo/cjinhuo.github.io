@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
-import type { BlogType, MarkdownInstance } from '@/types'
-export default function BlogCard({ url, frontmatter }: MarkdownInstance<BlogType>) {
+import type { BlogCardProps } from '@/types'
+
+export default function BlogCard({ url, frontmatter }: BlogCardProps) {
 	const { pubDate, title, description, author, authorHref } = frontmatter
 	return (
 		<div className='w-full h-auto mb-6'>

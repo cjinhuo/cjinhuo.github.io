@@ -8,18 +8,13 @@
 	},
 	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"files": {
-		"includes": [
-			"**/*.{ts,tsx,js,jsx,json,astro}",
-			"!dist",
-			"!.astro",
-			"!node_modules"
-		]
+		"includes": ["**/*.{ts,tsx,js,jsx,json,astro}", "!dist", "!node_modules"]
 	},
 	"formatter": {
 		"useEditorconfig": true,
 		"enabled": true,
 		"formatWithErrors": false,
-		"includes": ["**", "!**/package.json", "!**/pnpm-lock.yaml", "!**/*.astro"],
+		"includes": ["**", "!**/package.json", "!**/pnpm-lock.yaml"],
 		"attributePosition": "auto",
 		"indentStyle": "tab",
 		"indentWidth": 2,
@@ -80,6 +75,13 @@
 	"overrides": [
 		{
 			"includes": ["**/*.astro"],
+			"assist": {
+				"actions": {
+					"source": {
+						"organizeImports": "off"
+					}
+				}
+			},
 			"linter": {
 				"rules": {
 					"correctness": {

@@ -1,19 +1,14 @@
 ---
-import type { BlogType } from "@/types";
-import BlogCard from "@/components/BlogCard";
+import type { BlogType } from '@/types'
+import BlogCard from '@/components/BlogCard'
 
-const postFiles = import.meta.glob<{ frontmatter: BlogType; url: string }>(
-  "../pages/blogs/**/*.{md,mdx}",
-  { eager: true }
-);
+const postFiles = import.meta.glob<{ frontmatter: BlogType; url: string }>('../pages/blogs/**/*.{md,mdx}', {
+	eager: true,
+})
 
 const posts = Object.values(postFiles)
-  .sort(
-    (a, b) =>
-      new Date(b.frontmatter.pubDate).valueOf() -
-      new Date(a.frontmatter.pubDate).valueOf()
-  )
-  .slice(0, 3);
+	.sort((a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf())
+	.slice(0, 3)
 ---
 
 <section>
