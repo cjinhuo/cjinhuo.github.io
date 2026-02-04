@@ -1,13 +1,13 @@
-import { useEffect, useRef } from 'react'
-import typed from 'typed.js'
+import { useEffect, useRef, useCallback } from 'react'
+import Typed from 'typed.js'
 import './index.css'
 const TypedCursorClassName = 'typed-cursor'
 export default function TypeWriter() {
   const nameTypedDom = useRef<HTMLDivElement>(null)
   const descriptionTypedDom = useRef<HTMLDivElement>(null)
-  const startDescriptionTyped = () => {
+  const startDescriptionTyped = useCallback(() => {
     if (descriptionTypedDom.current) {
-      new typed(descriptionTypedDom.current, {
+      new Typed(descriptionTypedDom.current, {
         strings: [
           'I enjoy designing SDK architecture and really into new tech things. ^1000 Now focusing on Monitoring of Web、Mini Program and Node.js at Bytedance.',
         ],
@@ -21,10 +21,10 @@ export default function TypeWriter() {
           descriptionTypedDom.current?.parentElement?.removeChild(lastElement)
       }, 8000)
     }
-  }
+  }, [])
   useEffect(() => {
     if (nameTypedDom.current) {
-      new typed(nameTypedDom.current, {
+      new Typed(nameTypedDom.current, {
         strings: ["Hey, I'm cjinhuo.", "Hey, I'm Shanks."],
         typeSpeed: 50,
         backSpeed: 36,
@@ -39,7 +39,7 @@ export default function TypeWriter() {
         startDescriptionTyped()
       }, 4000)
     }
-  }, [nameTypedDom])
+  }, [startDescriptionTyped])
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <div>

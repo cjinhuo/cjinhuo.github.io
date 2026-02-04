@@ -1,22 +1,22 @@
- @import url('./skin.css');
+@import './skin.css';
+@import './tailwind.css';
 
- * {
-	transition: color 0.1s;
- }
- html,body{
-	height: 100%;
-	width: 100%;
-	height: auto;
-	min-height: 100vh;
- }
+* {
+  transition: color 0.1s;
+}
+html,body{
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+}
 body {
-	font-family: 'Roboto Variable', sans-serif;
-	margin: auto;
-	padding: 20px;
-	width: 100%;
-	text-align: left;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	line-height: 1.5;
-	background-image: linear-gradient(var(--color-linear-bg-start) 0%, var(--color-linear-bg-end) 100%);
+  font-family: 'Roboto Variable', sans-serif;
+  margin: auto;
+  padding: 20px;
+  width: 100%;
+  text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.5;
+  background-image: linear-gradient(var(--color-linear-bg-start) 0%, var(--color-linear-bg-end) 100%);
 }
