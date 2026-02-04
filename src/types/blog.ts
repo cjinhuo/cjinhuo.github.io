@@ -6,6 +6,7 @@ export interface BlogType {
 	heroImageAlt: string
 	author?: string
 	authorHref?: string
+	tags?: string[]
 }
 
 export interface BlogCardProps {

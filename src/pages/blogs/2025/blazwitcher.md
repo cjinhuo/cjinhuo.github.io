@@ -8,6 +8,7 @@ author: 'Shanks'
 authorHref: 'https://github.com/cjinhuo'
 heroImage: '/blazwitcher-front.png'
 heroImageAlt: 'heroImage'
+tags: ['前端', '浏览器插件', 'AI', '开源']
 ---
 
 

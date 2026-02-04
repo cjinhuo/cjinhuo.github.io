@@ -8,6 +8,7 @@ author: 'Shanks'
 authorHref: 'https://github.com/cjinhuo'
 heroImage: '/placeholder-hero.jpg'
 heroImageAlt: 'heroImage'
+tags: ['开源', '工具', '前端', 'SDK']
 ---
 
 Here are some tiny tools I still maintained: 🎉

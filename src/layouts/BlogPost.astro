@@ -5,12 +5,38 @@ import Footer from '../components/Footer.astro'
 import 'github-markdown-css'
 import { Image } from 'astro:assets'
 import Comments from '../components/Comments.astro'
+import Tag from '../components/Tag.astro'
 
 const {
-	content: { title, duration, description, pubDate, updatedDate, heroImage, author, authorHref },
+	content: { title, duration, description, pubDate, updatedDate, heroImage, author, authorHref, tags },
+	rawContent,
 } = Astro.props
 
-const tags = ['前端', '开发工具', '浏览器插件', 'AI', '搜索']
+const getWordCount = (content: string) => {
+	if (!content) return 0
+	const text = content
+		.replace(/```[\s\S]*?```/g, '')
+		.replace(/`[^`]*`/g, '')
+		.replace(/!\[.*?\]\(.*?\)/g, '')
+		.replace(/<img[^>]*>/gi, '')
+		.replace(/<video[^>]*>[\s\S]*?<\/video>/gi, '')
+		.replace(/<audio[^>]*>[\s\S]*?<\/audio>/gi, '')
+		.replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, '')
+		.replace(/<svg[^>]*>[\s\S]*?<\/svg>/gi, '')
+		.replace(/<canvas[^>]*>[\s\S]*?<\/canvas>/gi, '')
+		.replace(/<[^>]+>/g, '')
+		.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+		.replace(/[#*_~>`-]/g, '')
+		.replace(/\n/g, ' ')
+	const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || []
+	const englishWords = text
+		.replace(/[\u4e00-\u9fa5]/g, ' ')
+		.split(/\s+/)
+		.filter((word) => word.length > 0)
+	return chineseChars.length + englishWords.length
+}
+
+const wordCount = getWordCount(rawContent?.() || '')
 ---
 
 <html lang='en'>
@@ -52,7 +78,11 @@ const tags = ['前端', '开发工具', '浏览器插件', 'AI', '搜索']
           )
         }
         <h1 class='title'>{title}</h1>
-        {duration && <span>{duration}</span>}
+        <Tag tags={tags} className='mt-4' />
+        <div class='flex items-center gap-4 text-sm text-skin-neutral-3 mt-2'>
+          {wordCount > 0 && <span>共 {wordCount} 字</span>}
+          {duration && <span>{duration}</span>}
+        </div>
         <!-- <Code
           code={`const initMiniProgram = () => {
   let adapter = {} as PlatformAdapterType
