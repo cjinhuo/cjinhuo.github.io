@@ -19,7 +19,7 @@
 		"useEditorconfig": true,
 		"enabled": true,
 		"formatWithErrors": false,
-		"includes": ["**", "!**/package.json", "!**/pnpm-lock.yaml"],
+		"includes": ["**", "!**/package.json", "!**/pnpm-lock.yaml", "!**/*.astro"],
 		"attributePosition": "auto",
 		"indentStyle": "tab",
 		"indentWidth": 2,
