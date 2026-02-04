@@ -41,10 +41,6 @@ html {
   --color-link-href: rgb(90, 160, 223);
 }
 
-.glob {
-  --max-w-65: 65ch;
-}
-
 ::selection {
   color: var(--color-neutral-9);
   background-color: var(--color-neutral-4);
@@ -72,5 +68,5 @@ html {
 }
 
 :root {
-  @apply glob;
+  --max-w-65: 65ch;
 }

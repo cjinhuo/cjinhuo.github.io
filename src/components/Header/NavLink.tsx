@@ -26,10 +26,9 @@ export default function NavLink({ pathname }: TypeProps) {
       {NavList.map((item) => {
         const isActive = pathname === item.href
         const textClassName = isActive ? 'text-skin-neutral-1' : 'text-skin-neutral-5'
-        let label
-        if (item.icon) {
-          label = <IconPark className={`hover:text-skin-neutral-1 ${textClassName}`} name={item.icon}></IconPark>
-        }
+        const label = item.icon ? (
+          <IconPark className={`hover:text-skin-neutral-1 ${textClassName}`} name={item.icon}></IconPark>
+        ) : null
         return (
           <a
             key={item.href}

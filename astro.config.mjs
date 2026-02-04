@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
-import tailwind from '@astrojs/tailwind'
+import tailwindcss from '@tailwindcss/vite'
 
 import react from '@astrojs/react'
 
@@ -9,13 +9,16 @@ import react from '@astrojs/react'
 export default defineConfig({
   site: 'https://cjinhuo.netlify.app/',
   syntaxHighlight: 'prism',
-  integrations: [mdx(), sitemap(), tailwind(), react()],
+  integrations: [mdx(), sitemap(), react()],
   compressHTML: true,
+  vite: {
+    plugins: [tailwindcss()]
+  },
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',
       config: {
-        limitInputPixels: false // 移除像素限制，允许处理大图片
+        limitInputPixels: false
       }
     }
   }

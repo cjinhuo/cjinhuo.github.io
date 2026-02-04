@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-skin-background: var(--color-normal-bg);
+  --color-skin-neutral-1: var(--color-neutral-1);
+  --color-skin-neutral-2: var(--color-neutral-2);
+  --color-skin-neutral-3: var(--color-neutral-3);
+  --color-skin-neutral-4: var(--color-neutral-4);
+  --color-skin-neutral-5: var(--color-neutral-5);
+  --color-skin-neutral-6: var(--color-neutral-6);
+  --color-skin-link: var(--color-link-href);
+}
