@@ -3,7 +3,7 @@ import BaseHead from '../components/BaseHead.astro'
 import Header from '@/components/Header/Header.astro'
 import Footer from '../components/Footer.astro'
 import type { BlogType } from '@/types'
-import BlogCard from '@/components/BlogCard'
+import BlogCard from '@/components/BlogCard.astro'
 
 const postFiles = import.meta.glob<{ frontmatter: BlogType; url: string }>('./blogs/**/*.{md,mdx}', { eager: true })
 

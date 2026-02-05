@@ -1,0 +1,32 @@
+---
+import dayjs from 'dayjs'
+import type { BlogCardProps } from '@/types'
+import Tag from './Tag.astro'
+import CalendarIcon from '@/assets/icons/CalendarIcon.astro'
+import UserIcon from '@/assets/icons/UserIcon.astro'
+
+const { url, frontmatter } = Astro.props as BlogCardProps
+const { pubDate, title, description, author, authorHref, tags } = frontmatter
+---
+
+<div class='w-full h-auto mb-6 p-6 bg-skin-card-bg border border-skin-card-border border-l-2 hover:border-l-skin-primary transition-colors'>
+  <a href={url} class='text-lg text-skin-neutral-1 font-semibold block mb-4 hover:underline'>
+    {title}
+  </a>
+  <div class='flex items-center flex-wrap gap-x-4 mb-4'>
+    <div class='flex items-center gap-2'>
+      <CalendarIcon class='text-skin-neutral-6' />
+      <time class='font-mono text-xs text-skin-neutral-6'>{dayjs(pubDate).format('YYYY-MM-DD')}</time>
+    </div>
+    {author && (
+      <div class='flex items-center gap-2'>
+        <UserIcon class='text-skin-neutral-6' />
+        <a class='font-mono text-xs text-skin-neutral-5 hover:underline' href={authorHref} target='_blank'>
+          {author}
+        </a>
+      </div>
+    )}
+  </div>
+  <Tag tags={tags} className='mb-4' />
+  <p class='text-xs text-skin-neutral-4 font-mono leading-relaxed'>{description}</p>
+</div>

@@ -1,6 +1,6 @@
 ---
 import type { BlogType } from '@/types'
-import BlogCard from '@/components/BlogCard'
+import BlogCard from '@/components/BlogCard.astro'
 
 const postFiles = import.meta.glob<{ frontmatter: BlogType; url: string }>('../pages/blogs/**/*.{md,mdx}', {
 	eager: true,
