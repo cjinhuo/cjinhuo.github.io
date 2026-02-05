@@ -1,44 +1,60 @@
 html {
-  --color-neutral-1: #171717;
-  --color-neutral-2: #262626;
-  --color-neutral-3: #404040;
-  --color-neutral-4: #525252;
-  --color-neutral-5: #737373;
-  --color-neutral-6: #a3a3a3;
-  --color-neutral-7: #d4d4d4;
-  --color-neutral-8: #e5e5e5;
-  --color-neutral-9: #f5f5f5;
-  --color-neutral-10: #fafafa;
+  --color-neutral-1: #0F172A;
+  --color-neutral-2: #1E293B;
+  --color-neutral-3: #334155;
+  --color-neutral-4: #475569;
+  --color-neutral-5: #64748B;
+  --color-neutral-6: #94A3B8;
+  --color-neutral-7: #CBD5E1;
+  --color-neutral-8: #E2E8F0;
+  --color-neutral-9: #F1F5F9;
+  --color-neutral-10: #F8FAFC;
 
-  --color-normal-bg: rgb(230, 236, 242);
-  --color-resume-bg: rgb(230, 236, 242, 0.5);
-  --color-normal-bg-reverse: rgb(6, 12, 18);
+  --color-normal-bg: #F1F5F9;
+  --color-resume-bg: rgba(241, 245, 249, 0.5);
+  --color-normal-bg-reverse: #000000;
 
-  --color-linear-bg-start: rgb(255, 255, 255);
-  --color-linear-bg-end: rgb(230, 236, 242, 0);
-  --color-link-href: rgb(90, 160, 223);
+  --color-linear-bg-start: #FFFFFF;
+  --color-linear-bg-end: rgba(241, 245, 249, 0);
+  --color-link-href: #3B82F6;
+
+  --color-primary: #3B82F6;
+  --color-primary-hover: #2563EB;
+  --color-card-bg: #FFFFFF;
+  --color-card-border: #94A3B8;
+  --color-tag-bg: #E2E8F0;
+  --color-tag-text: #334155;
+  --color-status-dot: #22C55E;
 }
 
 
 .dark {
-  --color-neutral-10: #171717;
-  --color-neutral-9: #262626;
-  --color-neutral-8: #404040;
-  --color-neutral-7: #525252;
-  --color-neutral-6: #737373;
-  --color-neutral-5: #a3a3a3;
-  --color-neutral-4: #d4d4d4;
-  --color-neutral-3: #e5e5e5;
-  --color-neutral-2: #f5f5f5;
-  --color-neutral-1: #fafafa;
+  --color-neutral-10: #0A0A0A;
+  --color-neutral-9: #171717;
+  --color-neutral-8: #1A1A1A;
+  --color-neutral-7: #262626;
+  --color-neutral-6: #404040;
+  --color-neutral-5: #666666;
+  --color-neutral-4: #999999;
+  --color-neutral-3: #CCCCCC;
+  --color-neutral-2: #E5E5E5;
+  --color-neutral-1: #FFFFFF;
 
-  --color-normal-bg: rgb(6, 12, 18);
-  --color-resume-bg: rgb(6, 12, 18, 1);
-  --color-normal-bg-reverse: rgb(230, 236, 242);
+  --color-normal-bg: #000000;
+  --color-resume-bg: rgba(0, 0, 0, 1);
+  --color-normal-bg-reverse: #F1F5F9;
 
-  --color-linear-bg-start: rgb(6, 12, 18);
-  --color-linear-bg-end: rgb(230, 236, 242, 0.06);
-  --color-link-href: rgb(90, 160, 223);
+  --color-linear-bg-start: #000000;
+  --color-linear-bg-end: rgba(191, 255, 0, 0.06);
+  --color-link-href: #BFFF00;
+
+  --color-primary: #BFFF00;
+  --color-primary-hover: #D4FF4D;
+  --color-card-bg: #0A0A0A;
+  --color-card-border: #333333;
+  --color-tag-bg: #1A1A1A;
+  --color-tag-text: #BFFF00;
+  --color-status-dot: #22C55E;
 }
 
 ::selection {

@@ -9,5 +9,77 @@
   --color-skin-neutral-4: var(--color-neutral-4);
   --color-skin-neutral-5: var(--color-neutral-5);
   --color-skin-neutral-6: var(--color-neutral-6);
+  --color-skin-neutral-7: var(--color-neutral-7);
+  --color-skin-neutral-8: var(--color-neutral-8);
+  --color-skin-neutral-9: var(--color-neutral-9);
+  --color-skin-neutral-10: var(--color-neutral-10);
   --color-skin-link: var(--color-link-href);
+  --color-skin-primary: var(--color-primary);
+  --color-skin-primary-hover: var(--color-primary-hover);
+  --color-skin-card-bg: var(--color-card-bg);
+  --color-skin-card-border: var(--color-card-border);
+  --color-skin-tag-bg: var(--color-tag-bg);
+  --color-skin-tag-text: var(--color-tag-text);
+  --color-skin-status-dot: var(--color-status-dot);
+
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+.prose ul > li::marker {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.prose ol > li::marker {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.prose h2 {
+  color: var(--color-neutral-1);
+}
+
+.prose h3 {
+  color: var(--color-neutral-1);
+}
+
+.prose p {
+  color: var(--color-neutral-4);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
+.prose a {
+  color: var(--color-primary);
+}
+
+.prose a:hover {
+  color: var(--color-primary-hover);
+}
+
+.prose strong {
+  color: var(--color-neutral-1);
+}
+
+.prose code {
+  color: var(--color-primary);
+  background-color: var(--color-tag-bg);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+.prose code::before,
+.prose code::after {
+  content: none;
+}
+
+.prose blockquote {
+  border-left-color: var(--color-primary);
+  color: var(--color-neutral-4);
+}
+
+.prose hr {
+  border-color: var(--color-card-border);
 }

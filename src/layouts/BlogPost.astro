@@ -5,10 +5,10 @@ import Footer from '../components/Footer.astro'
 import 'github-markdown-css'
 import { Image } from 'astro:assets'
 import Comments from '../components/Comments.astro'
-import Tag from '../components/Tag.astro'
+import Tag from '@/components/Tag.astro'
 
 const {
-	content: { title, duration, description, pubDate, updatedDate, heroImage, author, authorHref, tags },
+	content: { title, description, pubDate, updatedDate, heroImage, author, authorHref, tags },
 	rawContent,
 } = Astro.props
 
@@ -37,6 +37,7 @@ const getWordCount = (content: string) => {
 }
 
 const wordCount = getWordCount(rawContent?.() || '')
+const readingTime = Math.ceil(wordCount / 400)
 ---
 
 <html lang='en'>
@@ -52,55 +53,76 @@ const wordCount = getWordCount(rawContent?.() || '')
       type='article'
       tags={tags}
     />
-    <style>
-      .title {
-        font-size: 2em;
-        margin: 0.25em 0 0;
-      }
-      hr {
-        border-top: 1px solid #ddd;
-        margin: 1rem 0;
-      }
-      article img {
-        content-visibility: auto;
-      }
-    </style>
   </head>
 
   <body class='bg-skin-background'>
     <Header />
-    <main>
-      <article
-        class='prose prose-slate prose-h1:my-5 prose-h2:my-4 prose-h3:my-3 prose-h4:my-2 prose-h5:my-1 prose-img:rounded-md dark:prose-invert max-w-content m-auto my-6'>
-        {
-          heroImage && (
-            <Image src={heroImage} alt={title} width={720} height={360} loading='eager' fetchpriority='high' />
-          )
-        }
-        <h1 class='title'>{title}</h1>
-        <Tag tags={tags} className='mt-4' />
-        <div class='flex items-center gap-4 text-sm text-skin-neutral-3 mt-2'>
-          {wordCount > 0 && <span>共 {wordCount} 字</span>}
-          {duration && <span>{duration}</span>}
+    <main class='min-h-screen'>
+      {heroImage && (
+        <div class='w-full h-80 md:h-96 overflow-hidden mt-8 md:mt-12'>
+          <Image
+            src={heroImage}
+            alt={title}
+            width={1440}
+            height={400}
+            loading='eager'
+            fetchpriority='high'
+            class='w-full h-full object-cover'
+          />
         </div>
-        <!-- <Code
-          code={`const initMiniProgram = () => {
-  let adapter = {} as PlatformAdapterType
-  const set = (platformAdapterContainers: InitialAdapterParamType) => {
-    if (!getInstanceInfo().platform) throw Error(NotSupportMsg)
-}`}
-          lang="ts"
-          theme="dark-plus"
-        /> -->
-        {
-          updatedDate && (
-            <div>
-              Last updated on <time>{updatedDate}</time>
+      )}
+      <article class='max-w-4xl mx-auto px-6 md:px-12 py-12'>
+        <h1 class='text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6'>{title}</h1>
+        <div class='flex flex-wrap items-center gap-x-8 gap-y-2 mb-6'>
+          <div class='flex items-center gap-2'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6">
+              <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+              <line x1="16" x2="16" y1="2" y2="6"></line>
+              <line x1="8" x2="8" y1="2" y2="6"></line>
+              <line x1="3" x2="21" y1="10" y2="10"></line>
+            </svg>
+            <time class='text-skin-neutral-5 font-mono text-xs'>{pubDate}</time>
+          </div>
+          {author && (
+            <div class='flex items-center gap-2'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <a href={authorHref} target='_blank' class='text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors'>
+                {author}
+              </a>
             </div>
-          )
-        }
-        <hr />
-        <slot />
+          )}
+          {wordCount > 0 && (
+            <div class='flex items-center gap-2'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+              <span class='text-skin-neutral-5 font-mono text-xs'>{wordCount.toLocaleString()} 字</span>
+            </div>
+          )}
+          {readingTime > 0 && (
+            <div class='flex items-center gap-2'>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span class='text-skin-neutral-5 font-mono text-xs'>约 {readingTime} min</span>
+            </div>
+          )}
+        </div>
+        <Tag tags={tags} className='mb-6' />
+        <div class='h-px bg-skin-card-border mb-8'></div>
+        {updatedDate && (
+          <div class='text-skin-neutral-5 font-mono text-xs mb-4'>
+            Last updated on <time>{updatedDate}</time>
+          </div>
+        )}
+        <div class='prose prose-slate dark:prose-invert max-w-none'>
+          <slot />
+        </div>
         <Comments />
       </article>
     </main>
