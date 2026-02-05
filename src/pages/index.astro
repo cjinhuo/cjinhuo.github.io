@@ -15,18 +15,12 @@ import RecentPosts from '@/components/RecentPosts.astro'
     <Header />
     <main class="min-h-screen">
       <section class="border-b border-skin-card-border">
-        <div class="max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-20 flex flex-col md:flex-row items-center gap-12 md:gap-16">
+        <div class="max-w-5xl mx-auto px-6 md:px-12 py-16 md:py-20 flex flex-col md:flex-row items-center gap-12">
           <div class="flex-1 space-y-6">
-            <div style="min-height: 9rem;">
-              <TypeWriter client:only="react" />
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="w-2 h-2 rounded-full bg-skin-status-dot animate-pulse"></span>
-              <span class="text-skin-neutral-5 font-mono text-xs">Available for open source collaboration</span>
-            </div>
+            <TypeWriter client:only="react" />
           </div>
-          <div class="w-40 h-40 md:w-48 md:h-48 rounded-lg bg-skin-card-bg border border-skin-card-border flex items-center justify-center">
-            <span class="text-5xl md:text-6xl font-bold text-skin-primary">S</span>
+          <div class="hidden md:flex w-28 h-28 rounded-lg bg-skin-card-bg border border-skin-card-border items-center justify-center">
+            <span class="text-4xl font-bold text-skin-primary">S</span>
           </div>
         </div>
       </section>
