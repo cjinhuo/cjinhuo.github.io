@@ -2,7 +2,7 @@
 title: "DefineProperty和Proxy的响应式"
 description: "基于 DefineProperty 和 Proxy 写两个简单的例子来讲解 Vue2.6 和 Vue-next 的数据响应式"
 pubDate: '2019-10-31'
-tags: ['Vue2.6', '前端', 'JavaScript']
+tags: ['Vue', '前端', 'JavaScript']
 ---
 
 :::tip[概览]
