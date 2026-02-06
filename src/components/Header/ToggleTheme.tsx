@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import IconPark, { NameTypes } from '../IconPark'
 
 export default function ToggleTheme() {
-  const [theme, setTheme] = useState(NameTypes.Light)
+  const [theme, setTheme] = useState(NameTypes.Dark)
   useEffect(() => {
     const item = localStorage.getItem(`${PREFIX}theme`)
     if (item) {
