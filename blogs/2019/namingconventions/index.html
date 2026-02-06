@@ -1,0 +1,406 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const colorSchemeChange = (e) => {
+      if (e.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        addDarkToClassList()
+      } else {
+        localStorage.setItem(localStorageKey, Light)
+        removeDarkToClassList()
+      }
+    }
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      if (media.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        return Dark
+      }
+      return Light
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2019/namingconventions/"><!-- Primary Meta Tags --><title>命名规范</title><meta name="title" content="命名规范"><meta name="description" content="代码命名规范指南，帮助统一团队代码风格"><meta name="author" content="Shanks"><meta name="keywords" content="命名规范, 代码规范, 前端"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2019/namingconventions/"><meta property="og:title" content="命名规范"><meta property="og:description" content="代码命名规范指南，帮助统一团队代码风格"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2019-02-25"><meta property="article:tag" content="命名规范"><meta property="article:tag" content="代码规范"><meta property="article:tag" content="前端"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2019/namingconventions/"><meta property="twitter:title" content="命名规范"><meta property="twitter:description" content="代码命名规范指南，帮助统一团队代码风格"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.3X99_b4O.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.DB9bi1E6.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">命名规范</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2019-02-25</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">2,058 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 6 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">命名规范</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">代码规范</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">前端</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <div class="custom-container tip"><p class="custom-container-title">概述</p><p>“风格” 的含义涵盖范围甚广，从 “变量使用驼峰格式” 到 “禁止使用全局变量” ，再到 “禁止使用异常” 。
+如果代码风格统一，我们就有了一个共同思维的环境。每个开发人员就可以专注于业务逻辑，而不是先搞明白这坨代码是谁写的，它是什么意思，为什么要这样写…</p><p>虽然我们在这里提出统一，但只是想让大家都知晓并借鉴而对自己的风格进行修正。</p><p>我们不做独裁者，也不会强迫你每一行代码应该怎么写，而是把一些大家存在争议，或可以提高团队效率的开发原则进行声明和约定。</p></div>
+<h2 id="项目命名">项目命名</h2>
+<p>全部采用小写方式，以短划线分隔。<br>
+例如：project，my-project-name</p>
+<h2 id="目录命名">目录命名</h2>
+<p>全部采用小写方式，复数形式。有多个单词时，以下划线分割。<br>
+例如：styles，utils，node_modules</p>
+<h2 id="js文件命名">JS文件命名</h2>
+<p>全部采用小写方式，以短划线分隔。<br>
+例如：build-plugins.js，check-versions.js</p>
+<h2 id="cssscss-文件命名">CSS，SCSS 文件命名</h2>
+<p>全部采用小写方式，以短划线分隔。<br>
+例如：custom-forms.scss，bootstrap-reboot.scss</p>
+<h2 id="html-文件命名">HTML 文件命名</h2>
+<p>全部采用小写方式，以短划线分隔。<br>
+例如：error-report.html，user-list.html</p>
+<h2 id="资源文件命名">资源文件命名</h2>
+<p>全部采用小写方式，使用下划线分割。语法规则：<br>
+<code>&#x3C;WHAT>_&#x3C;WHERE>_&#x3C;DESCRIPTION>_&#x3C;SIZE></code><br>
+例如：icon_menu_dashboard_48.svg，logo_footer_white_small.svg</p>
+<h2 id="资源协议">资源协议</h2>
+<div class="custom-container tip"><p class="custom-container-title">资源协议</p><p>尽可能使用 HTTPS 协议对嵌入式资源进行引用。</p></div>
+<p>所有图片及其它媒体文件、CSS 样式表和 JS 脚本都建议使用 HTTPS 协议（https:），除非指定的文件不支持 HTTPS 。</p>
+<p>不推荐：省略协议声明<br>
+<code>&#x3C;script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js">&#x3C;/script></code><br>
+不推荐：使用 HTTP 协议<br>
+<code>&#x3C;script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js">&#x3C;/script></code><br>
+推荐<br>
+<code>&#x3C;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js">&#x3C;/script></code><br>
+不推荐：省略协议声明<br>
+<code>@import '//fonts.googleapis.com/css?family=Open+Sans';</code><br>
+不推荐：使用 HTTP 协议<br>
+<code>@import 'http://fonts.googleapis.com/css?family=Open+Sans';</code><br>
+推荐<br>
+<code>@import 'https://fonts.googleapis.com/css?family=Open+Sans';</code><br></p>
+<h2 id="代码格式">代码格式</h2>
+<ul>
+<li>缩进 <br>
+一次缩进2个空格
+不要使用制表符（tab）或多个空格进行缩进，禁止混合使用。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8">>Fantastic</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8">>Great</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">.example {</span></span>
+<span class="line"><span style="color:#E1E4E8">  color: blue;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li>大小写 <br>
+所有代码必须为小写：适用于 HTML 元素名称、属性、属性值（除非是 text/CDATA），CSS 选择器、属性和属性值（除字符串之外）。
+不推荐<br>
+<code>&#x3C;A HREF="/">Home&#x3C;/A></code><br>
+推荐<br>
+<code>&#x3C;img src="google.png" alt="Google"></code><br>
+不推荐<br>
+<code>color: #E5E5E5;</code><br>
+推荐<br>
+<code>color: #e5e5e5;</code><br></li>
+<li>行尾空格
+删除行尾空格
+行尾空格没必要存在，且会增加文件对比复杂度。
+不推荐</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">>What?_</span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">>Yes please.</span></span></code></pre>
+<h2 id="样式规则">样式规则</h2>
+<ul>
+<li>文档类型 <br>
+使用HTML5标准</li>
+</ul>
+<blockquote>
+<p>HTML5（HTML 语法）是目前所有 HTML 文档类型中的首选： <code>&#x3C;!DOCTYPE html> </code></p>
+<blockquote>
+<p>推荐使用 HTML 文本文档格式，即 text/html ；不要使用 XHTML，即 application/xhtml+xml 。有两个浏览器完全不支持，还比 HTML 用更多的存储空间。</p>
+</blockquote>
+</blockquote>
+<p>尽管使用 HTML 会更好，但请不要关闭空元素。例如：使用 <code>&#x3C;br></code>,而不是 <code>&#x3C;br /></code> 。</p>
+<ul>
+<li>代码有效性
+尽量使用有效的HTML代码</li>
+</ul>
+<p>不推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>Test&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">article</span><span style="color:#E1E4E8">>This is only a test.</span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;!</span><span style="color:#85E89D">DOCTYPE</span><span style="color:#B392F0"> html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> charset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"utf-8"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>Test&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">article</span><span style="color:#E1E4E8">>This is only a test.&#x3C;/</span><span style="color:#85E89D">article</span><span style="color:#E1E4E8">></span></span></code></pre>
+<ul>
+<li>语义
+根据HTML各个元素的用途而去使用它们<br>
+使用元素 (有时候错称其为“标签”) 要知道为什么去使用它们和是否正确。 例如，用 heading 元素构造标题，p 元素构造段落，a 元素构造锚点等。<br>
+根据 HTML 各个元素的用途而去使用是很重要的，它涉及到文档的可访问性、重用和代码效率等问题。<br></li>
+</ul>
+<p>不推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> onclick</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"</span><span style="color:#B392F0">goToRecommendations</span><span style="color:#9ECBFF">();"</span><span style="color:#E1E4E8">>All recommendations&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">a</span><span style="color:#B392F0"> href</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"recommendations/"</span><span style="color:#E1E4E8">>All recommendations&#x3C;/</span><span style="color:#85E89D">a</span><span style="color:#E1E4E8">></span></span></code></pre>
+<ul>
+<li>关注点分离 <br>
+将表现和行为分开
+严格保持结构（标记）、表现（样式）、和行为（脚本）分离, 并尽量让这三者之间的交互保持最低限度。</li>
+<li>实体引用 <br>
+不要用实体引用
+不需要使用类似<code>&#x26;mdash;</code>、<code>&#x26;rdquo;</code>和<code>&#x26;#x263a;</code>等的实体引用, 假定团队之间所用的文件和编辑器是同一编码（UTF-8）。</li>
+<li>type 属性 <br>
+在样式表和脚本的标签中忽略 type 属性<br>
+在样式表（除非不用 CSS）和脚本（除非不用 JavaScript）的标签中 不写 type 属<br>
+HTML5 默认 type 为 text/css 和 text/javascript 类型，所以没必要指定。即便是旧的浏览器也是支持的。<br>
+不推荐</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">link</span><span style="color:#B392F0"> rel</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"stylesheet"</span><span style="color:#B392F0"> href</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"//www.google.com/css/maia.css"</span></span>
+<span class="line"><span style="color:#B392F0">  type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"text/css"</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">link</span><span style="color:#B392F0"> rel</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"stylesheet"</span><span style="color:#B392F0"> href</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"//www.google.com/css/maia.css"</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>不推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"//www.google.com/js/gweb/analytics/autotrack.js"</span></span>
+<span class="line"><span style="color:#B392F0">  type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"text/javascript"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"//www.google.com/js/gweb/analytics/autotrack.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h2 id="代码格式-1">代码格式</h2>
+<ul>
+<li>格式
+每个块元素、列元素或表格元素都独占一行，每个子元素都相对父元素进行缩进<br>
+独立元素的样式（因为 CSS 允许元素为每个 display 属性呈现不同的角色），将块元素、列表元素或表格元素都放在新的一行。<br>
+另外，需要缩进块元素、列表元素或表格元素的子元素。<br>
+例如</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">blockquote</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">>&#x3C;</span><span style="color:#85E89D">em</span><span style="color:#E1E4E8">>Space&#x3C;/</span><span style="color:#85E89D">em</span><span style="color:#E1E4E8">>, the final frontier.&#x3C;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">blockquote</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8">>Moe</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8">>Larry</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">li</span><span style="color:#E1E4E8">>Curly</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">ul</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">table</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">thead</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">tr</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">th</span><span style="color:#B392F0"> scope</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"col"</span><span style="color:#E1E4E8">>Income</span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">th</span><span style="color:#B392F0"> scope</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"col"</span><span style="color:#E1E4E8">>Taxes</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">tbody</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">tr</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">td</span><span style="color:#E1E4E8">>$ 5.00</span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">td</span><span style="color:#E1E4E8">>$ 4.50</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">table</span><span style="color:#E1E4E8">></span></span></code></pre>
+<ul>
+<li>换行
+虽然对于 HTML 没有行上限的建议，但是对长代码进行换行，可以显著提高代码可读性。<br>
+当使用换行时，新行至少要缩进 4 个额外的空格以与上文保持对齐。<br></li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">md-progress-circular</span><span style="color:#B392F0"> md-mode</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"indeterminate"</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"md-accent"</span></span>
+<span class="line"><span style="color:#B392F0">    ng-show</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ctrl.loading"</span><span style="color:#B392F0"> md-diameter</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"35"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">md-progress-circular</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">md-progress-circular</span></span>
+<span class="line"><span style="color:#B392F0">    md-mode</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"indeterminate"</span></span>
+<span class="line"><span style="color:#B392F0">    class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"md-accent"</span></span>
+<span class="line"><span style="color:#B392F0">    ng-show</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ctrl.loading"</span></span>
+<span class="line"><span style="color:#B392F0">    md-diameter</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"35"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">md-progress-circular</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">md-progress-circular</span><span style="color:#B392F0"> md-mode</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"indeterminate"</span></span>
+<span class="line"><span style="color:#B392F0">                      class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"md-accent"</span></span>
+<span class="line"><span style="color:#B392F0">                      ng-show</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ctrl.loading"</span></span>
+<span class="line"><span style="color:#B392F0">                      md-diameter</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"35"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">md-progress-circular</span><span style="color:#E1E4E8">></span></span></code></pre>
+<ul>
+<li>行号
+引用属性值时，请使用双引号
+在属性值两边使用双引号（""）而不是单引号（”）。
+不推荐</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">a</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">'maia-button maia-button-secondary'</span><span style="color:#E1E4E8">>Sign in&#x3C;/</span><span style="color:#85E89D">a</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">a</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"maia-button maia-button-secondary"</span><span style="color:#E1E4E8">>Sign in&#x3C;/</span><span style="color:#85E89D">a</span><span style="color:#E1E4E8">></span></span></code></pre>
+<h2 id="样式规则-1">样式规则</h2>
+<ul>
+<li>代码有效性
+尽量使用有效的CSS代码。用类似[<a href="https://jigsaw.w3.org/css-validator/#validate_by_uri%5D(W3C">https://jigsaw.w3.org/css-validator/#validate_by_uri](W3C</a> CSS validator)<br></li>
+<li>ID和Class命名
+非必要的情况下，ID 和 class 的名称应尽量简短。<br>
+简要传达 ID 或 class 是关于什么的。<br>
+通过这种方式，写的代码易懂且高效。<br>
+不推荐</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">#navigation</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#B392F0">.atr</span><span style="color:#E1E4E8"> {}</span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">#nav</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#B392F0">.author</span><span style="color:#E1E4E8"> {}</span></span></code></pre>
+<ul>
+<li>类型选择器 <br>
+避免使用CSS类型选择器<br>
+非必要的情况下不要使用元素标签名和ID或class进行组合<br>
+出于性能上的考虑避免使用父辈节点做选择器
+不推荐</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#85E89D">ul</span><span style="color:#B392F0">#example</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#85E89D">div</span><span style="color:#B392F0">.error</span><span style="color:#E1E4E8"> {}</span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">#example</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#B392F0">.error</span><span style="color:#E1E4E8"> {}</span></span></code></pre>
+<ul>
+<li>属性缩写 <br>
+CSS很多属性都支持缩写shorthand （例如 font ） 尽量使用缩写，甚至只设置一个值<br>
+使用缩写可以提高代码的效率和方便理解。<br>
+不推荐</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#85E89D">border-top-style</span><span style="color:#E1E4E8">: none;</span></span>
+<span class="line"><span style="color:#85E89D">font-family</span><span style="color:#E1E4E8">: palatino, georgia, serif;</span></span>
+<span class="line"><span style="color:#85E89D">font-size</span><span style="color:#E1E4E8">: 100%;</span></span>
+<span class="line"><span style="color:#85E89D">line-height</span><span style="color:#E1E4E8">: 1.6;</span></span>
+<span class="line"><span style="color:#85E89D">padding-bottom</span><span style="color:#E1E4E8">: 2em;</span></span>
+<span class="line"><span style="color:#85E89D">padding-left</span><span style="color:#E1E4E8">: 1em;</span></span>
+<span class="line"><span style="color:#85E89D">padding-right</span><span style="color:#E1E4E8">: 1em;</span></span>
+<span class="line"><span style="color:#85E89D">padding-top</span><span style="color:#E1E4E8">: 0;</span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#85E89D">border-top</span><span style="color:#E1E4E8">: 0;</span></span>
+<span class="line"><span style="color:#85E89D">font</span><span style="color:#E1E4E8">: 100%/1</span><span style="color:#B392F0">.6</span><span style="color:#E1E4E8"> palatino, georgia, serif;</span></span>
+<span class="line"><span style="color:#E1E4E8">padding: 0 1em 2em;</span></span></code></pre>
+<ul>
+<li>0和单位 <br>
+省略0后面的单位。
+非必要的情况下0后面不用加单位。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#E1E4E8">margin: 0;</span></span>
+<span class="line"><span style="color:#E1E4E8">padding: 0;</span></span></code></pre>
+<ul>
+<li>0开头的小数 <br>
+省略0开头小数点前面的0。<br>
+值或长度在 -1 与 1 之间的小数，小数前的 0 可以忽略不写。<br>
+<code>font-size: .8em;</code></li>
+<li>URL外的引号 <br>
+不要在 url() 里用 ( "" 或 ” ) 。
+<code>@import url(//www.google.com/css/go.css);</code></li>
+<li>前缀 <br>
+选择器前面加上特殊应用标识的前缀（可选）。
+大型项目中最好在ID或class前加上标示性前缀（命名空间），使用短破折号链接。
+使用命名空间可以防止命名冲突，方便维护，比如在搜索和替换操作上。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.adw-help</span><span style="color:#E1E4E8"> {} </span><span style="color:#6A737D">/* AdWords */</span></span>
+<span class="line"><span style="color:#B392F0">#maia-note</span><span style="color:#E1E4E8"> {} </span><span style="color:#6A737D">/* Maia */</span></span></code></pre>
+<ul>
+<li>ID 和 Class 分隔符 <br>
+ID和class名称有多单词组合的用短破折号’-‘分开
+别在选择器名字里用短破折号 “-” 以外的连接词(包括啥也没有)，以增进对名字的理解和查找。</li>
+</ul>
+<p>不推荐：“demo” 和 “image” 中间没加 “-”</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.demoimage</span><span style="color:#E1E4E8"> {}</span></span></code></pre>
+<p>不推荐：用下划线 “_” 是屌丝的风格</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.error_status</span><span style="color:#E1E4E8"> {}</span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">#video-id</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#B392F0">.ads-sample</span><span style="color:#E1E4E8"> {}</span></span></code></pre>
+<h2 id="代码格式-2">代码格式</h2>
+<ul>
+<li>声明顺序 <br>
+依字母顺序进行声明。
+都按字母顺序声明，很容易记住和维护。(a-z)</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#E1E4E8">background: fuchsia;</span></span>
+<span class="line"><span style="color:#E1E4E8">border: 1px solid;</span></span>
+<span class="line"><span style="color:#E1E4E8">-moz-border-radius: 4px;</span></span>
+<span class="line"><span style="color:#E1E4E8">-webkit-border-radius: 4px;</span></span>
+<span class="line"><span style="color:#85E89D">border-radius</span><span style="color:#E1E4E8">: 4px;</span></span>
+<span class="line"><span style="color:#E1E4E8">color: black;</span></span>
+<span class="line"><span style="color:#85E89D">text-align</span><span style="color:#E1E4E8">: center;</span></span>
+<span class="line"><span style="color:#85E89D">text-indent</span><span style="color:#E1E4E8">: 2em;</span></span></code></pre>
+<ul>
+<li>代码块缩进 <br>
+缩进所有代码块内容。<br>
+缩进所有代码块的内容，它能够提高层次结构的清晰度。<br></li>
+<li>声明完结 <br>
+所有声明都要用“;”结尾。<br>
+考虑到一致性和拓展性，请在每个声明尾部都加上分号。</li>
+</ul>
+<p>不推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.test</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  display</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">100</span><span style="color:#F97583">px</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.test</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  display</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">block</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">100</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li>属性名完结 <br>
+在属性名冒号结束后加一个空字符。
+出于一致性的原因，在属性名和值之间加一个空格。</li>
+</ul>
+<p>不推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#85E89D">h3</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  font-weight</span><span style="color:#E1E4E8">:</span><span style="color:#79B8FF">bold</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#85E89D">h3</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  font-weight</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">bold</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li>声明块分隔符 <br>
+在最后一个选择器和声明块之间加一个空字符。
+建议在最后一个选择器和声明块开始标记之间加一个空格。
+不推荐：缺少空格</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">#video</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  margin-top</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#F97583">em</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>不推荐：不必要的换行</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">#video</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  margin-top</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#F97583">em</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">#video</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  margin-top</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#F97583">em</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li>选择器和声明分行 <br>
+每个选择器和声明都要独立新行。<br>
+不推荐</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#85E89D">a</span><span style="color:#B392F0">:focus</span><span style="color:#E1E4E8">, </span><span style="color:#85E89D">a</span><span style="color:#B392F0">:active</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  position</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">relative</span><span style="color:#E1E4E8">; </span><span style="color:#79B8FF">top</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>推荐</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#85E89D">h2</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#85E89D">h3</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  font-weight</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">normal</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">  line-height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1.2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

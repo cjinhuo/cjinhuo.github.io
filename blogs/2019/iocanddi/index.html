@@ -1,0 +1,392 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const colorSchemeChange = (e) => {
+      if (e.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        addDarkToClassList()
+      } else {
+        localStorage.setItem(localStorageKey, Light)
+        removeDarkToClassList()
+      }
+    }
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      if (media.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        return Dark
+      }
+      return Light
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2019/iocanddi/"><!-- Primary Meta Tags --><title>IoC和DI</title><meta name="title" content="IoC和DI"><meta name="description" content="翻译自 martinfowler 的经典文章，讲解控制反转（IoC）和依赖注入（DI）的设计思想"><meta name="author" content="Shanks"><meta name="keywords" content="翻译, 设计模式, Java"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2019/iocanddi/"><meta property="og:title" content="IoC和DI"><meta property="og:description" content="翻译自 martinfowler 的经典文章，讲解控制反转（IoC）和依赖注入（DI）的设计思想"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2019-09-10"><meta property="article:tag" content="翻译"><meta property="article:tag" content="设计模式"><meta property="article:tag" content="Java"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2019/iocanddi/"><meta property="twitter:title" content="IoC和DI"><meta property="twitter:description" content="翻译自 martinfowler 的经典文章，讲解控制反转（IoC）和依赖注入（DI）的设计思想"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.3X99_b4O.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.DB9bi1E6.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">IoC和DI</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2019-09-10</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">9,051 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 23 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">翻译</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">设计模式</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">Java</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <p>本文翻译自<code>martinfowler</code>的<a href="https://martinfowler.com/articles/injection.html">Inversion of Control Containers and the Dependency Injection pattern</a></p>
+<div class="custom-container tip"><p class="custom-container-title">概述</p><p>IoC（Inversion of Control）即”控制反转”，不是什么技术，而是一种设计思想。尤其是在OOP的设计思想当中运用相当广泛。</p><p>DI（Dependency Injection），即”依赖注入”，是组件之间依赖关系由容器在运行期决定，即由容器动态的将某个依赖关系注入组件之中。</p></div>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>在Java社区有大量轻量级的容器来帮助来自不同的项目的组件来整合到一个应用。这些容器运行的是一个公共的模式，这个概念通常叫做”控制反转（Inversion of Control）“，在这篇文章我讲解了这个模式是怎么运行的，还有一个更具体的名叫”注入依赖（Dependency Injection）“，并将其与可替代的服务定位器方案对比。它们之间的选择不如将配置和使用分离的原则更重要。</p></div>
+<p>企业级Java的一个有趣的点是在构建大量主流J2EE技术的替代方案方面有大量的获取，且大部分都是在开源环境下发生的。这在很大程度上是对主流J2EE世界的重量级复杂性的一种反应，但它也在探索替代方案并提出创造性的想法。要解决一个常见的问题是怎么将不同的元素连接到一起，当web的controller层被互不了解的不同团队构建时，如果将它们与数据库接口相结合。（这应该就是DTO层出现的原因了）。许多框架尝试解决这个问题，部分框架正在扩展以提供从不同层封装组件的能力。这些都被称作为轻量级容器，例如包括<a href="http://picocontainer.com/">PicoContainer</a>和<a href="https://spring.io/">Spring</a>。</p>
+<p>在这些容器有一部分有趣的设计原理，这些设计原理超越了一些特殊的容器和Java平台。这里我想探索一些一个原理。我使用的例子都是在Java中使用的，但就像我编写大多数原理一样，这些原理同样适用于其他OO环境，特别是.NET。</p>
+<h2 id="组件和服务components-and-services">组件和服务(Components and Services)</h2>
+<p>围绕这些服务和组件把每个元素相连的部分立即让我陷入棘手的技术问题。你可以轻松的找到关于这些事情定义的冗长而又矛盾的文章。出于我的目的，这里是我对这些术语的当前用法。</p>
+<p>我使用组件使指一组软件，这些软件将被一个不受组件作者控制的应用程序所使用，而不会发生任何变化。所谓”不更改”，我的意思是使用在应用程序不会更改组件的源码，尽管它们可能以组件编写器允许的方式扩展组件，从而更改组件的行为。</p>
+<p>服务类似组件，因为它由外部应用程序使用。主要区别在于我期望组件在本地使用（比如：jar文件、程序集、dll文件或者源导入）。服务将通过同步或异步的远程接口（如web服务，消息传递系统、RPC或socket）。</p>
+<p>我在本文中主要使用service，但是同样的逻辑也可以应用于本地组件。实际上，您经常需要某种本地组件框架来方便地访问远程服务。但是编写”组件或服务”的<code>API文档</code>（原文是read and write）是很累人的，而且目前服务要流行得多。</p>
+<h2 id="一个天真的例子">一个天真的例子</h2>
+<p>为了是这些想法更加具体，我将用一个运行实例来讨论。像我所有的例子一样，这是一个超级幼稚（代码的写很差的意思）的例子，小到不真实，但是希望足以让你看到正在发生的事情，而不是陷入真实范例的沼泽。</p>
+<p>在这个例子，我正在编写一个组件提供由特定导演指导的电影列表。这个极其有用的函数实现了一个简单的方法。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MovieLister</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#E1E4E8"> Movie[] moviesDirectedBy(String arg) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      List allMovies </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> finder.</span><span style="color:#B392F0">findAll</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">      for</span><span style="color:#E1E4E8"> (Iterator </span><span style="color:#FFAB70">it</span><span style="color:#E1E4E8"> = </span><span style="color:#FFAB70">allMovies</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">iterator</span><span style="color:#E1E4E8">(); </span><span style="color:#FFAB70">it</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">hasNext</span><span style="color:#E1E4E8">();) {</span></span>
+<span class="line"><span style="color:#E1E4E8">          Movie movie </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (Movie) it.</span><span style="color:#B392F0">next</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">          if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">movie.</span><span style="color:#B392F0">getDirector</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">equals</span><span style="color:#E1E4E8">(arg)) it.</span><span style="color:#B392F0">remove</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#B392F0">      return</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">Movie</span><span style="color:#E1E4E8">[]) allMovies.</span><span style="color:#B392F0">toArray</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">new</span><span style="color:#F97583"> Movie</span><span style="color:#E1E4E8">[allMovies.</span><span style="color:#B392F0">size</span><span style="color:#E1E4E8">()]);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>这个函数的实现是极度幼稚的方式，它调用了finder对象来返回所有它知道的电影。然后它只是搜索这个列表返回由特定导演执导的电影。对于这个幼稚的做法我不打算修复，因为这只是本文的一个脚手架而已。</p>
+<p>本文真正的主角是<code>finder</code>对象，或者是怎么样连接<code>lister</code>对象和<code>finder</code>对象。原因是我想要我的<code>moviesDirectedBy</code>方法完全独立于电影是怎么存储的。所以所有的方法只是引用<code>finder</code>和<code>finder</code>是怎样返回<code>findAll</code>方法。我可以通过一个接口来实现这个<code>finder</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> MovieFinder</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    List </span><span style="color:#B392F0">findAll</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>现在所有的东西都是解耦的，但是在某种程度上我必须想出一个类来具体提供电影源数据。在本例中我将代码放入<code>lister</code>类的构造函数。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MovieLister</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#E1E4E8"> MovieFinder finder;</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#E1E4E8"> MovieLister() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    finder </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ColonDelimitedMovieFinder</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"movies1.txt"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>实现这个类的方法实际上是我从文本文件分隔字符来获得列表。我就不讲实现细节了，毕竟这只是个一些实现的方式。</p>
+<p>现在，如果只有我一个人用这个类，这感觉很不错。但是如果我的朋友看到这个牛逼的功能后，会从复制我这个段程序吗？如果他们也把电影都存入在text文件命名为<code>movies1.txt</code>，那么一切都很美好。如果他们给电影文件命名一个不同的名字，那么将文件的名称放在属性文件中很容易。但是如果他们有一个完全不同的存储电影列表方式，比如：SQL数据库、XML文件、web服务或者是另一个格式化text文件？在这个例子中我们需要一个不同的类来抓取这些数据。现在因为我定义了一个<code>MovieFinder</code>接口，这个不会改变我的<code>moviesDirectedBy</code>方法。但是我仍然需要有一些方法来获取一个正确的<code>finder</code>实现的实例。</p>
+<p><img alt="在lister类中使用简单创建的依赖项" loading="lazy" decoding="async" fetchpriority="auto" width="302" height="176" src="/_astro/ioc-01.31NlqFFc_ZRDDnK.webp" ></p>
+<p>图一展示此情况的依赖项。类<code>MovieLister</code>是依赖于<code>MovieFinder</code>接口和实现。如果它仅仅依赖接口我们会更喜欢，但是我们如何创建一个实例来使用它？</p>
+<p>在我写的一本名叫&#x3C;&#x3C;企业应用程序体系结构的模式>>,我们把这种情况描述为插件。查找程序的实现类在编译时没有链接到程序中，因为我不知道我的朋友将使用什么</p>
+<h2 id="控制反转">控制反转</h2>
+<p>当这些容器谈到它们如何如此有用时，因为它们实现了”控制反转”，我感到非常困惑。控制反转是框架的一个共同特征，所以说这些轻量级容器是”特殊”的，因为它们使用控制反转就像说我的汽车是”特殊”的，因为它有轮子。(嘲讽语气)</p>
+<p>问题是：“控制的什么被反转了”？当我第一次遇到控制反转时，它就是用户界面的主要控制。早期用户界面由应用程序控制。您将拥有一系列命令，例如”输入名称”，“输入地址”; 你的程序会驱动提示并获取每个提示的响应。使用图形（甚至基于屏幕）的UI，UI框架将包含此主循环，而您的程序则为屏幕上的各个字段提供事件处理程序。主要的控制权限被反转了，从你移到框架。</p>
+<p>对于这种新类型的容器，反转是关于它们如何查找插件实现的。在上面的第一个简单示例中，<code>lister</code>通过直接实例化查找查找器实现。这将阻止<code>finder</code>成为一个插件。这些容器使用的方法是确保任何使用插件的用户遵循某些特定的约定，允许一个单独的汇编程序模块（单独组件）可以注入到<code>lister</code>.</p>
+<p>结果是我认为我们需要给这个模式起一个特殊的名字。控制反转这个术语太笼统了，因此人们对它感觉很迷惑。因此，在于一些IoC支持者讨论之后取了这个依赖注入(Dependency Injection)这个名字。</p>
+<p>我将首先开始讨论各种注入依赖的方式，但是我现在先指出，这不是将依赖从应用程序移到插件实现的惟一办法。您可以使用的另一种模式是Service Locator，我将在解释完依赖项注入之后讨论它。</p>
+<h2 id="注入依赖的形式">注入依赖的形式</h2>
+<p><strong>注入依赖的基本思想是有一个独立的对象（一个汇编程序）</strong>，对象使用finder接口的适当实现填充lister类中的字段，生成如图2所示的依赖关系图</p>
+<p><img alt="依赖注入" loading="lazy" decoding="async" fetchpriority="auto" width="446" height="211" src="/_astro/ioc-02.CIrNLoiq_3qVvv.webp" ></p>
+<p>现在有三个注入依赖的主要风格。名字我管它们叫做构造函数注入（Constructor injection），Setter注入（Setter injection）和接口注入（（interface injection）。如果你在当前关于控制反转的讨论中读到过这些内容，那么您将会听到这些被称为类型1 IoC(interface injection)、类型2 IoC (setter injection)和类型3 IoC(Constructor injection)。我发现数字很难记住，所这就是为什么我用这些名字的原因。</p>
+<h2 id="在picocontainer轻量级ioc容器中做构造函数注入">在PicoContainer（轻量级IoC容器）中做构造函数注入</h2>
+<p>我将在这个轻量级容器<code>PicoContainer</code>中开始展示怎么注入。我之所以从这里开始，主要是因为我在ThoughtWorks的几位同事对<code>PicoContainer</code>的开发非常积极(是的，这是一种企业裙带关系)。</p>
+<p><code>PicoContainer</code>使用一个构造函数来决定如何将<code>finder</code>实现注入<code>lister</code>类。为了让它起作用，<code>movie</code>类需要声明一个构造函数来包含它所需要注入的所有内容。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MovieLister</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#E1E4E8"> MovieLister(MovieFinder finder) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.finder </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> finder;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p><code>finder</code>本身也将由<code>pico</code>容器管理，因此将文本文件的文件名由容器注入其中。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ColonMovieFinder</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#E1E4E8"> ColonMovieFinder(String filename) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.filename </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> filename;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>然后需要告诉<code>pico</code>要与每个接口关联的实现类，以及要注入到<code>finder</code>中的字符串。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">private</span><span style="color:#E1E4E8"> MutablePicoContainer </span><span style="color:#B392F0">configureContainer</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    MutablePicoContainer pico </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> DefaultPicoContainer</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">    Parameter</span><span style="color:#E1E4E8">[] finderParams </span><span style="color:#F97583">=</span><span style="color:#E1E4E8">  {</span><span style="color:#F97583">new</span><span style="color:#B392F0"> ConstantParameter</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"movies1.txt"</span><span style="color:#E1E4E8">)};</span></span>
+<span class="line"><span style="color:#E1E4E8">    pico.</span><span style="color:#B392F0">registerComponentImplementation</span><span style="color:#E1E4E8">(MovieFinder.class, ColonMovieFinder.class, finderParams);</span></span>
+<span class="line"><span style="color:#E1E4E8">    pico.</span><span style="color:#B392F0">registerComponentImplementation</span><span style="color:#E1E4E8">(MovieLister.class);</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> pico;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<p>这个配置代码通常在另一个类中设置。在我们的示例中，每个使用我的<code>lister</code>的朋友都可以在他们自己的<code>setup</code>类中编写适当的配置代码。
+当然，将这类配置信息保存在单独的配置文件中是很常见的。你可以写一个类来读取这个配置文件，尽管<code>PicoContainer</code>本身并不包含此功能，但是有一个密切相关的项目叫做<code>NanoContainer</code>，它提供了适当的包装器，允许您拥有XML配置文件。这样的<code>nano</code>容器将解析XML，然后配置底层的<code>pico</code>容器。该项目的理念是将配置文件格式与底层机制（underlying mechanism）分离。</p>
+<p>要使用容器，你可以写出类似下面得代码：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> testWithPico</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    MutablePicoContainer pico </span><span style="color:#F97583">=</span><span style="color:#B392F0"> configureContainer</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    MovieLister lister </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (MovieLister) pico.</span><span style="color:#B392F0">getComponentInstance</span><span style="color:#E1E4E8">(MovieLister.class);</span></span>
+<span class="line"><span style="color:#F97583">    Movie</span><span style="color:#E1E4E8">[] movies </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> lister.</span><span style="color:#B392F0">moviesDirectedBy</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Sergio Leone"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    assertEquals</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Once Upon a Time in the West"</span><span style="color:#E1E4E8">, movies[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">].</span><span style="color:#B392F0">getTitle</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>尽管在示例中我使用的是构造函数注入，<code>Pico</code>容器也支持Setter注入，尽管它的开发者更倾向于构造函数注入。像Pico容器它支持构造函数和Setter注入。</p>
+<h2 id="在spring中setter注入setter-injection-with-spring">在Spring中Setter注入(Setter Injection with Spring)</h2>
+<p>Spring框架是一个企业级Java开发的广泛框架。它包括事务的抽象层、持久性框架、web应用程序开发和jdbc（Java DataBase Connectivity）。与Pico容器一样，它同时支持构造函数和setter注入，但它（spring）的开发人员倾向于使用setter注入-这使得它成为本例的适当选择。</p>
+<p>为了让我的<code>MoveieLister</code>能接受一个注入我为这个服务定义一个set方法。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MovieLister</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#E1E4E8"> MovieFinder finder;</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#E1E4E8"> void setFinder(MovieFinder finder) {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.finder </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> finder;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>同样的我给filename也定义一个setter。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ColonMovieFinder</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#E1E4E8"> void setFilename(String filename) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.filename </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> filename;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>第三个步骤是创建配置文件。Spring是通过xml文件和代码支持配置，但是XML是比较推荐的。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="xml"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">beans</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">bean</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"MovieLister"</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"spring.MovieLister"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">property</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"finder"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">            &#x3C;</span><span style="color:#85E89D">ref</span><span style="color:#B392F0"> local</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"MovieFinder"</span><span style="color:#E1E4E8">/></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;/</span><span style="color:#85E89D">property</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">bean</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">bean</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"MovieFinder"</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"spring.ColonMovieFinder"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">property</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"filename"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">            &#x3C;</span><span style="color:#85E89D">value</span><span style="color:#E1E4E8">>movies1.txt&#x3C;/</span><span style="color:#85E89D">value</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;/</span><span style="color:#85E89D">property</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">bean</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">beans</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>然后这个测试看起来是这样的：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> testWithSpring</span><span style="color:#E1E4E8">() throws Exception {</span></span>
+<span class="line"><span style="color:#E1E4E8">    ApplicationContext ctx </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> FileSystemXmlApplicationContext</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"spring.xml"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    MovieLister lister </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (MovieLister) ctx.</span><span style="color:#B392F0">getBean</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"MovieLister"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    Movie</span><span style="color:#E1E4E8">[] movies </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> lister.</span><span style="color:#B392F0">moviesDirectedBy</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Sergio Leone"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    assertEquals</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Once Upon a Time in the West"</span><span style="color:#E1E4E8">, movies[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">].</span><span style="color:#B392F0">getTitle</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="接口依赖interface-injection">接口依赖(Interface Injection)</h2>
+<p>第三种注入方法是定义和使用接口来注入。<code>Avalon</code>是在一些地方使用这种技术的框架的一个例子。稍后我将更详细地讨论这个问题，但在本例中，我将使用一些简单的示例代码。在这个方法开始时，我首先定义了一个接口，我将用它来执行注入。下边是一个<code> MovieFinder</code>注入对象的接口。</p>
+<p>该接口将由提供MovieFinder接口的人定义。它需要由任何想要用<code>finder</code>类的人实现，比如：<code>lister</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MovieLister</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> InjectFinder</span></span>
+<span class="line"><span style="color:#E1E4E8">  public void injectFinder(</span><span style="color:#B392F0">MovieFinder</span><span style="color:#E1E4E8"> finder) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.finder </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> finder;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>我使用类似的方法将文件名注入finder实现中。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> InjectFinderFilename</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> injectFilename</span><span style="color:#E1E4E8"> (String </span><span style="color:#FFAB70">filename</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ColonMovieFinder</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> MovieFinder</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">InjectFinderFilename</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  public void injectFilename(</span><span style="color:#B392F0">String</span><span style="color:#E1E4E8"> filename) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.filename </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> filename;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>然后，像往常一样，我需要一些配置代码来连接实现。为了简单起见，我将在代码中这样做.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tester</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#E1E4E8"> Container container;</span></span>
+<span class="line"><span style="color:#F97583">   private</span><span style="color:#E1E4E8"> void configureContainer() {</span></span>
+<span class="line"><span style="color:#E1E4E8">     container </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Container</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">     registerComponents</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">     registerInjectors</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">     container.</span><span style="color:#B392F0">start</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>这个配置有两个阶段，通过查找键来注册组件与其他示例非常相似。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tester</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#E1E4E8"> void registerComponents() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    container.</span><span style="color:#B392F0">registerComponent</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"MovieLister"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">MovieLister</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">class</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    container.</span><span style="color:#B392F0">registerComponent</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"MovieFinder"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">ColonMovieFinder</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">class</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>一个新的步骤是注册将注入相关组件的注入器。每个注入接口需要一些代码来注入依赖对象。在这里，我通过向容器注册注入器对象来实现这一点。每个注入器对象实现注入器接口。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tester</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#E1E4E8"> void registerInjectors() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    container.</span><span style="color:#B392F0">registerInjector</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">InjectFinder</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">class</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">container</span><span style="color:#E1E4E8">.</span><span style="color:#FFAB70">lookup</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"MovieFinder"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">    container.registerInjector(InjectFinderFilename.class, </span><span style="color:#F97583">new</span><span style="color:#B392F0"> FinderFilenameInjector</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">public interface Injector {</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> inject</span><span style="color:#E1E4E8">(Object target);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>当依赖项是为这个容器编写的类时，组件本身实现注入器接口是有意义的，就像我在这里使用<code>movie finder</code>所做的一样。对于泛型类，例如字符串，我在配置代码中使用一个内部类。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ColonMovieFinder</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Injector</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  public void inject(</span><span style="color:#B392F0">Object</span><span style="color:#E1E4E8"> target) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    ((InjectFinder) target).</span><span style="color:#B392F0">injectFinder</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tester</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> FinderFilenameInjector</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Injector</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> inject</span><span style="color:#E1E4E8">(Object </span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      ((InjectFinderFilename)target).</span><span style="color:#B392F0">injectFilename</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"movies1.txt"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span></code></pre>
+<p>然后测试使用容器。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tester</span><span style="color:#E1E4E8">…</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#E1E4E8"> void testIface() {</span></span>
+<span class="line"><span style="color:#B392F0">    configureContainer</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    MovieLister lister </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (MovieLister)container.</span><span style="color:#B392F0">lookup</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"MovieLister"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    Movie</span><span style="color:#E1E4E8">[] movies </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> lister.</span><span style="color:#B392F0">moviesDirectedBy</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Sergio Leone"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    assertEquals</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Once Upon a Time in the West"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">movies</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">].</span><span style="color:#FFAB70">getTitle</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>容器使用声明的注入接口来确定依赖项，并使用注入器注入正确的依赖项(我在这里所做的特定容器实现对该技术并不重要，我不会展示它，因为您只会笑)</p>
+<h2 id="使用服务定位器using-a-service-locator">使用服务定位器(Using a Service Locator)</h2>
+<p>使用依赖注入器的好处是它消除了<code>MovieLister</code>类对具体<code>MovieFinder</code>实现的依赖。这允许我将<code>listers</code>提供给朋友，并让他们插入适合自己环境的实现。注入不是打破这种依赖关系的唯一方法，另一种方法是使用服务定位器。</p>
+<p>服务定位器背后的基本思想是拥有一个知道如何获取应用程序可能需要的所有服务的对象。因此，此应用程序的服务定位器将具有一个方法，当需要时就会返回一个<code>movie finder</code>。当然，这只是稍微转移了一些负担，我们仍然需要将定位器放入<code>lister</code>中，这导致了图3中的依赖关系</p>
+<p><img alt="服务定位器的依赖项" loading="lazy" decoding="async" fetchpriority="auto" width="464" height="293" src="/_astro/ioc-03.CTQUL6M-_jInhU.webp" ></p>
+<p>在这个例子我将使用服务定位器作为一个简单的注册。<code>lister</code>然后可以在实例化<code>finder</code>时使用它来获取<code>finder</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MovieLister</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"><span style="color:#E1E4E8">  MovieFinder finder = ServiceLocator.movieFinder();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ServiceLocator</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> MovieFinder movieFinder() {</span></span>
+<span class="line"><span style="color:#6A737D">    //  soleInstance是当前类ServiceLocator的实例</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> soleInstance.movieFinder;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> ServiceLocator soleInstance;</span></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#E1E4E8"> MovieFinder movieFinder;</span></span></code></pre>
+<p>与注入方法一样，我们必须配置服务定位器，这里我是用代码来做的，但是从配置文件中读取数据的机制并不难。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tester</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#E1E4E8"> void configure() {</span></span>
+<span class="line"><span style="color:#E1E4E8">      ServiceLocator.load(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> ServiceLocator</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> ColonMovieFinder</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"movies1.txt"</span><span style="color:#E1E4E8">)));</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">class ServiceLocator...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  public static </span><span style="color:#F97583">void</span><span style="color:#B392F0"> load</span><span style="color:#E1E4E8">(ServiceLocator </span><span style="color:#FFAB70">arg</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      soleInstance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> arg;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#B392F0"> ServiceLocator</span><span style="color:#E1E4E8">(MovieFinder </span><span style="color:#FFAB70">movieFinder</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.movieFinder </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> movieFinder;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>这里是测试的代码。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tester</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#E1E4E8"> void testSimple() {</span></span>
+<span class="line"><span style="color:#B392F0">      configure</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">      MovieLister lister </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> MovieLister</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">      Movie</span><span style="color:#E1E4E8">[] movies </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> lister.</span><span style="color:#B392F0">moviesDirectedBy</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Sergio Leone"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">      assertEquals</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Once Upon a Time in the West"</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">movies</span><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">].</span><span style="color:#FFAB70">getTitle</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>我经常听到有人抱怨说，这类服务定位器是一件坏事，因为它们是不可测试的，因为您无法用实现来替代它们。当然，您可以将它们设计得很糟糕，从而陷入这种麻烦，但是你不必这样做。在这种情况服务定位器实例只是一个简单的数据持有者。我可以使用我的服务的测试实现轻松地创建定位器。</p>
+<p>对于更复杂的定位器，我可以子类化服务定位器并通过子类传递到注册表的类变量中。我可以更改静态方法来调用实例上的方法，而不是直接访问实例变量。我可以通过使用特定于线程的存储来提供特定于线程的定位器。所有这些都可以在不更改服务定位器客户端的情况下完成。</p>
+<h2 id="为定位器使用隔离接口using-a-segregated-interface-for-the-locator">为定位器使用隔离接口（Using a Segregated Interface for the Locator）</h2>
+<p>上面简单方法的一个问题是<code>MovieLister</code>依赖于完整的服务器定位器类，即使它只使用一个服务。我们可以通过使用角色接口来减少这种情况。这样，<code>lister</code>就可以声明它所需要的接口，而不是完整的服务定位器接口。</p>
+<p>在这种情况，lister的提供者还将提供一个定位器接口，它需要这个接口来获取finder。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> MovieFinderLocator</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#E1E4E8"> MovieFinder </span><span style="color:#B392F0">movieFinder</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>然后定位器需要实现此接口来提供对<code>finder</code>的访问。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#E1E4E8">MovieFinderLocator locator </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ServiceLocator.</span><span style="color:#B392F0">locator</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">MovieFinder finder </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> locator.</span><span style="color:#B392F0">movieFinder</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> ServiceLocator </span><span style="color:#B392F0">locator</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">     return</span><span style="color:#E1E4E8"> soleInstance;</span></span>
+<span class="line"><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#F97583"> public</span><span style="color:#E1E4E8"> MovieFinder </span><span style="color:#B392F0">movieFinder</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">     return</span><span style="color:#E1E4E8"> movieFinder;</span></span>
+<span class="line"><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#F97583"> private</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> ServiceLocator soleInstance;</span></span>
+<span class="line"><span style="color:#F97583"> private</span><span style="color:#E1E4E8"> MovieFinder movieFinder;</span></span></code></pre>
+<p>您将注意到，由于我们想要使用接口，所以不能再仅仅通过静态方法访问服务。我们必须使用类来获取locator实例，然后使用它来获取我们需要的东西。</p>
+<h2 id="动态服务器定位器a-dynamic-service-locator">动态服务器定位器（A Dynamic Service Locator）</h2>
+<p>上面的例子是静态的，因为服务定位器类为您需要的每个服务都有方法。这并不是唯一的方法，您还可以创建一个动态服务定位器，允许您将所需的任何服务存储到其中，并在运行时做出选择。</p>
+<p>在本例中，服务定位器为每个服务使用映射而不是字段，并提供获取和加载服务的通用方法。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ServiceLocator</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> ServiceLocator soleInstance;</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> void load(ServiceLocator arg) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      soleInstance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> arg;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#E1E4E8"> Map services </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> HashMap</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#F97583"> static</span><span style="color:#E1E4E8"> Object </span><span style="color:#B392F0">getService</span><span style="color:#E1E4E8">(String key){</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> soleInstance.services.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(key);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> loadService</span><span style="color:#E1E4E8"> (String key, Object service) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      services.</span><span style="color:#B392F0">put</span><span style="color:#E1E4E8">(key, service);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>配置涉及使用适当的密钥加载服务。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tester</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  private</span><span style="color:#E1E4E8"> void configure() {</span></span>
+<span class="line"><span style="color:#E1E4E8">      ServiceLocator locator </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ServiceLocator</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">      locator.loadService(</span><span style="color:#9ECBFF">"MovieFinder"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">new</span><span style="color:#B392F0"> ColonMovieFinder</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"movies1.txt"</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">      ServiceLocator.load(locator);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>我使用相同的键字符串来使用服务。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MovieLister</span><span style="color:#E1E4E8">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  MovieFinder finder = (MovieFinder) ServiceLocator.getService("MovieFinder");</span></span></code></pre>
+<p>总的来说，我不喜欢这个方法。尽管它是灵活的，但是它并没有非常明确的。我能找到如何到达服务的唯一方法是通过文本键（keys）。我更喜欢显式方法，因为通过查看接口定义更容易找到它们的位置。</p>
+<h2 id="在avalon中使用定位器和注入using-both-a-locator-and-injection-with-avalon">在<code>Avalon</code>中使用定位器和注入(Using both a locator and injection with Avalon)</h2>
+<p>依赖项注入和服务定位器不一定是相互排斥的概念。两者一起使用的一个很好的例子是<code>Avalon</code>框架。<code>Avalon</code>使用服务定位器，但是使用注入来告诉组件在哪里找到定位器。</p>
+<p><code>Berin Loritsch</code>向我发送了这个使用<code>Avalon</code>运行示例的简单版本。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> MyMovieLister</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> MovieLister</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">Serviceable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> MovieFinder finder;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> service</span><span style="color:#E1E4E8">( ServiceManager </span><span style="color:#FFAB70">manager</span><span style="color:#E1E4E8"> ) </span><span style="color:#F97583">throws</span><span style="color:#E1E4E8"> ServiceException {</span></span>
+<span class="line"><span style="color:#E1E4E8">        finder </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (MovieFinder)manager.</span><span style="color:#B392F0">lookup</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"finder"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span></code></pre>
+<p>服务方法是接口注入的一个例子，允许容器将服务管理器注入<code>MyMovieLister</code>。<code>service manager</code>是这个例子中的服务定位器。在本例中，<code>lister</code>不将<code>manager</code>存储在字段中，而是立即使用它来查找<code>finder</code>，并将其存储。</p>
+<h2 id="决定使用哪个选项deciding-which-option-to-use">决定使用哪个选项(Deciding which option to use)</h2>
+<p>到目前为止，我一直专注于解释我如何看待这些模式及其变化。现在，我可以开始讨论它们的优缺点，以帮助确定使用哪些方法以及何时使用。</p>
+<h2 id="服务定位器-vs-依赖注入service-locator-vs-dependency-injection">服务定位器 VS 依赖注入(Service Locator vs Dependency Injection)</h2>
+<p>基本的选择有服务定位器和依赖注入。第一点是，这两种实现都提供了基本得解耦，而这正是简单示例中所缺少的，在这两种情况下，应用程序代码都独立于服务接口的具体实现。这两种模式之间的重要区别是在于如何将实现提供给应用程序类。在服务定位器中，应用程序类通过发送定位器的消息来显式的请求它。在注入模式中没有显式的请求，服务会出现应用程序类中—因此控制反转了。</p>
+<p>控制反转是框架的一个常见特性，但它是有代价的。它很难懂并且当你调试Bug时会导致一些问题。所以我会尽量避免使用它，除非我需要它。这并不是说它是不好的，只是我认为需要看清它，而不是更直接的选择它。</p>
+<p>关键的区别在于，使用服务定位器时，服务的每个用户都对定位器具有依赖关系。定位器可以隐藏对其他实现的依赖关系，但你确实需要查看定位器。所以定位器和注入器之间的决定取决于依赖关系是否存在问题。</p>
+<p>使用依赖注入可以帮你更简单的看清组件里面的依赖项是什么。使用注入依赖你只需关注注入选项，比如构造函数，然后查看依赖项。使用定位服务器你必须查看源码来调用定位器。现代的IDE可以找到索引这个特性使这个变得简单，但它仍然不像只关注构造函数和setting方法那么简单。</p>
+<p>这在很大程度上取决于服务用户的性质。如果你正在构建具有使用服务的各种类的应用程序，那么从应用程序类到定位器的依赖关系不是什么大问题。在我给朋友提供<code>Movie Lister</code>的示例中，然后使用服务定位器工作的非常好，他们只需要配置定位器来连接正确的服务实现，或者通过一些代码配置或配置文件。在这种情况下，我不认为注入器的反转提供了任何令人信服的东西。</p>
+<p>如果lister是我提供给其他人正在编写的应用程序的组件，就会有不同。在这种情况下，我不太了解我的客户（伙伴）将要使用的服务定位器的API。每个客户可能都有自己不兼容的服务定位器。我可以通过使用隔离接口来解决一些问题。每个客户可以编写一个适配器来给定位器匹配我的接口。一旦适配器出现，直接连接到定位器的简单性就开始下滑。</p>
+<p>由于使用注入器时，组件与注入器之间不存在依赖关系，因此一旦配置好注入器，组件就无法从注入器获得进一步的服务。</p>
+<p>人们更喜欢依赖注入的一个常见理由是它使测试更容易。这里的重点是，要进行测试，你需要轻松地使用<code>mocks</code>和<code>stubs</code>来替换真正的服务实现。但是，依赖项注入和服务定位器之间实际上没有区别：两者都很容易存根（<strong>为屏蔽客户调用远程主机上的对象，必须提供某种方式来模拟本地对象,这种本地对象称为存根(stub),存根负责接收本地方法调用,并将它们委派给各自的具体实现对象</strong>）我怀疑这种观察来自于人们没有努力确保他们的服务定位器可以很容易地替换的项目。这就是持续测试的作用所在，如果您不能轻松地为测试存根服务，那么这就意味着您的设计存在严重的问题。</p>
+<p>当然，测试问题由于组件环境非常有侵入性而恶化，例如Java的<code>EJB</code>框架。我的观点是这类框架应该尽量减少它们对应用程序代码的影响，特别是不应该做一些降低编辑执行速度的事情。使用插件来代替重量级组件对这个过程有很大帮助，这对于测试驱动开发之类的实践非常重要。</p>
+<p>因此，主要问题是那些编写代码的人希望在别的应用程序中也能被使用到他们的代码。 在这些情况下，即使是关于服务定位器的最小假设也是一个问题。在这些情况下，即使是关于服务定位器的最小假设也是一个问题。</p>
+<h2 id="构造函数与setter注入">构造函数与setter注入</h2>
+<p>对于多层服务，您总是必须有某种约定才能将内容连接在一起。注入的优势主要在于它需要非常简单的约定——至少对于构造函数和setter注入是这样。你不必在你的组件中做任何奇怪的操作，而且注入器来说，配置好所有东西是相当简单的。</p>
+<p>接口注入更具侵入性，因为你必须编写大量接口才能把所有事情都处理好。
+对于容器所需的一小组接口，比如Avalon的方法，这并不太糟糕。但是组装组件和依赖项需要大量的工作，这就是为什么当前的轻量级容器使用setter和构造函数注入。</p>
+<p><code>setter</code>和构造函数注入之间的选择很有趣，因为它反映了面向对象编程的一个更普遍的问题——应该在构造函数中填充字段还是用setter填充字段。</p>
+<p>我长期运行的默认对象是尽可能多地在构建时创建有效的对象。这个建议可以追溯到<code>Kent Beck</code>的<code>Smalltalk</code>最佳实践模式：构造函数方法和构造函数参数方法(<strong>Constructor Method and Constructor Parameter Method</strong>)。
+带有参数的构造函数可以清楚地说明在一个明显的位置创建一个有效对象意味着什么意思。如果有不止一种方法，那么可以创建多个显示不同组合的构造函数。</p>
+<p>构造函数初始化的另一个优点是，通过不提供setter，可以清楚地隐藏任何不可变的字段。我认为这很重要——如果某些东西不应该改变，那么缺少setter可以很好地传达这一点。如果您使用<code>setter</code>进行初始化，那么这会成为一种痛苦。（实际上，在这些情况下，我宁愿避免通常的设置约定，我宁愿使用<code>initFoo</code>这样的方法，来强调这是一种在出生时就应该做的事情。）</p>
+<p>但是有一些情况是例外的。如果有很多构造函数参数，事情就会变得很混乱，特别是在没有关键字参数的语言中。确实，长构造函数通常是应该分割的过于繁忙的对象的标志，但是在某些情况下，这正是您所需要的。</p>
+<p>如果有多种构造有效对象的方法，则很难通过构造函数来展示这一点，因为构造函数只能根据参数的数量和类型而变化。这时工厂方法模式开始发挥作用，它们可以使用私有构造函数和<code>setter</code>的组合来实现它们的工作。用于组件组装的经典工厂方法的问题是，它们通常被视为静态方法，而不能在接口上使用这些方法。您可以创建一个工厂类，但是这样就变成了另一个服务实例。工厂服务通常是一种很好的策略，但是您仍然必须使用其中一种技术实例化工厂。</p>
+<p>如果有简单的参数，比如字符串，构造函数也会受到影响。通过<code>setter</code>注入，您可以为每个<code>setter</code>指定一个名称，以指示字符串应该做什么。对于构造函数，您只是依赖于位置，而位置更难跟踪。</p>
+<p>如果您有多个构造函数和继承，那么事情就会变得特别棘手。为了初始化所有内容，您必须提供构造函数来转发给每个超类构造函数，同时还要添加自己的参数。这可能导致构造函数的更大爆炸。</p>
+<p>尽管有这些缺点，但我更倾向于从构造函数注入开始，但是一旦上面列出的问题开始成为问题，就要准备切换到<code>setter</code>注入。</p>
+<p>这个问题在提供依赖注入器作为框架一部分的各个团队之间引发了很多争论。然而，构建这些框架的大多数人似乎已经意识到支持这两种机制很重要，即使偏爱其中一种。</p>
+<h2 id="代码或配合文件code-or-configuration-files">代码或配合文件（Code or configuration files）</h2>
+<p>一个单独但又经常混淆的问题，是否使用配置文件或API上的代码来连接服务。对于大多数可能部署在许多地方的应用程序，单独的配置文件通常最有意义。大部分情况下都是XML文件，这是很有意义的。然而，在某些情况下，使用程序代码进行组装更容易。一种情况是，您有一个简单的应用程序，它没有太多的部署变化。在这种情况下，一些代码比单独的XML文件更清晰。</p>
+<p>一种相反的情况是，配置比较复杂时，涉及到条件步骤。一旦您开始接近编程语言，那么就开始分解XML，最好使用一种真正的语言，它具有编写清晰程序所需的所有语法。然后编写一个执行组装的构建器类。如果您有不同的构建器场景，你可以提供几个构建器类，并使用一个简单的配置文件在它们之间进行选择。</p>
+<p>我经常认为人们过于急于定义配置文件。通常，编程语言会创建一个简单而强大的配置机制。现代语言可以很容易地编译小型汇编程序，这些程序可用于为大型系统组装插件。如果编译是一个痛苦的过程，那么有些脚本语言也可以很好地工作。</p>
+<p>经常有人说，配置文件不应该使用编程语言，因为它们需要由非程序员编辑。但这种情况多久发生一次呢?人们真的希望非程序员更改复杂服务器端应用程序的事务隔离级别吗?非语言配置文件只有在简单的情况下才能很好地工作。如果它们变得复杂，那么是时候考虑使用合适的编程语言了。</p>
+<p>目前我们在<code>Java</code>世界中看到的一件事是配置文件的不和谐，其中每个组件都有自己的配置文件，这些文件与其他组件的配置文件不同。如果您使用这些组件中的一打，那么您很容易得到一打配置文件来保持同步。</p>
+<p>我在这里的建议是，始终提供一种使用编程接口轻松完成所有配置的方法，然后将单独的配置文件视为可选特性。您可以轻松地构建配置文件处理来使用编程接口。如果正在编写组件，则将其留给用户决定是使用编程接口、配置文件格式，还是编写自己的自定义配置文件格式并将其绑定到编程接口。</p>
+<h2 id="将配置与使用分离separating-configuration-from-use">将配置与使用分离（Separating Configuration from Use）</h2>
+<p>所有这些中的重要问题是确保服务的配置与它们的使用分离。实际上，这是一个基本的设计原则，它将接口与实现分离开来。在面向对象程序中，当条件逻辑决定要实例化哪个类，然后通过多态性(而不是通过重复的条件代码)对该条件进行未来的评估时，我们就会看到这种情况。</p>
+<p>如果这种分离在单个代码库中有用，那么在使用组件和服务等外部元素时尤其重要。第一个问题是，是否希望将实现类的选择推迟到特定的部署。如果是这样，你需要使用一些插件的实现。一旦您使用了插件，那么插件的组装就必须与应用程序的其他部分分开进行，这样您就可以轻松地为不同的部署替换不同的配置。如何做到这一点是次要的。这种配置机制既可以配置服务定位器，也可以使用注入直接配置对象。</p>
+<h2 id="一些其他问题some-further-issues">一些其他问题（Some further issues）</h2>
+<p>在本文中，我主要讨论了使用依赖项注入和服务定位器进行服务配置的基本问题。还有其他一些话题也值得关注，但我还没有时间深入探讨。特别是生命周期行为的问题。有些组件具有不同的生命周期事件</p><div></div>，停止和启动。另一个问题是，人们对在这些容器中使用面向方面的思想越来越感兴趣。虽然我目前还没有在本文中考虑过这些材料，但是我确实希望通过扩展本文或编写另一篇文章来对此进行更多的讨论。<p></p>
+<p>通过查看轻量级容器的web站点，您可以了解更多关于这些想法的信息。从<code>picocontainer</code>和<code>spring</code>web站点进行浏览将使您对这些问题进行更多的讨论，并开始讨论一些更深入的问题。</p>
+<h2 id="最后的想法concluding-thoughts">最后的想法（Concluding Thoughts）</h2>
+<p>当前大量的轻量级容器都有一个共同的底层模式来进行服务组装——依赖注入器模式。依赖项注入是服务定位器的一个有用的替代方法。当构建应用程序类时，这两个类大致相当，但是我认为Service Locator有一点优势，因为它的行为更直接。但是，如果要构建用于多个应用程序的类，则依赖项注入是更好的选择。</p>
+<p>如果使用依赖项注入，则有许多样式可供选择。我建议您遵循构造函数注入，除非您遇到这种方法的特定问题之一，在这种情况下切换到setter注入。如果选择构建或获取容器，请寻找同时支持构造函数和setter注入的容器。</p>
+<p>服务定位器和依赖项注入之间的选择没有将服务配置与应用程序中的服务使用分离开来的原则重要。</p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

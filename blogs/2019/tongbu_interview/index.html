@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const colorSchemeChange = (e) => {
+      if (e.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        addDarkToClassList()
+      } else {
+        localStorage.setItem(localStorageKey, Light)
+        removeDarkToClassList()
+      }
+    }
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      if (media.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        return Dark
+      }
+      return Light
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2019/tongbu_interview/"><!-- Primary Meta Tags --><title>记得有一次同步网络的面试(为了佳明)</title><meta name="title" content="记得有一次同步网络的面试(为了佳明)"><meta name="description" content="同步网络视频面试经验分享"><meta name="author" content="Shanks"><meta name="keywords" content="面试, 经验分享"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2019/tongbu_interview/"><meta property="og:title" content="记得有一次同步网络的面试(为了佳明)"><meta property="og:description" content="同步网络视频面试经验分享"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2019-05-29"><meta property="article:tag" content="面试"><meta property="article:tag" content="经验分享"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2019/tongbu_interview/"><meta property="twitter:title" content="记得有一次同步网络的面试(为了佳明)"><meta property="twitter:description" content="同步网络视频面试经验分享"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.3X99_b4O.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.DB9bi1E6.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">记得有一次同步网络的面试(为了佳明)</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2019-05-29</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">1,297 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 4 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">面试</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">经验分享</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <div class="custom-container tip"><p class="custom-container-title">提示</p><p>为了佳明同学，写了这篇面试过程，我希望你可以请我吃饭。同步网络的视频面试<br>
+为了重现面试过程把面试官比作Q, 把我比作A</p></div>
+<h1 id="自我介绍">自我介绍</h1>
+<p>我是介绍学校，为什么来杭州实习，为什么要找厦门公司</p>
+<h1 id="他的自我介绍">他的自我介绍</h1>
+<p>他是谁，然后就开始问问题了。</p>
+<h1 id="一面">一面</h1>
+<h2 id="数据结构和操作系统">数据结构和操作系统</h2>
+<p>Q：讲一些你认识的数据结构<br>
+A：讲了数组、链表、栈、队列，二叉树<br>
+Q：二叉树的排序有了解吗，讲一下你对二叉树的排序。<br>
+A：堆排序，先分成大根堆或者小根堆，然后取第一个节点再分成大根堆或者小根堆<br>
+Q：了解进程调度的算法吗？讲几个你熟悉的。<br>
+A：先来先服务，最短作业优先，我能记得就这两个，当然还有很多个。<br>
+Q：讲一个你立即比较深入的调度算法。<br>
+A：先来先服务：这个是性能比较差的，就是先来后到的原则，一个作业来了就先执行，后面来的就放在队列中等待，等前面执行完，再一个个上去执行。<br></p>
+<h2 id="vue">Vue</h2>
+<p>Q：你讲讲Vue的生命周期<br>
+A：我用到的是在Created里面放请求函数，在mounted里面放渲染图表，在destroyed里面放clear（）清除延时函数<br>
+Q：Vue你是怎么选择周边插件的？<br>
+A：判断是否符合产品需求，看看npm包的大小<br></p>
+<h2 id="es6es7">ES6&#x26;&#x26;ES7</h2>
+<p>Q：你说你熟悉ES6和ES7，那你讲一些你最经常用到的语法。<br>
+A：ES6：箭头函数，promise，扩展运算符，ES7：async/await，Object.entries，Object.values<br>
+Q：那你能不能讲讲箭头函数的优点和缺点？<br>
+A：箭头函数本身没有this，他的this是继承下来的，最经常用的是在setTimeout上面用到的，balabala一大堆<br>
+Q：说到setTimeout，那你在Vue怎么保证在单个页面只有一个延时函数？<br>
+A：我说可以把timer放在data里面，然后在created里面可以clear<br>
+Q：还有一种方法，在高阶组件里面用到的，你可以去看看，这边就不讲，这边看到你用Git，你可以讲讲如果一个版本要开发新版本，又有好几个人开发几个新模块，需要怎么做？<br>
+A：我的理解是这样的，master只能是稳定运行的版本，新建个dev分支，然后再dev分支再出每个人对应的分支，然后在各个分支开发，开发完之后再一次merge到dev分支，然后内测，稳定之后再merge到master<br>
+Q：你这里有用到eslint，你讲下你的理解。<br>
+A：当几个人一起开发一个项目后，如果没有代码规范的话push到git的时候会有冲突，所以这时候就必须要有一个eslint来规范几个人的代码规范。<br>
+Q：你最后还有没有什么想问的？<br>
+A：你们公司的技术栈是什么？<br>
+Q：主：react，副：Vue，还有一些老项目用jquery，后端用php<br>
+A：我也会一点php，但是我的毕设是用springboot写的。<br>
+Q：问你一个基础的string、stringBuild、stringBuffer的区别？<br>
+A：我记得我看过一篇文章，我想下，然后没想起来。回去补下<br></p>
+<h2 id="项目">项目</h2>
+<p>讨论项目的难点和技术栈，业务，还有你是怎么解决这个问题的。你的收获是什么？巴拉巴拉。。。</p>
+<h1 id="二面">二面</h1>
+<p>也不算二面吧，一面男的说我的同事想问你一个问题<br>
+然后一个女的就问了一个东西：<br>
+git上面的<code>reset</code>、<code>revert</code>、<code>checkout</code>的区别将一下，我听不懂她讲的英语，听成<code>reset</code>、<code>rewatch</code>、<code>re。。。</code>，然后我就说我就用过reset，然后就巴拉巴拉，说后面两个没用过。回来百度才知道是这三个。估计不会所以就没继续问下去了。</p>
+<h1 id="三面">三面</h1>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>简单寒暄几句</p></div>
+<p>Q: 你为什么要来厦门<br>
+A：厦门同学多，离家近，同学一直叫我来厦门<br>
+Q：为什么会去杭州<br>
+A：机缘巧合<br>
+Q：你觉得你的最大的优点和最大的缺点是什么？<br>
+A：巴拉巴拉…<br>
+Q：你要进一家公司看种的是什么？<br>
+A：发展前景、离家近、工资，最后补充：要是对我帮助大的话工资低也无所谓。<br>
+Q：你去过两家公司，你觉得在这两家公司学习到什么？<br>
+A：巴拉巴拉。。。<br>
+Q：你还有没有什么想问的。<br>
+A：没有。<br>
+过了几分钟，hr过来说三个工作日会给你回复。</p>
+<h2 id="总结">总结</h2>
+<p>有一些小问题没回忆起来，面完总体来说还可以。问到优点和缺点有点懵逼。</p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

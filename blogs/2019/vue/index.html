@@ -1,0 +1,616 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const colorSchemeChange = (e) => {
+      if (e.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        addDarkToClassList()
+      } else {
+        localStorage.setItem(localStorageKey, Light)
+        removeDarkToClassList()
+      }
+    }
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      if (media.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        return Dark
+      }
+      return Light
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2019/vue/"><!-- Primary Meta Tags --><title>Vue的一些理解</title><meta name="title" content="Vue的一些理解"><meta name="description" content="Vue.js MVVM 框架的理解和笔记"><meta name="author" content="Shanks"><meta name="keywords" content="Vue2.6, 前端, MVVM"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2019/vue/"><meta property="og:title" content="Vue的一些理解"><meta property="og:description" content="Vue.js MVVM 框架的理解和笔记"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2019-02-12"><meta property="article:tag" content="Vue2.6"><meta property="article:tag" content="前端"><meta property="article:tag" content="MVVM"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2019/vue/"><meta property="twitter:title" content="Vue的一些理解"><meta property="twitter:description" content="Vue.js MVVM 框架的理解和笔记"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.3X99_b4O.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.DB9bi1E6.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">Vue的一些理解</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2019-02-12</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">831 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 3 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">Vue2.6</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">前端</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">MVVM</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <div class="custom-container tip"><p class="custom-container-title">Vue概述</p><p>国产好用的MVVM框架（View的状态和行为抽象化），相对于react比较好入门，一些是一些自己的理解和笔记。</p></div>
+<h2 id="filters">filters</h2>
+<h3 id=""></h3>
+<p>获取当前组件的filters<code>this.$options.filters</code>，获取全局filters<code>this.$root.constructor.options.filters</code>或者<code>Vue..options.filters</code>，可以看出来全局filters是放在Vue的原型链上，而不是在根实例上。</p>
+<h2 id="点击事件">点击事件</h2>
+<h3 id="鼠标右击事件">鼠标右击事件</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">@contextmenu.stop.prevent</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"rightClick($event)"</span></span>
+<span class="line"><span style="color:#E1E4E8">@contextmenu.prevent </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "rightClick($event)"</span></span></code></pre>
+<h3 id="双击事件">双击事件</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>@dblclick="navDblclick(data)"</span></span></code></pre>
+<h2 id="request">request</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>封装axios</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> axios </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'axios'</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> baseUrl </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> '../services/index'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">axios.defaults.withCredentials </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> codeMessage</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  200</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'服务器成功返回请求的数据。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  201</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'新建或修改数据成功。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  202</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'一个请求已经进入后台排队（异步任务）。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  204</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'删除数据成功。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  400</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'发出的请求有错误，服务器没有进行新建或修改数据的操作。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  401</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'用户没有权限（令牌、用户名、密码错误）。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  403</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'用户得到授权，但是访问是被禁止的。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  404</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'发出的请求针对的是不存在的记录，服务器没有进行操作。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  406</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'请求的格式不可得。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  410</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'请求的资源被永久删除，且不会再得到的。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  422</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'当创建一个对象时，发生一个验证错误。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  500</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'服务器发生错误，请检查服务器。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  502</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'网关错误。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  503</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'服务不可用，服务器暂时过载或维护。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  504</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'网关超时。'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> checkStatus</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> response</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (response.status </span><span style="color:#F97583">>=</span><span style="color:#79B8FF"> 200</span><span style="color:#F97583"> &#x26;&#x26;</span><span style="color:#E1E4E8"> response.status </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 300</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> response</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> errortext</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> codeMessage[response.status] </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> response.statusText</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.$notify.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    title: </span><span style="color:#9ECBFF">`请求错误 ${</span><span style="color:#E1E4E8">response</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">status</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    message: </span><span style="color:#9ECBFF">`${</span><span style="color:#E1E4E8">errortext</span><span style="color:#9ECBFF">}`</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> error</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">(errortext)</span></span>
+<span class="line"><span style="color:#E1E4E8">  error.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> response.status</span></span>
+<span class="line"><span style="color:#E1E4E8">  error.response </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> response</span></span>
+<span class="line"><span style="color:#F97583">  throw</span><span style="color:#E1E4E8"> error</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * Requests a URL, returning a promise.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0">  {string}</span><span style="color:#E1E4E8"> url</span><span style="color:#6A737D">       The URL we want to request</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0">  {object}</span><span style="color:#E1E4E8"> [options]</span><span style="color:#6A737D"> The options we want to pass to "fetch"</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@return</span><span style="color:#B392F0"> {object}</span><span style="color:#6A737D">           An object containing either "data" or "err"</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> default</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> request</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">api</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">options</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {}) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> url</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> api.</span><span style="color:#B392F0">replace</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/api'</span><span style="color:#E1E4E8">, baseUrl)</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> defaultOptions</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    credentials: </span><span style="color:#9ECBFF">'include'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> newOptions</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">defaultOptions, </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">options }</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    newOptions.method </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'POST'</span><span style="color:#F97583"> ||</span></span>
+<span class="line"><span style="color:#E1E4E8">    newOptions.method </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'PUT'</span><span style="color:#F97583"> ||</span></span>
+<span class="line"><span style="color:#E1E4E8">    newOptions.method </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'DELETE'</span></span>
+<span class="line"><span style="color:#E1E4E8">  ) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">(newOptions.body </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> FormData</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      newOptions.headers </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Accept: </span><span style="color:#9ECBFF">'application/json'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">        'Content-Type'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'application/json; charset=utf-8'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">        ...</span><span style="color:#E1E4E8">newOptions.headers,</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">      newOptions.body </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(newOptions.body)</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">      // newOptions.body is FormData</span></span>
+<span class="line"><span style="color:#E1E4E8">      newOptions.headers </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        Accept: </span><span style="color:#9ECBFF">'application/json'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">        ...</span><span style="color:#E1E4E8">newOptions.headers,</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> axios</span><span style="color:#E1E4E8">(url, newOptions)</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(checkStatus)</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">response</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">      // DELETE and 204 do not return data by default</span></span>
+<span class="line"><span style="color:#6A737D">      // using .json will report an error.</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (newOptions.method </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'DELETE'</span><span style="color:#F97583"> ||</span><span style="color:#E1E4E8"> response.status </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> 204</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> response.</span><span style="color:#B392F0">text</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> response.data</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#B392F0">catch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">e</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'请求错误'</span><span style="color:#E1E4E8">, e)</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="pug">pug</h2>
+<h3 id="vue-cli2">vue cli2</h3>
+<p>安装命令
+<code>npm install pug pug-loader pug-filters -D</code><br>
+在<code>webpack.base.conf</code>文件，在<code>module</code>的<code>rule</code>对象添加以下代码:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#B392F0">    test</span><span style="color:#E1E4E8">:</span><span style="color:#9ECBFF"> /</span><span style="color:#85E89D;font-weight:bold">\.</span><span style="color:#DBEDFF">pug</span><span style="color:#F97583">$</span><span style="color:#9ECBFF">/</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    loader</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'pug'</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<h3 id="vue-cli3">vue cli3</h3>
+<p><code>npm i -D pug pug-html-loader pug-plain-loader</code><br>
+和cli2比多了一个pug-plain-loader<br>
+在<code>vue.config.js</code>添加代码：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    chainWebpack</span><span style="color:#E1E4E8">: </span><span style="color:#FFAB70">config</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">        config.module.</span><span style="color:#B392F0">rule</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'pug'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">            .</span><span style="color:#B392F0">test</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#85E89D;font-weight:bold">\.</span><span style="color:#DBEDFF">pug</span><span style="color:#F97583">$</span><span style="color:#9ECBFF">/</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">            .</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'pug-html-loader'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">            .</span><span style="color:#B392F0">loader</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'pug-html-loader'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">            .</span><span style="color:#B392F0">end</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="eslintrc">.eslintrc</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">rules</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#6A737D">    // 强制 “for” 循环中更新子句的计数器朝着正确的方向移动</span></span>
+<span class="line"><span style="color:#9ECBFF">    'for-direction'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'warn'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 强制 getter 函数中出现 return 语句</span></span>
+<span class="line"><span style="color:#9ECBFF">    'getter-return'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'error'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 禁止空块语句</span></span>
+<span class="line"><span style="color:#9ECBFF">    'no-empty'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'error'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 关闭强制 generator 函数中 * 号周围使用一致的空格</span></span>
+<span class="line"><span style="color:#9ECBFF">    'generator-star-spacing'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'off'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // allow debugger during development</span></span>
+<span class="line"><span style="color:#9ECBFF">    'no-debugger'</span><span style="color:#E1E4E8">: process.env.</span><span style="color:#79B8FF">NODE_ENV</span><span style="color:#F97583"> ===</span><span style="color:#9ECBFF"> 'production'</span><span style="color:#F97583"> ?</span><span style="color:#9ECBFF"> 'error'</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> 'off'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'indent'</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"error"</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#6A737D">    // 禁止使用 空格 和 tab 混合缩进</span></span>
+<span class="line"><span style="color:#9ECBFF">    'no-mixed-spaces-and-tabs'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'error'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 一些风格指南不允许使用 tab 字符，包括在注释内</span></span>
+<span class="line"><span style="color:#9ECBFF">    'no-tabs'</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'off'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 禁止使用分号</span></span>
+<span class="line"><span style="color:#9ECBFF">    'semi'</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">'error'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'never'</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#6A737D">    // ["error", "never"]不允许函数括号之间存在空格</span></span>
+<span class="line"><span style="color:#9ECBFF">    "space-before-function-paren"</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"error"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"never"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<h2 id="pingyin">pingyin</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>讲文字转化为拼音
+npm install pinyin</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">    userPinyin</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">      let</span><span style="color:#E1E4E8"> name </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.userName</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">name) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#9ECBFF"> '系统根据用户姓名给出'</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">      let</span><span style="color:#E1E4E8"> toPinyin </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">$pinyin</span><span style="color:#E1E4E8">(name, {</span></span>
+<span class="line"><span style="color:#E1E4E8">        style: </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.$pinyin.</span><span style="color:#79B8FF">STYLE_NORMAL</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 设置拼音风格</span></span>
+<span class="line"><span style="color:#E1E4E8">        heteronym: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"><span style="color:#E1E4E8">      })</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (toPinyin.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> toPinyin.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> toPinyin.</span><span style="color:#B392F0">reduce</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">previousValue</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> previousValue </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> value</span></span>
+<span class="line"><span style="color:#E1E4E8">      })</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span></code></pre>
+<h2 id="slot">slot</h2>
+<div class="custom-container tip"><p class="custom-container-title">slot</p><p>slot是父组件与子组件的通讯方式，可以将父组件的内容显示在子组件当中。</p></div>
+<p>普通slot的用法，只有一个slot。<br>
+新建slot.html</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;!</span><span style="color:#85E89D">DOCTYPE</span><span style="color:#B392F0"> html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">html</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"en"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> charset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"UTF-8"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"viewport"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"width=device-width, initial-scale=1.0"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> http-equiv</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"X-UA-Compatible"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ie=edge"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>Document&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"app"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">say-to</span><span style="color:#B392F0"> p-name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"豆豆"</span><span style="color:#E1E4E8">>你是睿智吧&#x3C;/</span><span style="color:#85E89D">say-to</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">say-to</span><span style="color:#B392F0"> p-name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"水水"</span><span style="color:#E1E4E8">>你也是睿智&#x3C;/</span><span style="color:#85E89D">say-to</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">say-to</span><span style="color:#B392F0"> p-name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"大大"</span><span style="color:#E1E4E8">>你管管他们两&#x3C;/</span><span style="color:#85E89D">say-to</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"./testSlot.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>新建slot.js</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> SayTo</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  props: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    pName: String</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  template: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;div></span></span>
+<span class="line"><span style="color:#9ECBFF">      你好&#x3C;strong>{{ pName }}&#x3C;/strong></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;slot>&#x3C;/slot></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">  `</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> app </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Vue</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  el: </span><span style="color:#9ECBFF">'#app'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  components: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    SayTo</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>组合slot的用法，多个slot的组合，也叫具名slot。<br>
+新建combinedSlot.index</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;!</span><span style="color:#85E89D">DOCTYPE</span><span style="color:#B392F0"> html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">html</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"en"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> charset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"UTF-8"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"viewport"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"width=device-width, initial-scale=1.0"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> http-equiv</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"X-UA-Compatible"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ie=edge"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>Document&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"app"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">nba-all-start</span><span style="color:#B392F0"> c</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"奥尼尔"</span><span style="color:#B392F0"> pf</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"加内特"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> slot</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"sf"</span><span style="color:#E1E4E8">>皮尔斯&#x3C;/</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> slot</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"sg"</span><span style="color:#E1E4E8">>雷阿伦&#x3C;/</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> slot</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"pg"</span><span style="color:#E1E4E8">>隆多&#x3C;/</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">nba-all-start</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"./combinedSlot.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>新建combinedSlot.js</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> NbaAllStart</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  props: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    c: String,</span></span>
+<span class="line"><span style="color:#E1E4E8">    pf: String</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  template: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;div></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;div>中锋： {{ c }}&#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;div>大前： {{ pf }}&#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;div>小前： &#x3C;slot name="sf">&#x3C;/slot>&#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;div>大前： &#x3C;slot name="sg">&#x3C;/slot>&#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;div>大前： &#x3C;slot name="pg">&#x3C;/slot>&#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;slot>&#x3C;/slot></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">  `</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> app </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Vue</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  el: </span><span style="color:#9ECBFF">'#app'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  components: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    NbaAllStart</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<h3 id="vue26废除前两个slot用法新增的用法">Vue2.6废除前两个slot用法，新增的用法</h3>
+<p>新建newSlot.html</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;!</span><span style="color:#85E89D">DOCTYPE</span><span style="color:#B392F0"> html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">html</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"en"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> charset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"UTF-8"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"viewport"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"width=device-width, initial-scale=1.0"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> http-equiv</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"X-UA-Compatible"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ie=edge"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>newSlot&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"app"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">test-new-slot</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">test-new-slot</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"./combinedSlot.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>新建newSlot.js</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> NbaAllStart</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  props: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    c: String,</span></span>
+<span class="line"><span style="color:#E1E4E8">    pf: String</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#B392F0">  data</span><span style="color:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      test: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        one: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        two: </span><span style="color:#79B8FF">2</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  template: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;div class="container"></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;header></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;slot name="header" v-bind:test="test">&#x3C;/slot></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;/header></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;main></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;slot>&#x3C;/slot></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;/main></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;footer></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;slot name="footer">&#x3C;/slot></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;/footer></span></span>
+<span class="line"><span style="color:#9ECBFF">&#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">  `</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> TestNewSlot</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  components: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    NbaAllStart</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#B392F0">  data</span><span style="color:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      test1: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        one: </span><span style="color:#79B8FF">11</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        two: </span><span style="color:#79B8FF">22</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  template: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;nba-all-start></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;template v-slot:header="test"></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;h1>Here might be a page title{{ test.test.one }}&#x3C;/h1></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;/template></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;template v-slot:default></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;p>A paragraph for the main content.&#x3C;/p></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;p>And another one.&#x3C;/p></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;/template></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;template v-slot:footer></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;p>Here's some contact info&#x3C;/p></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;/template></span></span>
+<span class="line"><span style="color:#9ECBFF">&#x3C;/nba-all-start></span></span>
+<span class="line"><span style="color:#9ECBFF">  `</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> app </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Vue</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  el: </span><span style="color:#9ECBFF">'#app'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  components: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    TestNewSlot</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"></span></code></pre>
+<h2 id="router">router</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>Vue router的用处就是在单页应用中通过router与component的交互，演变成类似多页面，但是路由变化时并没有重新刷新页面和请求后端资源，只是页面div的替换，因此页面切换速度非常快。</p></div>
+<h3 id="嵌套路由">嵌套路由</h3>
+<p>新建index.html文件</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;!</span><span style="color:#85E89D">DOCTYPE</span><span style="color:#B392F0"> html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">html</span><span style="color:#B392F0"> lang</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"en"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> charset</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"UTF-8"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"viewport"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"width=device-width, initial-scale=1.0"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">meta</span><span style="color:#B392F0"> http-equiv</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"X-UA-Compatible"</span><span style="color:#B392F0"> content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"ie=edge"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"https://unpkg.com/vue-router/dist/vue-router.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>Document&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"app"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">router-view</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">router-view</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"./testRouter.js"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span></code></pre>
+<p>新建index.js</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> index</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  template: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;div></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;h1>this is index&#x3C;/h1></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;router-link to='/foo'>go to foo&#x3C;/router-link></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;router-link to='/bar'>go to bar&#x3C;/router-link></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;router-view>&#x3C;/router-view></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">  `</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> foo</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  template: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;div></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;h1>this is foo&#x3C;/h1></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">  `</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> bar</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  template: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;div></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;h1>this is bar&#x3C;/h1></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;router-link to='/bar/barchild'>go to barchild&#x3C;/router-link></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;router-view>&#x3C;/router-view></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">  `</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> barchild</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  template: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;div></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;h1>this is barchild&#x3C;/h1></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;router-link to='/bar/barchild/one'>go to one&#x3C;/router-link></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;router-link to='/bar/barchild/two'>go to two&#x3C;/router-link></span></span>
+<span class="line"><span style="color:#9ECBFF">      &#x3C;router-view>&#x3C;/router-view></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">  `</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> barchildOne</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  template: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;div></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;h1>this is barchildOne&#x3C;/h1></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> barchildTwo</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  template: </span><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;div></span></span>
+<span class="line"><span style="color:#9ECBFF">    &#x3C;h1>this is barchildTwo&#x3C;/h1></span></span>
+<span class="line"><span style="color:#9ECBFF">  &#x3C;/div></span></span>
+<span class="line"><span style="color:#9ECBFF">`</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> routes</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [{</span></span>
+<span class="line"><span style="color:#E1E4E8">  path: </span><span style="color:#9ECBFF">'/'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  name: </span><span style="color:#9ECBFF">'index'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  component: index,</span></span>
+<span class="line"><span style="color:#E1E4E8">  children: [{</span></span>
+<span class="line"><span style="color:#E1E4E8">      path: </span><span style="color:#9ECBFF">'/foo'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      name: </span><span style="color:#9ECBFF">'foo'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      component: foo</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      path: </span><span style="color:#9ECBFF">'/foo'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      name: </span><span style="color:#9ECBFF">'foo'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      component: foo</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#E1E4E8">      path: </span><span style="color:#9ECBFF">'/bar'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      name: </span><span style="color:#9ECBFF">'bar'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      component: bar,</span></span>
+<span class="line"><span style="color:#E1E4E8">      children: [{</span></span>
+<span class="line"><span style="color:#E1E4E8">        path: </span><span style="color:#9ECBFF">'/bar/barchild'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        name: </span><span style="color:#9ECBFF">'barchild'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        component: barchild,</span></span>
+<span class="line"><span style="color:#E1E4E8">        children: [{</span></span>
+<span class="line"><span style="color:#E1E4E8">            path: </span><span style="color:#9ECBFF">'/bar/barchild/one'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            name: </span><span style="color:#9ECBFF">'one'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            component: barchildOne</span></span>
+<span class="line"><span style="color:#E1E4E8">          },</span></span>
+<span class="line"><span style="color:#E1E4E8">          {</span></span>
+<span class="line"><span style="color:#E1E4E8">            path: </span><span style="color:#9ECBFF">'/bar/barchild/two'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            name: </span><span style="color:#9ECBFF">'two'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            component: barchildTwo</span></span>
+<span class="line"><span style="color:#E1E4E8">          }</span></span>
+<span class="line"><span style="color:#E1E4E8">        ]</span></span>
+<span class="line"><span style="color:#E1E4E8">      }]</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}]</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> router</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> VueRouter</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  routes</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> app </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Vue</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  el: </span><span style="color:#9ECBFF">'#app'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  router</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>上面代码讲的是路由嵌套的使用，也是基本项目最常用到的结构。</p>
+<h2 id="工作中一些可以直接套的样式与组件">工作中一些可以直接套的样式与组件</h2>
+<div class="custom-container tip"><p class="custom-container-title">element</p><p>用之前先全局改字体为12px，因为系统大部分都是12px</p></div>
+<h3 id="el-select">el-select</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"cjh-input-select"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">          &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"cjh-input-box-label"</span><span style="color:#E1E4E8">>项目&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">          &#x3C;</span><span style="color:#85E89D">el-select</span><span style="color:#B392F0"> v-model</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"manager"</span><span style="color:#B392F0"> @change</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"filterChange"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#6A737D">            &#x3C;!-- &#x3C;el-option v-for="item in managerList" :key="item.key" :value="item.loginName" :label="item.userName">&#x3C;/el-option> --></span></span>
+<span class="line"><span style="color:#E1E4E8">          &#x3C;/</span><span style="color:#85E89D">el-select</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">  .cjh-input-select</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    display</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">flex</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    justify-content</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">flex-start</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    margin-right</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">12</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">    align-content</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">center</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    .</span><span style="color:#79B8FF">cjh-input-box-label</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">      line-height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">28</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#79B8FF">      margin-right</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">5</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#B392F0">    .el-input__inner</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">      height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">28</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#B392F0">    .el-input__suffix</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">      top</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">4</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<h2 id="clipboard">clipBoard</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// codes 就是复制的内容</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> id</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"copy-code"</span><span style="color:#FDAEB7;font-style:italic"> :data-clipboard-text="codes"</span><span style="color:#FDAEB7;font-style:italic"> @click="click">&#x3C;/button></span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">  click()</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">let clipBoard </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Clipboard</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'#copy-code'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">      clipBoard.</span><span style="color:#B392F0">on</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'success'</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">e</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">$message</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">          message: </span><span style="color:#9ECBFF">'复制成功'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">          type: </span><span style="color:#9ECBFF">'success'</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#E1E4E8">        clipBoard.</span><span style="color:#B392F0">destroy</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">      })</span></span>
+<span class="line"><span style="color:#E1E4E8">      clipBoard.</span><span style="color:#B392F0">on</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'error'</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">e</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">$message</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">          message: </span><span style="color:#9ECBFF">'复制失败'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">          type: </span><span style="color:#9ECBFF">'error'</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#E1E4E8">        clipBoard.</span><span style="color:#B392F0">destroy</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">      })</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span></code></pre>
+<h2 id="取出全局filter">取出全局filter</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>vue是挂在到Vue的跟根实例上，也就是<code>Vue.options.filters</code>，如果子组件想获取的话需要用<code>this.$root.constructor.options.filters</code>来获取</p></div>
+<h2 id="minxin-vue">minxin vue</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>值为对象的选项，例如 methods, components 和 directives，将被混合为同一个对象。两个对象键名冲突时，取组件<code>自己</code>对象的键值对。</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> mixin </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  methods: {</span></span>
+<span class="line"><span style="color:#B392F0">    foo</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'foo'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#B392F0">    conflicting</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'from mixin'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> vm </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Vue</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  mixins: [mixin],</span></span>
+<span class="line"><span style="color:#E1E4E8">  methods: {</span></span>
+<span class="line"><span style="color:#B392F0">    bar</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'bar'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#B392F0">    conflicting</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'from self'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">vm.</span><span style="color:#B392F0">foo</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// => "foo"</span></span>
+<span class="line"><span style="color:#E1E4E8">vm.</span><span style="color:#B392F0">bar</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// => "bar"</span></span>
+<span class="line"><span style="color:#E1E4E8">vm.</span><span style="color:#B392F0">conflicting</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// => "from self"</span></span></code></pre>
+<h2 id="vue-router地址栏传参">vue router地址栏传参</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 用来传参</span></span>
+<span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.$router.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">({ name: </span><span style="color:#9ECBFF">'page'</span><span style="color:#E1E4E8">, query: { type: </span><span style="color:#F97583">-</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'rootRadar'</span><span style="color:#E1E4E8"> } })</span></span>
+<span class="line"><span style="color:#6A737D">// 用来接收参数</span></span>
+<span class="line"><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.$route.query.type</span></span></code></pre>
+<div class="custom-container tip"><p class="custom-container-title">注意事项</p><p>可以传对象，但是地址栏会出现一些乱码，目标页也可以接收的到对象，但是目标页刷新下就会失去这个对象因为地址栏不支持保存对象，所以传过去的时候用JSON.stringify转成字符串，接收的时候再转成对象。</p></div>
+<h2 id="extends-vue">extends vue</h2>
+<p>类似mixin，允许声明扩展另一个组件(可以是一个简单的选项对象或构造函数)</p>
+<h2 id="父组件与子组件的钩子函数执行顺序">父组件与子组件的钩子函数执行顺序：</h2>
+<p>父beforeCreated->父created->父beforeMount->子created->子beforeMount->子mounted->父mounted</p>
+<h3 id="子组件更新过程">子组件更新过程</h3>
+<p>父beforeUpdate->子beforeUpdate->子updated->父updated</p>
+<h3 id="父组件更新过程">父组件更新过程</h3>
+<p>父beforeUpdate->父updated</p>
+<h3 id="销毁过程">销毁过程</h3>
+<p>父beforeDestroy->子beforeDestroy->子destroyed->父destroyed</p>
+<h2 id="什么时候用到vuex">什么时候用到Vuex</h2>
+<p>如果数据传到后台，不同的组件使用的话，都可以从后台拿到数据，只是网络请求开销比较大，父子组件通信的话，可以直接emit,而多层嵌套组件通信就需要有vuex这样的解决方案，公共数据托管在state里，不同的组件都可以拿到这个数据。</p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

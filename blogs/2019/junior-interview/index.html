@@ -1,0 +1,1099 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const colorSchemeChange = (e) => {
+      if (e.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        addDarkToClassList()
+      } else {
+        localStorage.setItem(localStorageKey, Light)
+        removeDarkToClassList()
+      }
+    }
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      if (media.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        return Dark
+      }
+      return Light
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2019/junior-interview/"><!-- Primary Meta Tags --><title>初级前端工程师</title><meta name="title" content="初级前端工程师"><meta name="description" content="初级前端面试题整理，包含 JS 基础、数据类型、事件循环等知识点"><meta name="author" content="Shanks"><meta name="keywords" content="面试, 前端, JavaScript"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2019/junior-interview/"><meta property="og:title" content="初级前端工程师"><meta property="og:description" content="初级前端面试题整理，包含 JS 基础、数据类型、事件循环等知识点"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2019-09-10"><meta property="article:tag" content="面试"><meta property="article:tag" content="前端"><meta property="article:tag" content="JavaScript"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2019/junior-interview/"><meta property="twitter:title" content="初级前端工程师"><meta property="twitter:description" content="初级前端面试题整理，包含 JS 基础、数据类型、事件循环等知识点"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.3X99_b4O.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.DB9bi1E6.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">初级前端工程师</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2019-09-10</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">8,753 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 22 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">面试</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">前端</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">JavaScript</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <h2 id="js中for-in与for-of之间的差异">js中for in与for of之间的差异</h2>
+<p>let aArray = [‘a’,123,{a</p><div></div>,b<div></div>}]<p></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>for(let index in aArray){</span></span>
+<span class="line"><span>    console.log(index);</span></span>
+<span class="line"><span>}</span></span></code></pre>
+<p>输出: 0 1 2 说明遍历的是index，</p>
+<h2 id="for-in--hasownproperty">for in &#x26;&#x26; hasOwnProperty</h2>
+<p>for … in是为遍历对象属性而构建的并且会遍历到原型的属性，hasOwnProperty则只对『对象本身』属性判断为true，原型继承则为false</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> ObjWithProto</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.foo </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'foo_val'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">ObjWithProto</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {bar: </span><span style="color:#9ECBFF">'bar_val'</span><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> dict </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ObjWithProto</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">dict.foobar </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'foobar_val'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">dict</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> key;</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (key </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> dict) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (dict.</span><span style="color:#B392F0">hasOwnProperty</span><span style="color:#E1E4E8">(key))</span></span>
+<span class="line"><span style="color:#E1E4E8">            console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'has'</span><span style="color:#E1E4E8">, key, dict[key]);</span></span>
+<span class="line"><span style="color:#F97583">        else</span></span>
+<span class="line"><span style="color:#E1E4E8">            console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'not'</span><span style="color:#E1E4E8">, key, dict[key]);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(dict);</span></span></code></pre>
+<p>打印结果：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">has foo foo_val</span></span>
+<span class="line"><span style="color:#E1E4E8">has foobar foobar_val</span></span>
+<span class="line"><span style="color:#E1E4E8">not bar bar_val</span></span></code></pre>
+<h2 id="扩展运算符">扩展运算符…</h2>
+<div class="custom-container tip"><p class="custom-container-title">对扩展运算符的理解</p><p>对象中的扩展运算符(…)用于取出参数对象中的所有可遍历属性，拷贝到当前对象之中</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> bar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { a: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, b: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> baz </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">bar }; </span><span style="color:#6A737D">// { a: 1, b: 2 }</span></span></code></pre>
+<p>上面的方法实际上就等于</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> bar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { a: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, b: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> baz </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">assign</span><span style="color:#E1E4E8">({}, bar); </span><span style="color:#6A737D">// { a: 1, b: 2 }</span></span></code></pre>
+<p>Object.assign方法的第一个参数是目标对象，后面的参数都是源对象。(如果目标对象与源对象有同名属性，或多个源对象有同名属性，则后面的属性会覆盖前面的属性)。<br>
+同样，如果用户自定义的属性，放在扩展运算符后面，则扩展运算符内部的同名属性会被覆盖掉。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> bar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {a: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, b: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> baz </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">bar, </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">{a:</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, b: </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">}};  </span><span style="color:#6A737D">// {a: 2, b: 4}</span></span>
+<span class="line"><span style="color:#E1E4E8">baz.a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 10</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(bar) </span><span style="color:#6A737D">// {a: 1, b: 2};</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(baz) </span><span style="color:#6A737D">// {a: 10, b: 2};</span></span></code></pre>
+<h3 id="是浅拷贝">…是浅拷贝</h3>
+<p>我们看个例子</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> bar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {a: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, b: {one:</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,two: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">}};</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> baz </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">bar};</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(bar) </span><span style="color:#6A737D">// { a: 1, b: { one: 1, two: 2 } }</span></span>
+<span class="line"><span style="color:#E1E4E8">baz.b.one </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 10</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'baz'</span><span style="color:#E1E4E8">,baz) </span><span style="color:#6A737D">// baz { a: 1, b: { one: 10, two: 2 } }</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'bar'</span><span style="color:#E1E4E8">,bar) </span><span style="color:#6A737D">// bar { a: 1, b: { one: 10, two: 2 } }</span></span></code></pre>
+<div class="custom-container tip"><p class="custom-container-title">基础数据类型与引用类型</p><p>javascript中有两种数据类型，分别是基础数据类型和引用数据类型。基础数据类型是按值访问的，常见的基础数据类型有<code>Number</code>、<code>String</code>、<code>Boolean</code>、<code>Null</code>、<code>Undefined</code>，这类变量的拷贝的时候会完整的复制一份；引用数据类型比如<code>Array</code>、<code>Object</code>,<code>symbol</code>，在拷贝的时候拷贝的是对象的引用，当原对象发生变化的时候，拷贝对象也跟着变化。</p></div>
+<p>为什么分成基础数据类型和引用类型，这就要扯到了栈内存和堆内存。</p>
+<h3 id="栈和堆">栈和堆</h3>
+<div class="custom-container tip"><p class="custom-container-title">栈和堆概述</p><p>栈区（stack）— 由编译器自动分配释放 ，存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈。
+堆区（heap） — 一般由程序员分配释放， 若程序员不释放，程序结束时可能由OS回收 。注意它与数据结构中的堆是两回事，分配方式倒是类似于链表</p></div>
+<p>基础数据类型是放在栈内存，引用类型是放在堆内存，两个图就理解了:
+栈内存：
+<img  loading="lazy" decoding="async" fetchpriority="auto" width="544" height="222" src="/_astro/stack.Ixj7zZxn_ZRquiK.webp" >
+堆内存：
+<img  loading="lazy" decoding="async" fetchpriority="auto" width="577" height="513" src="/_astro/heap.Ct-EPQVN_1GTmxU.webp" >
+这就引出了浅拷贝与深拷贝，正常拷贝基础数据类型（也称为值类型）时，是直接拷贝目标值，拷贝引用类型时是拷贝引用地址。</p>
+<div class="custom-container tip"><p class="custom-container-title">浅拷贝与深拷贝</p><p>浅拷贝</p><div></div>，而不是在内存新建一块内存。
+深拷贝<div></div>，这样两块内存互不干涉。<p></p></div>
+<h3 id="深拷贝">深拷贝</h3>
+<p>深拷贝也经常被用到，我常用的是JSON.parse(JSON.stringify())</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> bar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {a: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, b: {one:</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,two: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">}};</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> baz </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(bar))</span></span>
+<span class="line"><span style="color:#E1E4E8">baz.b.one </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 10</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'baz'</span><span style="color:#E1E4E8">,baz) </span><span style="color:#6A737D">// baz { a: 1, b: { one: 10, two: 2 } }</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'bar'</span><span style="color:#E1E4E8">,bar) </span><span style="color:#6A737D">// bar { a: 1, b: { one: 1, two: 2 } }</span></span></code></pre>
+<p>现在就是深拷贝了。但是这样有很多问题，比如当对象里面的值是函数、正则表达式循环引用时就会出现BUG。</p>
+<p><strong>简单版的深拷贝（大多在面试中写出来）</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> deepClone</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">source</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">  // WeakSet 适合临时存放一组对象，以及存放跟对象绑定的信息。只要这些对象在外部消失，它在 WeakSet 里面的引用就会自动消失</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> hashStack</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> WeakSet</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> recursion</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> obj</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(obj) </span><span style="color:#F97583">?</span><span style="color:#E1E4E8"> [] </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (hashStack.</span><span style="color:#B392F0">has</span><span style="color:#E1E4E8">(obj)) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> obj</span></span>
+<span class="line"><span style="color:#E1E4E8">    hashStack.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(obj)</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">const</span><span style="color:#79B8FF"> key</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> obj) {</span></span>
+<span class="line"><span style="color:#F97583">      let</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> obj[key]</span></span>
+<span class="line"><span style="color:#6A737D">      // 假设只考虑object array</span></span>
+<span class="line"><span style="color:#E1E4E8">      result[key] </span><span style="color:#F97583">=</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'object'</span><span style="color:#F97583"> ?</span><span style="color:#B392F0"> recursion</span><span style="color:#E1E4E8">(value) </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> value</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> result</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> recursion</span><span style="color:#E1E4E8">(source)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 构造函数</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> person</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">pname</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pname;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> Messi</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> person</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Messi'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 函数</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> say</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'hi'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> oldObj</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  a: say,</span></span>
+<span class="line"><span style="color:#E1E4E8">  b: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> Array</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">  c: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> RegExp</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'ab+c'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'i'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">  d: Messi</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> newObj</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(oldObj));</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 无法复制函数</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(newObj.a, oldObj.a); </span><span style="color:#6A737D">// undefined [Function: say]</span></span>
+<span class="line"><span style="color:#6A737D">// 稀疏数组复制错误</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(newObj.b[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">], oldObj.b[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">]); </span><span style="color:#6A737D">// null undefined</span></span>
+<span class="line"><span style="color:#6A737D">// 无法复制正则对象</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(newObj.c, oldObj.c); </span><span style="color:#6A737D">// {} /ab+c/i</span></span>
+<span class="line"><span style="color:#6A737D">// 构造函数指向错误</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(newObj.d.</span><span style="color:#79B8FF">constructor</span><span style="color:#E1E4E8">, oldObj.d.</span><span style="color:#79B8FF">constructor</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// [Function: Object] [Function: person]</span></span></code></pre>
+<p>所以我们得自己来构造一个深拷贝函数</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> isType</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">obj</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">type</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> obj </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> 'object'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> typeString</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(obj);</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> flag;</span></span>
+<span class="line"><span style="color:#F97583">  switch</span><span style="color:#E1E4E8"> (type) {</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#9ECBFF"> 'Array'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      flag </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> typeString </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> '[object Array]'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">      break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#9ECBFF"> 'Date'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      flag </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> typeString </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> '[object Date]'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">      break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#9ECBFF"> 'RegExp'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      flag </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> typeString </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> '[object RegExp]'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">      break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    default</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      flag </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> flag;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> getRegExp</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> re</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> flags </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (re.global) flags </span><span style="color:#F97583">+=</span><span style="color:#9ECBFF"> 'g'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (re.ignoreCase) flags </span><span style="color:#F97583">+=</span><span style="color:#9ECBFF"> 'i'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (re.multiline) flags </span><span style="color:#F97583">+=</span><span style="color:#9ECBFF"> 'm'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> flags;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D">* deep clone</span></span>
+<span class="line"><span style="color:#6A737D">* </span><span style="color:#F97583">@param</span><span style="color:#B392F0">  {[type]}</span><span style="color:#E1E4E8"> parent</span><span style="color:#6A737D"> object 需要进行克隆的对象</span></span>
+<span class="line"><span style="color:#6A737D">* </span><span style="color:#F97583">@return</span><span style="color:#B392F0"> {[type]}</span><span style="color:#6A737D">        深克隆后的对象</span></span>
+<span class="line"><span style="color:#6A737D">*/</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> clone</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> parent</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // 维护两个储存循环引用的数组</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> parents</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> children</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> _clone</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> parent</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (parent </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> parent </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> 'object'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> parent;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> child, proto;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">isType</span><span style="color:#E1E4E8">(parent, </span><span style="color:#9ECBFF">'Array'</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#6A737D">      // 对数组做特殊处理</span></span>
+<span class="line"><span style="color:#E1E4E8">      child </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">isType</span><span style="color:#E1E4E8">(parent, </span><span style="color:#9ECBFF">'RegExp'</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#6A737D">      // 对正则对象做特殊处理</span></span>
+<span class="line"><span style="color:#E1E4E8">      child </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> RegExp</span><span style="color:#E1E4E8">(parent.source, </span><span style="color:#B392F0">getRegExp</span><span style="color:#E1E4E8">(parent));</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (parent.lastIndex) child.lastIndex </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> parent.lastIndex;</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">isType</span><span style="color:#E1E4E8">(parent, </span><span style="color:#9ECBFF">'Date'</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#6A737D">      // 对Date对象做特殊处理</span></span>
+<span class="line"><span style="color:#E1E4E8">      child </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Date</span><span style="color:#E1E4E8">(parent.</span><span style="color:#B392F0">getTime</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">      // 处理对象原型</span></span>
+<span class="line"><span style="color:#E1E4E8">      proto </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">getPrototypeOf</span><span style="color:#E1E4E8">(parent);</span></span>
+<span class="line"><span style="color:#6A737D">      // 利用Object.create切断原型链</span></span>
+<span class="line"><span style="color:#E1E4E8">      child </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">(proto);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 处理循环引用</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> index</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> parents.</span><span style="color:#B392F0">indexOf</span><span style="color:#E1E4E8">(parent);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (index </span><span style="color:#F97583">!=</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">      // 如果父数组存在本对象,说明之前已经被引用过,直接返回此对象</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> children[index];</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    parents.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(parent);</span></span>
+<span class="line"><span style="color:#E1E4E8">    children.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(child);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> parent) {</span></span>
+<span class="line"><span style="color:#6A737D">      // 递归</span></span>
+<span class="line"><span style="color:#E1E4E8">      child[i] </span><span style="color:#F97583">=</span><span style="color:#B392F0"> _clone</span><span style="color:#E1E4E8">(parent[i]);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> child;</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> _clone</span><span style="color:#E1E4E8">(parent);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> person</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">pname</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pname;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> Messi</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> person</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Messi'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> say</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'hi'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> oldObj</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  a: say,</span></span>
+<span class="line"><span style="color:#E1E4E8">  c: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> RegExp</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'ab+c'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'i'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">  d: Messi,</span></span>
+<span class="line"><span style="color:#E1E4E8">  f: [</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">,</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#E1E4E8">oldObj.b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> oldObj;</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> newObj</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> clone</span><span style="color:#E1E4E8">(oldObj);</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(newObj.a, oldObj.a); </span><span style="color:#6A737D">// [Function: say] [Function: say]</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(newObj.b, oldObj.b); </span><span style="color:#6A737D">// { a: [Function: say], c: /ab+c/i, d: person { name: 'Messi' }, b: [Circular] } { a: [Function: say], c: /ab+c/i, d: person { name: 'Messi' }, b: [Circular] }</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(newObj.c, oldObj.c); </span><span style="color:#6A737D">// /ab+c/i /ab+c/i</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(newObj.d.</span><span style="color:#79B8FF">constructor</span><span style="color:#E1E4E8">, oldObj.d.</span><span style="color:#79B8FF">constructor</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// [Function: person] [Function: person]</span></span></code></pre>
+<h3 id="数组的扩展运算符">数组的扩展运算符</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> add</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">x</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">y</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> y;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> numbers</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">38</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">numbers) </span><span style="color:#6A737D">// 42</span></span></code></pre>
+<p>还可以复制数组，但还是浅复制，因为数组也是引用类型</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> arr1</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> arr2</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> arr1;</span></span>
+<span class="line"><span style="color:#E1E4E8">arr2[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">arr1 </span><span style="color:#6A737D">// [2, 2]</span></span></code></pre>
+<p>ES6有个新特效是解构复制，配合扩展运算符很好用</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">first</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">...</span><span style="color:#79B8FF">rest</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">first </span><span style="color:#6A737D">// 1</span></span>
+<span class="line"><span style="color:#E1E4E8">rest  </span><span style="color:#6A737D">// [2, 3, 4, 5]</span></span></code></pre>
+<div class="custom-container danger"><p class="custom-container-title">警告</p><p>如果将扩展运算符用于数组赋值，只能放在参数的最后一位，否则会报错。</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#F97583">...</span><span style="color:#79B8FF">rest</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">last</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#6A737D">// 报错</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">first</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">...</span><span style="color:#79B8FF">rest</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">last</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#6A737D">// 报错</span></span></code></pre>
+<p>扩展运算符还可以将字符串转为真正的数组</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">[</span><span style="color:#F97583">...</span><span style="color:#9ECBFF">'hello'</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#6A737D">// [ "h", "e", "l", "l", "o" ]</span></span></code></pre>
+<h2 id="js-事件模式">JS 事件模式</h2>
+<div class="custom-container tip"><p class="custom-container-title">区别</p><p>共同点：两者都可订阅，然后接受消息<br>
+发布/订阅</p><div></div>，由发布者、订阅者、消息管理器三部分组成，松耦合的状态（有key值对应的回调函数）<br>
+观察者<div></div>，在发布时直接调用目标内容进行输出，一种一对多的依赖关系，紧耦合的状态（无key值对应回调函数）<br><p></p></div>
+<h3 id="发布订阅">发布订阅</h3>
+<p><img  loading="lazy" decoding="async" fetchpriority="auto" width="679" height="287" src="/_astro/subscibe.BFN92Sf0_2gyhgW.webp" ></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> event </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  clientList: {},</span></span>
+<span class="line"><span style="color:#B392F0">  listen</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">fn</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.clientList[key]) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.clientList[key] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.clientList[key].</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(fn)   </span><span style="color:#6A737D">// 订阅的消息添加进缓存列表</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#B392F0">  trigger</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">type</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">money</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> fns </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.clientList[type] </span><span style="color:#6A737D">// 相当于简单的消息管理，过滤订阅信息</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">fns </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> fns.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) { </span><span style="color:#6A737D">// 如果没有绑定对应的消息</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> false</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    fns.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">fn</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      fn.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, [money])</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 再定义一个installEvent函数，用于给所有对象动态安装发布-订阅功能</span></span>
+<span class="line"><span style="color:#6A737D">// 如：另一家售楼处也想要这个功能，就可以调用这个注册了，不同再写多一次这段代码</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#B392F0"> installEvent</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> obj</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> event) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    obj[i] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> event[i]</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 给售楼处对象salesOffices动态增加发布-订阅功能</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> salesOffices </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#B392F0">installEvent</span><span style="color:#E1E4E8">(salesOffices)</span></span>
+<span class="line"><span style="color:#6A737D">// 小明订阅信息</span></span>
+<span class="line"><span style="color:#E1E4E8">salesOffices.</span><span style="color:#B392F0">listen</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'squareMeter88'</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">price</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'小明，你看中的88平方的房子，价格='</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> price)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#6A737D">// 小光订阅信息</span></span>
+<span class="line"><span style="color:#E1E4E8">salesOffices.</span><span style="color:#B392F0">listen</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'squareMeter88'</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">price</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'小光，你看中的88平方的房子，价格='</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> price)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#6A737D">// 小红订阅信息</span></span>
+<span class="line"><span style="color:#E1E4E8">salesOffices.</span><span style="color:#B392F0">listen</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'squareMeter100'</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">price</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'小红，你看中的100平方的房子，价格='</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> price)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#6A737D">// 小明，你看中的88平方的房子，价格=2000000</span></span>
+<span class="line"><span style="color:#6A737D">// 小光，你看中的88平方的房子，价格=2000000</span></span>
+<span class="line"><span style="color:#E1E4E8">salesOffices.</span><span style="color:#B392F0">trigger</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'squareMeter88'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2000000</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">// 小红，你看中的100平方的房子，价格=2500000</span></span>
+<span class="line"><span style="color:#E1E4E8">salesOffices.</span><span style="color:#B392F0">trigger</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'squareMeter100'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2500000</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<h3 id="观察者">观察者</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> Ob </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#E1E4E8">Ob.list </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#6A737D">// 订阅后返回一个id，用于删除该订阅内容</span></span>
+<span class="line"><span style="color:#E1E4E8">Ob.</span><span style="color:#B392F0">subscibe</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">fn</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> id </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Math.</span><span style="color:#B392F0">random</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 100000</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#E1E4E8">  Ob.list.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">    id,</span></span>
+<span class="line"><span style="color:#E1E4E8">    fn</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> id</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">Ob.</span><span style="color:#B392F0">publish</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> v </span><span style="color:#F97583">of</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.list) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    v.fn.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">arguments</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">Ob.</span><span style="color:#B392F0">delete</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">id</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.list.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.list[i].id </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> id) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.list.</span><span style="color:#B392F0">splice</span><span style="color:#E1E4E8">(i, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> one </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Ob.</span><span style="color:#B392F0">subscibe</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">color</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'我想的颜色'</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> color)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#6A737D">// 我想的颜色red</span></span>
+<span class="line"><span style="color:#E1E4E8">Ob.</span><span style="color:#B392F0">publish</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'red'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">Ob.</span><span style="color:#B392F0">delete</span><span style="color:#E1E4E8">(one)</span></span>
+<span class="line"><span style="color:#6A737D">// 没有输出</span></span>
+<span class="line"><span style="color:#E1E4E8">Ob.</span><span style="color:#B392F0">publish</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'blue'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span></code></pre>
+<h2 id="去重数组">去重数组</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> dedupe</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">array</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">from</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> Set</span><span style="color:#E1E4E8">(array));</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">dedupe</span><span style="color:#E1E4E8">([</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">]) </span><span style="color:#6A737D">// [1, 2, 3]</span></span></code></pre>
+<h2 id="vue兄弟间怎么检测数据变换">Vue兄弟间怎么检测数据变换</h2>
+<ol>
+<li>在有些情况下可以用路由传参</li>
+<li>用Vuex作为载体传参、监听</li>
+<li>用兄弟的父元素来监听两个子组件的变换统一分配数据</li>
+</ol>
+<h2 id="用indexof来实现简易版的include">用indexOf来实现简易版的include</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">Array</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">myIncludes</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">indexOf</span><span style="color:#E1E4E8">(e) </span><span style="color:#F97583">!==</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="排序对象数组">排序对象数组</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> compareAscending</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">propName</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">obj1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">obj2</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> val1 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> obj1[propName]</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> val2 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> obj2[propName]</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (val1 </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> val2) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (val1 </span><span style="color:#F97583">></span><span style="color:#E1E4E8"> val2) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> compareDescending</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">propName</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">obj1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">obj2</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> val1 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> obj1[propName]</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> val2 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> obj2[propName]</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (val1 </span><span style="color:#F97583">></span><span style="color:#E1E4E8"> val2) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (val1 </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> val2) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// 调用</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [{</span></span>
+<span class="line"><span style="color:#E1E4E8">  a: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  b: </span><span style="color:#79B8FF">2</span></span>
+<span class="line"><span style="color:#E1E4E8">}, {</span></span>
+<span class="line"><span style="color:#E1E4E8">  a: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  b: </span><span style="color:#79B8FF">3</span></span>
+<span class="line"><span style="color:#E1E4E8">}]</span></span>
+<span class="line"><span style="color:#6A737D">// 传入属性名</span></span>
+<span class="line"><span style="color:#E1E4E8">t.</span><span style="color:#B392F0">sort</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">compareDescending</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'a'</span><span style="color:#E1E4E8">))</span></span></code></pre>
+<h2 id="正则表达式">正则表达式</h2>
+<h3 id="中文">中文</h3>
+<div class="custom-container tip"><p class="custom-container-title">中文正则</p><p>“\u4e00”和“\u9fa5”是unicode编码，并且正好是中文编码的开始和结束的两个值，所以这个正则表达式可以用来判断字符串中是否包含中文</p></div>
+<p>匹配中文就可以用:<code>/^[\u4e00-\u9fa5]/</code></p>
+<h3 id="stringmatch">String.match</h3>
+<p>会返回一个有数组对象，下标0表示你的正则全匹配的值，如果你有在正则里面添加分组的话，就有新增下标1、下标2。。。，一个()就是一个分组
+<img  loading="lazy" decoding="async" fetchpriority="auto" width="1244" height="572" src="/_astro/reg_01.C4bw8ezG_ZGQXkM.webp" ></p>
+<h2 id="nan">NaN</h2>
+<div class="custom-container tip"><p class="custom-container-title">NaN</p><p>NaN是全局属性，初始值就是NaN和Number.NaN的值是一样的，NaN和任何值都不相等，包括自身。可以通过x!==x来判断是否为NaN，为true就是NaN</p></div>
+<p>基本都没用到NaN，只是有时判断的时候有用到</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">parseInt</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"blabla"</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// NaN</span></span>
+<span class="line"><span style="color:#E1E4E8">Math.</span><span style="color:#B392F0">sqrt</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">-</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// NaN</span></span>
+<span class="line"><span style="color:#9ECBFF">'A'</span><span style="color:#F97583"> -</span><span style="color:#9ECBFF"> 'B'</span><span style="color:#6A737D"> // NaN</span></span>
+<span class="line"><span style="color:#79B8FF">1</span><span style="color:#F97583"> +</span><span style="color:#F97583"> -</span><span style="color:#9ECBFF">'1'</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> 1</span><span style="color:#6A737D"> // 1 负号把'1'数字化了</span></span>
+<span class="line"><span style="color:#B392F0">Number</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'abc'</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// NaN</span></span></code></pre>
+<h2 id="img的title和alt有什么区别">&#x3C;img>的title和alt有什么区别</h2>
+<ul>
+<li>title是global attributes之一，用于为元素提供附加的advisory information。通常当鼠标滑动到元素上的时候显示。</li>
+<li>alt是&#x3C;img>的特有属性，是图片内容的等价描述，用于图片无法加载时显示、读屏器阅读图片。可提图片高可访问性，除了纯装饰图片外都必须设置有意义的值，搜索引擎会重点分析。（理解，可以自己讲出就好）</li>
+</ul>
+<h2 id="跨域的问题">跨域的问题</h2>
+<div class="custom-container tip"><p class="custom-container-title">什么情况下会产生跨域</p><ul>
+<li>协议不相同</li>
+<li>域名不相同</li>
+<li>端口不相同</li>
+</ul></div>
+<p>满足其中一个就会产生跨域。<br>
+跨域通信：js进行DOM操作、通信时如果目标与当前窗口不满足同源条件，浏览器为了安全会阻止跨域操作。跨域通信通常有以下方法：</p>
+<h3 id="解决跨域的方法">解决跨域的方法</h3>
+<ul>
+<li>cors<div></div>，就是后端允许我们的本地的请求地址或线上域名</li>
+<li>jsonp<div></div>，通过script标签无视同源策略来向后端发送参数，后端返回类似函数的形式传给前端，然后前端就是调用这个函数</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> jsonp</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">url</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">callback</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.getData </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> callback</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> script </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">createElement</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'script'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    script.</span><span style="color:#B392F0">setAttribute</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'src'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">`${</span><span style="color:#E1E4E8">url</span><span style="color:#9ECBFF">}?callbackName=getData`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    document.body.</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(script)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>然后这个script里面的值就是<code>&#x3C;script>getData(data)&#x3C;/script></code></p>
+<h2 id="js有哪几种方式里检查数据类型">js有哪几种方式里检查数据类型：</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "cjh"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 222</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> c</span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">,</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> d </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Date</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#B392F0"> e</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(){</span><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">111</span><span style="color:#E1E4E8">);};</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#B392F0"> f</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(){</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"22"</span><span style="color:#E1E4E8">;};</span></span></code></pre>
+<h3 id="typeof">typeof</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p><em>可以判断function的类型；在判断除Object类型的对象时比较方便</em>
+不能区分array和object</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> a)   </span><span style="color:#F97583">------------></span><span style="color:#E1E4E8"> string</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> b)   </span><span style="color:#F97583">------------></span><span style="color:#E1E4E8"> number</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> c)   </span><span style="color:#F97583">------------></span><span style="color:#FFAB70"> object</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> array</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> d)   </span><span style="color:#F97583">------------></span><span style="color:#FFAB70"> object</span><span style="color:#F97583"> =></span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> Date</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> e)   </span><span style="color:#F97583">------------></span><span style="color:#F97583"> function</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">typeof</span><span style="color:#FFAB70"> f</span><span style="color:#E1E4E8">)   ------------> </span><span style="color:#B392F0">function</span></span></code></pre>
+<h3 id="instanceof">instanceof</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p><em>后面一定要是对象类型，并且大小写不能错，该方法适合一些条件选择或分支</em>
+挺好用的，就是要区分大小写，自己写继承类的时候用这个比较好。<br>
+instanceof在对象直接继承和间接继承的都会报true。</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(c </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> Array</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">---------------></span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(d </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> Date</span><span style="color:#E1E4E8">)  </span><span style="color:#F97583">---------------></span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(f </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> Function</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">------------></span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(f </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> function</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">------------></span><span style="color:#79B8FF"> false</span></span></code></pre>
+<p>对象的Symbol.hasInstance属性，指向一个内部方法。当其他对象使用instanceof运算符，判断是否为该对象的实例时，会调用这个方法。比如，foo instanceof Foo在语言内部，实际调用的是<code>Foo[Symbol.hasInstance](foo)</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#E1E4E8">Object[Symbol.hasInstance](a) </span><span style="color:#6A737D">// true</span></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MyClass</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // foo就是[1,2,3]</span></span>
+<span class="line"><span style="color:#E1E4E8">  [Symbol.hasInstance](</span><span style="color:#FFAB70">foo</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> foo </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> Array</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> new</span><span style="color:#B392F0"> MyClass</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// true</span></span></code></pre>
+<h3 id="constructor-构造器">constructor <em>构造器</em></h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(c.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> ===</span><span style="color:#E1E4E8"> Array) </span><span style="color:#F97583">----------></span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(d.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> ===</span><span style="color:#E1E4E8"> Date) </span><span style="color:#F97583">-----------></span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(e.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> ===</span><span style="color:#E1E4E8"> Function) </span><span style="color:#F97583">-------></span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#E1E4E8">注意： constructor 在类继承时会出错</span></span>
+<span class="line"><span style="color:#E1E4E8">eg：</span></span>
+<span class="line"><span style="color:#F97583">      function</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">(){};</span></span>
+<span class="line"><span style="color:#F97583">      function</span><span style="color:#B392F0"> B</span><span style="color:#E1E4E8">(){};</span></span>
+<span class="line"><span style="color:#79B8FF">      A</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> B</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">//A继承自B</span></span>
+<span class="line"><span style="color:#F97583">      var</span><span style="color:#E1E4E8"> aObj </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">      alert</span><span style="color:#E1E4E8">(aobj.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> B</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-----------></span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">      alert</span><span style="color:#E1E4E8">(aobj.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> A</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-----------></span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">// 而instanceof方法不会出现该问题，对象直接继承和间接继承的都会报true：</span></span>
+<span class="line"><span style="color:#B392F0">      alert</span><span style="color:#E1E4E8">(aobj </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> B</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">----------------></span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">      alert</span><span style="color:#E1E4E8">(aobj </span><span style="color:#F97583">instanceof</span><span style="color:#B392F0"> B</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">----------------></span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">// 言归正传，解决construtor的问题通常是让对象的constructor手动指向自己：</span></span>
+<span class="line"><span style="color:#E1E4E8">      aobj.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> A</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">//将自己的类赋值给对象的constructor属性</span></span>
+<span class="line"><span style="color:#B392F0">      alert</span><span style="color:#E1E4E8">(aobj.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> A</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-----------></span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">      alert</span><span style="color:#E1E4E8">(aobj.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> B</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-----------></span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">//基类不会报true了;不过规范一点的话，继承后必须把constructor指向它的父类</span></span></code></pre>
+<h3 id="prototypetostring">prototype.toString</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p><em>大小写不能写错，比较麻烦，但胜在通用</em></p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(a) </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> ‘[object String]’) </span><span style="color:#F97583">-------></span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(b) </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> ‘[object Number]’) </span><span style="color:#F97583">-------></span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(c) </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> ‘[object Array]’) </span><span style="color:#F97583">-------></span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(d) </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> ‘[object Date]’) </span><span style="color:#F97583">-------></span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(e) </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> ‘[object Function]’) </span><span style="color:#F97583">-------></span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(f) </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> ‘[object Function]’) </span><span style="color:#F97583">-------></span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<h2 id="web安全">WEB安全</h2>
+<h3 id="dns欺骗攻击">DNS欺骗攻击</h3>
+<div class="custom-container tip"><p class="custom-container-title">DNS欺骗攻击</p><p>DNS欺骗就是攻击者冒充域名服务器的一种欺骗行为。 原理：如果可以冒充域名服务器，然后把查询的IP地址设为攻击者的IP地址，这样的话，用户上网就只能看到攻击者的主页，而不是用户想要取得的网站的主页了，这就是DNS欺骗的基本原理。DNS欺骗其实并不是真的“黑掉”了对方的网站，而是冒名顶替、招摇撞骗罢了</p></div>
+<p>例如更改电脑的host文件。</p>
+<h3 id="ddos攻击">DDOS攻击</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>分布式拒绝服务(DDoS</p><div></div> Denial of Service)攻击指借助于客户/服务器技术，将多个计算机联合起来作为攻击平台，对一个或多个目标发动DDoS攻击，从而成倍地提高拒绝服务攻击的威力，通过大量互联网流量压倒目标或其周围的基础架构来破坏目标服务器，服务或网络的正常流量。DDoS攻击通过利用多个受损计算机系统作为攻击流量来源来实现有效性。被利用的机器可以包括计算机和其他网络资源，例如物联网设备。从高层次来看，DDoS攻击就像堵塞高速公路的交通堵塞，阻止了常规交通到达其所需的目的地。<p></p><p>由于简历TCP连接需要三次握手，DDOS会大量与服务器建立TCP半开连接（半开连接指的是没有完全三次握手的连接：SYN攻击利用TCP协议三次握手的原理，大量发送伪造源IP的SYN包也就是伪造第一次握手数据包，服务器每接收到一个SYN包就会为这个连接信息分配核心内存并放入半连接队列，如果短时间内接收到的SYN太多，半连接队列就会溢出，操作系统会把这个连接信息丢弃造成不能连接，当攻击的SYN包超过半连接队列的最大值时，正常的客户发送SYN数据包请求连接就会被服务器丢弃，每种操作系统半连接队列大小不一样所以抵御SYN攻击的能力也不一样）</p></div>
+<p><img  loading="lazy" decoding="async" fetchpriority="auto" width="640" height="281" src="/_astro/ddos.DzLVqEqg_2bDnIx.webp" >
+DDoS攻击需要攻击者控制在线计算机网络才能进行攻击。计算机和其他计算机（如物联网设备）感染了恶意软件，将每个计算机转变为机器人（或僵尸）。然后，攻击者可以远程控制僵尸程序组，这称为僵尸网络。</p>
+<h3 id="xss">XSS</h3>
+<p>跨站脚步注入。xss攻击的主要目的是想办法获取目标攻击网站的cookie，因为有了cookie相当于有了session，有了这些信息就可以在任意能接进互联网的PC登陆该网站，并以其他人的身份登陆做破坏。预防措施防止下发界面显示html标签，把&#x3C;/>等符号转义。</p>
+<h3 id="csrf攻击">CSRF攻击</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>CSRF（Cross-site request forgery）跨站请求伪造,跨站点伪装请求。csrf攻击的主要目的是让用户在不知情的情况下攻击自己已登录的一个系统，类似于钓鱼。如用户当前已经登陆了邮箱或bbs，同时用户又在使用另外一个，已经被你控制的网站，我们姑且叫它钓鱼网站。这个网站上面可能因为某个图片吸引你，你去点击一下，此时可能就会触发一个js的点击事件，构造一个bbs发帖的请求，去往你的bbs发帖，由于当前你的浏览器状态已经是登陆状态，所以session登陆cookie信息都会跟正常的请求一样，纯天然的利用当前的登陆状态，让用户在不知情的情况下，帮你发帖或干其他事情。预防措施，请求加入随机数，让钓鱼网站无法正常伪造请求。</p></div>
+<p><a href="https://www.bilibili.com/video/av33502871?from=search&#x26;seid=1913949786887349692">CSRF攻击和防御</a></p>
+<h3 id="syn-flooding攻击">SYN Flooding攻击</h3>
+<div class="custom-container tip"><p class="custom-container-title">SYN Flooding攻击</p><p>由于 TCP基于连接的，为了在服务端和客户端之间传送TCP数据，必须先建立一个虚拟电路，也就是TCP连接，建立TCP连接的过程也就是我们熟悉的“三次握手”过程：首先，请求端（客户端）发送一个包含SYN标志的TCP报文，表示客户端欲发起通信连接；第二步，服务器在收到客户端的SYN报文后，将返回一个SYN+ACK的报文，表示客户端的请求被接受；第三步，客户端也返回一个确认报文ACK给服务器端，到此一个TCP连接完成。问题就出在TCP连接的三次握手中，假设一个用户向服务器发送了SYN报文后突然死机或掉线，那么服务器在发出SYN+ACK应答报文后是无法收到客户端的ACK报文的，这种情况下服务器端一般会重试（再次发送SYN+ACK给客户端）并等待一段时间后丢弃这个未完成的连接，这段时间的长度我们称为SYN Timeout，一般来说这个时间是分钟的数量级（大约为30秒-2分钟）；如果有一个恶意的攻击者大量模拟这种情况，服务器端将为了维护一个非常大的半连接列表而消耗非常多的资源，最终导致服务器端忙于处理攻击者伪造的 TCP 连接请求而无暇理睬客户的正常请求，此时从正常客户的角度看来，服务器失去响应，这种情况我们称作：服务器端受到了SYN Flooding攻击。</p></div>
+<h2 id="dom事件中targetcurrenttarget的区别">dom事件中target，currentTarget的区别</h2>
+<p>target</p><div></div><br>
+currentTarget<div></div><p></p>
+<h2 id="vue的双向绑定">vue的双向绑定</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>Object.defineProperty的getter和setter机制</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">//object.defineProperty()</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> obj </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Object</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(obj,</span><span style="color:#9ECBFF">'name'</span><span style="color:#E1E4E8">,{</span></span>
+<span class="line"><span style="color:#B392F0">    get</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">        console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'get it'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> value;</span><span style="color:#6A737D">//必须return一个值，作为name属性的值</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#B392F0">    set</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">newvalue</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'set it'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newvalue;</span><span style="color:#6A737D">//同步把value的值进行更新</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(obj);</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(obj.name);</span><span style="color:#6A737D">//get it</span></span>
+<span class="line"><span style="color:#E1E4E8">obj.name </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1234</span><span style="color:#E1E4E8">;</span><span style="color:#6A737D">//set it</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(obj.name);</span><span style="color:#6A737D">//get it</span></span></code></pre>
+<p>Vue3.0更新后，用ES6的proxy代替了Object.defineProperty。</p>
+<h2 id="arrayprototypesort">Array.prototype.sort</h2>
+<p>Google Chrome 对 sort 做了特殊处理，对于长度 &#x3C;= 10 的数组使用的是插入排序(稳定排序算法) ，length >10 的数组使用的是快速排序。快速排序是不稳定的排序算法。</p>
+<p><a href="https://segmentfault.com/a/1190000010648740">详解文章</a></p>
+<h2 id="闭包">闭包</h2>
+<div class="custom-container tip"><p class="custom-container-title">闭包</p><p>变量的作用域与非就是两种：全局变量、局部变量<br>
+函数内部可以直接读取全局变量<br>
+作用：使私有变量（局部变量）能够转换被多个函数共享，而不被能解析器从内存中释放掉</p></div>
+<h2 id="编写一个javascript函数传入一个数组对数组中的元素进行去重并返回一个无重复元素的数组数组的元素可以是数字字符串数组和对象举例说明">编写一个Javascript函数，传入一个数组，对数组中的元素进行去重并返回一个无重复元素的数组，数组的元素可以是数字、字符串、数组和对象。举例说明：</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><ol>
+<li>如传入的数组元素为[123, “meili”, “123”, “mogu”, 123],则输出：[123, “meili”, “123”, “mogu”]</li>
+<li>如传入的数组元素为[123, [1, 2, 3], [1, “2”, 3], [1, 2, 3], “meili”],则输出：[123, [1, 2, 3], [1, “2”, 3], “meili”]</li>
+<li>如传入的数组元素为[123, {a: 1}, {a: {b: 1}}, {a: “1”}, {a: {b: 1}}, “meili”],则输出：[123, {a: 1}, {a: {b: 1}}, {a: “1”}, “meili”]</li>
+</ol></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">Array</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">unique</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> hash </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Map</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> result </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> item</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">[i]))</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">[i]) </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> '[object Object]'</span></span>
+<span class="line"><span style="color:#F97583">      ||</span><span style="color:#79B8FF"> Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">[i]) </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> '[object Array]'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      item </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">[i])</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      item </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">[i]</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">hash.</span><span style="color:#B392F0">has</span><span style="color:#E1E4E8">(item)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      hash.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(item, </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">      result.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">[i])</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> result</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="和运算符判断相等的流程是怎样的">===和==运算符判断相等的流程是怎样的</h2>
+<h3 id="">===</h3>
+<ul>
+<li>如果两个值不是相同类型，它们不相等</li>
+<li>如果两个值都是null或者都是undefined，它们相等</li>
+<li>如果两个值都是布尔类型true或者都是false，它们相等</li>
+<li>如果其中有一个是NaN，它们不相等</li>
+<li>如果都是数值型并且数值相等，他们相等， -0等于0</li>
+<li>如果他们都是字符串并且在相同位置包含相同的16位值，他它们相等；</li>
+<li>如果在长度或者内容上不等，它们不相等；两个字符串显示结果相同但是编码不同==和===都认为他们不相等</li>
+<li>如果他们指向相同对象、数组、函数，它们相等；如果指向不同对象，他们不相等</li>
+</ul>
+<h3 id="-1">==</h3>
+<ul>
+<li>如果两个值类型相同，按照===比较方法进行比较</li>
+<li>如果类型不同，使用如下规则进行比较</li>
+<li>如果其中一个值是null，另一个是undefined，它们相等</li>
+<li>如果一个值是数字另一个是字符串，将字符串转换为数字进行比较</li>
+<li>如果有布尔类型，将true转换为1，false转换为0，然后用==规则继续比较</li>
+<li>如果一个值是对象，另一个是数字或字符串，将对象转换为原始值然后用==规则继续比较</li>
+<li>其他所有情况都认为不相等</li>
+</ul>
+<h3 id="objectjs和">Object.js和===</h3>
+<p>Object.is() 判断两个值是否相同。如果下列任何一项成立，则两个值相同：</p>
+<ul>
+<li>两个值都是<code>undefined</code></li>
+<li>两个值都是null</li>
+<li>两个值都是<code>true</code>或都是<code>false</code></li>
+<li>两个值是由相同个数的字符相同的顺序组成的字符串</li>
+<li>两个值指向同一个对象</li>
+<li>两个值都是数字并且</li>
+<li>都是正零<code>+0</code></li>
+<li>都是正零<code>-0</code></li>
+<li>都是<code>NaN</code></li>
+<li>都是除零和NaN外的</li>
+</ul>
+<p>结论：</p>
+<p>这与 === 运算符的判定方式也不一样。=== 运算符（和== 运算符）将数字值 -0 和 +0 视为相等，并认为 Number.NaN 不等于 NaN。</p>
+<h2 id="asyncawait">async/await</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>为什么要使用async/await，常用promise（当你没有彻底理解promise，请先看这篇文章）的人都知道每次都需要写<code>new Promise()</code>，代码整体看起来没那么优雅，但是两个作用都是一样的，都是处理异步操作。</p></div>
+<p>先看一段Promise的用法</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> timeout</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">ms</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">	return</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">		setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">			console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'timeout'</span><span style="color:#E1E4E8">,ms)</span></span>
+<span class="line"><span style="color:#B392F0">			resolve</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'我是传递的信息'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">		}, ms);</span></span>
+<span class="line"><span style="color:#E1E4E8">	});</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> print</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">ms</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">	return</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">		timeout</span><span style="color:#E1E4E8">(ms).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">v</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">			resolve</span><span style="color:#E1E4E8">(v)</span></span>
+<span class="line"><span style="color:#E1E4E8">		})</span></span>
+<span class="line"><span style="color:#E1E4E8">	});</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">print</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'hello'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2000</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">v</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">	console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'print'</span><span style="color:#E1E4E8">, v)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>两秒后出现输出一下结果:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>timeout 2000</span></span>
+<span class="line"><span>print 我是传递的信息</span></span></code></pre>
+<p>现在我们用async来代替上面print函数的代码</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> timeout</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">ms</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">	return</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">		setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">			console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'timeout'</span><span style="color:#E1E4E8">,ms)</span></span>
+<span class="line"><span style="color:#B392F0">			resolve</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'我是传递的信息'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">		}, ms);</span></span>
+<span class="line"><span style="color:#E1E4E8">	});</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">async</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> print</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">ms</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">	let</span><span style="color:#E1E4E8"> msg </span><span style="color:#F97583">=</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> timeout</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2000</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">	return</span><span style="color:#E1E4E8"> msg</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">print</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'hello'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2000</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">v</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">	console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'print'</span><span style="color:#E1E4E8">, v)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>输出的结果和执行的过程都是一样的，但是代码简便了很多</p>
+<h2 id="null--undefined">null &#x26;&#x26; undefined</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>在JavaScript规范中提到，要比较比较相等之前，不能将nullundefined转换成其他任何值，并且规定null和undefined是相等。null和undefined都代表无效的值。</p></div>
+<p>全等于状态下，是false，这个很好理解了。它们不属于同一类型数据。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">( </span><span style="color:#79B8FF">undefined</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8"> ) </span><span style="color:#6A737D">// false</span></span>
+<span class="line"><span style="color:#F97583">typeof</span><span style="color:#79B8FF"> null</span><span style="color:#6A737D">        //object</span></span>
+<span class="line"><span style="color:#F97583">typeof</span><span style="color:#79B8FF"> undefined</span><span style="color:#6A737D">       //undefined</span></span></code></pre>
+<h2 id="number--parseint--parsefloat">Number &#x26;&#x26; parseInt &#x26;&#x26; parseFloat</h2>
+<h3 id="number">Number</h3>
+<p>如果是Boolean值，true和false值将分别被转换为1和0。<br>
+如果是数字值，只是简单的传入和返回。<br>
+如果是null值，返回0。<br>
+如果是undefined，返回NaN。<br>
+如果是字符串：<br></p>
+<ul>
+<li>如果字符串中只包含数字时，将其转换为十进制数值，即“1”变成1，“123”变成123，而“011”会变成11</li>
+<li>如果字符串中包含有效的浮点格式，如“1.1”，则将其转换为对应的浮点数值</li>
+<li>如果字符串中包含有效的十六进制格式，例如“0xf”，则将其转换为相同大小的十进制整数值</li>
+<li>如果字符串是空的（不包含任何字符），则将其转换为0</li>
+<li>如果字符串中包含除上述格式之外的字符，则将其转换成NaN</li>
+</ul>
+<h3 id="parseint">parseInt</h3>
+<p>在转换字符串时，更多的是看是否符合数值模式。会忽略字符串前面的空格，直至找到第一个非空格字符。</p>
+<ul>
+<li>如果第一个字符不是数字字符或负号，<code>parseInt()</code>就会返回NaN，也就是说用<code>parseInt()</code>转换空字符时会返回NaN</li>
+<li>如果第一个字符串是数字字符，parseInt()会继续解析第二个字符，直到解析完所有后续字符或者遇到一个非数字字符。例如，“123blue”会被转换为123，因为“blue”会被完全忽略，类似低“22.5”会被转换成22，因为小数点不是有效数字字符</li>
+<li>如果字符串以“0x”开头且后跟数字字符，就会将其当作一个十六进制整数</li>
+<li>如果字符串以“0”开头且后跟数字字符，就会将其当作一个八进制整数</li>
+<li>parseInt()函数增加了第二参数用于指定转换时使用的基数（即多少进制）
+<code>parseInt("10",16)//按十六进制解析</code>
+<code>parseInt("10",8)//按八进制解析</code></li>
+</ul>
+<h3 id="parsefloat">parseFloat</h3>
+<p>与parseInt类似，parseFloat也是con第一个字符开始解析每个字符，而且也是一直解析到字符串末尾，或者解析到遇见一个无效的浮点数字字符。也就是说，字符串的第一个小数点是有效的，而第二个小数点就是无效的，因此它后面的字符串将被忽略。例如“22.34.5”将会转换为22.34。<br>
+除了第一个小数点有效之外，parseFloat与parseInt的第二个区别在与它始终都会忽略前导的零。<br>
+parseFloat()只解析十进制值，因此它没有用第二个参数指定基数的用法。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> num1</span><span style="color:#F97583">=</span><span style="color:#B392F0">parseFloat</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"1234blue"</span><span style="color:#E1E4E8">);  </span><span style="color:#6A737D">//1234</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> num2</span><span style="color:#F97583">=</span><span style="color:#B392F0">parseFloat</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"0xA"</span><span style="color:#E1E4E8">);                  </span><span style="color:#6A737D">//0</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> num3</span><span style="color:#F97583">=</span><span style="color:#B392F0">parseFloat</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"0908.5"</span><span style="color:#E1E4E8">);      </span><span style="color:#6A737D">//908.5</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> num4</span><span style="color:#F97583">=</span><span style="color:#B392F0">parseFloat</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"3.125e7"</span><span style="color:#E1E4E8">);             </span><span style="color:#6A737D">//31250000</span></span></code></pre>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>ECMAScript定义了isNaN()函数。这个函数接受一个参数，该参数可以是任何类型，而函数会帮我们确定这个参数是否“不是数值”。isNaN()在接收到一个值之后，会尝试将这个值转换为数值。不能转换为数值的参数会返回true。</p></div>
+<h2 id="event-loop">Event Loop</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>在<code>JavaScript</code>中，任务被分为两种，一种宏任务（MacroTask）也叫Task，一种叫微任务（MicroTask）。JS会创建一个类似while(true)的循环，每执行一次循环体的过程称之为Tick。每次Tick的过程就是查看是否有待处理事件，如果有则取出相关事件及回调函数放入执行栈中有主线程执行。待处理的事件会存储在一个任务队列中，也就是每次Tick会查看任务队列中是否有需要执行的任务。</p><p>异步操作会将相关回调添加到任务队列中。而不同的异步操作添加到任务队列的时机也不同，如onClick、setTimeout、ajax处理的方式都不同，这些异步操作是由浏览器内核的<code>webcore</code>来执行的，<code>webcore</code>包含<code>DOM Binding</code>、<code>network</code>、<code>timer</code>模块</p><p>比如: onClick由浏览器内核的DOM Binding模块来处理，当事件触发的时候，回调函数会立即添加到任务队列中。</p></div>
+<h3 id="macrotask宏任务">MacroTask（宏任务）</h3>
+<p><code>script</code>全部代码、setTimeout、setINterval、I/0、UI Rendering、setImmediate</p>
+<h3 id="microtask微任务">MicroTask（微任务）</h3>
+<p>Process.nextTick（Node独有）、Promise、MutationObserver（具体使用方式<a href="http://javascript.ruanyifeng.com/dom/mutationobserver.html">查看</a>）</p>
+<h3 id="浏览器中的event-loop">浏览器中的Event Loop</h3>
+<p>JS有一个<code>main thread</code>主线程和<code>call-stack</code>调用栈（执行栈），所有的任务都会被放到调用栈等待主线程执行。</p>
+<h3 id="js调用栈">JS调用栈</h3>
+<p>JS调用栈采用的是后进先出的规则，当函数执行的时候，会被添加到栈的顶部，当执行栈执行完成后，就会从栈顶移出，直到栈内被清空。
+<img  loading="lazy" decoding="async" fetchpriority="auto" width="636" height="518" src="/_astro/event_loop1.DTf7re3J_Z14c2Gp.webp" ></p>
+<h3 id="同步任务和异步任务">同步任务和异步任务</h3>
+<p><code>JS</code>单线程任务被分为同步任务和异步任务，同步任务会在调用栈按照顺序等待主线程依次执行，异步任务会在异步任务有了结果后，将注册的回调函数放入任务队列中等待主线程空闲的时候（调用栈被清空），被读取到栈内等待主线程的执行。</p>
+<p>任务队列<code>Task Queue</code>，是一种先进先出的数据结构。
+<img  loading="lazy" decoding="async" fetchpriority="auto" width="800" height="669" src="/_astro/event_loop2.Db2GqhZE_Z3E2Jy.webp" ></p>
+<ul>
+<li>选择当前要执行的任务队列，选择任务队列中最先进进入的任务，如果任务队列为空时，则执行跳转到微任务(MicroTask)的执行步骤。</li>
+<li>将事件循环中的任务设置为已选择任务。</li>
+<li>执行任务</li>
+<li>将事件循环中当前运行任务设置null</li>
+<li>将已经运行完成的任务从任务队列在删除。</li>
+<li>MicroTasks步骤：进入MicroTask检查点</li>
+<li>更新页面渲染（人工赋值）</li>
+<li>返回第一步
+<strong>举个例子</strong></li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'script start'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'setTimeout'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'promise1'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'promise2'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'script end'</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>打印结果：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>script start =》 先执行宏任务中script</span></span>
+<span class="line"><span>script end =》 先执行宏任务中script</span></span>
+<span class="line"><span>promise1 =》 再执行微任务中的promise,执行完又将then推到微任务</span></span>
+<span class="line"><span>promise2  =》 检查微任务队列，再次执行微任务</span></span>
+<span class="line"><span>setTimeout =》 微任务为空回来执行宏任务</span></span></code></pre>
+<p><strong>再来看个例子</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'script start'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'setTimeout'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'promise1'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'promise2'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#79B8FF">Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'promise11'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'promise22'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'script end'</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>打印结果：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>script start =》 先执行宏任务中script</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>script end =》 先执行宏任务中script</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>promise1 =》 再执行微任务中的promise，然后将then再次推到微任务队列</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>promise11 =》 promise11在promise2的前面是因为，执行完promise1才会执行then，而promise11是一开始就和promise1一起放在微任务队列的</span></span>
+<span class="line"><span>promise2</span></span>
+<span class="line"><span>promise22</span></span>
+<span class="line"><span>setTimeout =》 微任务为空回来执行宏任务</span></span></code></pre>
+<p><strong>再来看个例子</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> onePromise </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'请求数据...'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">  setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    reject</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#6A737D">// 同步代码执行到这里时 twoPromise的状态为pending</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> twoPromise</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> onePromise.</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">res</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(myPromise)</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">twoPromise.</span><span style="color:#B392F0">catch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">error</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'catch'</span><span style="color:#E1E4E8">, error)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">onePromise.</span><span style="color:#B392F0">catch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">error</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'another'</span><span style="color:#E1E4E8">, error)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>代码从头执行到尾：</p>
+<ol>
+<li>执行到<code>new Promise</code>时直接里面的函数，打印<code>console.log('请求数据...')</code>，将<code>setTimeout</code>放入<code>宏队列</code>[‘setTimeout’]</li>
+<li>执行<code>onePromise.then</code>，将函数放入onePromise的resolve状态队列中</li>
+<li>执行到<code>twoPromise.catch</code>，将函数放入twoPromise的reject状态队列中</li>
+<li>执行到<code>onePromise.catch</code>，将函数放入onePromise的reject状态队列中</li>
+<li>执行宏任务队列中[‘setTimeout’]的setTimeout，执行reject(1)，</li>
+<li>导致<code>onePromise</code>状态改变为rejected，执行reject状态队列，也就是执行<code>onePromise.catch</code>，把<code>console.log('another', error)</code>放入微队列中，此时twoPromise的状态也随着onePromise的改变过渡过来，</li>
+<li>twoPromise的状态改变后触发reject状态队列，把<code>twoPromise.catch</code>放入微队列中。</li>
+<li>执行微队列中的任务
+执行结果：</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">请求数据</span><span style="color:#F97583">...</span></span>
+<span class="line"><span style="color:#E1E4E8">another </span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#F97583">catch</span><span style="color:#79B8FF"> 1</span></span></code></pre>
+<h2 id="形参默认参数">形参&#x26;&#x26;默认参数</h2>
+<p>函数作用域里面优先找变量</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> data</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {test:</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> test</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">data</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(data)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">test</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// undefined</span></span></code></pre>
+<p><code>data={...data}</code>相当于<code>let a = a</code>导致定义<code>a</code>变量时同时赋值<code>a</code>变量所以会报错</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> data</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {test:</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> test</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">data</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">data}) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(data)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">test</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// {...data} => data is not defined</span></span></code></pre>
+<p>默认参数相当于是赋值，向上函数外面寻找变量</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> data</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {test:</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> test</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">x</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">data}) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    conso</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(x)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">test</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// { test: 1 }</span></span></code></pre>
+<h2 id="js中的捕获和冒泡">JS中的捕获和冒泡</h2>
+<div class="custom-container tip"><p class="custom-container-title">Dom事件流</p><p>don事件流分成三个阶段：</p><p>捕获阶段：通过从目标的祖先中的事件对象传播窗口到目标的父。此阶段也称为捕获阶段。</p><p>目标阶段：本次活动对象到达事件对象的事件的目标。此阶段也称为目标阶段。如果事件类型指示事件不会冒泡，则事件对象将在此阶段完成后停止。</p><p>气泡阶段：通过以相反的顺序目标的祖先中的事件对象传播，开始与目标的父和与所述结束窗口。此阶段也称为冒泡阶段。</p></div>
+<p>捕获阶段：首先只有在<code>addEventListener</code>的第三个参数为true时才能触发事件捕获，从当前设置的true的元素，一直往下找并且触发同类型事件。</p>
+<p>目标阶段： 捕获一直往下找，直到当前点击的元素。</p>
+<p>冒泡阶段：执行完目标本身事件后就开始冒泡阶段，冒泡事件是比较常见的，因为默认<code>addEventListener</code>的第三个参数为false，所以平常的所写的ele.onclick事件都是默认冒泡的，冒泡就是从当前点击的元素一级一级往上同类型的事件并且触发。</p>
+<p>看个例子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"div1"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"div2"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"button1"</span><span style="color:#E1E4E8">>click me&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">    　　var</span><span style="color:#E1E4E8"> div </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"div1"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">      var</span><span style="color:#E1E4E8"> btn </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"button1"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">      var</span><span style="color:#E1E4E8"> div2 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8">  document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"div2"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      div.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"click"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {  </span><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"1 div1"</span><span style="color:#E1E4E8">); }, </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      div.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"click"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () { </span><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"2 div1"</span><span style="color:#E1E4E8">); }, </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      div2.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"click"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () { </span><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"1 div2"</span><span style="color:#E1E4E8">); }, </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      btn.</span><span style="color:#B392F0">onclick</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#B392F0">        alert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"1 button"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">      btn.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"click"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () { </span><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"2 button"</span><span style="color:#E1E4E8">); }, </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<div class="custom-container tip"><p class="custom-container-title">点击按钮后，结果：</p><p>捕获阶段：1 div1
+目标阶段：1 button -> 2 button
+冒泡阶段：1 div2 -> 2 div1</p></div>
+<p>让我们再改改<code>addEventListener</code>的第三个参数:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"div1"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"div2"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> id</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"button1"</span><span style="color:#E1E4E8">>click me&#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#F97583">    　var</span><span style="color:#E1E4E8"> div </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"div1"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">      var</span><span style="color:#E1E4E8"> btn </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"button1"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">      var</span><span style="color:#E1E4E8"> div2 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8">  document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"div2"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      div.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"click"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {  </span><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"1 div1"</span><span style="color:#E1E4E8">); }, </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      div.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"click"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () { </span><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"2 div1"</span><span style="color:#E1E4E8">); }, </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      div2.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"click"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () { </span><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"1 div2"</span><span style="color:#E1E4E8">); }, </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      btn.</span><span style="color:#B392F0">onclick</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#B392F0">        alert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"1 button"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">      btn.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"click"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () { </span><span style="color:#B392F0">alert</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"2 button"</span><span style="color:#E1E4E8">); }, </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+<div class="custom-container tip"><p class="custom-container-title">点击按钮后，结果：</p><p>捕获阶段：1 div1 -> 1 div2
+目标阶段：1 button -> 2 button  // 到了目标阶段，也就是<code>target</code>本身，不管<code>useCapture</code>是否为true，都不能提升代码中顺序事件的触发
+冒泡阶段：2 div1</p></div>
+<h2 id="seal--freeze--preventextensions">seal &#x26;&#x26; freeze &#x26;&#x26; preventExtensions</h2>
+<h3 id="objectseal">Object.seal</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p><code>Object.seal</code>方法可以密封对象，从而防止向其添加新属性，并将所有现有属性标记为<strong>不可配置</strong>，只要可写，当前属性的值仍可以更改。所以还是可以在<code>__proto__</code>添加属性。</p></div>
+<p>返回值:
+被密封的对象。
+例子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> object1</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  property1: </span><span style="color:#79B8FF">42</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">seal</span><span style="color:#E1E4E8">(object1);</span></span>
+<span class="line"><span style="color:#E1E4E8">object1.property1 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 33</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(object1.property1);</span></span>
+<span class="line"><span style="color:#6A737D">// expected output: 33</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">delete</span><span style="color:#E1E4E8"> object1.property1; </span><span style="color:#6A737D">// cannot delete when sealed</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(object1.property1);</span></span>
+<span class="line"><span style="color:#6A737D">// expected output: 33</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> bb </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Object</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">seal</span><span style="color:#E1E4E8">(bb)</span></span>
+<span class="line"><span style="color:#E1E4E8">bb.</span><span style="color:#79B8FF">__proto__</span><span style="color:#E1E4E8">.test </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.test)</span></span>
+<span class="line"><span style="color:#6A737D">//expected output: 1</span></span></code></pre>
+<h3 id="objectfreeze">Object.freeze</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>冻结的对象无法再更改。冻结对象可防止向其添加新属性、删除现有属性、更改现有属性的可枚举性，可配置或可写性、更改现有属性的值。之外，冻结对象还可以防止更改其原型（<code>__proto__</code>不能被更改）。</p></div>
+<p>返回值:<br>
+被冻结的对象（与传入值一样）。<br>
+例子：<br></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> obj</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  prop: </span><span style="color:#79B8FF">42</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">getOwnPropertyDescriptor</span><span style="color:#E1E4E8">(obj, </span><span style="color:#9ECBFF">'prop'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">// expected output:</span></span>
+<span class="line"><span style="color:#6A737D">// configurable: true</span></span>
+<span class="line"><span style="color:#6A737D">// enumerable: true</span></span>
+<span class="line"><span style="color:#6A737D">// value: 42</span></span>
+<span class="line"><span style="color:#6A737D">// writable: true</span></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">freeze</span><span style="color:#E1E4E8">(obj);</span></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">getOwnPropertyDescriptor</span><span style="color:#E1E4E8">(obj, </span><span style="color:#9ECBFF">'prop'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">// expected output:</span></span>
+<span class="line"><span style="color:#6A737D">// configurable: false</span></span>
+<span class="line"><span style="color:#6A737D">// enumerable: true</span></span>
+<span class="line"><span style="color:#6A737D">// value: 42</span></span>
+<span class="line"><span style="color:#6A737D">// writable: false</span></span>
+<span class="line"><span style="color:#E1E4E8">obj.prop </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 33</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">// Throws an error in strict mode</span></span>
+<span class="line"><span style="color:#E1E4E8">obj.test </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(obj.test)</span></span>
+<span class="line"><span style="color:#6A737D">// expected output: undefined</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(obj.prop);</span></span>
+<span class="line"><span style="color:#6A737D">// expected output: 42</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">obj.</span><span style="color:#79B8FF">__proto__</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {test:</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// expected output: Uncaught TypeError: #&#x3C;Object> is not extensible</span></span></code></pre>
+<h3 id="objectpreventextensions">Object.preventExtensions</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>防止将新属性添加到对象</p></div>
+<p>例子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> object1</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">preventExtensions</span><span style="color:#E1E4E8">(object1);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(object1, </span><span style="color:#9ECBFF">'property1'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">    value: </span><span style="color:#79B8FF">42</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (e) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(e);</span></span>
+<span class="line"><span style="color:#6A737D">  // Expected output: TypeError: Cannot define property property1, object is not extensible</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="结论">结论</h3>
+<ul>
+<li>Object.seal: 防止向其添加新属性，并将所有现有属性标记为不可配置</li>
+<li>Object.freeze: 止向其添加新属性、删除现有属性、更改现有属性的可枚举性，可配置或可写性、更改现有属性的值,<code>__proto__</code>也不让更改</li>
+<li>Object.preventExtensions: 防止向其添加新属性</li>
+</ul>
+<p>那么可以用<code>Object.isExtensible()</code>判断是否可以为其添加新属性，不要是不可扩展的就会返回<code>false</code></p>
+<h2 id="伪类伪元素">伪类&#x26;&#x26;伪元素</h2>
+<h3 id="伪类">伪类</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><ol>
+<li>伪类存在的意义是为了通过选择器找到那些不存在与DOM树中的信息以及不能被常规CSS选择器获取到的信息。</li>
+<li>伪类由一个冒号<div></div>，冒号后面是伪类的名称和包含在圆括号中的可选参数。</li>
+<li>任何常规选择器可以再任何位置使用伪类。伪类语法不区别大小写。一些伪类的作用会互斥，另外一些伪类可以同时被同一个元素使用。并且，为了满足用户在操作DOM时产生的DOM结构改变，伪类也可以是动态的。</li>
+</ol></div>
+<h3 id="伪元素">伪元素</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><ol>
+<li>伪元素在DOM树中创建了一些抽象元素，这些抽象元素是不存在于文档语言里的，比如：document接口不提供访问元素内容的第一个字或者第一行的机制，而伪元素可以使开发者可以提取到这些信息。并且，一些伪元素可以使开发者获取到不存在于源文档中的内容（比如常见的::before,::after）。</li>
+<li>伪元素的由两个冒号::开头，然后是伪元素的名称。</li>
+<li>使用两个冒号<code>::</code>是为了区别伪类和伪元素（CSS2中并没有区别）。当然，考虑到兼容性，CSS2中已存的伪元素仍然可以使用一个冒号<code>:</code>的语法，但是CSS3中新增的伪元素必须使用两个冒号<code>::</code>。</li>
+</ol></div>
+<h2 id="jsonparse">JSON.parse</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>参数:</p><ol>
+<li>text： 要被解析成JavaScript值的字符串，关于JSON的语法格式</li>
+<li>reviver：转换器, 如果传入该参数(函数)，可以用来修改解析生成的原始值，调用时机在parse函数返回之前。注意：解析值本身以及它所包含的所有属性，会按照一定的顺序（从最最里层的属性开始，一级级往外，最终到达顶层，也就是解析值本省）</li>
+</ol></div>
+<p>例子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'[1, 2, 3, 4]'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">k</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">	console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'k'</span><span style="color:#E1E4E8">, k, </span><span style="color:#9ECBFF">'v'</span><span style="color:#E1E4E8">,v)</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8">(k </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> v;     </span><span style="color:#6A737D">// 如果到了最顶层，则直接返回属性值，</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> v </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;              </span><span style="color:#6A737D">// 否则将属性值变为原来的 2 倍。</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#6A737D">// Expected output</span></span>
+<span class="line"><span style="color:#6A737D">// k 0 v 1</span></span>
+<span class="line"><span style="color:#6A737D">// 2 k 1 v 2</span></span>
+<span class="line"><span style="color:#6A737D">// 2 k 2 v 3</span></span>
+<span class="line"><span style="color:#6A737D">// 2 k 3 v 4</span></span>
+<span class="line"><span style="color:#6A737D">// 2 k  v (4) [2, 4, 6, 8]</span></span>
+<span class="line"><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'{"p": 5}'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">k</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">	console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'k'</span><span style="color:#E1E4E8">, k, </span><span style="color:#9ECBFF">'v'</span><span style="color:#E1E4E8">,v)</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8">(k </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> v;     </span><span style="color:#6A737D">// 如果到了最顶层，则直接返回属性值，</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> v </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;              </span><span style="color:#6A737D">// 否则将属性值变为原来的 2 倍。</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#6A737D">// Expected output</span></span>
+<span class="line"><span style="color:#6A737D">// k p v 5</span></span>
+<span class="line"><span style="color:#6A737D">// 2 k  v {p: 10}</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span><span style="color:#B392F0">p</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'{"p":{"test":1}}'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">k</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">	console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'k'</span><span style="color:#E1E4E8">, k, </span><span style="color:#9ECBFF">'v'</span><span style="color:#E1E4E8">,v)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> v;</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#6A737D">// Expected output</span></span>
+<span class="line"><span style="color:#6A737D">// k test v 1</span></span>
+<span class="line"><span style="color:#6A737D">// k p v {test: 1}</span></span>
+<span class="line"><span style="color:#6A737D">// k  v p: {test: 1}</span></span></code></pre>
+<h2 id="jsonstringify">JSON.stringify</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>参数：</p><ol>
+<li>value：将要序列化成一个JSON字符串的值</li>
+<li>replacer(可选)：如果该参数是一个函数，则在序列化过程中，被序列化的值的每个属性都会经过该函数的转换和处理；如果该参数是一个数组，则只有包含在这个数组中的属性名才会被序列化到最终的 JSON 字符串中；如果该参数为null或者未提供，则对象所有的属性都会被序列化；</li>
+<li>space(可选)：指定缩进用的空白字符串，用于美化输出（pretty-print）；如果参数是个数字，它代表有多少的空格；上限为10。该值若小于1，则意味着没有空格。如果该参数没有提供（或者为null）将没有空格。</li>
+</ol></div>
+<p>例子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> replacer</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'key'</span><span style="color:#E1E4E8">, key, </span><span style="color:#9ECBFF">'value'</span><span style="color:#E1E4E8">, value)</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> foo </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { foundation: </span><span style="color:#9ECBFF">"Mozilla"</span><span style="color:#E1E4E8">, model: </span><span style="color:#9ECBFF">"box"</span><span style="color:#E1E4E8">, month: </span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(foo, replacer)</span></span>
+<span class="line"><span style="color:#6A737D">// 可以看出来JSON.stringify是从外层向内层进行遍历的，而JSON.parse是从最内层开始往外遍历</span></span>
+<span class="line"><span style="color:#6A737D">// Expected output</span></span>
+<span class="line"><span style="color:#6A737D">// key  value { foundation: 'Mozilla', model: { test: 1 }, month: 7 }</span></span>
+<span class="line"><span style="color:#6A737D">// key foundation value Mozilla</span></span>
+<span class="line"><span style="color:#6A737D">// key model value { test: 1 }</span></span>
+<span class="line"><span style="color:#6A737D">// key test value 1</span></span>
+<span class="line"><span style="color:#6A737D">// key month value 7</span></span></code></pre>
+<p>如果replacer是一个数组，数组的值代表将被序列化成JSON字符串的属性名。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> replacer </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#9ECBFF">'foundation'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'model'</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> foo </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { foundation: </span><span style="color:#9ECBFF">"Mozilla"</span><span style="color:#E1E4E8">, model: </span><span style="color:#9ECBFF">"box"</span><span style="color:#E1E4E8">, month: </span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(foo, replacer))</span></span>
+<span class="line"><span style="color:#6A737D">// 只保留'foundation'和'model'属性值。</span></span>
+<span class="line"><span style="color:#6A737D">// Expected output</span></span>
+<span class="line"><span style="color:#6A737D">// {"foundation":"Mozilla","model":"box"}</span></span></code></pre>
+<p>如果一个被序列化的对象拥有 toJSON 方法，那么该 toJSON 方法就会覆盖该对象默认的序列化行为：不是那个对象被序列化，而是调用 toJSON 方法后的返回值会被序列化</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> obj </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  foo: </span><span style="color:#9ECBFF">'foo'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">  toJSON</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#9ECBFF"> 'bar'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(obj);      </span><span style="color:#6A737D">// '"bar"'</span></span>
+<span class="line"><span style="color:#79B8FF">JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">({x: obj}); </span><span style="color:#6A737D">// '{"x":"bar"}'</span></span></code></pre>
+<h2 id="浏览器缓存">浏览器缓存</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>强缓存：不与服务器沟通，直接拿浏览器本地的缓存使用：expires、Cache-Control</p><div></div>
+协商缓存：与服务器沟通，对比hash或者时间，看看是否要取浏览器本地的数据：ETag,Last-Modify<p></p></div>
+<h3 id="last-modify">Last-Modify</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p><code>Last-Modified</code>是一个响应头部，其中包含源头服务器认定的资源做出修改的日期及时间。 它通常被用作一个验证器来判断接收到的或者存储的资源是否彼此一致。由于精确度比<code>ETag</code>要低（因为日期只能精确到秒，而服务器更改文件可以在一秒内更改多次），所以这是一个备用机制。包含有<code>If-Modified-Since</code>或<code>If-Unmodified-Since</code>首部的条件请求会使用这个字段。
+::
+在server端我们还需要加上头Last-Modified。收到带Last-Modified这个头，下次浏览器发送request就会带上If-Modified-Since或者If-Unmodified-Since，服务器收到这个request的If-Modified-Since后，通过读取它的值对比资源存在的地方的Last-Modified，服务器就告诉浏览器是否可以使用缓存。</p><h3 id="expires">Expires</h3><p>无效的日期，比如 0, 代表着过去的日期，即该资源已经过期。</p><p>如果在Cache-Control响应头设置了 “max-age” 或者 “s-max-age” 指令，那么 Expires 头会被忽略。</p><h3 id="cache-control">Cache-Control</h3><p>经常用的以下指令：</p><h4 id="no-cache">no-cache</h4><p>在发布缓存副本之前，强制要求缓存把请求提交给原始服务器进行验证。比如响应头的<code>ETag</code>和客户端发送的<code>If-None-Match</code>字段互相校验判断是否是304状态。</p><h4 id="no-store">no-store</h4><p>缓存不应存储有关客户端请求或服务器响应的任何内容。就是每次都是请求服务器的数据。</p><h4 id="max-ageseconds">max-age=&#x3C;<code>seconds</code>></h4><p>设置缓存存储的最大周期，超过这个时间缓存被认为过期(单位秒)。与Expires相反，时间是相对于请求的时间。会覆盖Expires属性。</p><h3 id="etag">ETag</h3><div class="custom-container tip"><p class="custom-container-title">提示</p><p>ETagHTTP响应头是资源的特定版本的标识符。这可以让缓存更高效，并节省带宽，因为如果内容没有改变，Web服务器不需要发送完整的响应。而如果内容发生了变化，使用ETag有助于防止资源的同时更新相互覆盖（“空中碰撞”）</p></div></div>
+<p>Etag是一个更加严格的验证，它是根据文件的内容生成Etag（数据签名，最常用做法是对资源内容进行哈希计算），收到带Etag这个头，下次浏览器发送request就会带上If-Match或者If-Non-Match，服务器收到这个request的上If-Match或者If-Non-Match后，通过读取它的值对比资源存在的地方的Etag，服务器就告诉浏览器是否可以使用缓存</p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

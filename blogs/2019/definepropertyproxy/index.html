@@ -1,0 +1,407 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const colorSchemeChange = (e) => {
+      if (e.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        addDarkToClassList()
+      } else {
+        localStorage.setItem(localStorageKey, Light)
+        removeDarkToClassList()
+      }
+    }
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      if (media.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        return Dark
+      }
+      return Light
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2019/definepropertyproxy/"><!-- Primary Meta Tags --><title>DefineProperty和Proxy的响应式</title><meta name="title" content="DefineProperty和Proxy的响应式"><meta name="description" content="基于 DefineProperty 和 Proxy 写两个简单的例子来讲解 Vue2.6 和 Vue-next 的数据响应式"><meta name="author" content="Shanks"><meta name="keywords" content="Vue2.6, 前端, JavaScript"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2019/definepropertyproxy/"><meta property="og:title" content="DefineProperty和Proxy的响应式"><meta property="og:description" content="基于 DefineProperty 和 Proxy 写两个简单的例子来讲解 Vue2.6 和 Vue-next 的数据响应式"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2019-10-31"><meta property="article:tag" content="Vue2.6"><meta property="article:tag" content="前端"><meta property="article:tag" content="JavaScript"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2019/definepropertyproxy/"><meta property="twitter:title" content="DefineProperty和Proxy的响应式"><meta property="twitter:description" content="基于 DefineProperty 和 Proxy 写两个简单的例子来讲解 Vue2.6 和 Vue-next 的数据响应式"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.3X99_b4O.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.DB9bi1E6.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">DefineProperty和Proxy的响应式</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2019-10-31</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">960 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 3 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">Vue2.6</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">前端</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">JavaScript</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <div class="custom-container tip"><p class="custom-container-title">概览</p><p>本文是基于<code>DefineProperty</code>和<code>Proxy</code>写了两个简单的例子来讲解Vue2.6和Vue-next的数据响应式。</p></div>
+<h2 id="从简单开始">从简单开始</h2>
+<p>比如一个单价和数量<code>let price = 5, quantity = 2</code>，算一个总数<code>total</code>，最简单的代码:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 5</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> total </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> quantity</span></span>
+<span class="line"><span style="color:#E1E4E8">    price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`total is ${</span><span style="color:#E1E4E8">total</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// total is 10</span></span></code></pre>
+<p>结果显然是10，但是我们在最后执行的<code>price = 20</code>所以我们想要的效果是40</p>
+<h3 id="抛出问题">抛出问题</h3>
+<p>首先我们需要一些方法来保存这个算出总值的过程，当<code>price</code>或<code>quantity</code>更新时调用这个方法。</p>
+<p>我们可以通过创建一个函数来存储这个过程：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 当price或quantity变化时运行这个函数</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> target</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">  total </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> quantity</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>我们还需要一个栈来保存当数据变换时，需要运行的函数，也就是用来保存target，但是这个例子的<code>target</code>只有一个，不过还可以举个例子：当我们如果需要加个需求的结果是<code>num = price * quantity * 10</code>，这就出现了另一个<code>target</code>，所有storage就是为了保存所有当<code>price</code>或<code>quantity</code>更新时需要调用的函数。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 所有的target都放入这个栈中</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> storage </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> record</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">      storage.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(target)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span></code></pre>
+<p>我们还需要一个函数来执行<code>storage</code>包含的所有<code>target</code>，</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> notify</span><span style="color:#E1E4E8"> (){</span></span>
+<span class="line"><span style="color:#E1E4E8">      storage.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">run</span><span style="color:#F97583"> =></span><span style="color:#B392F0"> run</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span></code></pre>
+<p>好了，下面是完整的代码：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 5</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> total </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> target </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> storage </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> record</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#6A737D">      // 这边是一个target，但是正常来说都是多个target</span></span>
+<span class="line"><span style="color:#E1E4E8">      storage.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(target)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> notify</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">      storage.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">run</span><span style="color:#F97583"> =></span><span style="color:#B392F0"> run</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    target</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> { total </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> quantity }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    record</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#B392F0">    target</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(total) </span><span style="color:#6A737D">// => 10</span></span>
+<span class="line"><span style="color:#B392F0">    notify</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(total) </span><span style="color:#6A737D">// => 40</span></span></code></pre>
+<h3 id="优化">优化</h3>
+<p>看起来貌似比一开始的好一点，但是还可以通过封装类来优化上面的代码，也就是将notify、record、封装成一个可以复用的类。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Dep</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.subs </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#6A737D">  // 实现了上面例子的storage的功能</span></span>
+<span class="line"><span style="color:#B392F0">  depend</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (target </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#F97583"> !</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.subs.</span><span style="color:#B392F0">includes</span><span style="color:#E1E4E8">(target)) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.subs.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(target)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#6A737D">  // 实现了例子的notify功能</span></span>
+<span class="line"><span style="color:#B392F0">  notify</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.subs.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">run</span><span style="color:#F97583"> =></span><span style="color:#B392F0"> run</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>好了，现在利用这个类来实现上面的功能：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Dep</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.subs </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#6A737D">  // 实现了上面例子的storage的功能</span></span>
+<span class="line"><span style="color:#B392F0">  depend</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (target </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#F97583"> !</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.subs.</span><span style="color:#B392F0">includes</span><span style="color:#E1E4E8">(target)) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.subs.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(target)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#6A737D">  // 实现了例子的notify功能</span></span>
+<span class="line"><span style="color:#B392F0">  notify</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.subs.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">run</span><span style="color:#F97583"> =></span><span style="color:#B392F0"> run</span><span style="color:#E1E4E8">())</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 5</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> total </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> target </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> dep</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Dep</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">target</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> { total </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> quantity }</span></span>
+<span class="line"><span style="color:#6A737D">// 记录target</span></span>
+<span class="line"><span style="color:#E1E4E8">dep.</span><span style="color:#B392F0">depend</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#B392F0">target</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`total:${</span><span style="color:#E1E4E8">total</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// => 10</span></span>
+<span class="line"><span style="color:#E1E4E8">price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`total:${</span><span style="color:#E1E4E8">total</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// => 10</span></span>
+<span class="line"><span style="color:#6A737D">// 通知target更新</span></span>
+<span class="line"><span style="color:#E1E4E8">dep.</span><span style="color:#B392F0">notify</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`total:${</span><span style="color:#E1E4E8">total</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// => 40</span></span>
+<span class="line"><span style="color:#E1E4E8">quantity </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span></span>
+<span class="line"><span style="color:#E1E4E8">dep.</span><span style="color:#B392F0">notify</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`total:${</span><span style="color:#E1E4E8">total</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// => 400</span></span></code></pre>
+<p>可以看出，现在不管是<code>price</code>或<code>quantity</code>变换，只要运行一下<code>dep.notify()</code>就可以出发更新。</p>
+<h3 id="再次抛出问题">再次抛出问题</h3>
+<p>就上面讲过的一个问题，变量<code>price</code>或<code>quantity</code>可能对应多个target，比如多一个<code>num = price * quantity * 10</code>，上面的代码就需要在打印前多加三行：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">target</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> { num </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> quantity </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#6A737D">// 记录target</span></span>
+<span class="line"><span style="color:#E1E4E8">dep.</span><span style="color:#B392F0">depend</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#B392F0">target</span><span style="color:#E1E4E8">()</span></span></code></pre>
+<p>所以我们需要一个函数更便捷的保存<code>target</code>到<code>dep.depend</code>的函数：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> watcher</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">myFunc</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      target </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> myFunc </span><span style="color:#6A737D">// 设置为当前的target</span></span>
+<span class="line"><span style="color:#E1E4E8">      dep.</span><span style="color:#B392F0">depend</span><span style="color:#E1E4E8">()       </span><span style="color:#6A737D">// 添加当前target到dep订阅的栈中</span></span>
+<span class="line"><span style="color:#B392F0">      target</span><span style="color:#E1E4E8">()           </span><span style="color:#6A737D">// 调用这个方法，来初始化被响应式的值（total或num）的值</span></span>
+<span class="line"><span style="color:#E1E4E8">      target </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#6A737D">      // 完成订阅和执行后，置为null</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span></code></pre>
+<p>上面的例子的部分代码将变成：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 记录target</span></span>
+<span class="line"><span style="color:#E1E4E8">dep.</span><span style="color:#B392F0">depend</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#B392F0">target</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#6A737D">// =》 变成</span></span>
+<span class="line"><span style="color:#B392F0">watcher</span><span style="color:#E1E4E8">(target)</span></span></code></pre>
+<p>当然，执行的效果是一样的。</p>
+<h3 id="objectdefineproperty让数据可响应式">Object.defineProperty让数据可响应式</h3>
+<p>上面例子的缺陷是每次<code>price</code>或<code>quantity</code>被赋值后需要手动调用<code>dep.notify</code>，这里就需要<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty</a>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { price: </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">, quantity: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(data, </span><span style="color:#9ECBFF">'price'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  get</span><span style="color:#E1E4E8">() {  </span><span style="color:#6A737D">// Create a get method</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`I was accessed`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#9ECBFF"> 'price'</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  set</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">newVal</span><span style="color:#E1E4E8">) {  </span><span style="color:#6A737D">// Create a set method</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`I was changed`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">data.price </span><span style="color:#6A737D">// => I was accessed</span></span>
+<span class="line"><span style="color:#E1E4E8">data.price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span><span style="color:#6A737D">  // => I was changed</span></span></code></pre>
+<p>可以看到，当你调用data.price时<code>get()</code>会执行并且期望返回一个值，调用data.price = 20时<code>set()</code>会执行，并且有个参数newVal被传入，也就是你设置的20，所以需要有个临时的变量<code>internalValue</code>来保存<code>newVal</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { price: </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">, quantity: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> internalValue </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> data.price</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(data, </span><span style="color:#9ECBFF">'price'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  get</span><span style="color:#E1E4E8">() {  </span><span style="color:#6A737D">// Create a get method</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`Getting price: ${</span><span style="color:#E1E4E8">internalValue</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> internalValue</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  set</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">newVal</span><span style="color:#E1E4E8">) {  </span><span style="color:#6A737D">// Create a set method</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`Setting price to: ${</span><span style="color:#E1E4E8">newVal</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    internalValue </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newVal</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">data.price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span><span style="color:#6A737D"> // price = 20</span></span></code></pre>
+<p>但是上面只设置了<code>price</code>，我们还需要设置<code>quantity</code>，所以通过<code>Object.keys</code>来遍历<code>data</code>并且设置，完整代码如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { price: </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">, quantity: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">keys</span><span style="color:#E1E4E8">(data).</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">key</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> internalValue </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> data[key]</span></span>
+<span class="line"><span style="color:#E1E4E8">  Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(data, key, {</span></span>
+<span class="line"><span style="color:#B392F0">    get</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`Getting ${</span><span style="color:#E1E4E8">key</span><span style="color:#9ECBFF">}: ${</span><span style="color:#E1E4E8">internalValue</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> internalValue</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#B392F0">    set</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">newVal</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`Setting ${</span><span style="color:#E1E4E8">key</span><span style="color:#9ECBFF">} to: ${</span><span style="color:#E1E4E8">newVal</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">      internalValue </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newVal</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">data.price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span><span style="color:#6A737D"> // => Setting price to: 20</span></span>
+<span class="line"><span style="color:#E1E4E8">data.quantity </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span><span style="color:#6A737D"> // => Setting quantity to: 20</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(data.price, data.quantity) </span><span style="color:#6A737D">// => 20 20</span></span></code></pre>
+<p>好了，现在<code>defineProperty</code>已经可以捕捉到变量被赋值时的动作，将上面的<code>Dep</code>类和<code>defineProperty</code>结合起来：
+先屡一下思路：</p>
+<ol>
+<li>defineProperty get: 触发时需要调用dep.depeng()来订阅当前的值所涉及到的所有<code>target</code>，当前例子就一个<code>target</code></li>
+<li>defineProperty set: 触发时需要调用dep.notify()来执行订阅中的所有<code>target</code>
+完整代码如下：</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { price: </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">, quantity: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#6A737D">// 全局变量 target</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> target </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Dep class</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Dep</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.subscribers </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#B392F0">  depend</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">      // target不为空且不能重复添加</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (target </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#F97583"> !</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.subscribers.</span><span style="color:#B392F0">includes</span><span style="color:#E1E4E8">(target)) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.subscribers.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(target);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#B392F0">  notify</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">    // 执行当前数据中所有订阅的target</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.subscribers.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">sub</span><span style="color:#F97583"> =></span><span style="color:#B392F0"> sub</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 遍历data的每个属性并添加get、set方法</span></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">keys</span><span style="color:#E1E4E8">(data).</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">key</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> internalValue </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> data[key];</span></span>
+<span class="line"><span style="color:#6A737D">  // 每个数据都新建一个dep类</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> dep</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Dep</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(data, key, {</span></span>
+<span class="line"><span style="color:#B392F0">    get</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">      // 当前dep类订阅target</span></span>
+<span class="line"><span style="color:#E1E4E8">      dep.</span><span style="color:#B392F0">depend</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> internalValue;</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#B392F0">    set</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">newVal</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      internalValue </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> newVal;</span></span>
+<span class="line"><span style="color:#6A737D">      // 通知target更新</span></span>
+<span class="line"><span style="color:#E1E4E8">      dep.</span><span style="color:#B392F0">notify</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> watcher</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">myFunc</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  target </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> myFunc;</span></span>
+<span class="line"><span style="color:#B392F0">  target</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// => total: 10</span></span>
+<span class="line"><span style="color:#E1E4E8">  target </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">watcher</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  data.total </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> data.price </span><span style="color:#F97583">*</span><span style="color:#E1E4E8"> data.quantity;</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'total:'</span><span style="color:#E1E4E8">, data.total)</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">data.price </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span><span style="color:#6A737D"> // => total: 40</span></span>
+<span class="line"><span style="color:#E1E4E8">data.quantity </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 100</span><span style="color:#6A737D"> // => total: 2000</span></span></code></pre>
+<h3 id="总结">总结</h3>
+<p>在Vue2.6中，实现响应式数据类似上面的例子，总体架构是差不多的，但是考虑数据的多层和数组时，Vue做了更多的处理，说到数组，由于<code>Object.defineProperty</code>是需要传入<code>key</code>，所以监听不了数组的变换，Vue2.6是通过劫持原型链上面的这些方法:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#9ECBFF">    'push'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'pop'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'shift'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'unshift'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'splice'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'sort'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'reverse'</span></span></code></pre>
+<p>来手动更新页面数据。所以下面讲的是<code>Proxy</code>，纯天然的劫持数据的方法。</p>
+<h2 id="proxy">Proxy</h2>
+<div class="custom-container tip"><p class="custom-container-title">Proxy</p><p>与<code>Object.defineProperty</code>不同的是他只需要传入对象名，不用传<code>key</code>，再配合<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect">Reflect</a>使用，简直不要太爽。</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> _data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> data</span></span>
+<span class="line"><span style="color:#E1E4E8">data </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Proxy</span><span style="color:#E1E4E8">(_data, {</span></span>
+<span class="line"><span style="color:#B392F0">  get</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">obj</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`get obj:${</span><span style="color:#E1E4E8">obj</span><span style="color:#9ECBFF">}, key: ${</span><span style="color:#E1E4E8">key</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> Reflect.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(obj, key)</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#B392F0">  set</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">obj</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">newVal</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 如果值插入成功返回true</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Reflect.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(obj, key, newVal)</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (result) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`set obj:${</span><span style="color:#E1E4E8">obj</span><span style="color:#9ECBFF">}, key: ${</span><span style="color:#E1E4E8">key</span><span style="color:#9ECBFF">},newVal:${</span><span style="color:#E1E4E8">newVal</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">data[</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#6A737D"> // 直接在下标为1的数字上面改</span></span>
+<span class="line"><span style="color:#6A737D">// set obj:1,2, key: 1,newVal:2</span></span>
+<span class="line"><span style="color:#E1E4E8">data.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// push操作</span></span>
+<span class="line"><span style="color:#6A737D">// get obj:1,2, key: push => 取得Array.prototype.push方法</span></span>
+<span class="line"><span style="color:#6A737D">// get obj: 1, 2, key: length => 然后取得array的length属性</span></span>
+<span class="line"><span style="color:#6A737D">// set obj: 1, 2, 10, key: 2, newVal: 10 => 再设置data[length] = 10</span></span>
+<span class="line"><span style="color:#6A737D">// set obj: 1, 2, 10, key: length, newVal: 3 => 再执行length++</span></span></code></pre>
+<p>可以看到，数组做的任何操作都显示出来，连push的过程都打印出来，这就是Vue-next用<code>Proxy</code>代替<code>defineProperty</code>的原因。</p>
+<h3 id="复用dep类">复用Dep类</h3>
+<p>用<code>Proxy</code>结合上面的Dep类出一个例子，实时算出数组中的所有数的和</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#6A737D">// 全局变量 target</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> target </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> sum </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#6A737D">// Dep class</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Dep</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.subscribers </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [];</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#B392F0">  depend</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">    // 当target不为空，且不能重复添加</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (target </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#F97583"> !</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.subscribers.</span><span style="color:#B392F0">includes</span><span style="color:#E1E4E8">(target)) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.subscribers.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(target);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#B392F0">  notify</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">    // 通知对应的</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.subscribers.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">sub</span><span style="color:#F97583"> =></span><span style="color:#B392F0"> sub</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 为array实例一个Dep依赖</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> arrayDep </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Dep</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> _data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> data</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">data </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Proxy</span><span style="color:#E1E4E8">(_data ,{</span></span>
+<span class="line"><span style="color:#B392F0">  get</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">obj</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    arrayDep.</span><span style="color:#B392F0">depend</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> Reflect.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(obj, key)</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#B392F0">  set</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">obj</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">newVal</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">receiver</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 如果值插入成功返回true</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Reflect.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(obj, key, newVal)</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (result) {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (key </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> 'length'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        arrayDep.</span><span style="color:#B392F0">notify</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> watcher</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">myFunc</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  target </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> myFunc;</span></span>
+<span class="line"><span style="color:#B392F0">  target</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// => sum: 1</span></span>
+<span class="line"><span style="color:#E1E4E8">  target </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">watcher</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  sum </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> data.</span><span style="color:#B392F0">reduce</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">a</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b);</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'sum:'</span><span style="color:#E1E4E8">, sum)</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">data[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 10</span><span style="color:#6A737D"> // =>sum: 10</span></span>
+<span class="line"><span style="color:#E1E4E8">data.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// =>sum: 12</span></span></code></pre>
+<p>Vue2.6的源码<a href="./Vue2.6-reactive-analysis.md">点击链接</a></p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

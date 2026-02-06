@@ -1,0 +1,673 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const colorSchemeChange = (e) => {
+      if (e.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        addDarkToClassList()
+      } else {
+        localStorage.setItem(localStorageKey, Light)
+        removeDarkToClassList()
+      }
+    }
+    if (typeof media.addEventListener === 'function') media.addEventListener('change', colorSchemeChange)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      if (media.matches) {
+        localStorage.setItem(localStorageKey, Dark)
+        return Dark
+      }
+      return Light
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2019/frontforintermediate/"><!-- Primary Meta Tags --><title>中级前端工程师</title><meta name="title" content="中级前端工程师"><meta name="description" content="中级前端面试题整理，包含 JS 枚举、二进制、Promise 实现等知识点"><meta name="author" content="Shanks"><meta name="keywords" content="面试, 前端, JavaScript"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2019/frontforintermediate/"><meta property="og:title" content="中级前端工程师"><meta property="og:description" content="中级前端面试题整理，包含 JS 枚举、二进制、Promise 实现等知识点"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2019-02-12"><meta property="article:tag" content="面试"><meta property="article:tag" content="前端"><meta property="article:tag" content="JavaScript"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2019/frontforintermediate/"><meta property="twitter:title" content="中级前端工程师"><meta property="twitter:description" content="中级前端面试题整理，包含 JS 枚举、二进制、Promise 实现等知识点"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.3X99_b4O.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.DB9bi1E6.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">中级前端工程师</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2019-02-12</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">3,887 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 10 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">面试</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">前端</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">JavaScript</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <h2 id="在js中定义枚举的首选语法是什么">在JS中定义枚举的首选语法是什么</h2>
+<div class="custom-container tip"><p class="custom-container-title">Object.freeze</p><p>Object.freeze() 方法可以冻结一个对象。一个被冻结的对象再也不能被修改；冻结了一个对象则不能向这个对象添加新的属性，不能删除已有属性，不能修改该对象已有属性的可枚举性、可配置性、可写性，以及不能修改已有属性的值。此外，冻结一个对象后该对象的原型也不能被修改。freeze() 返回和传入的参数相同的对象。</p></div>
+<p>我们平常都是用<code>const</code>来定义对象枚举，但是<code>const</code>对应的对象的值还是可以改动的，所以Object.freeze更适合枚举。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> obj</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  prop: </span><span style="color:#79B8FF">42</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">freeze</span><span style="color:#E1E4E8">(obj);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">obj.prop </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 33</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">// Throws an error in strict mode</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(obj.prop);</span></span>
+<span class="line"><span style="color:#6A737D">// expected output: 42</span></span></code></pre>
+<p><strong>Object.freeze并没有递归冻结对象。</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> obj1 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  internal: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    a:</span><span style="color:#79B8FF">123</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">freeze</span><span style="color:#E1E4E8">(obj1);</span></span>
+<span class="line"><span style="color:#E1E4E8">obj1.internal.a </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'aValue'</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">obj1.internal.a </span><span style="color:#6A737D">// 'aValue'</span></span></code></pre>
+<h2 id="js按位取反操作符">JS按位取反操作符~</h2>
+<h3 id="预备知识">预备知识</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>计算机中没法做减法的，它的减法是通过加法来实现，需要加上一个负数，所以不得不引入一个符号位。</p></div>
+<h3 id="原码">原码</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>是最简单的机器数表示法。用最高位表示符号位，‘1’表示负号，‘0’表示正号。其他位存放该数的二进制的绝对值。</p></div>
+<p>以带符号位的四位二进制值数为例：</p>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>1010: 最高位为’1’，表示这是一个负数，其他三位’010’，即<code>（0*2^2）+（1*2^1）+（0*2^0）=2</code>（‘^’表示幂运算符）所以1010表示十进制数（-2）。</p></div>
+<p>下图给出部份正负数数的二进制原码表示法
+<img  loading="lazy" decoding="async" fetchpriority="auto" width="210" height="218" src="/_astro/binary-one.DMGB8qBe_Z2ohqlt.webp" >
+既然都有正负数了，那么我们开始运算:</p>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>0001+0010=0011    （1+2=3）
+0000+1000=1000    （+0+（-0）=-0）
+0001+1001=1010    （1+（-1）=-2）出现问题</p></div>
+<p>于是我们可以看到其实正数之间的加法通常是不会出错的，因为它就是一个很简单的二进制加法。</p>
+<p>而正数与负数相加，或负数与负数相加，就要引起莫名其妙的结果，这都是该死的符号位引起的。0分为+0和-0也是因他而起。</p>
+<p>所以原码，虽然直观易懂，易于正值转换。但用来实现加减法的话，运算规则总归是太复杂。于是反码来了。</p>
+<h3 id="反码">反码</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>我们知道，原码最大的问题就在于一个数加上他的相反数不等于零。</p></div>
+<p>例如：0001+1001=1010 (1+(-1)=-2) 0010+1010=1100 (2+(-2)=-4)</p>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>反码：正数的反码还是等于原码<br>
+负数的反码就是他的原码除符号位外，按位取反，例子：<br>
+3是正数，反码与原码相同，则可以表示为0011<br>
+-3的原码是1011，符号位保持不变，低三位（011）按位取反得（100）<br>
+所以-3的反码为1100<br></p></div>
+<p>那我们再试下，用反码的方式解决一下原码的问题：</p>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>0001+1110=1111 （1+（-1）= - 0）</p><p>互为相反数相加等于0，解决。虽然是得到的结果是1111也就是-0，所以还不是很精确</p></div>
+<p>好，我们再试着做一下两个负数相加</p>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>1110（-1）+ 1101（-2）= 1011（-4）</p></div>
+<p>-1 + (-2) = -4 ?
+为了解决以上问题，补码就登场了。</p>
+<h3 id="补码">补码</h3>
+<div class="custom-container tip"><p class="custom-container-title">补码定义</p><p>正数的补码等于他的原码</p><p>负数的补码等于反码+1</p></div>
+<p>在《计算机组成原理中》，补码的另外一种算法 是</p>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>负数的补码等于他的原码自低位向高位，尾数的第一个‘1’及其右边的‘0’保持不变，左边的各位按位取反，符号位不变。</p><p>那正数的补码呢？加上一个正数，加法器就直接可以实现。所以它的补码就还是它本身。</p></div>
+<p><strong>补码实例</strong>
+<img  loading="lazy" decoding="async" fetchpriority="auto" width="527" height="271" src="/_astro/binary-two.gQ8bLMi0_Z1sGqLl.webp" >
+现在来看几个例子:</p>
+<div class="custom-container tip"><p class="custom-container-title">负数相加</p><p>1111（-1）+1110（-2）=1101(-3)</p></div>
+<div class="custom-container tip"><p class="custom-container-title">正负数相加</p><p>1000（-8） +0011（3）=1011(-5)</p><p>1110 (-2) + 0011(3) = 0001(1)</p></div>
+<h3 id="运算符">~运算符</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>作用于补码，将每一位二进制都取反:</p><p>~5: ~0101(5) => 1010(-6)
+~-1: ~1111(-1) => 0000(0)
+~0:~0000(0) => 1111(-1)</p></div>
+<p>经常被用到indexOf，如果是没有找到返回-1时，可以用<code>!~-1</code>表示<code>true</code></p>
+<h2 id="模拟实现一个完美的promise">模拟实现一个完美的Promise</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>这里说的是模拟，所以用setTimeout来模拟，但是setTimeout是属于宏任务，原生的Promise是微任务。但是可以在调用上面最大程度模拟出来，模拟之前可以看看<a href="https://promisesaplus.com/">PromiseA+规范</a>，当我写完代码后，又画出了实现Promise的流程图。</p></div>
+<h3 id="promisea规范">Promise/A+规范</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><ol>
+<li>‘promise’是一个对象或者函数</li>
+<li>‘thenable’是一个对象或者函数</li>
+<li>‘value’是promise状态成功时的值</li>
+<li>‘reason’是promise状态失败时的值
+下面是：promise的属性，当然还有一些静态方法没有给出，比如：<code>Promise.resolve</code>、<code>Promise.race</code>、<code>Promise.all</code>等等</li>
+</ol></div>
+<p><img  loading="lazy" decoding="async" fetchpriority="auto" width="2264" height="978" src="/_astro/mock-promise-property.6SCf78ba_1dgWmD.webp" ></p>
+<h3 id="要求">要求</h3>
+<ol>
+<li>一个promise必须有3个状态，pending，fulfilled(resolved)，rejected当处于pending状态的时候，可以转移到fulfilled(resolved)或者rejected状态。当处于fulfilled(resolved)状态或者rejected状态的时候，就不可变。</li>
+<li>一个promise必须有一个then方法，then方法接受两个参数：<br>
+其中onFulfilled方法表示状态从pending——>fulfilled(resolved)时所执行的方法，而onRejected表示状态从pending——>rejected所执行的方法。<br>
+<code>promise.then(onFulfilled,onRejected)</code></li>
+<li>为了实现链式调用，then方法必须返回一个新的<code>Promise</code>，并且将上一个promise的状态传入到新的promise上，以便后面的链式调用，可以在then返回一个一个promise，<code>return new Promise()</code>，所以我们新建了一个<code>resolvePromise</code>函数来处理这块逻辑。
+下面使用ES6的class完整的模拟的Promise</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MyPromise</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">callback</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.status </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'pending'</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.value </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> undefined</span><span style="color:#6A737D"> // status为resolved时返回的值</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.reason </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> undefined</span><span style="color:#6A737D"> // status为rejected时返回的值</span></span>
+<span class="line"><span style="color:#6A737D">    // 用来保存then传进来的函数，当状态改变时调用，声明成数组的原因是一个promise可能多处定义then或catch</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.onFullfilledArray </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.onRejectedArray </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#F97583">    try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">      // 由于resolve、reject都是在类外面执行的，所以需要绑定this</span></span>
+<span class="line"><span style="color:#B392F0">      callback</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.resolve.</span><span style="color:#B392F0">bind</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">), </span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.reject.</span><span style="color:#B392F0">bind</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (error) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">reject</span><span style="color:#E1E4E8">(error)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /** 传入两个promise，将第二个的promise的value或者reason转移到currentPromise</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@callback</span><span style="color:#B392F0"> resolve</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@callback</span><span style="color:#B392F0"> reject</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Promise}</span><span style="color:#E1E4E8"> currentPromise</span><span style="color:#6A737D"> 当前promise对象</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {*}</span><span style="color:#E1E4E8"> x</span><span style="color:#6A737D"> 当前resolve或者reject之后的结果</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {resolve}</span><span style="color:#E1E4E8"> resolve</span><span style="color:#6A737D"> 当前promise对象的resolve</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {reject}</span><span style="color:#E1E4E8"> reject</span><span style="color:#6A737D"> 当前promise对象的reject</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">  static</span><span style="color:#B392F0"> resolvePromise</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">currentPromise</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">x</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (currentPromise </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> x) {</span></span>
+<span class="line"><span style="color:#B392F0">      reject</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> TypeError</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Chaining cycle'</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#6A737D">    // 如果结果x存在且是对象或者是一个函数</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (x </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'object'</span><span style="color:#F97583"> ||</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'function'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      let</span><span style="color:#E1E4E8"> used; </span><span style="color:#6A737D">// then(cb1,cb2)cb1,cb2两者只能调用其中一个</span></span>
+<span class="line"><span style="color:#F97583">      try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        let</span><span style="color:#E1E4E8"> then </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x.then;</span></span>
+<span class="line"><span style="color:#6A737D">        // 如果返回值x有then函数，则</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> then </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'function'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">          then.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(x, (</span><span style="color:#FFAB70">y</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (used) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            used </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            MyPromise.</span><span style="color:#B392F0">resolvePromise</span><span style="color:#E1E4E8">(currentPromise, y, resolve, reject);</span></span>
+<span class="line"><span style="color:#E1E4E8">          }, (</span><span style="color:#FFAB70">r</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (used) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">            used </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">            reject</span><span style="color:#E1E4E8">(r);</span></span>
+<span class="line"><span style="color:#E1E4E8">          });</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">          if</span><span style="color:#E1E4E8"> (used) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">          used </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">          resolve</span><span style="color:#E1E4E8">(x);</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">      } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (e) {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (used) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">        used </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#B392F0">        reject</span><span style="color:#E1E4E8">(e);</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">      resolve</span><span style="color:#E1E4E8">(x);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  reject</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">error</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.status </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'pending'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.status </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'rejected'</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.reason </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> error</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.onRejectedArray.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">f</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // 执行then传的函数</span></span>
+<span class="line"><span style="color:#B392F0">        f</span><span style="color:#E1E4E8">(error)</span></span>
+<span class="line"><span style="color:#E1E4E8">      })</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#6A737D">    // console.log('reject', error)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  resolve</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.status </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'pending'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.status </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'resolved'</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> value</span></span>
+<span class="line"><span style="color:#79B8FF">      this</span><span style="color:#E1E4E8">.onFullfilledArray.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">f</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // 执行then传的函数</span></span>
+<span class="line"><span style="color:#B392F0">        f</span><span style="color:#E1E4E8">(value)</span></span>
+<span class="line"><span style="color:#E1E4E8">      })</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#6A737D">    // console.log('resolved', value)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // then函数可以传一个或两个函数</span></span>
+<span class="line"><span style="color:#B392F0">  then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">onFullfilled</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">onRejected</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    onFullfilled </span><span style="color:#F97583">=</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> onFullfilled </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'function'</span><span style="color:#F97583"> ?</span><span style="color:#E1E4E8"> onFullfilled </span><span style="color:#F97583">:</span><span style="color:#FFAB70"> value</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> value;</span></span>
+<span class="line"><span style="color:#E1E4E8">    onRejected </span><span style="color:#F97583">=</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> onRejected </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'function'</span><span style="color:#F97583"> ?</span><span style="color:#E1E4E8"> onRejected </span><span style="color:#F97583">:</span><span style="color:#FFAB70"> err</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">throw</span><span style="color:#E1E4E8"> err };</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> tempPromise,</span></span>
+<span class="line"><span style="color:#E1E4E8">      self </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span></span>
+<span class="line"><span style="color:#F97583">    switch</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.status) {</span></span>
+<span class="line"><span style="color:#F97583">      case</span><span style="color:#9ECBFF"> 'pending'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">        tempPromise </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> MyPromise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">          // 保存.then传的第一个函数</span></span>
+<span class="line"><span style="color:#E1E4E8">          self.onFullfilledArray.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">            setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">              try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">                let</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">=</span><span style="color:#B392F0"> onFullfilled</span><span style="color:#E1E4E8">(value)</span></span>
+<span class="line"><span style="color:#E1E4E8">                MyPromise.</span><span style="color:#B392F0">resolvePromise</span><span style="color:#E1E4E8">(tempPromise, x, resolve, reject)</span></span>
+<span class="line"><span style="color:#E1E4E8">              } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (error) {</span></span>
+<span class="line"><span style="color:#B392F0">                reject</span><span style="color:#E1E4E8">(error)</span></span>
+<span class="line"><span style="color:#E1E4E8">              }</span></span>
+<span class="line"><span style="color:#E1E4E8">            })</span></span>
+<span class="line"><span style="color:#E1E4E8">          })</span></span>
+<span class="line"><span style="color:#6A737D">          // 保存.then传的第二个函数</span></span>
+<span class="line"><span style="color:#E1E4E8">            self.onRejectedArray.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">reason</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">              setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">                try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">                    let</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">=</span><span style="color:#B392F0"> onRejected</span><span style="color:#E1E4E8">(reason)</span></span>
+<span class="line"><span style="color:#E1E4E8">                    MyPromise.</span><span style="color:#B392F0">resolvePromise</span><span style="color:#E1E4E8">(tempPromise, x, resolve, reject)</span></span>
+<span class="line"><span style="color:#E1E4E8">                } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (error) {</span></span>
+<span class="line"><span style="color:#B392F0">                  reject</span><span style="color:#E1E4E8">(error)</span></span>
+<span class="line"><span style="color:#E1E4E8">                }</span></span>
+<span class="line"><span style="color:#E1E4E8">              })</span></span>
+<span class="line"><span style="color:#E1E4E8">            })</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#F97583">        break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">      case</span><span style="color:#9ECBFF"> 'resolved'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">        tempPromise </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> MyPromise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">                let</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">=</span><span style="color:#B392F0"> onFullfilled</span><span style="color:#E1E4E8">(self.value)</span></span>
+<span class="line"><span style="color:#E1E4E8">                MyPromise.</span><span style="color:#B392F0">resolvePromise</span><span style="color:#E1E4E8">(tempPromise, x, resolve, reject)</span></span>
+<span class="line"><span style="color:#E1E4E8">            } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (error) {</span></span>
+<span class="line"><span style="color:#B392F0">              reject</span><span style="color:#E1E4E8">(error)</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">          })</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#F97583">        break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">      case</span><span style="color:#9ECBFF"> 'rejected'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">        tempPromise </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> MyPromise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            try</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">              if</span><span style="color:#E1E4E8"> (onRejected) {</span></span>
+<span class="line"><span style="color:#F97583">                let</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">=</span><span style="color:#B392F0"> onRejected</span><span style="color:#E1E4E8">(self.reason)</span></span>
+<span class="line"><span style="color:#E1E4E8">                MyPromise.</span><span style="color:#B392F0">resolvePromise</span><span style="color:#E1E4E8">(tempPromise, x, resolve, reject)</span></span>
+<span class="line"><span style="color:#E1E4E8">              }</span></span>
+<span class="line"><span style="color:#E1E4E8">            } </span><span style="color:#F97583">catch</span><span style="color:#E1E4E8"> (error) {</span></span>
+<span class="line"><span style="color:#B392F0">              reject</span><span style="color:#E1E4E8">(error)</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">          });</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#F97583">        break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> tempPromise</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#B392F0">  catch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">onRejected</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">null</span><span style="color:#E1E4E8">, onRejected);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>为了更好的理解这段代码，画出了一个流程图:
+<img  loading="lazy" decoding="async" fetchpriority="auto" width="1109" height="998" src="/_astro/mock-promise-flowchart.Cg8K6O57_Z1xS6GY.webp" ></p>
+<h2 id="继承的几种方式">继承的几种方式</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> Father</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">  // 属性</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> 'father'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 实例方法</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">sleep</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> "正在睡觉"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// 原型方法</span></span>
+<span class="line"><span style="color:#79B8FF">Father</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">look</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">book</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> "正在看:"</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> book);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="原型继承">原型继承</h3>
+<p>父类中私有的和公有的都继承到了子类原型上</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> Son</span><span style="color:#E1E4E8">(){}</span></span>
+<span class="line"><span style="color:#79B8FF">Son</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Father</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// 重写了Son的原型</span></span>
+<span class="line"><span style="color:#79B8FF">Son</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Son</span></span></code></pre>
+<h3 id="构造继承">构造继承</h3>
+<p>只是将Father的私有属性拷贝一份给Son，并没有将原型链指向Father</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> Son</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  Father.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="混合模式">混合模式</h3>
+<p>有点弊端，会实例化两次Father，而且Father的私有属性也会在Son的原型上</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> Son</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  Father.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#79B8FF">Son</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Father</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#79B8FF">Son</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Son</span></span></code></pre>
+<h3 id="寄生组合模式">寄生组合模式</h3>
+<p>解决了混合模式的弊端</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> Son</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  Father.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// Object.create的Polyfill</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> myCreate</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">proto</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> fn</span><span style="color:#E1E4E8">() {}</span></span>
+<span class="line"><span style="color:#79B8FF">  fn</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> proto</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> fn</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#79B8FF">Son</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> myCreate</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Father</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">Son.</span><span style="color:#79B8FF">constructor</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Son</span></span></code></pre>
+<div class="custom-container tip"><p class="custom-container-title">注意</p><p>如果将<code>Son.prototype = myCreate(Father.prototype)</code>改成<code>Son.prototype = Father.prototype</code>，虽然还是继承了，但是Father的原型和Son的原型是同一个引用地址，所以改动Son.prototype时就会将Father一起改动。</p></div>
+<h3 id="es6中extends的实现">ES6中extends的实现</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> Son</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  Father.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#79B8FF">Son</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Father</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  { constructor: { value: Son, writable: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, configurable: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8"> } });</span></span>
+<span class="line"><span style="color:#6A737D">// Son.__proto__ = Father</span></span></code></pre>
+<h2 id="js中new一个对象的过程">js中new一个对象的过程</h2>
+<div class="custom-container tip"><p class="custom-container-title">MDN原文</p><p>首先了解new做了什么，使用new关键字调用函数（new ClassA(…)）的具体步骤：</p><ol>
+<li>
+<p>Creates a blank, plain JavaScript object;</p>
+</li>
+<li>
+<p>Links (sets the constructor of) this object to another object;</p>
+</li>
+<li>
+<p>Passes the newly created object from Step 1 as the this context;</p>
+</li>
+<li>
+<p>Returns this if the function doesn’t return its own object.</p>
+</li>
+<li>
+<p>创建一个空的简单JavaScript对象（即{}）；</p>
+</li>
+<li>
+<p>链接该对象（即设置该对象的构造函数）到另一个对象 ；</p>
+</li>
+<li>
+<p>将步骤1新创建的对象作为this的上下文 ；</p>
+</li>
+<li>
+<p>如果该函数没有返回对象，则返回this。</p>
+</li>
+</ol></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#6A737D">// a的构造器</span></span>
+<span class="line"><span style="color:#E1E4E8">a.</span><span style="color:#79B8FF">constructor</span><span style="color:#6A737D"> // ƒ Object() { [native code] }</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> a</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// Uncaught TypeError: a is not a constructor</span></span></code></pre>
+<p><code>a</code>的构造器是指向<code>Object()</code>函数，不是它自己的，所以不能实例化，所以我们只能这样<code>let c = Object()</code>。</p>
+<p><code>class</code>也有自己的构造器（class其实就是function），所以也可以实例化，其他的都没办法实例化</p>
+<h3 id="实现new">实现new</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> myNew</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> protoObj</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">create</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">target</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> target.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(protoObj, args)</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> result </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'object'</span><span style="color:#F97583"> ?</span><span style="color:#E1E4E8"> result </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> protoObj</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">name</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">age</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.name </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> name </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> 'aa'</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.age </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> age </span><span style="color:#F97583">||</span><span style="color:#79B8FF"> 18</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> a</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> myNew</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">A</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'cjh'</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">16</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a) </span><span style="color:#6A737D">// A { name: 'cjh', age: 16 }</span></span></code></pre>
+<h3 id="箭头函数是否可以实例化">箭头函数是否可以实例化</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> fun1</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> fun2</span><span style="color:#E1E4E8">() {}</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">fun1</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// undefined</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">fun2</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// {constructor: ƒ}</span></span></code></pre>
+<p>箭头函数没有prototype、没有自己的this指向、不可以使用arguments，而new的过程中有个操作是将__proto__指向prototype，所以不能用new实例化箭头函数</p>
+<h2 id="for与foreach的区别">for与forEach的区别</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>for循环每一次遍历都会重新检查跳出的条件，比如数组的长度，但是forEach只会保存第一次的数组长度。</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> arr </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">,</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">arr.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">item</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8">(item </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    arr.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(item)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#6A737D">// 输出： 1 2 3</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> arr.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (arr[i] </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">){</span></span>
+<span class="line"><span style="color:#E1E4E8">    arr.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(arr[i])</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// 输出：1 2 3 4</span></span></code></pre>
+<h2 id="装饰器的原理">装饰器的原理</h2>
+<div class="custom-container tip"><p class="custom-container-title">分类</p><p>装饰器分为两类：作用于类的装饰器、作用于方法的装饰器，底层都是函数。</p></div>
+<ul>
+<li>作用于类的装饰器，写法举例</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> log</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">) {  </span><span style="color:#6A737D">// 默认传参为 被修饰的类</span></span>
+<span class="line"><span style="color:#79B8FF">    target</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">logger</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'装饰器--被调用'</span><span style="color:#E1E4E8">)};</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">@log       </span><span style="color:#6A737D">// log 必须是函数</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Myclass</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> test</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Myclass</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">test.</span><span style="color:#B392F0">logger</span><span style="color:#E1E4E8">();          </span><span style="color:#6A737D">// 装饰器--被调用</span></span></code></pre>
+<ul>
+<li>作用于方法的装饰器，写法举例</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(obj, prop, descriptor);</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> C</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">   @</span><span style="color:#B392F0">readonly</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">   method</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'cat'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">   }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> readonly</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">value</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">   // target: 类原型</span></span>
+<span class="line"><span style="color:#6A737D">   // key:    被修饰的属性或者方法</span></span>
+<span class="line"><span style="color:#6A737D">   // descriptor: 被修饰的属性或方法的描述符对象</span></span>
+<span class="line"><span style="color:#F97583">   return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">key</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">descriptor</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      descriptor.writable </span><span style="color:#F97583">=</span><span style="color:#F97583"> !</span><span style="color:#E1E4E8">value;</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> descriptor;</span></span>
+<span class="line"><span style="color:#E1E4E8">   }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> c</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> C</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">c.</span><span style="color:#B392F0">method</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'dog'</span><span style="color:#E1E4E8">);} </span><span style="color:#6A737D">// 重写了method这个类方法</span></span>
+<span class="line"><span style="color:#E1E4E8">c.</span><span style="color:#B392F0">method</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// cat  => 设置属性只读成功</span></span></code></pre>
+<h2 id="evalfunction">eval&#x26;&#x26;Function</h2>
+<div class="custom-container tip"><p class="custom-container-title">eval</p><p>eval可以取到上下文，但是在ES5后有个硬性规定：通过一个引用来调用它，而不是直接的调用 eval。 从 ECMAScript 5 起，它工作在全局作用域下，而不是局部作用域中。这就意味着，例如，下面的代码的作用声明创建一个全局函数，并且 eval 中的这些代码在执行期间不能在被调用的作用域中访问局部变量</p><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> test</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">, y </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">eval</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'x + y'</span><span style="color:#E1E4E8">));  </span><span style="color:#6A737D">// 直接调用，使用本地作用域，结果是 6</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> geval </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> eval; </span><span style="color:#6A737D">// 等价于在全局作用域调用</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">geval</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'x + y'</span><span style="color:#E1E4E8">)); </span><span style="color:#6A737D">// 间接调用，使用全局作用域，throws ReferenceError 因为`x`未定义</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, eval)(</span><span style="color:#9ECBFF">'x + y'</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 另一个间接调用的例子</span></span>
+<span class="line"><span style="color:#E1E4E8">​}</span></span></code></pre></div>
+<div class="custom-container tip"><p class="custom-container-title">Function</p><p>与eval不同的是它可以入参，还有不同的就是作用域总是指向全局作用域。</p></div>
+<p>MDN原文：</p>
+<p>Functions created with the Function constructor do not create closures to their creation contexts; they always are created in the global scope. When running them, they will only be able to access their own local variables and global ones, not the ones from the scope in which the Function constructor was created. This is different from using eval with code for a function expression.</p>
+<p>翻译：</p>
+<p>使用函数构造函数创建的函数不会对其创建上下文创建闭包;它们总是在全局范围内创建的。在运行它们时，它们只能访问自己的局部变量和全局变量，而不能访问创建函数构造函数的作用域中的变量。这不同于对函数表达式的代码使用eval。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> createFunction1</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Function</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'return x;'</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 这里的 x 指向最上面全局作用域内的 x</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> createFunction2</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> x </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 20</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> f</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> x; </span><span style="color:#6A737D">// 这里的 x 指向上方本地作用域内的 x</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> f;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> f1 </span><span style="color:#F97583">=</span><span style="color:#B392F0"> createFunction1</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">f1</span><span style="color:#E1E4E8">());          </span><span style="color:#6A737D">// 10</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> f2 </span><span style="color:#F97583">=</span><span style="color:#B392F0"> createFunction2</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">f2</span><span style="color:#E1E4E8">());          </span><span style="color:#6A737D">// 20</span></span></code></pre>
+<h2 id="map--weakmap">Map &#x26;&#x26; WeakMap</h2>
+<div class="custom-container tip"><p class="custom-container-title">WeakMap存在的意义</p><p>WeakMap的专用场合就是防止内存泄漏，它的键所对应的对象，可能会在将来消失，WeakMap就会自动清除这个引用，而不是额外保留一份。</p></div>
+<h3 id="map">Map</h3>
+<p>让我们先理解Map的基本用法：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> obj </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { test: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> } </span><span style="color:#6A737D">// obj对象引用的计数是1</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> map </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Map</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">map.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(obj, </span><span style="color:#9ECBFF">'66'</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// obj对象引用的计数是2</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(obj) </span><span style="color:#6A737D">// { test: 2 }</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(map.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(obj))  </span><span style="color:#6A737D">// '66'</span></span>
+<span class="line"><span style="color:#E1E4E8">obj.one </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#6A737D">// 由于对应的是引用地址，所以还是可以取的到</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(obj) </span><span style="color:#6A737D">// { test: 2, one: 1 }</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(map.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(obj))  </span><span style="color:#6A737D">// '66'</span></span>
+<span class="line"><span style="color:#E1E4E8">obj </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { test: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, one: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(map.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(obj))  </span><span style="color:#6A737D">// 'null'</span></span>
+<span class="line"><span style="color:#E1E4E8">obj </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#6A737D"> // obj对象引用的计数是1</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(map) </span><span style="color:#6A737D">// Map { { test: 2, one: 1 } => '66' }</span></span></code></pre>
+<p>从上面的例子可以看出，不管<code>obj</code>里面的值怎么变，都可以拿到对应的值，除非是赋值然后引用地址变了，才取不到<code>map</code>的值。最后将<code>obj</code>置为<code>null</code>，<code>obj</code>对象引用的计数变为1，还是不会被垃圾回收机制回收。</p>
+<h3 id="weakmap">WeakMap</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> obj </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { test: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8"> } </span><span style="color:#6A737D">// obj对象引用的计数是1</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> map </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> WeakMap</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// obj对象引用的计数是1</span></span>
+<span class="line"><span style="color:#E1E4E8">map.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(obj, </span><span style="color:#9ECBFF">'66'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(map.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(obj))  </span><span style="color:#6A737D">// 'null'</span></span>
+<span class="line"><span style="color:#E1E4E8">obj </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#6A737D"> // obj对象引用的计数是0 随时会被垃圾回收，其实map里面也没有了这个键值对</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(map) </span><span style="color:#6A737D">// WeakMap { [items unknown] }</span></span></code></pre>
+<p>WeakMap经常在保存节点时有用，请看下面例子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> wm</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> WeakMap</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> element</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'example'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">wm.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(element, </span><span style="color:#9ECBFF">'some information'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">wm.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(element) </span><span style="color:#6A737D">// "some information"</span></span></code></pre>
+<p>上面代码中，先新建一个 <code>Weakmap</code> 实例。然后，将一个 DOM 节点作为键名存入该实例，并将一些附加信息作为键值，一起存放在 <code>WeakMap</code> 里面。这时，<code>WeakMap</code> 里面对<code>element</code>的引用就是弱引用，不会被计入垃圾回收机制。</p>
+<p>也就是说，上面的 <code>DOM</code> 节点对象的引用计数是<code>1</code>，而不是<code>2</code>。这时，一旦消除对该节点的引用，它占用的内存就会被垃圾回收机制释放。<code>Weakmap</code> 保存的这个键值对，也会自动消失。</p>
+<h3 id="page-domcontentloaded-load-beforeunload-unload">Page: DOMContentLoaded, load, beforeunload, unload</h3>
+<ul>
+<li>DOMContentLoaded：浏览器已经加载完HTML、dom tree已经构建完成，但是外部资源像<code>&#x3C;img></code>标签和样式表还没有被加载</li>
+<li>load 不仅html已经被加载了，而且外部资源、图片、样式也被加载完</li>
+<li>beforeunload/unload：用户离开页面时会发生的事件，beforeunload用于用户要离开：我们可以检查用户是否保存了更改并询问他们是否真的要离开，unload用于用户几乎离开了，但我们仍然可以启动一些操作，例如发送统计信息</li>
+</ul>
+<h2 id="v8执行一段js代码的过程">V8执行一段JS代码的过程</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>首先明白的是，机器是读不懂JS代码，机器只能理解特定的机器码，那如果要让JS的逻辑在机器运行起来，就必须将JS的代码翻译成机器码，然后让机器识别。JS属于解释新型语言，对于解释型的语言说，解释器会对源码做如下分析：</p><ul>
+<li>通过词法分析和语法分析生成AST(抽象语法树)</li>
+<li>生成字节码</li>
+</ul></div>
+<ol>
+<li>生成AST
+生成AST分为两步—词法分析和语法分析</li>
+</ol>
+<h2 id="栅格化布局">栅格化布局</h2>
+<p>利用flex可以实现</p>
+<h2 id="import--require">import &#x26;&#x26; require</h2>
+<div class="custom-container tip"><p class="custom-container-title">import</p><p>编译时调用，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值。由于是在编译时调用，所以<code>webpack</code>可以通过<code>import</code>的特性来产生依赖图谱。</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// dep.js</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">+=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">500</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// app.js</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { a } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'dep'</span></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a)</span></span>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#79B8FF">1000</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p>在<code>import {a} from f</code>的时候，他其实在你引用的地方和倒出的地方的<code>a</code>之间建立了连接，即它们是指向同一内存的，即便是原始数据类型，你修改模块中的指也会导致引用处的变化</p>
+<div class="custom-container tip"><p class="custom-container-title">require</p><p>运行时调用，输出的是一个值的拷贝（浅拷贝），一旦输出一个值，模块内部的变化就影响不到这个值，由于是浅拷贝所以改对象中的值还是会对应更改的</p><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// lib.js</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> counter </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> obj</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  test: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> incCounter</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  counter</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#E1E4E8">  obj.test</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  counter: counter,</span></span>
+<span class="line"><span style="color:#E1E4E8">  incCounter: incCounter,</span></span>
+<span class="line"><span style="color:#E1E4E8">  obj,</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// main.js</span></span>
+<span class="line"><span style="color:#6A737D">// main.js</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> mod </span><span style="color:#F97583">=</span><span style="color:#B392F0"> require</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'./demo'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(mod.counter) </span><span style="color:#6A737D">// 1</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(mod.obj.test) </span><span style="color:#6A737D">// 1</span></span>
+<span class="line"><span style="color:#E1E4E8">mod.</span><span style="color:#B392F0">incCounter</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(mod.counter) </span><span style="color:#6A737D">// 1</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(mod.obj.test) </span><span style="color:#6A737D">// 2</span></span></code></pre></div>
+<h2 id="多使用位运算提高代码效率">多使用位运算提高代码效率</h2>
+<div class="custom-container tip"><p class="custom-container-title">JS代码编译步骤</p><p>1： js代码 经历 词法分析，成为token
+2： 然后经过语法分析，将token转换成AST(抽象语法树)
+3： 用解释器根据AST，生成字节码
+4： 使用JIT即时编译技术，将字节码转成机器码，然后计算机就可以识别执行了。</p></div>
+<p>所以我们使用判断奇偶数的时候用<code>8 &#x26; 1</code>或<code>8 % 2</code>就有区别了，机器码其实就是二进制，所以<code>8 &#x26; 1</code>只需要运算<code>1000 &#x26; 0001</code>，而<code>8 % 2</code>中%需要转成机器码能识别的运算符，所以位运算就会快一点。</p>
+<h2 id="consolelog是异步还是同步">console.log是异步还是同步</h2>
+<p>我们先看下面得例子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  b : {</span></span>
+<span class="line"><span style="color:#E1E4E8">    c: </span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a)</span></span>
+<span class="line"><span style="color:#E1E4E8">a.b.c </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span></span></code></pre>
+<p><img  loading="lazy" decoding="async" fetchpriority="auto" width="189" height="270" src="/_astro/console-1.2DXCfn8d_1ClFHX.webp" >
+咋一看好像是异步的，但是为什么数字就是同步的呢？其实里面有个坑，我们都知道对象是引用类型，所以<code>console.log</code>打印引用类型的时候是打印指针指向的引用地址的内容，我们手动展开的时候其实是调用了当前对象的<code>get</code>方法，这是才去读取改引用地址里面的内容，导致一些人说console.log是异步。
+<img  loading="lazy" decoding="async" fetchpriority="auto" width="208" height="237" src="/_astro/console-2.PYFvP4uf_vKUM8.webp" ></p>
+<h3 id="node环境下的consolelog">node环境下的console.log</h3>
+<div class="custom-container tip"><p class="custom-container-title">node下的console.log</p><p>我们首先要知道Node.js中实现console.log的原理
+function log() { process.stdout.write( util.format.apply(this, arguments); )}
+等同于问process.stdout.write是同步还是异步的？
+其实官方文档已经给出了答案,A note on process I/O
+process.stdout和process.stderr是根据系统环境来判定的同步还是异步的
+Files: synchronous on Windows and Linux
+TTYs (Terminals): asynchronous on Windows, synchronous on Unix
+Pipes (and sockets): synchronous on Windows, asynchronous on Unix
+那么console.log也是根据系统环境来判定同步还是异步的。</p></div>
+<h2 id="在请求帧动画中会经常操作dom节点操作dom需要时间怎么优化">在请求帧动画中会经常操作dom节点，操作dom需要时间，怎么优化</h2>
+<h2 id="如何在-arrayforeach-中正确使用-async">如何在 Array.forEach 中正确使用 Async</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> arr</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> sleep</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">delay</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">    setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">      resolve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }, delay)</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">arr.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">i</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  await</span><span style="color:#B392F0"> sleep</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1000</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> (i </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 100</span><span style="color:#E1E4E8">), i)</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(v)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#6A737D">// 输出：</span></span>
+<span class="line"><span style="color:#6A737D">// 3</span></span>
+<span class="line"><span style="color:#6A737D">// 2</span></span>
+<span class="line"><span style="color:#6A737D">// 1</span></span></code></pre>
+<p>上面输出3、2、1，说明await是没有生效的，看了forEach的Polyfill就知道，是在一个while循环里面执行的，相当于上面是三个函数一起执行，我们想要的效果是第一个函数执行完再执行第二个函数，我们可以用reduce</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> arr</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> sleep</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">delay</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583"> return</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">resolve</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">reject</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">   setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">     resolve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">   }, delay)</span></span>
+<span class="line"><span style="color:#E1E4E8"> })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">arr.</span><span style="color:#B392F0">reduce</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">initial</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">v</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">i</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D"> // 因为此时的initial是上一个函数的返回值，如果没有promise没有执行完，会在await的关键字下停顿</span></span>
+<span class="line"><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> initial</span></span>
+<span class="line"><span style="color:#F97583"> await</span><span style="color:#B392F0"> sleep</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1000</span><span style="color:#F97583"> -</span><span style="color:#E1E4E8"> (i </span><span style="color:#F97583">*</span><span style="color:#79B8FF"> 100</span><span style="color:#E1E4E8">), i)</span></span>
+<span class="line"><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(v)</span></span>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">// 输出：</span></span>
+<span class="line"><span style="color:#6A737D">// 1</span></span>
+<span class="line"><span style="color:#6A737D">// 2</span></span>
+<span class="line"><span style="color:#6A737D">// 3</span></span></code></pre>
+<p>我们可以看到reduce的Polyfill:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#79B8FF">Array</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.reduce) {</span></span>
+<span class="line"><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">Array</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'reduce'</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#B392F0">   value</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">callback</span><span style="color:#6A737D"> /*, initialValue */</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">     // ...more</span></span>
+<span class="line"><span style="color:#F97583">     while</span><span style="color:#E1E4E8"> (k </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> len) {</span></span>
+<span class="line"><span style="color:#F97583">       if</span><span style="color:#E1E4E8"> (k </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> o) {</span></span>
+<span class="line"><span style="color:#E1E4E8">         value </span><span style="color:#F97583">=</span><span style="color:#B392F0"> callback</span><span style="color:#E1E4E8">(value, o[k], k, o)</span></span>
+<span class="line"><span style="color:#E1E4E8">       }</span></span>
+<span class="line"><span style="color:#E1E4E8">       k</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#E1E4E8">     }</span></span>
+<span class="line"><span style="color:#F97583">     return</span><span style="color:#E1E4E8"> value</span></span>
+<span class="line"><span style="color:#E1E4E8">   }</span></span>
+<span class="line"><span style="color:#E1E4E8"> })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>可以看到value就是<code>initial</code>，从<code>value = callback(value, o[k], k, o)</code>可以看出来initial保存这上一个函数的返回值，由于我们用了<code>aysnc</code>所以会返回一个<code>promise</code>对象，然后用<code>await initial</code>后可以在当前函数停顿。</p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>
