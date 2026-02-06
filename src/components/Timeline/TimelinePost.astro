@@ -1,0 +1,31 @@
+---
+import dayjs from 'dayjs'
+import type { BlogEntry } from '@/shared/blog'
+import Tag from '@/components/Tag.astro'
+
+interface Props {
+	post: BlogEntry
+}
+
+const { post } = Astro.props
+const { title, description, pubDate, tags } = post.data
+const url = `/blogs/${post.id}`
+---
+
+<a
+	href={url}
+	class="block p-5 bg-skin-card-bg border border-skin-card-border rounded hover:border-skin-primary transition-colors group"
+>
+	<h3 class="text-skin-neutral-1 font-semibold mb-2 group-hover:text-skin-primary transition-colors">
+		{title}
+	</h3>
+	<div class="flex items-center gap-3 mb-3">
+		<time class="font-mono text-xs text-skin-neutral-5">
+			{dayjs(pubDate).format('MMM DD')}
+		</time>
+		<Tag tags={tags} />
+	</div>
+	<p class="text-xs text-skin-neutral-4 font-mono leading-relaxed line-clamp-2">
+		{description}
+	</p>
+</a>
