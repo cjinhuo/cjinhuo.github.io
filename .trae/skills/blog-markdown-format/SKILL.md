@@ -42,15 +42,37 @@ src/content/blogs/
 4. 将所有引用的图片/资源文件复制到同一文件夹
 5. 更新文章中的资源路径为相对路径 `./filename.ext`
 
+**优化建议**：迁移包含图片的文章时，建议先将原文章内容直接复制到目标文件夹下的 `index.md`，然后在此基础上进行修改，可有效减少 token 消耗。
+
+### 迁移时的容器语法转换
+
+从 VuePress 等其他平台迁移文章时，需要将容器语法从空格分隔格式转换为方括号格式：
+
+| 原格式（VuePress） | 目标格式 |
+| --- | --- |
+| `::: tip 标题` | `:::tip[标题]` |
+| `::: tip` | `:::tip` |
+| `::: warning 注意事项` | `:::warning[注意事项]` |
+
+**批量转换命令**（可在终端执行）：
+
+```bash
+# 在博客目录下执行，将所有 VuePress 风格的容器语法转换为本博客支持的格式
+find . -name "*.md" -exec sed -i '' -E 's/^:::[[:space:]]+(tip|warning|danger|info|details)([[:space:]]+(.*))?$/:::\1[\3]/g' {} \;
+# 清理空方括号
+find . -name "*.md" -exec sed -i '' -E 's/:::(tip|warning|danger|info|details)\[\]([[:space:]]*)?$/:::\1/g' {} \;
+```
+
 ## Frontmatter 格式
 
 每篇博客文章必须包含以下 frontmatter 头部信息：
 
 ```yaml
 ---
-layout: "../../layouts/BlogPost.astro"
+layout: "xx/BlogPost.astro"
 title: "文章标题"
 description: "文章描述，简要概括文章内容"
+tags: ['标签1', '标签2']
 pubDate: 'YYYY-MM-DD'
 updatedDate: 'YYYY-MM-DD'
 author: '作者名称'
