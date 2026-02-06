@@ -32,6 +32,7 @@ heroImageAlt: '图片描述'
 | title | 是 | 文章标题 |
 | description | 是 | 文章描述 |
 | pubDate | 是 | 发布日期，格式 `'YYYY-MM-DD'` |
+| tags | 是 | 文章标签，格式 `['标签1', '标签2']`，最多 5 个标签 |
 | updatedDate | 否 | 更新日期，格式 `'YYYY-MM-DD'` |
 | heroImage | 否 | 文章封面图片路径 |
 | heroImageAlt | 否 | 封面图片的 alt 描述 |
