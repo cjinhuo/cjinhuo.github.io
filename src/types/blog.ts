@@ -1,15 +1,18 @@
+import type { ImageMetadata } from 'astro'
+
 export interface BlogType {
 	title: string
 	description: string
 	pubDate: string
-	heroImage: string
-	heroImageAlt: string
-	author?: string
-	authorHref?: string
+	updatedDate?: string
+	heroImage?: ImageMetadata
+	heroImageAlt?: string
+	author: string
+	authorHref: string
 	tags?: string[]
 }
 
 export interface BlogCardProps {
-	url: string
+	slug: string
 	frontmatter: BlogType
 }

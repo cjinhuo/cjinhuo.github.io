@@ -29,15 +29,15 @@ heroImageAlt: '图片描述'
 
 | 字段 | 必填 | 说明 |
 | --- | --- | --- |
-| layout | 是 | 固定为 `"../../layouts/BlogPost.astro"` |
 | title | 是 | 文章标题 |
 | description | 是 | 文章描述 |
 | pubDate | 是 | 发布日期，格式 `'YYYY-MM-DD'` |
 | updatedDate | 否 | 更新日期，格式 `'YYYY-MM-DD'` |
-| author | 是 | 作者名称 |
-| authorHref | 否 | 作者主页链接 |
 | heroImage | 否 | 文章封面图片路径 |
 | heroImageAlt | 否 | 封面图片的 alt 描述 |
+| layout | 否 | 默认为 `"@/layouts/BlogPost.astro` |
+| authorHref | 否 | 作者主页链接 |
+| author | 否 | 作者名称 |
 
 ## Markdown 语法规范
 

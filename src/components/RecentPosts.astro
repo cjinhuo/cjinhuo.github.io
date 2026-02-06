@@ -1,21 +1,15 @@
 ---
-import type { BlogType } from '@/types'
 import BlogCard from '@/components/BlogCard.astro'
+import { getSortedBlogPosts, type BlogEntry } from '@/shared/blog'
 
-const postFiles = import.meta.glob<{ frontmatter: BlogType; url: string }>('../pages/blogs/**/*.{md,mdx}', {
-	eager: true,
-})
-
-const posts = Object.values(postFiles)
-	.sort((a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf())
-	.slice(0, 3)
+const posts = (await getSortedBlogPosts()).slice(0, 3)
 ---
 
 <section>
-  {posts.map((post) => (
+  {posts.map((post: BlogEntry) => (
     <BlogCard
-      url={post.url}
-      frontmatter={post.frontmatter}
+      slug={post.id}
+      frontmatter={post.data}
     />
   ))}
 </section>

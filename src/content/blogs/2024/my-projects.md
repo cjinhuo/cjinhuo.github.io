@@ -1,13 +1,8 @@
 ---
-layout: "../../../layouts/BlogPost.astro"
 title: "A lot of tools I created"
 description: "Here are some tiny tools I still maintained: 🎉"
 pubDate: '2024-08-18'
 updatedDate: '2024-08-18'
-author: 'Shanks'
-authorHref: 'https://github.com/cjinhuo'
-heroImage: '/placeholder-hero.jpg'
-heroImageAlt: 'heroImage'
 tags: ['开源', '工具', '前端', 'SDK']
 ---
 

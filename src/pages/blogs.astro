@@ -2,16 +2,11 @@
 import BaseHead from '../components/BaseHead.astro'
 import Header from '@/components/Header/Header.astro'
 import Footer from '../components/Footer.astro'
-import type { BlogType } from '@/types'
 import BlogCard from '@/components/BlogCard.astro'
+import { getSortedBlogPosts, type BlogEntry } from '@/shared/blog'
 
-const postFiles = import.meta.glob<{ frontmatter: BlogType; url: string }>('./blogs/**/*.{md,mdx}', { eager: true })
-
-const posts = Object.values(postFiles).sort(
-	(a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf()
-)
-
-const postCount = posts.length.toString().padStart(2, '0');
+const posts = await getSortedBlogPosts()
+const postCount = posts.length.toString().padStart(2, '0')
 ---
 
 <!DOCTYPE html>
@@ -29,8 +24,8 @@ const postCount = posts.length.toString().padStart(2, '0');
         </div>
         <div class="h-px bg-skin-card-border mb-8"></div>
         <section class="space-y-6">
-          {posts.map((post) => (
-            <BlogCard url={post.url} frontmatter={post.frontmatter} />
+          {posts.map((post: BlogEntry) => (
+            <BlogCard slug={post.id} frontmatter={post.data} />
           ))}
         </section>
       </section>

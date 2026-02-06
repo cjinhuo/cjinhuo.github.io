@@ -5,8 +5,9 @@ import Tag from './Tag.astro'
 import CalendarIcon from '@/assets/icons/CalendarIcon.astro'
 import UserIcon from '@/assets/icons/UserIcon.astro'
 
-const { url, frontmatter } = Astro.props as BlogCardProps
+const { slug, frontmatter } = Astro.props as BlogCardProps
 const { pubDate, title, description, author, authorHref, tags } = frontmatter
+const url = `/blogs/${slug}`
 ---
 
 <div class='w-full h-auto mb-6 p-6 bg-skin-card-bg border border-skin-card-border border-l-2 hover:border-l-skin-primary transition-colors'>

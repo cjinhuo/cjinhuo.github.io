@@ -1,23 +1,34 @@
 ---
-import BaseHead from '../components/BaseHead.astro'
+import BaseHead from '@/components/BaseHead.astro'
 import Header from '@/components/Header/Header.astro'
-import Footer from '../components/Footer.astro'
-import 'github-markdown-css'
-import { Image } from 'astro:assets'
-import Comments from '../components/Comments.astro'
+import Footer from '@/components/Footer.astro'
+import Comments from '@/components/Comments.astro'
 import Tag from '@/components/Tag.astro'
 import CalendarIcon from '@/assets/icons/CalendarIcon.astro'
 import UserIcon from '@/assets/icons/UserIcon.astro'
 import DocumentIcon from '@/assets/icons/DocumentIcon.astro'
 import ClockIcon from '@/assets/icons/ClockIcon.astro'
+import { getCollection, render, type CollectionEntry } from 'astro:content'
 import { getWordCount } from '@/shared/utils'
+import { Image } from 'astro:assets'
+import 'github-markdown-css'
 
-const {
-	content: { title, description, pubDate, updatedDate, heroImage, author, authorHref, tags },
-	rawContent,
-} = Astro.props
+export async function getStaticPaths() {
+	const posts = await getCollection('blogs')
+	return posts.map((post: CollectionEntry<'blogs'>) => ({
+		params: { slug: post.id },
+		props: { post },
+	}))
+}
 
-const wordCount = getWordCount(rawContent?.() || '')
+type Props = { post: CollectionEntry<'blogs'> }
+
+const { post } = Astro.props as Props
+const { Content } = await render(post)
+const { title, description, pubDate, updatedDate, heroImage, author, authorHref, tags } = post.data
+
+const rawContent = post.body ?? ''
+const wordCount = getWordCount(rawContent)
 const readingTime = Math.ceil(wordCount / 400)
 ---
 
@@ -26,7 +37,7 @@ const readingTime = Math.ceil(wordCount / 400)
     <BaseHead
       title={title}
       description={description}
-      image={heroImage}
+      image={heroImage?.src}
       author={author}
       authorHref={authorHref}
       pubDate={pubDate}
@@ -90,7 +101,7 @@ const readingTime = Math.ceil(wordCount / 400)
           </div>
         )}
         <div class='prose prose-slate dark:prose-invert max-w-none'>
-          <slot />
+          <Content />
         </div>
         <Comments />
       </article>
