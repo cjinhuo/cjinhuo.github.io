@@ -2,7 +2,7 @@
 title: "Vue的一些理解"
 description: "Vue.js MVVM 框架的理解和笔记"
 pubDate: '2019-02-12'
-tags: ['Vue2.6', '前端', 'MVVM']
+tags: ['Vue', '前端', 'MVVM']
 ---
 
 :::tip[Vue概述]

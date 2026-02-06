@@ -2,7 +2,7 @@
 title: "Vue2.6响应式分析"
 description: "深入分析 Vue2.6 响应式原理，包括 defineReactive、Dep、Watcher 等核心概念"
 pubDate: '2019-11-01'
-tags: ['源码解读', 'Vue2.6', '前端']
+tags: ['源码解读', 'Vue', '前端']
 ---
 
 :::tip
