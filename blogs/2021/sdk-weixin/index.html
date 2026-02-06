@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2021/sdk-weixin/"><!-- Primary Meta Tags --><title>前端监控:监控SDK手摸手Teach-微信小程序篇(已开源)</title><meta name="title" content="前端监控:监控SDK手摸手Teach-微信小程序篇(已开源)"><meta name="description" content="微信小程序监控SDK实现，包括网络请求监控、路由切换监控、onerror监听、tab/touch事件获取、埋点实现等"><meta name="author" content="Shanks"><meta name="keywords" content="SDK, 前端监控, 微信小程序"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2021/sdk-weixin/"><meta property="og:title" content="前端监控:监控SDK手摸手Teach-微信小程序篇(已开源)"><meta property="og:description" content="微信小程序监控SDK实现，包括网络请求监控、路由切换监控、onerror监听、tab/touch事件获取、埋点实现等"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2021-10-20"><meta property="article:tag" content="SDK"><meta property="article:tag" content="前端监控"><meta property="article:tag" content="微信小程序"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2021/sdk-weixin/"><meta property="twitter:title" content="前端监控:监控SDK手摸手Teach-微信小程序篇(已开源)"><meta property="twitter:description" content="微信小程序监控SDK实现，包括网络请求监控、路由切换监控、onerror监听、tab/touch事件获取、埋点实现等"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.Uaq4wKsD.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.oJg5Xdcy.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">前端监控:监控SDK手摸手Teach-微信小程序篇(已开源)</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2021-10-20</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">1,138 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 3 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">SDK</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">前端监控</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">微信小程序</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <h2 id="概要">概要</h2>
+<p>已开源的前端监控SDK:<a href="https://github.com/mitojs/mitojs">mitojs</a>，有兴趣的小伙伴可以去瞅瞅~(<a href="https://mitojs.github.io/react-sdk-demo/#/page-one">SDK在线Demo</a>)</p>
+<p>来到正文，本文分成三个部分</p>
+<ul>
+<li>背景</li>
+<li>微信小程序的监控实现</li>
+<li>微信小程序的埋点实现</li>
+<li>结尾</li>
+</ul>
+<h2 id="背景">背景</h2>
+<p>接着前端监控系列的内容：</p>
+<ul>
+<li><a href="/blogs/2021/sdk-architecture">前端监控<div></div>(已开源)</a></li>
+<li><a href="/blogs/2021/sdk-principle">前端监控<div></div>(已开源)</a></li>
+</ul>
+<p>本文的主要目的讲下<code>微信小程序(wx-mini)监控</code>与<code>Web监控</code>的区别，以及如何编写小程序的埋点和错误监控</p>
+<h2 id="微信小程序的监控实现">微信小程序的监控实现</h2>
+<p>微信小程序监控也是通过劫持微信官方抛出全局对象的方法，由于小程序的运行环境并没有<code>window</code>和<code>document</code>对象，它只暴露了一个<code>wx</code>全局对象，比如我要拦截页面的<code>ajax</code>请求，在web端重写<code>window.XMLHttpRequest</code>和<code>fetch</code>，在微信小程序端则需要重写<code>wx.request</code></p>
+<h3 id="监控微信小程序的网络请求">监控微信小程序的网络请求</h3>
+<p>微信小程序常见的网络请求有：</p>
+<ul>
+<li>wx.request</li>
+<li>wx.downloadFile</li>
+<li>wx.uploadFile</li>
+</ul>
+<p>所以我们就重写这三个进行重写，并拿到入参:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">enum</span><span style="color:#B392F0"> WxXhrTypes</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  request</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'request'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  downloadFile</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'downloadFile'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  uploadFile</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'uploadFile'</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> monitorWxXhr</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#F97583">:</span><span style="color:#B392F0"> WxClient</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">notify</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">eventName</span><span style="color:#F97583">:</span><span style="color:#B392F0"> WxEventTypes</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">data</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> hookMethods</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Object.</span><span style="color:#B392F0">keys</span><span style="color:#E1E4E8">(WxXhrTypes)</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> that</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> this</span></span>
+<span class="line"><span style="color:#E1E4E8">  hookMethods.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">hook</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> originRequest</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> wx[hook]</span></span>
+<span class="line"><span style="color:#E1E4E8">    Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(wx, hook, {</span></span>
+<span class="line"><span style="color:#E1E4E8">      writable: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      enumerable: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      configurable: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">      value</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">[]) {</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> options</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> args[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#6A737D">        // 获取需要的数据信息</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">url</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">method</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">header</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">reqData</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> options</span></span>
+<span class="line"><span style="color:#6A737D">        // 收集小程序的请求信息</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> httpCollect</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">          request: {</span></span>
+<span class="line"><span style="color:#E1E4E8">            httpType: HttpTypes.</span><span style="color:#79B8FF">XHR</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            url,</span></span>
+<span class="line"><span style="color:#E1E4E8">            method,</span></span>
+<span class="line"><span style="color:#E1E4E8">            data: reqData</span></span>
+<span class="line"><span style="color:#E1E4E8">          },</span></span>
+<span class="line"><span style="color:#E1E4E8">          response: {},</span></span>
+<span class="line"><span style="color:#E1E4E8">          time: Date.</span><span style="color:#B392F0">now</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#6A737D">        // 成功回调</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#B392F0"> successHandler</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">          httpCollect.response.data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> res.data</span></span>
+<span class="line"><span style="color:#6A737D">          // 通知订阅中心</span></span>
+<span class="line"><span style="color:#B392F0">          notify</span><span style="color:#E1E4E8">(WxBaseEventTypes.</span><span style="color:#79B8FF">REQUEST</span><span style="color:#E1E4E8">, httpCollect)</span></span>
+<span class="line"><span style="color:#F97583">          return</span><span style="color:#E1E4E8"> options.</span><span style="color:#B392F0">success</span><span style="color:#E1E4E8">(res)</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> _fail</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> options.fail</span></span>
+<span class="line"><span style="color:#6A737D">        // 失败回调</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#B392F0"> failHandler</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">err</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">          // 系统和网络层面的失败</span></span>
+<span class="line"><span style="color:#E1E4E8">          httpCollect.errMsg </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> err.errMsg</span></span>
+<span class="line"><span style="color:#6A737D">          // 通知订阅中心</span></span>
+<span class="line"><span style="color:#B392F0">          notify</span><span style="color:#E1E4E8">(WxBaseEventTypes.</span><span style="color:#79B8FF">REQUEST</span><span style="color:#E1E4E8">, httpCollect)</span></span>
+<span class="line"><span style="color:#F97583">          return</span><span style="color:#B392F0"> _fail</span><span style="color:#E1E4E8">(err)</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> actOptions</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">          ...</span><span style="color:#E1E4E8">options,</span></span>
+<span class="line"><span style="color:#E1E4E8">          success: successHandler,</span></span>
+<span class="line"><span style="color:#E1E4E8">          fail: failHandler</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#6A737D">        // return 原始函数</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> originRequest.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, actOptions)</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<p>完整的代码请<a href="https://github.com/mitojs/mitojs/blob/master/packages/wx-mini/src/plugins/wxRequest.ts">点击这里</a></p>
+<h3 id="监控小程序路由切换">监控小程序路由切换</h3>
+<p>首先要列出可能触发小程序路由切换的事件：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#F97583"> enum</span><span style="color:#B392F0"> WxRouteEvents</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  SwitchTab</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'switchTab'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  ReLaunch</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'reLaunch'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  RedirectTo</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'redirectTo'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  NavigateTo</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'navigateTo'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  NavigateBack</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'navigateBack'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  NavigateToMiniProgram</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'navigateToMiniProgram'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  RouteFail</span><span style="color:#F97583"> =</span><span style="color:#9ECBFF"> 'routeFail'</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>下一步是对上面这些事件重写,就以<code>NavigateTo</code>为例：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> methods</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [WxRouteEvents.NavigateTo]</span></span>
+<span class="line"><span style="color:#E1E4E8">  methods.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">method</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> originMethod</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> wx[method] </span><span style="color:#F97583">as</span><span style="color:#B392F0"> Function</span></span>
+<span class="line"><span style="color:#E1E4E8">    Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(wx, method, {</span></span>
+<span class="line"><span style="color:#E1E4E8">      writable: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      enumerable: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      configurable: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">      value</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">options</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> toUrl</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (options </span><span style="color:#F97583">as</span><span style="color:#B392F0"> WechatMiniprogram</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">SwitchTabOption</span><span style="color:#E1E4E8">).url</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> data</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">          from: </span><span style="color:#B392F0">getCurrentRoute</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#E1E4E8">          to: toUrl</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#B392F0">        notify</span><span style="color:#E1E4E8">(WxBaseEventTypes.</span><span style="color:#79B8FF">ROUTE</span><span style="color:#E1E4E8">, data)</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> originMethod.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, options)</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span></code></pre>
+<p>其他的方法也是如此，不过需要注意失败回调信息的获取，完整代码请<a href="https://github.com/mitojs/mitojs/blob/master/packages/wx-mini/src/plugins/wxRoute.ts">点击这里</a></p>
+<h3 id="监控onerror">监控onerror</h3>
+<p>类似<code>Web</code>的<code>window.onerror</code>，不过小程序返回的是不是一个错误对象，而是一个字符串，需要自行解析其中的值（注意：<a href="https://developers.weixin.qq.com/miniprogram/dev/reference/api/App.html#onError-String-error">小程序官方文档</a>上写的是<code>string</code>，但是我也有在某个开发者电脑中出现过<code>Error</code>对象）</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> originApp</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> App</span></span>
+<span class="line"><span style="color:#B392F0">App</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">appOptions</span><span style="color:#F97583">:</span><span style="color:#B392F0"> WechatMiniprogram</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">App</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">Option</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">  replaceOld</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">    appOptions,</span></span>
+<span class="line"><span style="color:#9ECBFF">    'onError'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">originMethod</span><span style="color:#F97583">:</span><span style="color:#B392F0"> voidFun</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // 让原本的函数比抛出的hooks先执行，便于埋点判断是否重复</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (originMethod) {</span></span>
+<span class="line"><span style="color:#E1E4E8">          originMethod.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, args)</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#6A737D">        // 拿到args信息</span></span>
+<span class="line"><span style="color:#6A737D">        // notify</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#79B8FF">    true</span></span>
+<span class="line"><span style="color:#E1E4E8">  )</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> originApp</span><span style="color:#E1E4E8">(appOptions)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>重写App中的<code>onError</code>方法， 并拿到错误信息随后进行数据解析，<a href="https://github.com/mitojs/mitojs/blob/master/packages/wx-mini/src/plugins/wxApp.ts">完整代码</a></p>
+<h3 id="获取小程序的tabtouch等事件">获取小程序的tab、touch等事件</h3>
+<p>由于小程序是不能全局监听<code>tab</code>、<code>touch</code>等事件和获取不到页面的dom结构的，所以只能从方法参数入手。主要思路：所有的事件会有个<code>e</code>的参数，这个<code>e</code>中会有类型、节点信息等等，这个<code>e</code>一般情况是函数的第一个参数，所以只要重写<code>Page</code>下的所有函数，并判断函数的第一个参数是否包含<code>type</code>和<code>currentTarget</code>，比如这样判断:<code>e &#x26;&#x26; e.type &#x26;&#x26; e.currentTarget</code></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> originPage</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Page</span></span>
+<span class="line"><span style="color:#B392F0">Page</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">options</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> linstenerTypes</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [LinstenerTypes.Touchmove, LinstenerTypes.Tap]</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (options) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    Object.</span><span style="color:#B392F0">keys</span><span style="color:#E1E4E8">(options).</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">m</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (</span><span style="color:#9ECBFF">'function'</span><span style="color:#F97583"> !==</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> options[m]) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#6A737D">      // 公用方法，便于重写操作</span></span>
+<span class="line"><span style="color:#B392F0">      replaceOld</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">        options,</span></span>
+<span class="line"><span style="color:#E1E4E8">        m,</span></span>
+<span class="line"><span style="color:#F97583">        function</span><span style="color:#E1E4E8"> (</span><span style="color:#B392F0">originMethod</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">args</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">          return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">            const</span><span style="color:#79B8FF"> e</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> args[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#6A737D">            // 判断是否是事件</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (e </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> e.type </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> e.currentTarget </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#F97583"> !</span><span style="color:#E1E4E8">e.mitoWorked) {</span></span>
+<span class="line"><span style="color:#F97583">              if</span><span style="color:#E1E4E8"> (linstenerTypes.</span><span style="color:#B392F0">indexOf</span><span style="color:#E1E4E8">(e.type) </span><span style="color:#F97583">></span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">                // 拿到e，e会包括class id data属性</span></span>
+<span class="line"><span style="color:#6A737D">                // notify(e)</span></span>
+<span class="line"><span style="color:#E1E4E8">              }</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#F97583">            return</span><span style="color:#E1E4E8"> originMethod.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, args)</span></span>
+<span class="line"><span style="color:#E1E4E8">          }</span></span>
+<span class="line"><span style="color:#E1E4E8">        },</span></span>
+<span class="line"><span style="color:#79B8FF">        true</span></span>
+<span class="line"><span style="color:#E1E4E8">      )</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> originPage</span><span style="color:#E1E4E8">(pageOptions)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span></code></pre>
+<p>在小程序中测试可以收集到的信息，如下图所示：</p>
+<p><img alt="微信小程序收集信息" loading="lazy" decoding="async" fetchpriority="auto" width="1186" height="906" src="/_astro/02-wx-mini-api.DQWdrwPR_Z20m5nf.webp" ></p>
+<h2 id="微信小程序的埋点实现">微信小程序的埋点实现</h2>
+<p>埋点其实就是在各种生命周期中存储信息和获取信息并将有用信息上报的过程。</p>
+<p>场景一：需要上报页面的曝光时长和PV</p>
+<p>做法：在页面刚加载时记录开始时间<code>startTime</code>并将当前路由记住，在页面切换时用当前时间减去开始时间:<code>Date.now() - startTime</code>，并连带上个页面的路由上报</p>
+<p>这里需要用到两个钩子函数：</p>
+<ol>
+<li>页面加载时</li>
+<li>页面卸载时</li>
+</ol>
+<p>所以<a href="https://mitojs.github.io/mito-doc/#/sdk/guide/wx-mini#wxhookoptionstype">@mitojs/wx-mini</a>提供了一些列的hooks供开发者调用，比如上面的两个hooks对应小程序的</p>
+<ol>
+<li>页面加载时<a href="https://mitojs.github.io/mito-doc/#/sdk/guide/wx-mini#pageonloadpage-iwxpageinstance-void">pageOnLoad</a></li>
+<li>页面卸载时<a href="https://mitojs.github.io/mito-doc/#/sdk/guide/wx-mini#pageonunloadpage-iwxpageinstance-void">pageOnUnload</a></li>
+</ol>
+<p>这时有人就要说了，这不是微信小程序自带的钩子函数么？是的，肯定是微信本身是自带了这些钩子，我在才能重写并且抛出。正常情况下是每个<code>Page</code>下面都有很多钩子函数，如果不稍作处理，你需要在很多<code>Page</code>下写很多个钩子，而用了<a href="https://github.com/mitojs/mitojs/tree/master/packages/wx-mini">SDK</a>后，只需要写一遍即可</p>
+<p>埋点示例:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> MitoInstance</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> MITO</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">init</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  pageOnShow,</span></span>
+<span class="line"><span style="color:#E1E4E8">  pageOnHide</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">wx.MitoInstance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> MitoInstance</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> currentPage</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  startTime: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  page: </span><span style="color:#79B8FF">null</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> pageOnShow</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">page</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">  // 进入页面埋点</span></span>
+<span class="line"><span style="color:#E1E4E8">  wx.MitoInstance.</span><span style="color:#B392F0">trackSend</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#6A737D">    // 可自定义</span></span>
+<span class="line"><span style="color:#E1E4E8">    actionType: </span><span style="color:#9ECBFF">'PAGE'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    route: page.route</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">  currentPage.startTime </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> Date.</span><span style="color:#B392F0">now</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">  currentPage.page </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> page</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> pageOnHide</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">page</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">  // 离开页面埋点</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> endTime</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Date.</span><span style="color:#B392F0">now</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> elapsedTime</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> endTime </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> currentPage.startTime</span></span>
+<span class="line"><span style="color:#6A737D">  // 拿到信息并上报</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'currentPage'</span><span style="color:#E1E4E8">, currentPage)</span></span>
+<span class="line"><span style="color:#E1E4E8">  wx.MitoInstance.</span><span style="color:#B392F0">trackSend</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#6A737D">    // 可自定义</span></span>
+<span class="line"><span style="color:#E1E4E8">    actionType: </span><span style="color:#9ECBFF">'DURATION'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">    // 曝光时间</span></span>
+<span class="line"><span style="color:#E1E4E8">    elapsedTime,</span></span>
+<span class="line"><span style="color:#6A737D">    // 页面路由</span></span>
+<span class="line"><span style="color:#E1E4E8">    route: currentPage.page.route</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="结尾">结尾</h2>
+<h3 id="小结">小结</h3>
+<p>小程序错误监控和web相似，注意下在重写原生事件时注意下返回值，避免篡改原始值。</p>
+<p>埋点主要是在各个<code>hooks</code>中拿到埋点信息并上报的一个过程，所以先拿到大部分的<code>hooks</code>，然后就可以<code>DIY</code>你的埋点。</p>
+<h3 id="开源">开源</h3>
+<p><a href="https://mitojs.github.io/mito-doc/#/sdk/guide/wxtrack">小程序监控文档</a>，目前有部分人在用<a href="https://github.com/mitojs/mitojs">mitojs</a>在做自己的监控平台或者埋点相关业务，如果你感兴趣可以，不妨过来瞅瞅</p>
+<h3 id="联系内推">联系&#x26;内推</h3>
+<p>如果你对字节前端（内推）、错误监控、埋点感兴趣、也直接联系我的<strong>微信</strong></p><div></div><p></p>
+<p><strong>Have A Good Day!!!</strong></p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2020/git/"><!-- Primary Meta Tags --><title>Git 常用命令</title><meta name="title" content="Git 常用命令"><meta name="description" content="Git 版本控制系统的常用命令和技巧，包括工作区、暂存区、版本库、分支管理、Commit 规范等"><meta name="author" content="Shanks"><meta name="keywords" content="Git"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2020/git/"><meta property="og:title" content="Git 常用命令"><meta property="og:description" content="Git 版本控制系统的常用命令和技巧，包括工作区、暂存区、版本库、分支管理、Commit 规范等"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2020-04-01"><meta property="article:tag" content="Git"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2020/git/"><meta property="twitter:title" content="Git 常用命令"><meta property="twitter:description" content="Git 版本控制系统的常用命令和技巧，包括工作区、暂存区、版本库、分支管理、Commit 规范等"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.Uaq4wKsD.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.oJg5Xdcy.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">Git 常用命令</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2020-04-01</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">2,372 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 6 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">Git</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <div class="custom-container tip"><p class="custom-container-title">提示</p><p>Git和其他版本控制系统如SVN的一个不同之处就是有暂存区的概念。这边记录的是Git的一些笔记</p></div>
+<h2 id="工作区和暂存区">工作区和暂存区</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>Git和其他版本控制系统如SVN的一个不同之处就是有暂存区的概念。</p></div>
+<h3 id="暂存操作">暂存操作</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>list相当于是一个数组，数组下标对应的内容就是存着你每次暂存的信息.</p></div>
+<ul>
+<li>暂存操作
+<code>git stash save '本次暂存的名称'</code></li>
+<li>查看记录
+<code>git stash list</code>
+会出现以下信息</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>stash@{0}: On master: test</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>stash@{下标从0开始} On 分支：你填入暂存的名称</span></span></code></pre>
+<ul>
+<li>
+<p>恢复暂存的工作
+pop命令恢复,恢复后,暂存区域会删除当前的记录
+<code>git stash pop stash@{index}</code>
+apply命令恢复,恢复后,暂存区域会保留当前的记录
+<code>git stash apply stash@{index}</code></p>
+</li>
+<li>
+<p>删除暂存
+删除某个暂存，删之后你就取不了这个下标的信息了
+<code>git stash drop stash@{index}</code>
+删除全部暂存
+<code>git stash clear</code></p>
+</li>
+</ul>
+<h3 id="版本库">版本库</h3>
+<p>工作区有个隐藏目录<code>.git</code>，这个不算工作区，而是Git的版本库。</p>
+<p>Git的版本库存了很多东西，其中最重要的就是成为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。</p>
+<p>当我们把文件往Git版本库里添加的时候，是分两步执行的：</p>
+<p>第一步是用<code>git add</code>把文件添加进去，实际上就是把文件修改添加到暂存区去</p>
+<p>第二步是用<code>git commit</code>提交更改，实际上就是把暂存区的所有内容提交到当前分支</p>
+<p>因为我们创建Git版本库时，Git自动为我们创建了唯一一个master分支，所以，现在，git commit就是往master分支上提交更改。</p>
+<p>你可以简单理解为，需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改。</p>
+<h2 id="推送到远程库">推送到远程库</h2>
+<p>正常推送到远程库的流程是</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>git add *</span></span>
+<span class="line"><span>git commit -m 'DESCRIPTION'</span></span>
+<span class="line"><span>git push origin master</span></span></code></pre>
+<p>推荐一个命令：<code>git commit -am 'DESCRIPTION'</code>包括<code>git add *</code>，上面的两步可以变为一步。<br></p>
+<h2 id="git-push">git push</h2>
+<p>正常情况下git push的用法如下：
+<code>git push &#x3C;远程主机名> &#x3C;本地分支名>  &#x3C;远程分支名></code><br></p>
+<h3 id="git-push-origin-master">git push origin master</h3>
+<p>如果远程分支被省略，如上则表示将本地分支推送到与之存在追踪关系的远程分支（通常两者同名），如果该远程分支不存在，则会被新建</p>
+<h3 id="git-push-origin">git push origin</h3>
+<p>如果当前分支与远程分支存在追踪关系，则本地分支和远程分支都可以省略，将当前分支推送到origin主机的对应分支
+<code>git push origin cjh:cjh</code><br>
+表示将本地的’cjh’分支push到远程</p>
+<h3 id="git-push-1">git push</h3>
+<p>如果当前分支只有一个远程分支，那么主机名都可以省略，形如 git push</p>
+<h3 id="git-push-set-upstream-origin-本地分支名">git push —set-upstream origin &#x3C;本地分支名></h3>
+<p>当你在本地新建分支时，远程是没有的，这时候需要用上面这个命令来推到远程。</p>
+<h2 id="新建切换删除远程库">新建、切换、删除远程库</h2>
+<ul>
+<li>查看远程库的地址：
+<code>git remote -v</code><br>
+在这个地址上可以新建、切换、删除分支</li>
+<li>新建分支
+<code>git branch 'name'</code></li>
+</ul>
+<div class="custom-container warning"><p class="custom-container-title">注意</p><p>在本地新建分支，是建在本地分支上，远程库是没有这个分支的，当你用上面的命令新建后，用<code>git branch -r</code>查下就知道了，所以当你用本地分支push的时候，会报错:<code>fatal:The current branch 'name' has no upstream branch</code>，翻译：当前分支’name’没有上游分支，下面就会提示你用<code>git push --set-upstream origin 'name'</code>进行设置上游分支并push。</p></div>
+<ul>
+<li>
+<p>查看分支
+查看本地分支<code>git branch</code> <br>
+查看远程分支<code>git branch -r</code> <br>
+查看所有分支<code>git branch -a</code> <br></p>
+</li>
+<li>
+<p>切换分支
+切换本地分支<code>git checkout 'name'</code><br>
+切换远程分支<code>git checkout -b name origin/name</code></p>
+</li>
+<li>
+<p>删除分支
+删除远程分支<code>git push origin --delete 'name'</code><br>
+删除本地分支<code>git branch -D 'name'</code><br></p>
+</li>
+<li>
+<p>修改远程仓库地址
+<code>git remote set-url origin [url]</code></p>
+</li>
+<li>
+<p>删除本地远程仓库地址&#x26;添加新的仓库地址
+<code>git remote rm origin</code></p>
+</li>
+</ul>
+<p><code>git remote add origin [url]</code></p>
+<h2 id="分支合并">分支合并</h2>
+<p>从master新建一个分支来新建功能有三个步骤</p>
+<ol>
+<li>新建dev分支
+<code>git branch dev</code></li>
+<li>切换到dev分支
+<code>git checkout dev</code></li>
+</ol>
+<div class="custom-container tip"><p class="custom-container-title">checkout技巧</p><p>以上两部可以换成一部完成，<code>git checkout -b dev</code>的作用是：新建dev分支，并切换到dev分支</p></div>
+<ol start="3">
+<li>将master的内容合并到dev分支上
+<code>git merge master</code></li>
+</ol>
+<h2 id="git-fetch">git fetch</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>更新远程代码到本地仓库，经常用这个来检测别人是否push上去了没。</p></div>
+<h2 id="commit-规范">Commit 规范</h2>
+<div class="custom-container tip"><p class="custom-container-title">Git Commit</p><p>Git 每次提交代码，都要写 Commit message（提交说明），否则就不允许提交。</p><p>一般来说，Commit message 应该清晰明了，说明本次提交的目的。在多人协作项目中，如果代码风格统一、代码提交信息的说明准确，那么在后期协作以及 Bug 处理时会更加方便。</p><p>目前，社区有多种 Commit message 的提交规范。我们推荐使用 Angular 规范，这也是目前使用最广的写法，比较合理和系统化，并且有配套的工具。</p></div>
+<p>用于说明 commit 的类别，只允许使用下面 9 个标识：<br></p>
+<ul>
+<li>feat：新功能</li>
+<li>fix：修复 bug</li>
+<li>docs：撰写文档</li>
+<li>style：代码格式（不影响代码运行的变动）</li>
+<li>refactor：重构（既不是新增功能，也不是修改 bug 的代码变动）</li>
+<li>test：增加测试</li>
+<li>build：工程化</li>
+<li>example：示例（仅用于修改 example/*）</li>
+<li>chore：代码优化或辅助工具的变动</li>
+</ul>
+<p>Commit 信息应符合如下规则，建议使用工具 comitzen(git cz) 代替 git commit 。</p>
+<p><code>[TYPE](SCOPE):DESCRIPTION#[ISSUE]</code> <br>
+例如： <br>
+<code>feat(button):add type 'ghost' for form usage #666</code> <br></p>
+<ul>
+<li>【可选】SCOPE：用于说明 commit 影响的范围
+例如：数据层、控制层 或 button ，视项目不同而不同，一般用于 feat、fix 类型。如果你的修改影响了不止一个 scope ，你可以使用 * 代替。</li>
+<li>【必填】DESCRIPTION：对 commit 的简短描述
+一般不超过 50 个字符，且尽量使用英文，但是我还是用中文。</li>
+<li>【可选】ISSUE：改动关联的 issue 号码
+一般用于 feat、fix ，仅当前 commit 针对某个 issue 时使用。<br>
+例如：<code>fix(login): 修复登录流程的Bug #111</code></li>
+</ul>
+<h2 id="git-log--git-reflog">git log &#x26;&#x26; git reflog</h2>
+<h3 id="git-log">git log</h3>
+<p>可以显示所有提交过的版本信息<br></p>
+<p><img alt="git log" loading="lazy" decoding="async" fetchpriority="auto" width="1136" height="626" src="/_astro/git_log.75VU-NTi_ZhqwLD.webp" ></p>
+<p>如果感觉太繁琐，可以加上参数  —pretty=oneline，只会显示版本号和提交时的备注信息
+<code>git log --pretty=oneline</code>
+这样只会显示版本号和提交时的备注信息</p>
+<h3 id="git-reflog">git reflog</h3>
+<p>可以查看所有分支的所有操作记录（包括已经被删除的 commit 记录和 reset 的操作）</p>
+<p><img alt="git reflog" loading="lazy" decoding="async" fetchpriority="auto" width="1130" height="212" src="/_astro/git_reflog.DQhmSm02_1Cd3gS.webp" ></p>
+<p>例如执行 git reset —hard HEAD~1，退回到上一个版本，用<code>git log</code>则是看不出来被删除的commit，用<code>git reflog</code>则可以看到被删除的commited，我们就可以买后悔药，恢复到被删除的那个版本。</p>
+<h2 id="git-reset">git reset</h2>
+<p><code>git reset (–mixed) HEAD~1</code>
+回退一个版本,且会将暂存区的内容和本地已提交的内容全部恢复到未暂存的状态,不影响原来本地文件(未提交的也
+不受影响)
+<code>git reset –soft HEAD~1</code>
+回退一个版本,不清空暂存区,将已提交的内容恢复到暂存区,不影响原来本地的文件(未提交的也不受影响)</p>
+<p>将头指针移指定位置上面（比如向前移动5个commit），但是指针前面的commit内容还是存在的，且这commit的内容还是存在的，在staged change（暂存区）里面，当前如果commit后，在<code>git push -f</code>，那么这5个commit就会变成当前一个commit。
+<code>git reset –hard HEAD~1</code>
+回退一个版本,清空暂存区,将已提交的内容的版本恢复到本地,本地的文件也将被恢复的版本替换</p>
+<p>将本地的头指针移到指定位置，但是指针前面的commit内容还是存在的，这是需要<code>git push -f</code>强制推上去，那些commit就被删除了</p>
+<h2 id="git-checkout">git checkout</h2>
+<p>在commit层面，<code>git checkout &#x3C;branch name></code>表示切换至另一个分支，这个命令实际上是将HEAD指向另外一个分支，并且将工作区更新到那个分支。和git reset不同，git checkout不会移动分支。<br>
+git checkout也可以指定某个commit，这就像切换一个分支一样：git会将HEAD指向那个commit，形成<code>detached HEAD</code>，查了下资料发现这个<code>detached HEAD</code>是个临时指向，并没有新建分支，所以并没有什用。这对于快速查看文件旧版本来说非常方便，但如果你当前的HEAD没有任何分支引用，那么这会造成HEAD分离。因此，在为分离的HEAD添加新的提交时候你应该创建一个新的分支。</p>
+<h2 id="git-merge">git merge</h2>
+<div class="custom-container tip"><p class="custom-container-title">–no-ff参数的作用</p><p>git merge –no-ff 可以保存你之前的分支历史。能够更好的查看 merge历史，以及branch 状态。<br>
+git merge 则不会显示 feature，只保留单条分支记录。</p></div>
+<h2 id="git-rebase">git rebase</h2>
+<h2 id="git-cherry-pick">git cherry-pick</h2>
+<p>用来将其他分支的<code>commit</code>拷贝到当前分支</p>
+<p>用法：
+拷贝单个commit：
+<code>git cherry-pick &#x3C;commit></code></p>
+<p>拷贝多个commit：
+<code>git cherry-pick commitId_1..commitId_2</code></p>
+<p>注意：<code>commitId_1</code>一定要在<code>commitId_2</code>前面提交，</p>
+<h3 id="-s-ours">-s ours</h3>
+<p>假设当前在分支A上</p>
+<p><code>git merge -s ours B</code>的结果是，遇到冲突时采用A分支的结果</p>
+<h3 id="-s-theirs">-s theirs</h3>
+<p>假设当前在分支A上</p>
+<p><code>git merge -s theirs B</code>的结果是，遇到冲突时采用B分支的结果，没有试验过，猜测是这样的</p>
+<p><img alt="git merge" loading="lazy" decoding="async" fetchpriority="auto" width="515" height="428" src="/_astro/git_merge.KLHO0cNj_Z1yxWSb.webp" ></p>
+<h2 id="git-cz">git cz</h2>
+<p>规范提交<code>commit</code>的工具，初始化项目指南：<a href="https://github.com/commitizen/cz-cli#making-your-repo-commitizen-friendly">making-your-repo-commitizen-friendly</a></p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

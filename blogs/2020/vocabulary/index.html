@@ -1,0 +1,396 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2020/vocabulary/"><!-- Primary Meta Tags --><title>英语单词的一些记录</title><meta name="title" content="英语单词的一些记录"><meta name="description" content="记录学习过程中遇到的常用英语单词和短语，便于日后查阅。"><meta name="author" content="Shanks"><meta name="keywords" content="英语, 学习"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2020/vocabulary/"><meta property="og:title" content="英语单词的一些记录"><meta property="og:description" content="记录学习过程中遇到的常用英语单词和短语，便于日后查阅。"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2020-04-09"><meta property="article:tag" content="英语"><meta property="article:tag" content="学习"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2020/vocabulary/"><meta property="twitter:title" content="英语单词的一些记录"><meta property="twitter:description" content="记录学习过程中遇到的常用英语单词和短语，便于日后查阅。"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.Uaq4wKsD.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.oJg5Xdcy.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">英语单词的一些记录</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2020-04-09</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">1,975 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 5 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">英语</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">学习</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <div class="custom-container tip"><p class="custom-container-title">提示</p><p>make a note of the common words in learning</p></div>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>v</p><div></div> 动词<p></p><p>n</p><div></div> 名词<p></p><p>adj</p><div></div> 形容词<p></p><p>ph</p><div></div> 短语、词组、惯用语<p></p><p>det</p><div></div> 限定词，包括冠词(a/an，the)，指示代词（this/these,that/those），物主代词（my）<p></p><p>conj</p><div></div> 连词<p></p></div>
+<h3 id="manual">manual</h3>
+<ul>
+<li>adj: 手工的、体力的、用手操作的</li>
+<li>n: 使用手册、说明书、指南</li>
+</ul>
+<h3 id="explore">explore</h3>
+<ul>
+<li>v: 探索、勘察</li>
+</ul>
+<h3 id="suppress">suppress</h3>
+<ul>
+<li>v: 封锁、压制</li>
+</ul>
+<h3 id="discount">discount</h3>
+<ul>
+<li>n: 折扣</li>
+<li>adj: 认为。。。不重要</li>
+</ul>
+<h3 id="combination">combination</h3>
+<ul>
+<li>n: 组合、结合、混合体</li>
+</ul>
+<h3 id="hexadecimal">hexadecimal</h3>
+<ul>
+<li>adj: 十六进制的</li>
+</ul>
+<h3 id="octal">octal</h3>
+<ul>
+<li>adj: 八进制的</li>
+</ul>
+<h3 id="back-quote">back quote</h3>
+<ul>
+<li>网络释义：反引号：“（quote是引文的意思）</li>
+</ul>
+<h3 id="represent">represent</h3>
+<ul>
+<li>v: 表示、代表、意味着</li>
+</ul>
+<h3 id="caution">caution</h3>
+<ul>
+<li>n: 小心、慎重、警告</li>
+<li>v: 警告、告诫、提醒</li>
+</ul>
+<h3 id="explicit">explicit</h3>
+<ul>
+<li>adj: 清晰的、明确的</li>
+</ul>
+<h3 id="vague">vague</h3>
+<ul>
+<li>adj: 含糊的、不明确的、粗略的</li>
+</ul>
+<h3 id="capable-of">capable of</h3>
+<ul>
+<li>（事务）可以。。。的</li>
+</ul>
+<h3 id="consistent">consistent</h3>
+<ul>
+<li>adj: 一致的、符合的、持续的、</li>
+</ul>
+<h3 id="disclaimer">Disclaimer</h3>
+<ul>
+<li>n: 免责声明、弃权声明（书）</li>
+</ul>
+<h3 id="compliant">Compliant</h3>
+<ul>
+<li>adj: 顺从的、（与系列规则相）符合的、一致的</li>
+</ul>
+<h3 id="integration">integration</h3>
+<ul>
+<li>n: 结合、整合、一体化</li>
+</ul>
+<h3 id="deriving-classes">deriving classes</h3>
+<ul>
+<li>ph: 派生类</li>
+</ul>
+<h3 id="instantiated">instantiated</h3>
+<ul>
+<li>v: 被实例化</li>
+</ul>
+<h3 id="mechanism">mechanism</h3>
+<ul>
+<li>n: 机制、机械装置</li>
+</ul>
+<h3 id="anonymous">anonymous</h3>
+<ul>
+<li>adj: 匿名的、不具名的、没有特色的</li>
+</ul>
+<h3 id="instruments">instruments</h3>
+<ul>
+<li>n: 器械、仪器</li>
+</ul>
+<h3 id="corporate">corporate</h3>
+<ul>
+<li>n: 企业、</li>
+<li>adj: 社团的、法人的</li>
+</ul>
+<h3 id="train">train</h3>
+<ul>
+<li>n: 训练、练习、培训</li>
+<li>adj: 教学的、</li>
+</ul>
+<h3 id="interactive">interactive</h3>
+<p>adj: 合作的、交互的、</p>
+<h3 id="precision">precision</h3>
+<p>n: 精确、细致</p>
+<h3 id="specification">Specification</h3>
+<p>n</p><div></div>、说明书、详述<p></p>
+<p>Unit Testing Specification 单元测试基准</p>
+<h3 id="ieid-est拉丁语的缩写">i.e.(id est)拉丁语的缩写</h3>
+<p>用来特指某些事物，可以和”specifically”、“namely”的交换</p>
+<p>例子：</p>
+<ul>
+<li>“Only one city, i.e., London, has hosted the Summer Olympics three times.”</li>
+<li>“Every genetics student learns the two basic methodologies in the field, i.e., forward genetics and reverse genetics.”</li>
+</ul>
+<h3 id="egexempli-gratia拉丁语的缩写">e.g.(exempli gratia)拉丁语的缩写</h3>
+<p>类似”for example”、“such as”，没有特指某些</p>
+<ul>
+<li>“The Summer Olympics is composed of a variety of sports (e.g., gymnastics, swimming, and tennis).”</li>
+<li>“Many genes are involved in neural tube development, e.g., Sonic Hedgehog, BMPs, and the Hox genes.”</li>
+</ul>
+<h3 id="revocable">revocable</h3>
+<p>adj</p><div></div>、可废除的<p></p>
+<p>revocable beneficiary 可撤销受益人</p>
+<p>revocability 撤销</p>
+<h3 id="latency">latency</h3>
+<p>n: 潜伏</p>
+<h3 id="qpsquery-per-second">QPS（Query Per Second）</h3>
+<p>每秒查询率，是一台服务器每秒能够响应的查询次数</p>
+<h3 id="tpstransaction-per-second">TPS（Transaction Per Second）</h3>
+<p>事务率，事务数/秒，一个事务是指一个客户机向服务器发送请求然后服务器做出反应的过程</p>
+<h3 id="qosquality-of-service">QOS(Quality of Service)</h3>
+<p>质量服务</p>
+<h3 id="metrics">metrics</h3>
+<p>计算机词汇：衡量指标</p>
+<h3 id="revamp">revamp</h3>
+<p>v: 改变、修改（通常指）改进外观、翻新
+n: 改进</p>
+<h3 id="rfcrequest-for-comments">RFC（Request For Comments）</h3>
+<p>译：征求意见书，我理解的是出alpha版前会先出RFC的说明，会给别人先看看文档，说明此次的功能说明书</p>
+<h3 id="alphabetical">alphabetical</h3>
+<p>adj: 按字母(表)顺序的</p>
+<p>combination</p><div></div> order 按照字母表排序<p></p>
+<h3 id="scenario">scenario</h3>
+<p>n: 场景、设想、设想</p>
+<p>e.g.</p><div></div> scenario 常见的场景<p></p>
+<h3 id="correct">correct</h3>
+<p>adj:（政治或思想）正确的；恰当的；端正的</p>
+<p>v: 改正、校正、</p>
+<h3 id="size">size</h3>
+<ul>
+<li>xm: extra samll 特小号</li>
+<li>sm: small 小号</li>
+<li>md: medium 中号</li>
+<li>lg: large 大号</li>
+<li>xl: extra large 特大号</li>
+<li>xxl: extra extar large 超特大号</li>
+</ul>
+<h3 id="peace-out">Peace out</h3>
+<p>译：“再见”，常用在道别，或者结聊天结束</p>
+<h3 id="complexity">Complexity</h3>
+<p>n: 复杂性、难懂、难题</p>
+<h3 id="spaghetti">spaghetti</h3>
+<p>n: 意大利面</p>
+<p><strong>spaghetti code：表示耦合性比较强的代码，意大利代码</strong></p>
+<h3 id="lasagna">lasagna</h3>
+<p>n: 千层面</p>
+<h3 id="wishy-washy">wishy-washy</h3>
+<p>adj: 优柔寡断的（指人）</p>
+<h3 id="decisive">decisive</h3>
+<p>adj: 果断的、决定性的、有判断力的</p>
+<h3 id="hasty">hasty</h3>
+<p>adj: 猛烈的、急躁的</p>
+<h3 id="effective">effective</h3>
+<p>adj: 有效的、有效率的</p>
+<h3 id="isolated">isolated</h3>
+<p>adj: 单独的、隔离的</p>
+<h3 id="equivalent">equivalent</h3>
+<p>adj: 等价的、相等的
+n: 等价物
+eg: here is the equivalent example</p>
+<h3 id="synopsis">synopsis</h3>
+<p>n: 前言、前言文、大纲、概要
+eg: 大部分用做前言，或者在一篇文章的开头，提供文章的简要内容（少部分）</p>
+<h3 id="overview">overview</h3>
+<p>n: 概览、概述
+eg: 大部分用做文章的开头，提供文章的简要内容</p>
+<h3 id="significant">significant</h3>
+<p>adj: 重要的、有意义的
+eg: 在一个概念上，significant是指某个概念的重要性，而不是某个概念的有效性</p>
+<h3 id="thats-a-wrap-folks">That’s a wrap folks!</h3>
+<p>译：“小伙伴，到这就结束啦 || 这就是一个结束的标志”，常用在结束一个活动，或者结束一个讨论</p>
+<h3 id="involves">involves</h3>
+<p>v: 包含、涉及、涉及到</p>
+<h3 id="ability-to-scale">ability to scale</h3>
+<p>n: 扩展能力</p>
+<h3 id="criticize">criticize</h3>
+<p>v: 评论、批评</p>
+<h3 id="criticism">criticism</h3>
+<p>n: 批评、批判</p>
+<h3 id="imitate">imitate</h3>
+<p>v: 模仿、仿造</p>
+<h3 id="skeleton">skeleton</h3>
+<p>n: 骨架、骨架屏</p>
+<h3 id="leverage">leverage</h3>
+<p>v: 利用、使用、使用某种工具、技术、手段</p>
+<h3 id="academy">academy</h3>
+<p>n: 学院、大学
+eg: tech academy 技术学院</p>
+<h3 id="kick-off">kick off</h3>
+<p>v: 开始、启动</p>
+<h3 id="pseudo">pseudo</h3>
+<p>adj: 假的、伪造的
+n: 伪君子、假冒的人</p>
+<h3 id="curly-braces">curly braces</h3>
+<p>n: 花括号</p>
+<h3 id="ownership">ownership</h3>
+<p>n: 所有权、所有制
+eg: give me the ownership of this code</p>
+<h3 id="tricky">tricky</h3>
+<p>adj: 棘手的、难以理解的
+eg: tricky code（与hack意思相近，表示用”奇技淫巧”的方法写代码）</p>
+<h3 id="process-into">process into</h3>
+<p>v: 加工（将过程转化为结果）</p>
+<h3 id="despite">despite</h3>
+<p>prep: 然而、不过、虽然、尽管</p>
+<h3 id="investigate">investigate</h3>
+<p>v: 调查、探索、调研</p>
+<h3 id="deprecated">deprecated</h3>
+<p>adj: 已弃用的、已废弃的</p>
+<h3 id="duplicated">duplicated</h3>
+<p>adj: 重复的、复制的</p>
+<h3 id="occurred">occurred</h3>
+<p>v: 发生; 出现; 存在于; 出现在</p>
+<h3 id="malformed">malformed</h3>
+<p>adj: 畸形的</p>
+<h3 id="hierarchy">hierarchy</h3>
+<p>n: 层次结构、层次结构、等级制度</p>
+<h3 id="decouple">decouple</h3>
+<p>v: 解耦、解除关联、</p>
+<h3 id="copy-that">Copy that</h3>
+<p>收到，明白</p>
+<ul>
+<li>突出会照对方做的意思</li>
+<li>不强调级别关系</li>
+</ul>
+<h3 id="roger-that">Roger that</h3>
+<p>收到了</p>
+<ul>
+<li>只是单纯说明收到你的意思，会不会照做就说不定</li>
+<li>一般是上级对下级</li>
+</ul>
+<h3 id="make-for-sbsth">make for sb./sth.</h3>
+<p>phr: 有助于某人/某事物</p>
+<h3 id="in-a-crisis">in a crisis</h3>
+<p>phr: 在危机中</p>
+<h3 id="paralyze">paralyze</h3>
+<p>v: 使瘫痪、使麻痹</p>
+<h3 id="legacy">legacy</h3>
+<p>n: 遗产、遗留物</p>
+<h3 id="corresponding">corresponding</h3>
+<p>adj: 相对的、相应的
+eg: a corresponding test file for this code</p>
+<h3 id="caveat">Caveat</h3>
+<p>n: 免责声明、警告
+eg: Caveat: 用做文章的title</p>
+<h3 id="clicommand-line-interface">CLI(Command Line Interface)</h3>
+<p>n: 命令行界面</p>
+<h3 id="excerpt">excerpt</h3>
+<p>n: 片段、摘要</p>
+<h3 id="differentiate">differentiate</h3>
+<p>v: 区分、区别</p>
+<h3 id="perspective">perspective</h3>
+<p>n: 观点、观念、观点</p>
+<h3 id="engage">engage</h3>
+<p>v: 参与、接受</p>
+<h3 id="collaboration">collaboration</h3>
+<p>n: 合作、协作</p>
+<h3 id="equip-with">equip with</h3>
+<p>phr: 配备有…</p>
+<h3 id="viable">viable</h3>
+<p>adj: 可行的</p>
+<h3 id="attainable">attainable</h3>
+<p>adj: 可达的(只强调目标最终是否能达成，没有涉及中间所需要的努力，翻译成中文，就是可取性)</p>
+<h3 id="feasible">feasible</h3>
+<p>adj: 可行的(评估目的达到的可能性，译成中文就是难易性)</p>
+<h3 id="doable">doable</h3>
+<p>adj: 可行的(实施的可能性；强调的是具体实施的可能性，至于是否能最终达到目前或既定目标，则没有说明)</p>
+<h3 id="flesh-out">flesh out</h3>
+<p>phr: 使充实、使丰满</p>
+<h3 id="version-bumps">version Bumps</h3>
+<p>phr</p><div></div>(eg<div></div> fields can be added to the end with minor version bumps)<p></p>
+<h3 id="granularity">granularity</h3>
+<p>n: 粒度、粒度级别</p>
+<h3 id="for-instance">for instance</h3>
+<p>phr: 例如</p>
+<h3 id="whereas--however">whereas &#x26; however</h3>
+<p>whereas</p><div></div>，引导一个从句
+phr: 然而、鉴于
+egs: some of the studies show positive result, whereas others do not
+however<div></div>，引导一个单独的句子
+phr: 然而、尽管
+egs: It’s raining hard; however, I think we should go out<p></p>
+<h3 id="idempotent">idempotent</h3>
+<p>adj: 幂等的（计算机）、可无果的、可无损的</p>
+<h3 id="manipulate">manipulate</h3>
+<p>v: 操纵、操作、操作
+eg: manipulate the dom</p>
+<h3 id="consolidate">consolidate</h3>
+<p>v: 合并、巩固
+eg：consolidating duplicate code</p>
+<h3 id="predicate">predicate</h3>
+<p>v</p><div></div>
+n<div></div>
+eg: Array.filter(),第一个参数解释：Function is a predicate, to test each element of the array.可以解释成这个函数用来测试/断定/断言某个条件成不成立<p></p>
+<h3 id="document--documentation">document &#x26;&#x26; documentation</h3>
+<p>document:</p>
+<ul>
+<li>n<div></div>,可以用在电脑桌面，表示一堆文件的文档，或者在wps中save成document</li>
+</ul>
+<p>v</p><div></div>、记载，可以<p></p>
+<p>documentation:</p>
+<ul>
+<li>n<div></div>、文献， 只有名词，可以用在某个库的使用文档，表示用来看的文档</li>
+</ul>
+<h3 id="refine">refine</h3>
+<ul>
+<li>v<div></div>、改进</li>
+</ul>
+<p>eg</p><div></div> week, I’ll refine the unit test of program.<p></p>
+<h3 id="complete">complete</h3>
+<ul>
+<li>adj: 完整的（almost in this）</li>
+<li>v<div></div></li>
+</ul>
+<p>eg: Have you completed your homework?</p>
+<p>eg: There is a complete file on the disk.</p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

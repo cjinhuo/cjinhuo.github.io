@@ -1,0 +1,378 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2020/browser/"><!-- Primary Meta Tags --><title>浏览器基础知识</title><meta name="title" content="浏览器基础知识"><meta name="description" content="浏览器的一些原理，包括 EventTarget、hashchange、popstate、内存泄露、垃圾回收机制、浏览器进程架构等"><meta name="author" content="Shanks"><meta name="keywords" content="浏览器"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2020/browser/"><meta property="og:title" content="浏览器基础知识"><meta property="og:description" content="浏览器的一些原理，包括 EventTarget、hashchange、popstate、内存泄露、垃圾回收机制、浏览器进程架构等"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2020-04-30"><meta property="article:tag" content="浏览器"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2020/browser/"><meta property="twitter:title" content="浏览器基础知识"><meta property="twitter:description" content="浏览器的一些原理，包括 EventTarget、hashchange、popstate、内存泄露、垃圾回收机制、浏览器进程架构等"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.Uaq4wKsD.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.oJg5Xdcy.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">浏览器基础知识</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2020-04-30</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">3,591 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 9 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">浏览器</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <div class="custom-container tip"><p class="custom-container-title">概述</p><p>浏览器的一些原理</p></div>
+<h2 id="eventtarget">EventTarget</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>EventTarget是一个DOM接口，由可以接受事件、并且可以创建侦听器的对象实现。Element，document 和 window 是最常见的 event targets ，但是其他对象也可以作为 event targets，比如 XMLHttpRequest，AudioNode，AudioContext  等等。</p><p>许多 event targets （包括 elements， documents 和 windows）支持通过 onevent 特性和属性设置事件处理程序 (event handlers)。</p></div>
+<h3 id="实例化">实例化</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MyEventTarget</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> EventTarget</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">mySecret</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">    super</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">._secret </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> mySecret;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  get</span><span style="color:#B392F0"> secret</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">._secret; }</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> myEventTarget </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> MyEventTarget</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> value </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> myEventTarget.secret;  </span><span style="color:#6A737D">// == 5</span></span>
+<span class="line"><span style="color:#6A737D">// 在当前事件目标上添加名为foo的事件侦听器</span></span>
+<span class="line"><span style="color:#E1E4E8">myEventTarget.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"foo"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">._secret </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> e.detail;</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"><span style="color:#6A737D">// 创建名为foo的事件</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> event </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> CustomEvent</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"foo"</span><span style="color:#E1E4E8">, { detail: </span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8"> });</span></span>
+<span class="line"><span style="color:#6A737D">// 派发名为foo的事件，并且把参数传入进去</span></span>
+<span class="line"><span style="color:#E1E4E8">myEventTarget.</span><span style="color:#B392F0">dispatchEvent</span><span style="color:#E1E4E8">(event);</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> newValue </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> myEventTarget.secret; </span><span style="color:#6A737D">// == 7</span></span></code></pre>
+<h3 id="原型链方法">原型链&#x26;&#x26;方法</h3>
+<p><code>window.EventTarget.prototype</code>的方法：</p>
+<ul>
+<li>addEventListener</li>
+<li>removeEventListener</li>
+<li>dispatchEvent</li>
+</ul>
+<h2 id="hashchangepopstate">hashchange&#x26;&#x26;popstate</h2>
+<h3 id="hashchange">hashchange</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>当URL的片段标识符更改时，将触发hashchange事件 (跟在＃符号后面的URL部分，包括＃符号)，也就是说在history模式下，这个事件是不不会触发的。</p></div>
+<h3 id="popstate">popstate</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>当活动历史记录条目更改时，将触发popstate事件。需要注意的是调用history.pushState()或history.replaceState()不会触发popstate事件。
+在我自己测试的几种环境下，基本上<code>popstate</code>的事件是包含<code>hashchange</code>事件所反馈的。不管在history模式还是hash模型下，都会触发popstate事件。</p></div>
+<p><strong>触发情况</strong></p>
+<p><strong>（hash模式下）：</strong></p>
+<ol>
+<li>
+<p><code>location.hash += '123'</code>两者都能触发</p>
+</li>
+<li>
+<p>调用history.back()或者history.forward()方法时两者都能触发</p>
+</li>
+</ol>
+<p><strong>（history模式下）：</strong></p>
+<ol>
+<li>
+<p>用pushState进入一个/test页面，然后用浏览器本身的返回时触发popstate</p>
+</li>
+<li>
+<p>调用history.back()或者history.forward()方法时触发popstate</p>
+</li>
+<li>
+<p><code>location.hash += '123'</code>两者都触发</p>
+</li>
+</ol>
+<div class="custom-container tip"><p class="custom-container-title">模式</p><p>并不是说在react或者vue中的route指定了哪一种模式，当前页面就一定永远是这种模式，判断这种模式要看路由地址后面是否跟了#，如果有则是hash模式，反之是history</p></div>
+<h3 id="browser-history">browser history</h3>
+<ol>
+<li>告诉浏览器这是一个history模式，不需重新加载页面资源</li>
+<li>需要配置服务器返回的index.html处理应用启动最初的 / 这样的请求应该没问题，但当用户来回跳转并在 /accounts/123 刷新时，服务器就会收到来自 /accounts/123 的请求</li>
+</ol>
+<p>如果你的服务器是nginx，使用<code>try_files</code></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">server {</span></span>
+<span class="line"><span style="color:#F97583">  ...</span></span>
+<span class="line"><span style="color:#E1E4E8">  location </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    try_files $uri </span><span style="color:#F97583">/</span><span style="color:#E1E4E8">index.html</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#6A737D">  // 不管根路径后面的参数是什么，都返回index.html文件</span></span>
+<span class="line"><span style="color:#6A737D">  // 按指定的file顺序查找存在的文件，并使用第一个找到的文件进行请求处理</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="内存泄露">内存泄露</h3>
+<ol>
+<li>意外的全局变量
+由于 js 对未声明变量的处理方式是在全局对象上创建该变量的引用。如果在浏览器中，全局对象就是 window 对象。变量在窗口关闭或重新刷新页面之前都不会被释放，如果未声明的变量缓存大量的数据，就会导致内存泄露。</li>
+</ol>
+<ul>
+<li>未声明变量</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> fn</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">  // 此时this指向window</span></span>
+<span class="line"><span style="color:#E1E4E8">  a </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> 'global variable'</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">fn</span><span style="color:#E1E4E8">()</span></span></code></pre>
+<p>解决方法：</p>
+<p>避免创建全局变量，使用严格模式,在 JavaScript 文件头部或者函数的顶部加上 use strict。</p>
+<ol start="2">
+<li>闭包引起的内存泄漏
+原因：闭包可以读取函数内部的变量，然后让这些变量始终保存在内存中。如果在使用结束后没有将局部变量清除，就可能导致内存泄露。</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> fn</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> "I'm a"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a);</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>解决：将事件处理函数定义在外部，解除闭包，或者在定义事件处理函数的外部函数中。</p>
+<ol start="3">
+<li>没有清理的DOM元素引用
+原因：虽然别的地方删除了，但是对象中还存在dom的引用</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 在对象中引用DOM</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> elements </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  btn: document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'btn'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> doSomeThing</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  elements.btn.</span><span style="color:#B392F0">click</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> removeBtn</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">  // 将body中的btn移除, 也就是移除 DOM树中的btn</span></span>
+<span class="line"><span style="color:#E1E4E8">  document.body.</span><span style="color:#B392F0">removeChild</span><span style="color:#E1E4E8">(document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'button'</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#6A737D">  // 但是此时全局变量elements还是保留了对btn的引用, btn还是存在于内存中,不能被GC回收</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>还可以用weakMap的key作为引用</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> myWeakmap </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> WeakMap</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">myWeakmap.</span><span style="color:#B392F0">set</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">  document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'logo'</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">  {timesClicked: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'logo'</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'click'</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> logoData </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> myWeakmap.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'logo'</span><span style="color:#E1E4E8">));</span></span>
+<span class="line"><span style="color:#E1E4E8">  logoData.timesClicked</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>上面代码中，document.getElementById(‘logo’)是一个 DOM 节点，每当发生click事件，就更新一下状态。我们将这个状态作为键值放在 WeakMap 里，对应的键名就是这个节点对象。一旦这个 DOM 节点删除，该状态就会自动消失，不存在内存泄漏风险。</p>
+<ol start="3">
+<li>被遗忘的计时器或回调函数</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> someResource </span><span style="color:#F97583">=</span><span style="color:#B392F0"> getData</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">setInterval</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    var</span><span style="color:#E1E4E8"> node </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Node'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8">(node) {</span></span>
+<span class="line"><span style="color:#6A737D">        // 处理 node 和 someResource</span></span>
+<span class="line"><span style="color:#E1E4E8">        node.innerHTML </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">stringify</span><span style="color:#E1E4E8">(someResource));</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#79B8FF">1000</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>这样的代码很常见，如果id为Node的元素从DOM中移除，该定时器仍会存在，同时，因为回调函数中包含对someResource的引用，定时器外面的someResource也不会被释放。</p>
+<p><strong>注意：虽然逻辑上没有走到if条件的，但是引擎里面还是会将someResource的引用计数+1</strong></p>
+<h3 id="垃圾回收的使用场景优化">垃圾回收的使用场景优化</h3>
+<ol>
+<li>数组array优化
+将[]赋值给一个数组对象，是清空数组的捷径(例如： arr = []),但是需要注意的是，这种方式又创建了一个新的空对象，并且将原来的数组对象变成了一小片内存垃圾！实际上，将数组长度赋值为0（arr.length = 0）也能达到清空数组的目的，并且同时能实现数组重用，减少内存垃圾的产生。</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> arr</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'浪里行舟'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">arr.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 0</span><span style="color:#6A737D">  // 可以直接让数字清空，而且数组类型不变。</span></span>
+<span class="line"><span style="color:#6A737D">// arr = []; 虽然让a变量成一个空数组,但是在堆上重新申请了一个空数组对象。</span></span></code></pre>
+<ol start="2">
+<li>对象尽量复用
+对象尽量复用，尤其是在循环等地方出现创建新对象，能复用就复用。不用的对象，尽可能设置为null，尽快被垃圾回收掉。</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {} </span><span style="color:#6A737D">// 每次循环都会创建一个新对象。</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">  // var t = {};// 每次循环都会创建一个新对象。</span></span>
+<span class="line"><span style="color:#E1E4E8">  t.age </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 19</span></span>
+<span class="line"><span style="color:#E1E4E8">  t.name </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> '123'</span></span>
+<span class="line"><span style="color:#E1E4E8">  t.index </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(t)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">t </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#6A737D"> //对象如果已经不用了，那就立即设置为null；等待垃圾回收。</span></span></code></pre>
+<ol start="3">
+<li>在循环中的函数表达式，能复用最好放到循环外面。</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// bad</span></span>
+<span class="line"><span style="color:#6A737D">// 在循环中最好也别使用函数表达式。</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#E1E4E8"> k </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; k </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">; k</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#B392F0"> t</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">a</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 创建了10次  函数对象。</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#B392F0">  t</span><span style="color:#E1E4E8">(k)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// good</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> t</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">a</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#E1E4E8"> k </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; k </span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">; k</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">  t</span><span style="color:#E1E4E8">(k)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">t </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span></span></code></pre>
+<h3 id="垃圾回收机制">垃圾回收机制</h3>
+<p>找出不再使用的变量，然后释放掉其占用的内存，但是这个过程不是时时的，因为其开销比较大，所以垃圾回收器会按照固定的时间间隔周期性的执行。</p>
+<h4 id="回收方法">回收方法</h4>
+<ul>
+<li>标记清除
+这是javascript常用的垃圾回收方式。当变量进入执行环境时，就标记这个变量为”进入环境”。从逻辑上讲，永远不能释放进入环境的变量所占用的内存，因为只要执行流进入相应的环境，就可能会用到他们。</li>
+</ul>
+<p>垃圾收集器在运行的时候会给存储在内存中的所有变量都加上标记。然后，它会去掉环境中的变量以及被环境中的变量引用的标记。而在此之后再被加上标记的变量将被视为准备删除的变量，原因是环境中的变量已经无法访问到这些变量了。最后。垃圾收集器完成内存清除工作，销毁那些带标记的值，并回收他们所占用的内存空间。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> m </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">,n </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 19</span><span style="color:#6A737D"> // 把 m,n,add() 标记为进入环境。</span></span>
+<span class="line"><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(m, n) </span><span style="color:#6A737D">// 把 a, b, c标记为进入环境。</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(n) </span><span style="color:#6A737D">// a,b,c标记为离开环境，等待垃圾回收。</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> add</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">a</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  a</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> b</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> c</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li>引用计数
+所谓”引用计数”是指语言引擎有一张”引用表”，保存了内存里面的资源（通常是各种值）的引用次数。如果一个值的引用次数是0，就表示这个值不再用到了，因此可以将这块内存释放。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> arr </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#E1E4E8">arr </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'浪里行舟'</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>上面代码中，数组<code>[1, 2, 3, 4]</code>是一个值，会占用内存。变量arr是仅有的对这个值的引用，因此引用次数为1。后续arr又被赋了一个值，则数组<code>[1,2,3,4]</code>的引用次数就减1，此时它引用次数变成0，则说明没有办法再访问这个值了，因而就可以将其所占的内存空间给收回来。</p>
+<p>但是引用计数有个最大的问题：循环引用</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> func</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> obj1 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"><span style="color:#F97583">    let</span><span style="color:#E1E4E8"> obj2 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    obj1.a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> obj2; </span><span style="color:#6A737D">// obj1 引用 obj2</span></span>
+<span class="line"><span style="color:#E1E4E8">    obj2.a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> obj1; </span><span style="color:#6A737D">// obj2 引用 obj1</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>当函数 func 执行结束后，返回值为 undefined，所以整个函数以及内部的变量都应该被回收，但根据引用计数方法，obj1 和 obj2 的引用次数都不为 0，所以他们不会被回收。</p>
+<p>要解决循环引用的问题，最好是在不使用它们的时候手工将它们设为空。上面的例子可以这么做：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">obj1 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">obj2 </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> null</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<h2 id="打开一个页面至少需要4个进程">打开一个页面至少需要4个进程</h2>
+<ol>
+<li>浏览器进程<div></div>、用户交互、子进程管理，同时提供存储等功能</li>
+<li>网络进程<div></div>，之前是作为一个模块运行在浏览器进程里面
+的，直至最近才独立出来，成为一个单独的进程</li>
+<li>GPU进程<div></div>，Chrome 刚开始发布的时候是没有 GPU 进程的。而 GPU 的使用初衷
+是为了实现 3D CSS 的效果，只是随后网页、Chrome 的 UI 界面都选择采用 GPU 来绘
+制，这使得 GPU 成为浏览器普遍的需求。最后，Chrome 在其多进程架构上也引入了
+GPU 进程</li>
+<li>渲染进程<div></div> HTML、CSS 和 JavaScript 转换为用户可以与之交互的网页，
+排版引擎 Blink 和 JavaScript 引擎 V8 都是运行在该进程中，默认情况下，Chrome 会
+为每个 Tab 标签创建一个渲染进程。出于安全考虑，渲染进程都是运行在沙箱模式下</li>
+<li>插件进程(如果该页面包含插件的话)<div></div>，因插件易崩溃，所以需要通过插件进程来隔离，以保
+证插件进程崩溃不会对浏览器和页面造成影响</li>
+</ol>
+<h2 id="说说从输入url到页面呈现发生了什么">说说从输入URL到页面呈现发生了什么？</h2>
+<p><strong>在浏览器输入了<code>https://www.baidu.com</code></strong></p>
+<div class="custom-container warning"><p class="custom-container-title">注意</p><p>为什么在浏览器的地址栏里面输入了一个地址后，之前的页面没有立马消失，而是要加载一会儿才会更新页面：触发当前页面的卸载事件和收集需要释放内存，这也占用了一些时间，但大部分时间是构建请求到接受到请求</p></div>
+<ol>
+<li>URL请求过程</li>
+</ol>
+<ul>
+<li>进入页面资源请求过程。此时，浏览器进程会通过进程间通信（IPC：Inter-Process Communication）把URL请求发送至网络进程，网络进程接收到URL请求后，会在这里发起真正的请求流程</li>
+<li>先检查强缓存，如果命中直接使用，否则进入下一步</li>
+<li>DNS解析：以获取请求域名的服务器 IP 地址（值得注意的是浏览器提供了DNS数据缓存功能。即如果一个域名已经解析过，就会把解析的结果缓存下来，下次处理直接走缓存，不需要走DNS解析）</li>
+<li>如果是https则先建立SSL（TLS）协议</li>
+<li>IP 地址和服务器建立 TCP （Transmission Control Protocol传输控制协议）连接</li>
+<li>服务器接收到请求信息后，会根据请求信息生成响应数据（包括响应行、响应头和响应体等信息），发给网络进程。等网络进程接收了响应行和响应头之后，就开始解析响应头的内容</li>
+<li>不同的响应体会对应做些不同的处理流程，比如 <code>Content-Type:text/html</code>，就是开始用渲染进程解析页面。如果是<code>Content-Type: application/octet-stream</code>类型，那么浏览器就会变成了一个下载文件。</li>
+</ul>
+<ol start="2">
+<li>准备渲染进程</li>
+</ol>
+<ul>
+<li>Chrome 会为每个页面分配一个渲染进程，也就是说，每打开一个新页面就会配套创建一个新的渲染进程。但是，也有一些例外，在某些情况下，浏览器会让多个页面直接运行在同一个渲染进程中</li>
+<li>构建DOM树：将HTML转成浏览器能理解和使用的结构</li>
+<li>样式计算：计算出 DOM 节点中每个元素的具体样式。分为三个步骤。
+<ul>
+<li>把CSS转换成浏览器能够理解的结构，也就是styleSheets</li>
+<li>转换样式表中的属性值，使其标准化，比如2em转成32px，颜色blue转成rgb(0, 0, 255)</li>
+<li>计算出DOM树中每个节点的具体样式</li>
+</ul>
+</li>
+<li>构建布局树
+<ul>
+<li>创建布局树：遍历DOM树中的所有可见节点，并把这些节点加到布局中，而不可见的节点会被布局树忽略掉，比如display<div></div></li>
+<li>布局计算</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>分层：根据布局树最终生成图层树</li>
+</ol>
+<ul>
+<li>因为页面中有很多复杂的效果，如一些复杂的 3D 变换、页面滚动，或者使用 z-indexing、做 z 轴排序等，为了更加方便地实现这些效果渲染引擎还需要为特定的节点生成专用的图层，并生成一棵对应的图层树（LayerTree）</li>
+</ul>
+<ol start="4">
+<li>
+<p>图层绘制：渲染引擎实现图层的绘制与之类似，会把一个图层的绘制拆分成很多小的绘制指令，然后再把这些指令按照顺序组成一个待绘制列表</p>
+</li>
+<li>
+<p>光栅化</p><div></div>。实际上浏览器不是直接对整个图层进行光栅化，它会将图层分块，然后以块为单位进行光栅化。<p></p>
+</li>
+<li>
+<p>合成和显示</p>
+</li>
+</ol>
+<ul>
+<li>一旦所有图块都被光栅化，合成线程就会生成一个绘制图块的命令——“DrawQuad”，然后将该命令提交给浏览器进程。</li>
+<li>浏览器进程里面有一个叫 viz 的组件，用来接收合成线程发过来的 DrawQuad 命令，然后根据 DrawQuad 命令，将其页面内容绘制到内存中，最后再将内存显示在屏幕上。</li>
+</ul>
+<h2 id="css样式表不会影响dom解析">CSS样式表不会影响DOM解析</h2>
+<p>浏览器渲染时会先生成DOM树，然后根据CSS的styleSheets进行样式计算生成布局树和分层树</p>
+<h2 id="浏览器中的settimeout是怎么实现的">浏览器中的setTimeout是怎么实现的</h2>
+<p>浏览器会有两个队列：</p>
+<ol>
+<li>消息队列：用来存储浏览器的垃圾回收、计算任务、用户触发的事件回调等等</li>
+<li>延迟队列：用来存储setTimeout、setInterval的回调和时间参数</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> ProcessTimerTask</span><span style="color:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#6A737D"> // 从 delayed_incoming_queue 中取出已经到期的定时器任务</span></span>
+<span class="line"><span style="color:#6A737D">// 依次执行这些任务</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">TaskQueue task_queue；</span></span>
+<span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> ProcessTask</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">bool keep_running </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> true</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">void</span><span style="color:#B392F0"> MainTherad</span><span style="color:#E1E4E8">(){</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8">(;;){</span></span>
+<span class="line"><span style="color:#6A737D"> // 执行消息队列中的任务</span></span>
+<span class="line"><span style="color:#E1E4E8">  Task task </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> task_queue.</span><span style="color:#B392F0">takeTask</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">  ProcessTask</span><span style="color:#E1E4E8">(task);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"> // 执行延迟队列中的任务</span></span>
+<span class="line"><span style="color:#B392F0">  ProcessDelayTask</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">keep_running) </span><span style="color:#6A737D">// 如果设置了退出标志，那么直接退出线程循环</span></span>
+<span class="line"><span style="color:#F97583">    break</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8"> }</span></span></code></pre>
+<p>处理完消息队列中的一个任务之后，就开始执行 ProcessDelayTask 函数。ProcessDelayTask 函数会根据发起时间和延迟时间计算出到期的任务，然后依次执行这些到期的任务。等到期的任务执行完成之后，再继续下一个循环过程。通过这样的方式，一个完整的定时器就实现了。</p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

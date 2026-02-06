@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2020/webpack/"><!-- Primary Meta Tags --><title>Webpack 实践指南</title><meta name="title" content="Webpack 实践指南"><meta name="description" content="前端工程化工具 Webpack 的实践指南，包括 loader 和 plugin、与 rollup 的对比、常用 node 命令、hash 区别、优化策略等"><meta name="author" content="Shanks"><meta name="keywords" content="前端工程化, Webpack"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2020/webpack/"><meta property="og:title" content="Webpack 实践指南"><meta property="og:description" content="前端工程化工具 Webpack 的实践指南，包括 loader 和 plugin、与 rollup 的对比、常用 node 命令、hash 区别、优化策略等"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2020-09-12"><meta property="article:tag" content="前端工程化"><meta property="article:tag" content="Webpack"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2020/webpack/"><meta property="twitter:title" content="Webpack 实践指南"><meta property="twitter:description" content="前端工程化工具 Webpack 的实践指南，包括 loader 和 plugin、与 rollup 的对比、常用 node 命令、hash 区别、优化策略等"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.Uaq4wKsD.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.oJg5Xdcy.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">Webpack 实践指南</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2020-09-12</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">1,918 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 5 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">前端工程化</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">Webpack</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <div class="custom-container tip"><p class="custom-container-title">概述</p><p>实践前端工程化的工具：webpack</p></div>
+<h2 id="loader-和-plugin">loader 和 plugin</h2>
+<p>通俗点讲loader是转换，plugin是执行比转换更复杂的任务，比如合并压缩等</p>
+<h3 id="loader">loader</h3>
+<p>对于loader，它是一个转换器，将A文件进行编译形成B文件，这里操作的是文件，比如将A.scss转换为A.css，单纯的文件转换过程，比如babel-loader和babel-core模块时为了把ES6的代码转成ES5</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">source</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">  // 当前的this指向可以取出很多的属性和方法</span></span>
+<span class="line"><span style="color:#6A737D">  // 比如：this.addDependency</span></span>
+<span class="line"><span style="color:#6A737D">  // 关闭该 Loader 的缓存功能：this.cacheable(false);</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">  // 如果返回undefined的话，就必须调用this.callback()，也就是去这个回调函数的值</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> source;</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h3 id="plugin">plugin</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ConsoleLogOnBuildWebpackPlugin</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  apply</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">compiler</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    compiler.hooks.run.</span><span style="color:#B392F0">tap</span><span style="color:#E1E4E8">(pluginName, (</span><span style="color:#FFAB70">compilation</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'The webpack build process is starting!!!'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 在plugins中调用</span></span>
+<span class="line"><span style="color:#B392F0">plugins</span><span style="color:#E1E4E8">:[</span></span>
+<span class="line"><span style="color:#F97583">  new</span><span style="color:#B392F0"> ConsoleLogOnBuildWebpackPlugin</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">]</span></span></code></pre>
+<p>是用于在webpack打包编译过程里，在对应的事件节点里执行自定义操作，比如资源管理、bundle文件优化等操作，plugin是一个扩展器，它丰富了webpack本身，针对是loader结束后，webpack打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack打包过程中的某些节点，执行广泛的任务<strong>在整个编译周期都起作用</strong>，比如html-webpack-plugin，是在打包完后将.html文件生成并追加那些资源文件</p>
+<p>常用的hooks:</p>
+<p>entry-option 初始化 option</p>
+<p>run 开始编译</p>
+<p>compile 真正开始的编译，在创建 compilation 对象之前</p>
+<p>compilation 生成好了 compilation 对象</p>
+<p>make 从 entry 开始递归分析依赖，准备对每个模块进行 build</p>
+<p>after-compile 编译 build 过程结束</p>
+<p>emit 在将内存中 assets 内容写到磁盘文件夹之前</p>
+<p>after-emit 在将内存中 assets 内容写到磁盘文件夹之后</p>
+<p>done 完成所有的编译过程</p>
+<p>failed 编译失败的时候</p>
+<h2 id="与rollup的对比">与rollup的对比</h2>
+<p>rollup中没有<code>loader</code>的概念，但是也是可以通过插件中的<code>hooks</code>来完成代码转换<a href="https://rollupjs.org/guide/en/#transform">rollup-transform</a></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> annotatingPlugin</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: </span><span style="color:#9ECBFF">'annotating'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">    transform</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">code</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">id</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">      // code 就是每个模块的代码</span></span>
+<span class="line"><span style="color:#6A737D">      // id 就是每个模块的路径</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> {meta: {annotating: {special: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">}}}</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>至于其他的为什么<code>webpack</code>把loader和插件分开，我猜的是webpack想更好的解耦两者的功能。</p>
+<h2 id="常用node命令">常用node命令</h2>
+<h3 id="pathrelative">path.relative</h3>
+<div class="custom-container tip"><p class="custom-container-title">node</p><p>path.relative(from, to)方法根据当前工作目录返回<code>from</code>到<code>to</code>的相对路径。如果from和to各自解析到相同的路径（分别调用 path.resolve() 之后），则返回零长度的字符串。</p><p>如果将零长度的字符串传入from或to，则使用当前工作目录代替该零长度的字符串。</p><p>例如</p><div></div>（POSIX标准定义了操作系统应该为应用程序提供的接口标准，是IEEE为要在各种UNIX操作系统上运行的软件而定义的一系列API标准的总称）上：<p></p><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">path.</span><span style="color:#B392F0">relative</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/data/orandea/test/aaa'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'/data/orandea/impl/bbb'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// 返回: '../../impl/bbb'</span></span></code></pre><p>在windows上</p><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">path.</span><span style="color:#B392F0">relative</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'C:</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">orandea</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">test</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">aaa'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'C:</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">orandea</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">impl</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">bbb'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// 返回: '..\\..\\impl\\bbb'</span></span></code></pre></div>
+<h3 id="pathresolve">path.resolve</h3>
+<div class="custom-container tip"><p class="custom-container-title">node</p><p>path.resolve([…paths]) 方法将路径或路径片段的序列解析为绝对路径。给定的路径序列从右到左进行处理，每个后续的path前置，直到构造出一个绝对路径。例如，给定的路径片段序列：<code>/foo</code>,<code>/bar</code>,<code>baz</code>，调用path.resolve(‘/foo’, ‘/bar’, ‘baz’)将返回<code>/bar/baz</code>。</p><p>如果在处理完所有给定的path片段之后还未生成绝对路径，则再加上当前工作目录。</p><p>生成的路径已规范化，并且除非将路径解析为根目录，否则将删除尾部斜杠。</p><p>零长度的path片段会被忽略。</p><p>如果没有传入 path 片段，则 path.resolve() 将返回当前工作目录的绝对路径。</p><pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">path.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/foo/bar'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'./baz'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// 返回: '/foo/bar/baz'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">path.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/foo/bar'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'/tmp/file/'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// 返回: '/tmp/file'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">path.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'wwwroot'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'static_files/png/'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'../gif/image.gif'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// 如果当前工作目录是 /home/myself/node，</span></span>
+<span class="line"><span style="color:#6A737D">// 则返回 '/home/myself/node/wwwroot/static_files/gif/image.gif'</span></span></code></pre><p>如果任何参数不是字符串，则抛出TypeError。</p></div>
+<h3 id="pathjoin">path.join</h3>
+<div class="custom-container tip"><p class="custom-container-title">node</p><p>path.join([…paths])方法使用平台特定的分隔符作为定界符讲所有给定的<code>path</code>片段连接在一起，然后规范化生成的路径。零长度的path片段会被忽略。如果连接的路径字符串是零长度的字符串，则返回’.’，表示当前工作目录。</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">path.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/foo'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'bar'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'baz/asdf'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'quux'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// 返回: /foo/bar/baz/asdf/quux'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">path.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/foo'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'bar'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'baz/asdf'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'quux'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'..'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// 返回: '/foo/bar/baz/asdf'，因为..是返回上一级，所以quux被删掉了。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">path.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'foo'</span><span style="color:#E1E4E8">, {}, </span><span style="color:#9ECBFF">'bar'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// 抛出 'TypeError: Path must be a string. Received {}'</span></span></code></pre>
+<p>如果任何路径片段不是字符串，则抛出 TypeError。</p>
+<h2 id="入口">入口</h2>
+<h3 id="多入口">多入口</h3>
+<h2 id="hashchunkhashcontenthash的区别">hash、chunkHash、contentHash的区别</h2>
+<h3 id="hash">hash</h3>
+<p>如果都使用hash的话，即每次修改任何一个文件，所有文件名的hash至都将改变。所以一旦修改了任何一个文件，整个项目的文件缓存都将失效。</p>
+<h3 id="chunkhash">chunkHash</h3>
+<p>chunkHash根据不同的入口文件(entry)进行依赖文件解析、构建对应的chunk，生成对应的哈希值。在生产环境里把一些公共库和程序入口文件区分开，单独打包构建，接着我们采用<code>chunkhash</code>的方式生成哈希值，那么只要我们不改动公共库的代码，就可以保证其哈希值不会受影响。</p>
+<h3 id="contenthash">contentHash</h3>
+<p>contenthash是针对文件内容级别的，只有你自己模块的内容变了，那么hash值才改变，所以我们可以通过contenthash解决上诉问题。</p>
+<h2 id="optimization">Optimization</h2>
+<h3 id="splitchunks">splitChunks</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>缓存组的公共配置，需要满足splitChunks的所有条件后才能进去判断缓存组。</p></div>
+<h3 id="runtimechunk">runtimeChunk</h3>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>解决了文件名变换，导致缓存失效的问题。</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">  optimization</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">    runtimeChunk</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">      name</span><span style="color:#E1E4E8">: </span><span style="color:#FFAB70">entrypoint</span><span style="color:#F97583"> =></span><span style="color:#9ECBFF"> `runtimechunk~${</span><span style="color:#E1E4E8">entrypoint</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">name</span><span style="color:#9ECBFF">}`</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<p>当打包后生成a,b,c模块，每个模块都自己的hash值，其中a引用了c，b引用了c，当c发生改变时，c对应的hash变了，正常情况下a,b的hash也会变，这时需要runtimeChunk来作为一个文件中心（包含每个文件的hash值），a，b只要向runtimeChunk获取c的文件内容就行，这样就浏览器就不会重新请求a，b文件。</p>
+<h2 id="simba前端webpack优化策略">Simba前端webpack优化策略</h2>
+<h2 id="优化对比">优化对比</h2>
+<p>优化前（启动四个模块）：</p>
+<ul>
+<li>第一次构建<div></div> ~ 82000ms</li>
+<li>热更新<div></div> ~ 21000ms</li>
+</ul>
+<p>优化后（启动两个模块）：</p>
+<ul>
+<li>第一次构建<div></div> - 43000ms</li>
+<li>热更新<div></div> ~ 3000ms</li>
+</ul>
+<h2 id="更改source-map">更改source map</h2>
+<p>在测试环境下source map改为:<code>eval-source-map</code></p>
+<p><code>source-map</code>： 在一个单独的文件中产生一个完整且功能完全的文件。这个文件具有最好的source map，但是它会减慢打包速度。</p>
+<p><code>eval-source-map</code>：使用eval打包源文件模块，在同一个文件中生成干净的完整的source map。这个选项可以在不影响构建速度的前提下生成完整的sourcemap，但是对打包后输出的JS文件的执行具有性能和安全的隐患。在开发阶段这是一个非常好的选项。</p>
+<h2 id="动态引入模块">动态引入模块</h2>
+<p>在router根文件引入当前开发所需的模块即可。由于import是在编译时执行的所以需要在文件中禁掉模块后再构建项目。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">//import a from 'path'</span></span>
+<span class="line"><span style="color:#6A737D">//import b from 'path'</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'path'</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#E1E4E8"> defaut{</span></span>
+<span class="line"><span style="color:#6A737D">//	a,</span></span>
+<span class="line"><span style="color:#6A737D">//	b,</span></span>
+<span class="line"><span style="color:#E1E4E8">	c</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="脚本思路">脚本思路</h3>
+<p>在项目中新建脚本，在package.json中传入参数来决定是否注释哪些模块。比如：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#9ECBFF">"npm run dev:c"</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"node ./myScript.js a b &#x26;&#x26; webpack-server"</span></span></code></pre>
+<p>就表示注释掉a,b两模块。</p>
+<p>脚本内容：获取原有的路由文件<code>originIndex.js</code>进行注释，然后写入到新文件<code>index.js</code>，项目构建时入口点是<code>index.js</code></p>
+<h2 id="babel升级">babel升级</h2>
+<ol>
+<li>“babel-core”: “^6.22.1” => “^7.0.0”</li>
+<li>“babel-loader”: “^7.1.1” =>  “^8.0.0”</li>
+<li>“babel-plugin-transform-vue-jsx”: “^3.5.0” =>  “^4.0.1”</li>
+<li>“babel-eslint”: “^8.2.1” => “^9.0.0”</li>
+<li>更新.babelrc文件以支持webpack4</li>
+</ol>
+<h2 id="vue-升级">Vue 升级</h2>
+<ol>
+<li>“vue”: “^2.5.2” => “^2.6.11”</li>
+<li>“vue-template-compiler”: “^2.5.2” => “^2.6.11”</li>
+<li>“vue-loader”: “^13.3.0” => “^15.9.0”</li>
+<li>新增”@vue/component-compiler-utils”: “^1.3.1”</li>
+<li>“vue-style-loader”: “^3.0.1” => “^4.1.2”</li>
+</ol>
+<h2 id="webpack升级">webpack升级</h2>
+<ol>
+<li>“webpack”: “^3.6.0” => “^4.42.0”</li>
+<li>“webpack-dev-server”: “^2.9.1” => “^3.10.3”</li>
+<li>“webpack-dev-server”: “^2.9.1” => “^3.10.3”</li>
+<li>“webpack-merge”: “^4.1.0” => “^4.2.2”</li>
+</ol>
+<h3 id="插件升级与弃用">插件升级与弃用</h3>
+<ol>
+<li>“html-webpack-plugin”: “^2.30.1” => “^3.2.0”</li>
+<li>“extract-text-webpack-plugin”: “^3.0.0”不再支持webpack4，弃用，使用”mini-css-extract-plugin”替换</li>
+<li>“uglifyjs-webpack-plugin”: “^1.1.1”不在维护，弃用</li>
+</ol>
+<h3 id="loader升级">loader升级</h3>
+<ol>
+<li>“url-loader”: “^1.1.1” => “^3.0.0”</li>
+<li>“file-loader”: “^1.1.4 => “^1.1.11”</li>
+<li>“optimize-css-assets-webpack-plugin”: “^3.2.0” => “^4.0.0”</li>
+</ol>
+<h3 id="新增插件">新增插件</h3>
+<ol>
+<li>“happypack”: “^5.0.1”不支持”vue-loader”:“^15.9.0”，用来加速打包babel-loader</li>
+<li>“terser-webpack-plugin”: “^2.3.5”用来代替uglifyjs-webpack-plugin</li>
+<li>“mini-css-extract-plugin”: “^0.9.0”</li>
+<li>“hard-source-webpack-plugin”: “^0.13.1”没有使用，提升效果不是很明显</li>
+<li>“compression-webpack-plugin”: “^3.1.0”没有使用，服务端没有配置gzip</li>
+</ol>
+<h3 id="配置优化">配置优化</h3>
+<ol>
+<li>新增optimization配置</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">  optimization</span><span style="color:#E1E4E8">:{</span></span>
+<span class="line"><span style="color:#B392F0">    splitChunks</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">        cacheGroups</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">            commons</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">                minSize</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 1024</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 1024</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">                test</span><span style="color:#E1E4E8">:</span><span style="color:#9ECBFF"> /</span><span style="color:#79B8FF">[</span><span style="color:#85E89D;font-weight:bold">\\</span><span style="color:#79B8FF">/]</span><span style="color:#DBEDFF">node_modules</span><span style="color:#79B8FF">[</span><span style="color:#85E89D;font-weight:bold">\\</span><span style="color:#79B8FF">/]</span><span style="color:#9ECBFF">/</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">                // cacheGroupKey here is `commons` as the key of the cacheGroup</span></span>
+<span class="line"><span style="color:#B392F0">                name</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">, chunks, cacheGroupKey) {</span></span>
+<span class="line"><span style="color:#F97583">                    const</span><span style="color:#79B8FF"> moduleFileName</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> module</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">identifier</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">split</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'/'</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">reduceRight</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">item</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> item);</span></span>
+<span class="line"><span style="color:#F97583">                    const</span><span style="color:#79B8FF"> allChunksNames</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> chunks.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">item</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> item.name).</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'~'</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">                    return</span><span style="color:#9ECBFF"> `${</span><span style="color:#E1E4E8">cacheGroupKey</span><span style="color:#9ECBFF">}-${</span><span style="color:#E1E4E8">allChunksNames</span><span style="color:#9ECBFF">}-${</span><span style="color:#E1E4E8">moduleFileName</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">                },</span></span>
+<span class="line"><span style="color:#B392F0">                chunks</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'initial'</span></span>
+<span class="line"><span style="color:#E1E4E8">            },</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#B392F0">      minimize</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">      minimizer</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#F97583">          new</span><span style="color:#B392F0"> TerserPlugin</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">              cache: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">              parallel: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">              sourceMap: config.build.productionSourceMap,</span></span>
+<span class="line"><span style="color:#E1E4E8">              terserOptions: {</span></span>
+<span class="line"><span style="color:#E1E4E8">                  warnings: </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">                  // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions</span></span>
+<span class="line"><span style="color:#E1E4E8">              }</span></span>
+<span class="line"><span style="color:#E1E4E8">          }),</span></span>
+<span class="line"><span style="color:#E1E4E8">      ],</span></span>
+<span class="line"><span style="color:#B392F0">    runtimeChunk</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#B392F0">        name</span><span style="color:#E1E4E8">: </span><span style="color:#FFAB70">entrypoint</span><span style="color:#F97583"> =></span><span style="color:#9ECBFF"> `runtime~${</span><span style="color:#E1E4E8">entrypoint</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">name</span><span style="color:#9ECBFF">}`</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<ol start="2">
+<li></li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">        new</span><span style="color:#B392F0"> HappyPack</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">            id: </span><span style="color:#9ECBFF">'babel'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">            loaders: [</span></span>
+<span class="line"><span style="color:#E1E4E8">                {</span></span>
+<span class="line"><span style="color:#E1E4E8">                    loader: </span><span style="color:#9ECBFF">'babel-loader'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">                    cacheDirectory: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">                },</span></span>
+<span class="line"><span style="color:#E1E4E8">            ],</span></span>
+<span class="line"><span style="color:#E1E4E8">            threadPool: happyThreadPool,</span></span>
+<span class="line"><span style="color:#E1E4E8">            debug: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span></code></pre> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

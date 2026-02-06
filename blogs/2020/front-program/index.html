@@ -1,0 +1,441 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2020/front-program/"><!-- Primary Meta Tags --><title>前端面试编程题</title><meta name="title" content="前端面试编程题"><meta name="description" content="2020年的一些前端面试编程题，包括铃盛软件、MetaAPP、阿里、字节等公司的面试题"><meta name="author" content="Shanks"><meta name="keywords" content="面试, 编程题"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2020/front-program/"><meta property="og:title" content="前端面试编程题"><meta property="og:description" content="2020年的一些前端面试编程题，包括铃盛软件、MetaAPP、阿里、字节等公司的面试题"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2020-03-01"><meta property="article:tag" content="面试"><meta property="article:tag" content="编程题"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2020/front-program/"><meta property="twitter:title" content="前端面试编程题"><meta property="twitter:description" content="2020年的一些前端面试编程题，包括铃盛软件、MetaAPP、阿里、字节等公司的面试题"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.Uaq4wKsD.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.oJg5Xdcy.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">前端面试编程题</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2020-03-01</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">166 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 1 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">面试</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">编程题</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <div class="custom-container tip"><p class="custom-container-title">提示</p><p>2020年的一些面试编程题</p></div>
+<h2 id="铃盛软件-ringcentral厦门">铃盛软件-RingCentral（厦门）</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D">  extensions is an Array and each item has such format:</span></span>
+<span class="line"><span style="color:#6A737D">  {firstName: 'xxx', lastName: 'xxx', ext: 'xxx', extType: 'xxx'}</span></span>
+<span class="line"><span style="color:#6A737D">  lastName, ext can be empty, extType can only has "DigitalUser", "VirtualUser","FaxUser","Dept","AO".</span></span>
+<span class="line"><span style="color:#6A737D">**/</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D">  Question 1: sort extensions by "firstName" + "lastName" + "ext" ASC</span></span>
+<span class="line"><span style="color:#6A737D">**/</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> sortExtensionsByName</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">extensions</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> compare</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">x</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">y</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">firstName</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">f1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">lastName</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">l1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">ext</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">e1</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> x;</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#E1E4E8"> { </span><span style="color:#FFAB70">firstName</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">f2</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">lastName</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">l2</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">ext</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">e2</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> y;</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (f2 </span><span style="color:#F97583">></span><span style="color:#E1E4E8"> f1 </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> (f2 </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> f1 </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> l2 </span><span style="color:#F97583">></span><span style="color:#E1E4E8"> l1) </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> (f2 </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> f1 </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> l2 </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> l1 </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> e2 </span><span style="color:#F97583">></span><span style="color:#E1E4E8"> e1)) </span><span style="color:#F97583">return</span><span style="color:#F97583"> -</span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (f2 </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> f1 </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> l2 </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> l1 </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> e2 </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> e1) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (extensions.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> &#x3C;=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> extensions;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> extensions.</span><span style="color:#B392F0">sort</span><span style="color:#E1E4E8">(compare)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D">  Question 2: sort extensions by extType follow these orders ASC</span></span>
+<span class="line"><span style="color:#6A737D">  DigitalUser &#x3C; VirtualUser &#x3C; FaxUser &#x3C; AO &#x3C; Dept.</span></span>
+<span class="line"><span style="color:#6A737D">**/</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> sortExtensionsByExtType</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">extensions</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">  // 桶排序</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> bucket</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    DigitalUser: [],</span></span>
+<span class="line"><span style="color:#E1E4E8">    VirtualUser: [],</span></span>
+<span class="line"><span style="color:#E1E4E8">    FaxUser: [],</span></span>
+<span class="line"><span style="color:#E1E4E8">    AO: [],</span></span>
+<span class="line"><span style="color:#E1E4E8">    Dept: []</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">  extensions.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">item</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    bucket[item.extType].</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(item)</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#E1E4E8">  Object.</span><span style="color:#B392F0">values</span><span style="color:#E1E4E8">(bucket).</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">item</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    result.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">item)</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> result</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D">  saleItems is an Array has each item has such format:</span></span>
+<span class="line"><span style="color:#6A737D">  {</span></span>
+<span class="line"><span style="color:#6A737D">	month: n, //[1-12],</span></span>
+<span class="line"><span style="color:#6A737D">	date: n, //[1-31],</span></span>
+<span class="line"><span style="color:#6A737D">	transationId: "xxx",</span></span>
+<span class="line"><span style="color:#6A737D">	salePrice: number</span></span>
+<span class="line"><span style="color:#6A737D">  }</span></span>
+<span class="line"><span style="color:#6A737D">**/</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D">  Question 3: write a function to calculate and return a list of total sales (sum) for each quarter, expected result like:</span></span>
+<span class="line"><span style="color:#6A737D">  [</span></span>
+<span class="line"><span style="color:#6A737D">  	{quarter: 1, totalPrices: xxx, transactionNums: n},</span></span>
+<span class="line"><span style="color:#6A737D">  	{....}</span></span>
+<span class="line"><span style="color:#6A737D">  ]</span></span>
+<span class="line"><span style="color:#6A737D">**/</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> sumByQuarter</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">saleItems</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">  // 利用月份和数组下标关联上</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">    { quarter: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, totalPrices: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, transactionNums: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { quarter: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, totalPrices: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, transactionNums: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { quarter: </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, totalPrices: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, transactionNums: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { quarter: </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">, totalPrices: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, transactionNums: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">  saleItems.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">item</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    result[Math.</span><span style="color:#B392F0">ceil</span><span style="color:#E1E4E8">(item.month </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">].totalPrices </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> item.salePrice</span></span>
+<span class="line"><span style="color:#E1E4E8">    result[Math.</span><span style="color:#B392F0">ceil</span><span style="color:#E1E4E8">(item.month </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">].transactionNums</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> result</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D">  Question 4: write a function to calculate and return a list of average sales for each quarter, expected result like:</span></span>
+<span class="line"><span style="color:#6A737D">  [</span></span>
+<span class="line"><span style="color:#6A737D">    {quarter: 1, averagePrices: xxx, transactionNums: n},</span></span>
+<span class="line"><span style="color:#6A737D">    {....}</span></span>
+<span class="line"><span style="color:#6A737D">  ]</span></span>
+<span class="line"><span style="color:#6A737D">**/</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> averageByQuarter</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">saleItems</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">    { quarter: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, totalPrices: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, transactionNums: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { quarter: </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, totalPrices: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, transactionNums: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { quarter: </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, totalPrices: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, transactionNums: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    { quarter: </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">, totalPrices: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, transactionNums: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">  saleItems.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">item</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    result[Math.</span><span style="color:#B392F0">ceil</span><span style="color:#E1E4E8">(item.month </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">].totalPrices </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> item.salePrice</span></span>
+<span class="line"><span style="color:#E1E4E8">    result[Math.</span><span style="color:#B392F0">ceil</span><span style="color:#E1E4E8">(item.month </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 3</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">].transactionNums</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> result.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">item</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">quarter</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">totalPrices</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">transactionNums</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> item</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      quarter,</span></span>
+<span class="line"><span style="color:#E1E4E8">      averagePrices: transactionNums </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> totalPrices </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> transactionNums,</span></span>
+<span class="line"><span style="color:#E1E4E8">      transactionNums</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D">  Question 5: please create a tool to generate Sequence</span></span>
+<span class="line"><span style="color:#6A737D">  Expected to be used like:</span></span>
+<span class="line"><span style="color:#6A737D">  var sequence1 = new Sequence();</span></span>
+<span class="line"><span style="color:#6A737D">  sequence1.next() --> return 1;</span></span>
+<span class="line"><span style="color:#6A737D">  sequence1.next() --> return 2;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  in another module:</span></span>
+<span class="line"><span style="color:#6A737D">  var sequence2 = new Sequence();</span></span>
+<span class="line"><span style="color:#6A737D">  sequence2.next() --> 3;</span></span>
+<span class="line"><span style="color:#6A737D">  sequence2.next() --> 4;</span></span>
+<span class="line"><span style="color:#6A737D">**/</span></span>
+<span class="line"><span style="color:#6A737D">// 理解错题意，题目是要我们创建一个工具来生成Sequence这个对象</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> Tool</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  static</span><span style="color:#B392F0"> getSequence</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> Sequence</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (Sequence.instance) {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> Sequence.instance</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">      Sequence.instance </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">function*</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#F97583">        let</span><span style="color:#E1E4E8"> num </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#F97583">        while</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">          yield</span><span style="color:#F97583"> ++</span><span style="color:#E1E4E8">num</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">      })()</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> Sequence.instance</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D">    Question 6:</span></span>
+<span class="line"><span style="color:#6A737D">    AllKeys: 0-9;</span></span>
+<span class="line"><span style="color:#6A737D">    usedKeys: an array to store all used keys like [2,3,4];</span></span>
+<span class="line"><span style="color:#6A737D">    We want to get an array which contains all the unused keys,in this example it would be: [0,1,5,6,7,8,9]</span></span>
+<span class="line"><span style="color:#6A737D">**/</span></span>
+<span class="line"><span style="color:#6A737D">// 理解错题意，以为AllKeys是数字</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> getUnUsedKeys</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">allKeys</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">usedKeys</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (usedKeys.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> ===</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> allKeys</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> allKeysSets </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Set</span><span style="color:#E1E4E8">(allKeys)</span></span>
+<span class="line"><span style="color:#E1E4E8">  usedKeys.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">num</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (allKeysSets.</span><span style="color:#B392F0">has</span><span style="color:#E1E4E8">(num)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      allKeysSets.</span><span style="color:#B392F0">delete</span><span style="color:#E1E4E8">(num)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">from</span><span style="color:#E1E4E8">(allKeysSets)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="metaapp厦门">MetaAPP（厦门）</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 1.输入："get1_install2_app3_list4_by5_android6"（每个单词后面总会携带一个数字，只有偶数才删掉），</span></span>
+<span class="line"><span style="color:#6A737D">// 写一个函数实现输出"get1InstallApp3ListBy5Android"</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {String}</span><span style="color:#E1E4E8"> str</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> getString</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">str</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (str.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> &#x3C;=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> str</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> strArr</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> str.</span><span style="color:#B392F0">split</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">''</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> length</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> strArr.</span><span style="color:#79B8FF">length</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> length; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (strArr[i] </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> '_'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#B392F0">isNaN</span><span style="color:#E1E4E8">(strArr[i </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">]) </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#F97583"> !</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">Number</span><span style="color:#E1E4E8">(strArr[i </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">]) </span><span style="color:#F97583">&#x26;</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">)) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        strArr[i </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> '_'</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (i </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> &#x3C;</span><span style="color:#E1E4E8"> length) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        strArr[i </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (strArr[i </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">]).</span><span style="color:#B392F0">toUpperCase</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> strArr.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">''</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">replace</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#DBEDFF">_</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">g</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">''</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">getString</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'get1_install2_app3_list4_by5_android6'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 2.不使用任何循环控制语句和迭代器的情况下实现一个0到1000的数组赋值。</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Number}</span><span style="color:#E1E4E8"> l</span><span style="color:#6A737D"> 数组长度</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> getArr</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">l</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 1001</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> arr</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> Array</span><span style="color:#E1E4E8">(l);</span></span>
+<span class="line"><span style="color:#E1E4E8">  (</span><span style="color:#F97583">function</span><span style="color:#B392F0"> recursion</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">n</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (n </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> arr.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span></span>
+<span class="line"><span style="color:#E1E4E8">    arr[n] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> n</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#B392F0">    recursion</span><span style="color:#E1E4E8">(n)</span></span>
+<span class="line"><span style="color:#E1E4E8">  })(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> arr</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">getArr</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 3.写一个函数能判断两个对象（注意特殊对象）内包含的内容是否一致。</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {*}</span><span style="color:#E1E4E8"> o1</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {*}</span><span style="color:#E1E4E8"> o2</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> isEualObject</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">o1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">o2</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (o1 </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> o2) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (o1 </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> o1) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> o2 </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> o2</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> o1 </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'function'</span><span style="color:#F97583"> ||</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> o2 </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'function'</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> deepEqual</span><span style="color:#E1E4E8">(o1, o2)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> deepEqual</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">o1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">o2</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> typeString</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> obj</span><span style="color:#F97583"> =></span><span style="color:#79B8FF"> Object</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.toString.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(obj);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> type1</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> typeString</span><span style="color:#E1E4E8">(o1)</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> type2</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> typeString</span><span style="color:#E1E4E8">(o2)</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (type1 </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> type2) </span><span style="color:#F97583">return</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  switch</span><span style="color:#E1E4E8"> (type1) {</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#9ECBFF"> '[object Date]'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8">o1 </span><span style="color:#F97583">===</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8">o2</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#9ECBFF"> '[object Boolean]'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> o1 </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> o2</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#9ECBFF"> '[object RegExp]'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#9ECBFF"> '[object String]'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#9ECBFF"> ''</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> o1 </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> ''</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> o2</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#9ECBFF"> '[object Number]'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (o1 </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> o1) </span><span style="color:#F97583">return</span><span style="color:#E1E4E8"> o2 </span><span style="color:#F97583">!==</span><span style="color:#E1E4E8"> o2</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> o1 </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> o2</span></span>
+<span class="line"><span style="color:#F97583">    case</span><span style="color:#9ECBFF"> '[object Symbol]'</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#B392F0"> String</span><span style="color:#E1E4E8">(o1) </span><span style="color:#F97583">===</span><span style="color:#B392F0"> String</span><span style="color:#E1E4E8">(o2)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> attr </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> o1) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#B392F0">deepEqual</span><span style="color:#E1E4E8">(o1[attr], o2[attr])) {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#79B8FF"> false</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#79B8FF"> true</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { test: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, two: [{ test: { test: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8"> }, reg: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> RegExp</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#DBEDFF">asd</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">gi</span><span style="color:#E1E4E8">) }] }</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { test: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, two: [{ test: { test: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8"> }, reg: </span><span style="color:#F97583">new</span><span style="color:#B392F0"> RegExp</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#DBEDFF">asd</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">gi</span><span style="color:#E1E4E8">) }] }</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">isEualObject</span><span style="color:#E1E4E8">(a, b))</span></span></code></pre>
+<h2 id="同事阿里二面编程题">同事阿里二面编程题</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>输入：a:[1, [2, 3, [4]], 5] b:‘[a, [b, [c], e], d]’</p><p>输出：{ a: 1, b: 2, c: 4, e: undefined, d: 5 }</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 实现类似解构赋值的算法</span></span>
+<span class="line"><span style="color:#6A737D"> * 输入：a:[1, [2, 3, [4]], 5] b:'[a, [b, [c], e], d]'</span></span>
+<span class="line"><span style="color:#6A737D"> * 输出：{ a: 1, b: 2, c: 4, e: undefined, d: 5 }</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Array}</span><span style="color:#E1E4E8"> a</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {String}</span><span style="color:#E1E4E8"> b</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> dismantleArray</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">a</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">b</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'string'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    b </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> JSON</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">parse</span><span style="color:#E1E4E8">(b.</span><span style="color:#B392F0">replace</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">/</span><span style="color:#79B8FF">\w</span><span style="color:#F97583">+</span><span style="color:#9ECBFF">/</span><span style="color:#F97583">g</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">str</span><span style="color:#F97583"> =></span><span style="color:#9ECBFF"> `"${</span><span style="color:#E1E4E8">str</span><span style="color:#9ECBFF">}"`</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> recurse</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">item1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">item2</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">result</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {}) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(item2)) {</span></span>
+<span class="line"><span style="color:#F97583">      let</span><span style="color:#E1E4E8"> curIndex </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#E1E4E8">      item2.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">item</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        if</span><span style="color:#E1E4E8"> (Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(item) </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(item1[curIndex])) {</span></span>
+<span class="line"><span style="color:#B392F0">          recurse</span><span style="color:#E1E4E8">(item1[curIndex], item, result)</span></span>
+<span class="line"><span style="color:#E1E4E8">          curIndex</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(item) </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#F97583"> !</span><span style="color:#E1E4E8">Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(item1[curIndex])) {</span></span>
+<span class="line"><span style="color:#F97583">          for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> curIndex; i </span><span style="color:#F97583">&#x3C;</span><span style="color:#E1E4E8"> item1.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">            if</span><span style="color:#E1E4E8"> (Array.</span><span style="color:#B392F0">isArray</span><span style="color:#E1E4E8">(item1[i])) {</span></span>
+<span class="line"><span style="color:#E1E4E8">              curIndex </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"><span style="color:#B392F0">              recurse</span><span style="color:#E1E4E8">(item1[curIndex], item, result)</span></span>
+<span class="line"><span style="color:#E1E4E8">              curIndex</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#F97583">              break</span></span>
+<span class="line"><span style="color:#E1E4E8">            }</span></span>
+<span class="line"><span style="color:#E1E4E8">          }</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">          recurse</span><span style="color:#E1E4E8">(item1[curIndex], item, result)</span></span>
+<span class="line"><span style="color:#E1E4E8">          curIndex</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#E1E4E8">      })</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> result</span></span>
+<span class="line"><span style="color:#E1E4E8">    } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#E1E4E8"> (result[item2] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> item1)</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> recurse</span><span style="color:#E1E4E8">(a, b)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> res</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> dismantleArray</span><span style="color:#E1E4E8">([</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, [</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, [</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">]], </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">'[a, [b, [c], e], d]'</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(res) </span><span style="color:#6A737D">// res: { a: 1, b: 2, c: 4, e: undefined, d: 5 }</span></span></code></pre>
+<h2 id="网友字节一面结束前的编程题">网友字节一面结束前的编程题</h2>
+<div class="custom-container tip"><p class="custom-container-title">提示</p><p>实现一个批量请求函数 multiRequest(urls, maxNum)</p><p>要求：</p><p>要求最大并发数 maxNum<br>
+每当有一个请求返回，就留下一个空位，可以增加新的请求<br>
+所有请求完成后，结果按照 urls 里面的顺序依次打出<br>
+以下是我自己的，不正确的请指出来</p></div>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 模拟异步请求</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Number}</span><span style="color:#E1E4E8"> delay</span><span style="color:#6A737D"> 延迟秒数</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Any}</span><span style="color:#E1E4E8"> result</span><span style="color:#6A737D"> 返回数据</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> setTimeoutWithParam</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">delay</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">result</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">resolve</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">      setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">        resolve</span><span style="color:#E1E4E8">(result)</span></span>
+<span class="line"><span style="color:#E1E4E8">      }, delay)</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 最大并发量</span></span>
+<span class="line"><span style="color:#6A737D"> * 实现一个批量请求函数 multiRequest(urls, maxNum)</span></span>
+<span class="line"><span style="color:#6A737D"> * 要求最大并发数 maxNum</span></span>
+<span class="line"><span style="color:#6A737D"> * 每当有一个请求返回，就留下一个空位，可以增加新的请求</span></span>
+<span class="line"><span style="color:#6A737D"> * 所有请求完成后，结果按照 urls 里面的顺序依次打出</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Array}</span><span style="color:#E1E4E8"> urls</span><span style="color:#6A737D"> 异步请求</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Number}</span><span style="color:#E1E4E8"> maxNum</span><span style="color:#6A737D"> 并发的最大数量</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Function}</span><span style="color:#E1E4E8"> singleFetchOverCallback</span><span style="color:#6A737D"> 单个执行完执行的回调函数，异步返回的数据作为入参</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Function}</span><span style="color:#E1E4E8"> allFetchOverCallBack</span><span style="color:#6A737D"> 全部执行完执行的回调函数，异步返回的数据作为入参</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> multiRequest</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">urls</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">maxNum</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">singleFetchOverCallback</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">allFetchOverCallBack</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> originUrls</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> urls</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> curUrls</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">urls]</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> results</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> []</span></span>
+<span class="line"><span style="color:#79B8FF">  multiRequest</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">addUrl</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">url</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    originUrls.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(url)</span></span>
+<span class="line"><span style="color:#E1E4E8">    curUrls.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(url)</span></span>
+<span class="line"><span style="color:#B392F0">    pushFetch</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#B392F0"> pushFetch</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    while</span><span style="color:#E1E4E8"> (maxNum </span><span style="color:#F97583">></span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> &#x26;&#x26;</span><span style="color:#E1E4E8"> curUrls.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> ></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      maxNum</span><span style="color:#F97583">--</span></span>
+<span class="line"><span style="color:#E1E4E8">      curUrls</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">shift</span><span style="color:#E1E4E8">()()</span></span>
+<span class="line"><span style="color:#E1E4E8">        .</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">res</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">          results.</span><span style="color:#B392F0">push</span><span style="color:#E1E4E8">(res)</span></span>
+<span class="line"><span style="color:#6A737D">          // 单个执行完成</span></span>
+<span class="line"><span style="color:#B392F0">          singleFetchOverCallback</span><span style="color:#E1E4E8">(res)</span></span>
+<span class="line"><span style="color:#F97583">          if</span><span style="color:#E1E4E8"> (results.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> ===</span><span style="color:#E1E4E8"> originUrls.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">            // 全部执行完成</span></span>
+<span class="line"><span style="color:#B392F0">            allFetchOverCallBack</span><span style="color:#E1E4E8">(results)</span></span>
+<span class="line"><span style="color:#E1E4E8">            multiRequest.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(results)</span></span>
+<span class="line"><span style="color:#E1E4E8">          }</span></span>
+<span class="line"><span style="color:#F97583">          if</span><span style="color:#E1E4E8"> (curUrls.</span><span style="color:#79B8FF">length</span><span style="color:#F97583"> ></span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            maxNum</span><span style="color:#F97583">++</span></span>
+<span class="line"><span style="color:#B392F0">            pushFetch</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">          }</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> new</span><span style="color:#79B8FF"> Promise</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">resolve</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    multiRequest.resolve </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> resolve</span></span>
+<span class="line"><span style="color:#B392F0">    pushFetch</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">  })</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">multiRequest</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">  [</span></span>
+<span class="line"><span style="color:#B392F0">    setTimeoutWithParam</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1000</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#B392F0">    setTimeoutWithParam</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2000</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#B392F0">    setTimeoutWithParam</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">3000</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#B392F0">    setTimeoutWithParam</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4000</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#B392F0">    setTimeoutWithParam</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5000</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#B392F0">    setTimeoutWithParam</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">6000</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#79B8FF">  5</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">  res</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (res </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> 5</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">      // 增加一个异步请求</span></span>
+<span class="line"><span style="color:#79B8FF">      multiRequest</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">addUrl</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">setTimeoutWithParam</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'single'</span><span style="color:#E1E4E8">, res)</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#FFAB70">  res</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'all'</span><span style="color:#E1E4E8">, res)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">res</span><span style="color:#F97583"> =></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'all over'</span><span style="color:#E1E4E8">, res)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>输出：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">single </span><span style="color:#79B8FF">1</span></span>
+<span class="line"><span style="color:#E1E4E8">single </span><span style="color:#79B8FF">2</span></span>
+<span class="line"><span style="color:#E1E4E8">single </span><span style="color:#79B8FF">3</span></span>
+<span class="line"><span style="color:#E1E4E8">single </span><span style="color:#79B8FF">4</span></span>
+<span class="line"><span style="color:#E1E4E8">single </span><span style="color:#79B8FF">5</span></span>
+<span class="line"><span style="color:#E1E4E8">single </span><span style="color:#79B8FF">7</span></span>
+<span class="line"><span style="color:#E1E4E8">single </span><span style="color:#79B8FF">6</span></span>
+<span class="line"><span style="color:#E1E4E8">all [</span></span>
+<span class="line"><span style="color:#79B8FF">  1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  5</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">6</span></span>
+<span class="line"><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">all over [</span></span>
+<span class="line"><span style="color:#79B8FF">  1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#79B8FF">  5</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">6</span></span>
+<span class="line"><span style="color:#E1E4E8">]</span></span></code></pre> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

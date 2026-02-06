@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2021/mac-tool/"><!-- Primary Meta Tags --><title>程序员应该知道的Mac工具</title><meta name="title" content="程序员应该知道的Mac工具"><meta name="description" content="Mac开发工具推荐，包括brew、iterm2、oh-my-zsh、fig、BetterAndBetter、utool、raycast、typora、Dash等实用工具"><meta name="author" content="Shanks"><meta name="keywords" content="工具, Mac"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2021/mac-tool/"><meta property="og:title" content="程序员应该知道的Mac工具"><meta property="og:description" content="Mac开发工具推荐，包括brew、iterm2、oh-my-zsh、fig、BetterAndBetter、utool、raycast、typora、Dash等实用工具"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2021-10-21"><meta property="article:tag" content="工具"><meta property="article:tag" content="Mac"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2021/mac-tool/"><meta property="twitter:title" content="程序员应该知道的Mac工具"><meta property="twitter:description" content="Mac开发工具推荐，包括brew、iterm2、oh-my-zsh、fig、BetterAndBetter、utool、raycast、typora、Dash等实用工具"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.Uaq4wKsD.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.oJg5Xdcy.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">程序员应该知道的Mac工具</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2021-10-21</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">1,572 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 4 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">工具</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">Mac</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <h2 id="概要">概要</h2>
+<p>“工欲善其事，必先利其器”，颜值高且好用的工具往往能让我们事半功倍</p>
+<p>来到正文，本文分成三个部分</p>
+<ul>
+<li>背景</li>
+<li>工具</li>
+<li>结尾</li>
+</ul>
+<h2 id="背景">背景</h2>
+<p>对程序猿👨🏻‍💻而言，除了部分大佬喜欢用<code>linux</code>外，<code>Mac</code>拥有着高分辨率、超好用的<code>Touch Bar</code>和<code>MacOS</code>无疑是最佳选择，下面来介绍一些个人觉得在<code>Mac</code>好用的工具以及配置，让你编码和工作效率提升</p>
+<h2 id="工具">工具</h2>
+<h3 id="brew">brew</h3>
+<p><a href="https://brew.sh/">brew</a>是<code>MacOS上</code>的包管理工具，可以简化 macOS 和 Linux 操作系统上软件的安装，具体使用且看<a href="https://brew.sh/">官网</a></p>
+<p>安装完在终端中输入<code>brew -v</code>，可以输出版本就证明安装成功</p>
+<p>现在比如说安装<code>mysql</code>，只需一句简单的命令：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> mysql</span></span></code></pre>
+<p>安装<code>redis</code>等等其他的也是一样的操作</p>
+<p><strong>注意：正常情况下需要科学上网安装会快点</strong></p>
+<h3 id="iterm2--oh-my-zsh--spaceship">iterm2 &#x26; oh-my-zsh &#x26; spaceship</h3>
+<p>一个好看又好用的终端，往往可以节省很多工作时间，还能给你的同事<code>show</code>一下，下图是我目前的终端：
+<img alt="terminal_personal" loading="lazy" decoding="async" fetchpriority="auto" width="1384" height="1066" src="/_astro/01-terminal.L34_0jBC_wL8MX.webp" ></p>
+<p>那么就开始下载和配置：</p>
+<ul>
+<li>下载<a href="https://www.iterm2.com/">iterm2</a>
+打开偏好设置Preference，设置最小化主题：
+<img alt="iterm2设置主题" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="536" src="/_astro/02-iterm2-theme.Civ5DYlW_Z29aCpE.webp" ></li>
+</ul>
+<p>设置背景图片
+<img alt="iterm2设置背景" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="518" src="/_astro/03-iterm2-bg.CGZIictR_Zv1oep.webp" ></p>
+<p>设置状态栏
+<img alt="iterm2设置状态栏" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="870" src="/_astro/04-iterm2-statusbar.DgsNiKhs_1NnwW5.webp" ></p>
+<ul>
+<li>
+<p>下载<a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a></p>
+</li>
+<li>
+<p>安装<a href="https://spaceship-prompt.sh/zh/getting-started/">spaceship</a>主题
+装完<code>spaceship</code>需要在终端启用<code>powerline font</code>,此时你需要在选择下载某些字体，比如如下：</p>
+<ul>
+<li>FiraCode: <a href="https://github.com/tonsky/FiraCode">https://github.com/tonsky/FiraCode</a></li>
+<li>source-code-pro: <a href="https://github.com/adobe-fonts/source-code-pro">https://github.com/adobe-fonts/source-code-pro</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="plugins">plugins</h4>
+<ul>
+<li>zsh-autosuggestions 命令行提供功能，会缓存你最近输入过的命令并给出提示，<a href="https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md">安装指南</a></li>
+<li>npm npm的命令提示，<a href="https://github.com/lukechilds/zsh-better-npm-completion">安装指南</a></li>
+<li>yarn yarn的命令提示，<a href="https://github.com/chrisands/zsh-yarn-completions">安装指南</a></li>
+</ul>
+<h4 id="推荐超实用的快捷键">推荐超实用的快捷键</h4>
+<ol>
+<li>
+<p>将光标移动到行首：ctrl + a</p>
+</li>
+<li>
+<p>将光标移动到行尾：ctrl + e</p>
+</li>
+<li>
+<p>清除屏幕：ctrl + l</p>
+</li>
+<li>
+<p>搜索以前使用命令：ctrl + r</p>
+</li>
+<li>
+<p>清除当前行：ctrl + u</p>
+</li>
+<li>
+<p>清除至当前行尾：ctrl + k</p>
+</li>
+<li>
+<p>单词为单位移动：option + 方向键</p>
+</li>
+<li>
+<p>CTRL+W：删除光标前一个单词（根据空格识别单词分隔）</p>
+</li>
+<li>
+<p>CTRL+Y：粘贴之前（CTRL+U/K/W）删除的内容</p>
+</li>
+<li>
+<p>ESC+B：光标向左移动一个单词，移动完要放开ESC和B键</p>
+</li>
+<li>
+<p>ESC+F：光标向右移动一个单词，移动完要放开ESC和F键</p>
+</li>
+</ol>
+<h3 id="fig">fig</h3>
+<p><a href="https://fig.io/">fig</a>搭配item2使用更佳~</p>
+<p><img alt="fig" loading="lazy" decoding="async" fetchpriority="auto" width="640" height="431" src="/_astro/05-fig.B-keexw9_1zPikO.webp" ></p>
+<h3 id="betterandbetter">BetterAndBetter</h3>
+<p>更好是使用你的键盘和触摸板，例如：</p>
+<ol>
+<li>用快捷键将App快速分屏</li>
+<li>用手势将App变成全屏
+等等，自定义属于自己的快捷键，例如我常用的快捷键：</li>
+</ol>
+<p><img alt="BetterAndBetter" loading="lazy" decoding="async" fetchpriority="auto" width="626" height="604" src="/_astro/06-betterandbetter.m12Vp7pn_Z2dNgB1.webp" ></p>
+<h3 id="utool-与-raycast">utool 与 raycast</h3>
+<p>国内版的utool</p>
+<h4 id="utool">utool</h4>
+<p><a href="https://u.tools/">utool</a>有很多好用的插件列表：</p>
+<ul>
+<li>hosts：更改本机的host文件</li>
+<li>翻译：整合了网易、搜狗、腾讯翻译（本来是有谷歌的，后面更新给没了）</li>
+<li>网页快开：快速搜索 关键字</li>
+<li>图床：免费的图片上传工具</li>
+</ul>
+<p>插件中心还有好多</p>
+<h4 id="raycast">raycast</h4>
+<p><a href="https://www.raycast.com/">raycast</a>很类似utool，功能也超多，风格会更好看一点，里面还包含了剪切</p>
+<h3 id="邮件">邮件</h3>
+<p>Mac自带的邮件其实已经满足我们大部分的需求了，比如可以添加多个邮件，在每个邮件下面可以新增分组：</p>
+<ol>
+<li>在QQ邮箱目录下新增一个分组：Github</li>
+<li>打开邮件-偏好设置-规则</li>
+<li>添加规则，将发件人包含@github.com的都移动到Github组里面</li>
+</ol>
+<p><img alt="mail_add_group" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="826" src="/_astro/07-mail-group.BJwegwIA_ZA6S3b.webp" ></p>
+<ol start="4">
+<li>你将会看到所有Github发送的邮件都会被归纳到Github组中，当然你可以自定义规则来分组</li>
+</ol>
+<p><img alt="github_rule_after" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="1157" src="/_astro/08-github-rule.4qEUnUOU_26D6lc.webp" ></p>
+<h3 id="typora">typora</h3>
+<p><a href="https://typora.io/">typora</a>一款免费的MD文件编辑器，快速插入表格、图片、超链接等等快捷键，可以作为主力写作工具</p>
+<p><video src="https://typora.io/img/beta.mp4" controls width="500" height="300">您的浏览器不支持播放该视频！</video></p>
+<h3 id="codelf">codelf</h3>
+<p><a href="https://unbug.github.io/codelf/">codelf</a>是在线变量命名工具，很多时候为想一个优雅的变量名而苦恼，试试这个<a href="https://unbug.github.io/codelf/">网站</a>，说不定你就爱上它了</p>
+<p><img alt="codelf" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="1070" src="/_astro/09-codelf.Cp0tVD7w_ZuXxLw.webp" ></p>
+<h3 id="影视森林">影视森林</h3>
+<p><a href="https://549.tv/">影视森林</a>里面包含了许多不错的追剧网站，不需要会员个人比较中意里面的一个影视推荐网站:<a href="https://www.mvcat.com/">mvcat</a>，会将所有电影分类，有点像豆瓣电影的那种感觉，网站的创意感觉是花了心思的。</p>
+<h3 id="paste">Paste</h3>
+<p><a href="https://pasteapp.io/">Paste</a>会存储你当前复制的所有内容，还可以上传到云端（这样我们的信息都泄露了-_-!），当你没有及时保存，你就可以追溯以前复制过的代码或网址，复制后还有会声音提示，当然这么好用的东西肯定要💰的~</p>
+<h3 id="dash">Dash</h3>
+<p><a href="https://kapeli.com/dash">Dash</a>可以预先下载文档，然后再搜索，由于是在本地，所以速度超快，是<code>高级API工程师</code>的左膀右臂</p>
+<p><img alt="dash" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="936" src="/_astro/10-dash.DB21S5nH_Z2mvFAg.webp" ></p>
+<h3 id="toggl">toggl</h3>
+<p><a href="https://toggl.com/">toggl</a>是Mac上任务追踪的软件，可以追踪到你每天使用每个App的时间，比如你在<code>vscode</code>、浏览器的某个<code>tab</code>的停留时间等等，用了一周下来，你再回看你的记录，就可以清楚的知道在哪划水的时间多，进而改进，做到<strong>雨露均沾</strong></p>
+<h3 id="giphy-capture">GIPHY CAPTURE</h3>
+<p><a href="https://giphy.com/apps/giphycapture">GIPHY CAPTURE</a>一款超好用并简单的屏幕录制，可以将你录制的片段转换成<code>MP4</code>、<code>GIF</code>，还可以在上面加字母，是<code>super mini</code>版的<code>Final Cut</code>，例如下图就是用该软件录制的</p>
+<p><img alt="react-sdk-demo-gif" loading="lazy" decoding="async" fetchpriority="auto" width="1000" height="860" src="/_astro/11-giphy.C3emEt4q_1pMfWU.webp" ></p>
+<h3 id="postman">postman</h3>
+<p><a href="https://www.postman.com/">postman</a>是构建和使用API的API平台，当你写完服务端接口时可以<code>postman</code>来发起接口请求，最重要的是还可以保存以前设置过的请求头和参数在云端。</p>
+<h3 id="itsycal">itsycal</h3>
+<p><a href="https://www.mowglii.com/itsycal/">itsycal</a>是一个很小的菜单栏日历,它会将您的事件显示为 Mac 日历应用程序的伴侣，用来快速查看和创建事件在日历中</p>
+<p><img alt="itsycal" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="683" src="/_astro/12-itsycal.BV8pRII8_Z1rQAvT.webp" ></p>
+<h3 id="exa">exa</h3>
+<p><a href="https://github.com/ogham/exa">exa</a>代替ls的一个工具</p>
+<h3 id="fd">fd</h3>
+<p><a href="https://github.com/chinanf-boy/fd-zh">fd</a>代替find的一个命令行工具</p>
+<h4 id="httpie">httpie</h4>
+<p><a href="https://github.com/httpie/httpie">httpie</a>代替curl的一个工具</p>
+<h4 id="asciinema">asciinema</h4>
+<p><a href="https://asciinema.org/">asciinema</a>录制终端的一个工具</p>
+<h2 id="结尾">结尾</h2>
+<h3 id="-小结">🤔 小结</h3>
+<p>Mac好用的软件特别多，如果你觉得有更好的技巧和工具可在评论中贴出，不胜感激~</p>
+<p><strong>Have A Good Day!!!</strong></p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

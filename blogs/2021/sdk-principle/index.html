@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2021/sdk-principle/"><!-- Primary Meta Tags --><title>前端监控:JS监控SDK手摸手教学-实现篇(已开源)</title><meta name="title" content="前端监控:JS监控SDK手摸手教学-实现篇(已开源)"><meta name="description" content="前端监控SDK实现原理详解，包括replaceOld重写函数、fetch/xhr拦截、onerror监听、Vue/React错误捕获、插件系统设计等"><meta name="author" content="Shanks"><meta name="keywords" content="SDK, 前端监控, JavaScript"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2021/sdk-principle/"><meta property="og:title" content="前端监控:JS监控SDK手摸手教学-实现篇(已开源)"><meta property="og:description" content="前端监控SDK实现原理详解，包括replaceOld重写函数、fetch/xhr拦截、onerror监听、Vue/React错误捕获、插件系统设计等"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2021-10-12"><meta property="article:tag" content="SDK"><meta property="article:tag" content="前端监控"><meta property="article:tag" content="JavaScript"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2021/sdk-principle/"><meta property="twitter:title" content="前端监控:JS监控SDK手摸手教学-实现篇(已开源)"><meta property="twitter:description" content="前端监控SDK实现原理详解，包括replaceOld重写函数、fetch/xhr拦截、onerror监听、Vue/React错误捕获、插件系统设计等"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.Uaq4wKsD.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.oJg5Xdcy.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">前端监控:JS监控SDK手摸手教学-实现篇(已开源)</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2021-10-12</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">1,216 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 4 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">SDK</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">前端监控</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">JavaScript</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <h2 id="概要">概要</h2>
+<p>已开源的前端监控SDK:<a href="https://github.com/mitojs/mitojs">mitojs</a>，有兴趣的小伙伴可以去瞅瞅~(<a href="https://mitojs.github.io/react-sdk-demo/#/page-one">SDK在线Demo</a>)</p>
+<p>来到正文，本文分成四个部分</p>
+<ul>
+<li>背景</li>
+<li>前端监控的原理</li>
+<li>结尾</li>
+</ul>
+<h2 id="背景">背景</h2>
+<p>上一篇<a href="/blogs/2021/sdk-architecture">前端监控</a></p><div></div><a href="/blogs/2021/sdk-architecture">(已开源)</a>讲的是SDK的整体架构，这篇讲的是监控代码实现，也就是插件里面代码的实现<p></p>
+<h2 id="前端监控的原理">前端监控的原理</h2>
+<p>监控原生事件，如果不支持<code>addEventListener</code>，那么就是重写原生函数拿到入参，再将原函数返回。</p>
+<h3 id="replaceold">replaceOld</h3>
+<p>我们需要重写很多原生函数，预先定义一个公共函数便于减少冗余代码</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 重写对象上面的某个属性</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@export</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {IAnyObject}</span><span style="color:#E1E4E8"> source</span><span style="color:#6A737D"> 需要被重写的对象</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {string}</span><span style="color:#E1E4E8"> name</span><span style="color:#6A737D"> 需要被重写对象的key</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {(...args: any[]) => any}</span><span style="color:#E1E4E8"> replacement</span><span style="color:#6A737D"> 以原有的函数作为参数，执行并重写原有函数</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {boolean}</span><span style="color:#E1E4E8"> [isForced</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">false]</span><span style="color:#6A737D"> 是否强制重写（可能原先没有该属性）</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> function</span><span style="color:#B392F0"> replaceOld</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">source</span><span style="color:#F97583">:</span><span style="color:#B392F0"> IAnyObject</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">name</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">replacement</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">[]) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">isForced</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> false</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (source </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> undefined</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">return</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (name </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> source </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> isForced) {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> original</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> source[name]</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> wrapped</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> replacement</span><span style="color:#E1E4E8">(original)</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">typeof</span><span style="color:#E1E4E8"> wrapped </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'function'</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">      source[name] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> wrapped</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="fetch">fetch</h3>
+<p>所有的请求第三方库都是基于<code>xhr</code>、<code>fetch</code>二次封装的，只需要重写这两个事件就可以拿到所有的接口请求的信息。举个例子，重写<code>fetch</code>的代码操作：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">replaceOld</span><span style="color:#E1E4E8">(_global, BrowserEventTypes.</span><span style="color:#79B8FF">FETCH</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">originalFetch</span><span style="color:#F97583">:</span><span style="color:#B392F0"> voidFun</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">url</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">config</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Partial</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">Request</span><span style="color:#E1E4E8">> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {})</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> sTime</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> getTimestamp</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> method</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (config </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> config.method) </span><span style="color:#F97583">||</span><span style="color:#9ECBFF"> 'GET'</span></span>
+<span class="line"><span style="color:#6A737D">    // 收集fetch的基本信息</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> httpCollect</span><span style="color:#F97583">:</span><span style="color:#B392F0"> HttpCollectedType</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      request: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        httpType: HttpTypes.</span><span style="color:#79B8FF">FETCH</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        url,</span></span>
+<span class="line"><span style="color:#E1E4E8">        method,</span></span>
+<span class="line"><span style="color:#E1E4E8">        data: config </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#E1E4E8"> config.body</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">      time: sTime,</span></span>
+<span class="line"><span style="color:#E1E4E8">      response: {}</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> originalFetch.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(_global, [url, config]).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      (</span><span style="color:#FFAB70">res</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Response</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // 需要克隆一下对象，不然会被标记该对象已经被使用过</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> resClone</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> res.</span><span style="color:#B392F0">clone</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> eTime</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> getTimestamp</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">        httpCollect.elapsedTime </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> eTime </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> sTime</span></span>
+<span class="line"><span style="color:#E1E4E8">        httpCollect.response.status </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> resClone.status</span></span>
+<span class="line"><span style="color:#E1E4E8">        resClone.</span><span style="color:#B392F0">text</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">data</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">          // 收集响应体</span></span>
+<span class="line"><span style="color:#E1E4E8">          httpCollect.response.data </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> data</span></span>
+<span class="line"><span style="color:#6A737D">          // 收集到需要的数据 notify函数用来通知订阅中心</span></span>
+<span class="line"><span style="color:#B392F0">          notify</span><span style="color:#E1E4E8">(BrowserEventTypes.</span><span style="color:#79B8FF">FETCH</span><span style="color:#E1E4E8">, httpCollect)</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> res</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">      (</span><span style="color:#FFAB70">err</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> eTime</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> getTimestamp</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">        httpCollect.elapsedTime </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> eTime </span><span style="color:#F97583">-</span><span style="color:#E1E4E8"> sTime</span></span>
+<span class="line"><span style="color:#E1E4E8">        httpCollect.response.status </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#6A737D">        // 收集到需要的数据 notify函数用来通知订阅中心</span></span>
+<span class="line"><span style="color:#B392F0">        notify</span><span style="color:#E1E4E8">(BrowserEventTypes.</span><span style="color:#79B8FF">FETCH</span><span style="color:#E1E4E8">, httpCollect)</span></span>
+<span class="line"><span style="color:#F97583">        throw</span><span style="color:#E1E4E8"> err</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p><strong>关于接口跨域、超时的问题</strong>：这两种情况发生的时候，接口返回的响应体和响应头里面都是空的，<code>status</code>等于0，所以很难区分两者，但是正常情况下，一般项目中都的请求都是复杂请求，所以在正式请求会先进行<code>option</code>进行预请求，如果是跨域的话基本几十毫秒就会返回来，可以以此作为临界值来判断跨域与超时的问题（如果是接口不存在也会被判断成接口跨域）</p>
+<p>上面代码就是重写<code>fetch</code>的基本操作，拿到收集到数据后就可以做一步数据处理，数据下面再讲。同理可得<strong>以下列表</strong>的重写方式都是如此，重写的过程中拿到入参并收集到你想要的数据，具体代码实现点击下面的链接</p>
+<ol>
+<li><a href="https://github.com/mitojs/mitojs/tree/master/packages/browser/src/plugins/console.ts">console</a></li>
+<li><a href="https://github.com/mitojs/mitojs/tree/master/packages/browser/src/plugins/xhr.ts">xhr</a></li>
+<li><a href="https://github.com/mitojs/mitojs/blob/master/packages/browser/src/plugins/historyRoute.ts">onpopstate、pushState、replaceState</a></li>
+</ol>
+<h3 id="onerror">onerror</h3>
+<p><code>onerror</code>是可以通过<code>addEventListener</code>来监听的，当出现资源错误或代码错误时会触发该回调函数</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 添加事件监听器</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@export</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {{ addEventListener: Function }}</span><span style="color:#E1E4E8"> target</span><span style="color:#6A737D"> 目标对象</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {TotalEventName}</span><span style="color:#E1E4E8"> eventName</span><span style="color:#6A737D"> 目标对象上的事件名</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {Function}</span><span style="color:#E1E4E8"> handler</span><span style="color:#6A737D"> 回调函数</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {(boolean | unknown)}</span><span style="color:#E1E4E8"> [opitons</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">false]</span><span style="color:#6A737D"> useCapture默认为false</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> on</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#FFAB70">  target</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> { </span><span style="color:#B392F0">addEventListener</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Function</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#FFAB70">  eventName</span><span style="color:#F97583">:</span><span style="color:#B392F0"> TotalEventName</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">  handler</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Function</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">  opitons</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> boolean</span><span style="color:#F97583"> |</span><span style="color:#79B8FF"> unknown</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> false</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  target.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(eventName, handler, opitons)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">on</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">  _global,</span></span>
+<span class="line"><span style="color:#9ECBFF">  'error'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">  function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">e</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ErrorEvent</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 收集到需要的数据 notify函数用来通知订阅中心</span></span>
+<span class="line"><span style="color:#B392F0">    notify</span><span style="color:#E1E4E8">(BrowserEventTypes.</span><span style="color:#79B8FF">ERROR</span><span style="color:#E1E4E8">, e)</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  true</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span></code></pre>
+<p>同理可得<strong>以下列表</strong>的监听方式都是如此：</p>
+<ol>
+<li><a href="https://github.com/mitojs/mitojs/tree/master/packages/browser/src/plugins/dom.ts">click</a></li>
+<li><a href="https://github.com/mitojs/mitojs/tree/master/packages/browser/src/plugins/hashRoute.ts">hashchange</a></li>
+<li><a href="https://github.com/mitojs/mitojs/tree/master/packages/browser/src/plugins/unhandlerejecttion.ts">unhandlerejecttion</a></li>
+</ol>
+<h3 id="vue2-和-vue3的错误">Vue2 和 Vue3的错误</h3>
+<p><code>Vue</code>提供了一个函数<code>errorHandler</code>供开发者来获取框架层面的错误，所以直接重写该方法并拿到入参即可</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> originErrorHandle</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Vue.config.errorHandler</span></span>
+<span class="line"><span style="color:#E1E4E8">Vue.config.</span><span style="color:#B392F0">errorHandler</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">err</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">vm</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ViewModel</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">info</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> data</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ReportDataType</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    type: ErrorTypes.</span><span style="color:#79B8FF">VUE</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    message: </span><span style="color:#9ECBFF">`${</span><span style="color:#E1E4E8">err</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">message</span><span style="color:#9ECBFF">}(${</span><span style="color:#E1E4E8">info</span><span style="color:#9ECBFF">})`</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    level: Severity.Normal,</span></span>
+<span class="line"><span style="color:#E1E4E8">    url: </span><span style="color:#B392F0">getUrlWithEnv</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: err.name,</span></span>
+<span class="line"><span style="color:#E1E4E8">    stack: err.stack </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> [],</span></span>
+<span class="line"><span style="color:#E1E4E8">    time: </span><span style="color:#B392F0">getTimestamp</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#B392F0">  notify</span><span style="color:#E1E4E8">(BaseEventTypes.</span><span style="color:#79B8FF">VUE</span><span style="color:#E1E4E8">, { data, vm })</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> hasConsole</span><span style="color:#F97583"> =</span><span style="color:#F97583"> typeof</span><span style="color:#E1E4E8"> console </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> 'undefined'</span></span>
+<span class="line"><span style="color:#6A737D">  // vue源码会判断Vue.config.silent，为true时则不会在控制台打印，false时则会打印</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (hasConsole </span><span style="color:#F97583">&#x26;&#x26;</span><span style="color:#F97583"> !</span><span style="color:#E1E4E8">Vue.config.silent) {</span></span>
+<span class="line"><span style="color:#B392F0">    silentConsoleScope</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'Error in '</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> info </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> ': "'</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> err.</span><span style="color:#B392F0">toString</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> '"'</span><span style="color:#E1E4E8">, vm)</span></span>
+<span class="line"><span style="color:#E1E4E8">      console.</span><span style="color:#B392F0">error</span><span style="color:#E1E4E8">(err)</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#B392F0"> originErrorHandle</span><span style="color:#E1E4E8">?.(err, vm, info)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>当然Vue2和Vue3拿到的数据格式是不一样的，具体的处理逻辑可以<a href="https://github.com/mitojs/mitojs/blob/master/packages/vue/src/vuePlugin.ts">点击这里</a></p>
+<h3 id="react的render错误捕捉">react的render错误捕捉</h3>
+<p>React16.13中提供了<a href="https://zh-hans.reactjs.org/docs/react-component.html#componentdidcatch">componentDidCatch</a>钩子函数来回调错误信息，所以我们可以新建一个类<code>ErrorBoundary</code>来继承React，然后然后声明<code>componentDidCatch</code>钩子函数，可以拿到错误信息</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> ErrorBoundaryProps</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">  fallback</span><span style="color:#F97583">?:</span><span style="color:#B392F0"> ReactNode</span></span>
+<span class="line"><span style="color:#B392F0">  onError</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">error</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">componentStack</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> ErrorBoundaryState</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#FFAB70">  hasError</span><span style="color:#F97583">?:</span><span style="color:#79B8FF"> boolean</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ErrorBoundaryWrapped</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> PureComponent</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">ErrorBoundaryProps</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">ErrorBoundaryState</span><span style="color:#E1E4E8">> {</span></span>
+<span class="line"><span style="color:#F97583">  readonly</span><span style="color:#FFAB70"> state</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ErrorBoundaryState</span></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">props</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">    super</span><span style="color:#E1E4E8">(props)</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.state </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      hasError: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#B392F0">  componentDidCatch</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">error</span><span style="color:#F97583">:</span><span style="color:#B392F0"> Error</span><span style="color:#E1E4E8">, { </span><span style="color:#FFAB70">componentStack</span><span style="color:#E1E4E8"> }</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ErrorInfo</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // error 和 componentStack就是我们需要的错误信息</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#E1E4E8"> { </span><span style="color:#79B8FF">onError</span><span style="color:#E1E4E8"> } </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.props</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> reactError</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> extractErrorStack</span><span style="color:#E1E4E8">(error, Severity.Normal)</span></span>
+<span class="line"><span style="color:#E1E4E8">    reactError.type </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ErrorTypes.</span><span style="color:#79B8FF">REACT</span></span>
+<span class="line"><span style="color:#B392F0">    onError</span><span style="color:#E1E4E8">?.(error, componentStack)</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">setState</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      hasError: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#B392F0">  render</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.state.hasError </span><span style="color:#F97583">?</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.props.fallback </span><span style="color:#F97583">:</span><span style="color:#79B8FF"> this</span><span style="color:#E1E4E8">.props.children) </span><span style="color:#F97583">??</span><span style="color:#79B8FF"> null</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>然后将组件抛出来，具体的<a href="https://github.com/mitojs/mitojs/blob/master/packages/react/src/components/ErrorBoundary.tsx">代码实现</a></p>
+<p><strong>注意：如果是在react中出现代码错误，但是不在render函数中，将会被全局的<code>onerror</code>捕捉到</strong></p>
+<h3 id="插件">插件</h3>
+<p>实现差不多就这了，具体代码可以去<a href="https://github.com/mitojs/mitojs/tree/master/packages">仓库</a>里面看看，上一篇<a href="/blogs/2021/sdk-architecture">前端监控</a></p><div></div><a href="/blogs/2021/sdk-architecture">(已开源)</a>中有讲过插件这个概念，插件是用来规范代码分层的一个思想，在指定的区域编写指定功能的代码，可读性和可迭代性会大大提高<p></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> BasePluginType</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> EventTypes</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> EventTypes</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">C</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> BaseClientType</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> BaseClientType</span><span style="color:#E1E4E8">> {</span></span>
+<span class="line"><span style="color:#6A737D">  // 事件枚举</span></span>
+<span class="line"><span style="color:#FFAB70">  name</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span></span>
+<span class="line"><span style="color:#6A737D">  // 监控事件，并在该事件中用notify通知订阅中心</span></span>
+<span class="line"><span style="color:#B392F0">  monitor</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#F97583">:</span><span style="color:#B392F0"> C</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">notify</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">eventName</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">data</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span></span>
+<span class="line"><span style="color:#6A737D">  // 在monitor中触发数据并将数据传入当前函数，拿到数据做数据格式转换(会将tranform放入Subscrib的handers)</span></span>
+<span class="line"><span style="color:#B392F0">  transform</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#F97583">:</span><span style="color:#B392F0"> C</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">collectedData</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> any</span></span>
+<span class="line"><span style="color:#6A737D">  // 拿到转换后的数据进行breadcrumb、report等等操作</span></span>
+<span class="line"><span style="color:#B392F0">  consumer</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#F97583">:</span><span style="color:#B392F0"> C</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">transformedData</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>那么上面的<strong>重写逻辑</strong>就放在<code>monitor</code>层，可以看出来有个入参<code>notify</code>，它是用通知订阅中心的，让我们看个简单且完整的例子（<a href="https://github.com/mitojs/mitojs/blob/master/packages/browser/src/plugins/dom.ts">具体代码点击这里</a>）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> domPlugin</span><span style="color:#F97583">:</span><span style="color:#B392F0"> BasePluginType</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">BrowserEventTypes</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">BrowserClient</span><span style="color:#E1E4E8">> </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  name: BrowserEventTypes.</span><span style="color:#79B8FF">DOM</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D">  // 监听事件</span></span>
+<span class="line"><span style="color:#B392F0">  monitor</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">notify</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'document'</span><span style="color:#F97583"> in</span><span style="color:#E1E4E8"> _global)) </span><span style="color:#F97583">return</span></span>
+<span class="line"><span style="color:#6A737D">    // 添加全局click事件</span></span>
+<span class="line"><span style="color:#B392F0">    on</span><span style="color:#E1E4E8">(</span></span>
+<span class="line"><span style="color:#E1E4E8">      _global.document,</span></span>
+<span class="line"><span style="color:#9ECBFF">      'click'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#F97583">      function</span><span style="color:#E1E4E8"> () {</span></span>
+<span class="line"><span style="color:#B392F0">        notify</span><span style="color:#E1E4E8">(BrowserEventTypes.</span><span style="color:#79B8FF">DOM</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#E1E4E8">          category: </span><span style="color:#9ECBFF">'click'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">          data: </span><span style="color:#79B8FF">this</span></span>
+<span class="line"><span style="color:#E1E4E8">        })</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#79B8FF">      true</span></span>
+<span class="line"><span style="color:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#6A737D">  // 转换数据</span></span>
+<span class="line"><span style="color:#B392F0">  transform</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">collectedData</span><span style="color:#F97583">:</span><span style="color:#B392F0"> DomCollectedType</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * 返回包含id、class、innerTextde字符串的标签</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#E1E4E8"> target</span><span style="color:#6A737D"> html节点</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    function</span><span style="color:#B392F0"> htmlElementAsString</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">target</span><span style="color:#F97583">:</span><span style="color:#B392F0"> HTMLElement</span><span style="color:#E1E4E8">)</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      const</span><span style="color:#79B8FF"> tagName</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> target.tagName.</span><span style="color:#B392F0">toLowerCase</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">      let</span><span style="color:#E1E4E8"> classNames </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> target.classList.value</span></span>
+<span class="line"><span style="color:#E1E4E8">      classNames </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> classNames </span><span style="color:#F97583">!==</span><span style="color:#9ECBFF"> ''</span><span style="color:#F97583"> ?</span><span style="color:#9ECBFF"> ` class="${</span><span style="color:#E1E4E8">classNames</span><span style="color:#9ECBFF">}"`</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> ''</span></span>
+<span class="line"><span style="color:#F97583">      const</span><span style="color:#79B8FF"> id</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> target.id </span><span style="color:#F97583">?</span><span style="color:#9ECBFF"> ` id="${</span><span style="color:#E1E4E8">target</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">id</span><span style="color:#9ECBFF">}"`</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> ''</span></span>
+<span class="line"><span style="color:#F97583">      const</span><span style="color:#79B8FF"> innerText</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> target.innerText</span></span>
+<span class="line"><span style="color:#F97583">      return</span><span style="color:#9ECBFF"> `&#x3C;${</span><span style="color:#E1E4E8">tagName</span><span style="color:#9ECBFF">}${</span><span style="color:#E1E4E8">id</span><span style="color:#9ECBFF">}${</span><span style="color:#E1E4E8">classNames</span><span style="color:#F97583"> !==</span><span style="color:#9ECBFF"> ''</span><span style="color:#F97583"> ?</span><span style="color:#E1E4E8"> classNames</span><span style="color:#F97583"> :</span><span style="color:#9ECBFF"> ''}>${</span><span style="color:#E1E4E8">innerText</span><span style="color:#9ECBFF">}&#x3C;/${</span><span style="color:#E1E4E8">tagName</span><span style="color:#9ECBFF">}>`</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#6A737D">    // 将拿到的数据activeElement转换成类似&#x3C;button class="btn-one">click me&#x3C;/button></span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> htmlString</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> htmlElementAsString</span><span style="color:#E1E4E8">(collectedData.data.activeElement </span><span style="color:#F97583">as</span><span style="color:#B392F0"> HTMLElement</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> htmlString</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#6A737D">  // 消费已转换的数据</span></span>
+<span class="line"><span style="color:#B392F0">  consumer</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">transformedData</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D">    // 转换后的数据添加到用户行为栈 breadcrumb中</span></span>
+<span class="line"><span style="color:#E1E4E8">    addBreadcrumbInBrowser.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, transformedData, BrowserBreadcrumbTypes.</span><span style="color:#79B8FF">CLICK</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="使用插件">使用插件</h3>
+<p>定义完插件后，需要在browserClient初始化的时候使用这些插件(<a href="https://github.com/mitojs/mitojs/blob/master/packages/browser/src/browserClient.ts">具体代码点击这里</a>):</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> browserClient</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> BrowserClient</span><span style="color:#E1E4E8">(options)</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> browserPlugins</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">    fetchPlugin,</span></span>
+<span class="line"><span style="color:#E1E4E8">    xhrPlugin,</span></span>
+<span class="line"><span style="color:#E1E4E8">    domPlugin,</span></span>
+<span class="line"><span style="color:#E1E4E8">    errorPlugin,</span></span>
+<span class="line"><span style="color:#E1E4E8">    hashRoutePlugin,</span></span>
+<span class="line"><span style="color:#E1E4E8">    historyRoutePlugin,</span></span>
+<span class="line"><span style="color:#E1E4E8">    consolePlugin,</span></span>
+<span class="line"><span style="color:#E1E4E8">    unhandlerejectionPlugin</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">  browserClient.</span><span style="color:#B392F0">use</span><span style="color:#E1E4E8">([</span><span style="color:#F97583">...</span><span style="color:#E1E4E8">browserPlugins, </span><span style="color:#F97583">...</span><span style="color:#E1E4E8">plugins])</span></span></code></pre>
+<h3 id="browserclientuse">browserClient.use</h3>
+<p><code>browserClient</code>是继承与<code>BaseClient</code>，<code>BaseClient</code>中有个<code>use</code>的方法，用来构建插件的hooks顺序<a href="https://github.com/mitojs/mitojs/blob/master/packages/core/src/baseClient.ts">具体代码实现</a></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * 引用插件</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {BasePluginType&#x3C;E>[]}</span><span style="color:#E1E4E8"> plugins</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@memberof</span><span style="color:#B392F0"> BaseClient</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#B392F0">  use</span><span style="color:#E1E4E8">(plugins: BasePluginType</span><span style="color:#F97583">&#x3C;</span><span style="color:#79B8FF">E</span><span style="color:#F97583">></span><span style="color:#E1E4E8">[]) {</span></span>
+<span class="line"><span style="color:#F97583">    if</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.options.disabled) </span><span style="color:#F97583">return</span></span>
+<span class="line"><span style="color:#6A737D">    // 新建发布订阅实例</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> subscrib</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Subscrib</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">E</span><span style="color:#E1E4E8">>()</span></span>
+<span class="line"><span style="color:#E1E4E8">    plugins.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">item</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">isPluginEnable</span><span style="color:#E1E4E8">(item.name)) </span><span style="color:#F97583">return</span></span>
+<span class="line"><span style="color:#6A737D">      // 调用插件中的monitor并将发布函数传入</span></span>
+<span class="line"><span style="color:#E1E4E8">      item.monitor.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, subscrib.notify.</span><span style="color:#B392F0">bind</span><span style="color:#E1E4E8">(subscrib))</span></span>
+<span class="line"><span style="color:#F97583">      const</span><span style="color:#B392F0"> wrapperTranform</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">[]) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // 先执行transform</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> res</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> item.transform?.</span><span style="color:#B392F0">apply</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, args)</span></span>
+<span class="line"><span style="color:#6A737D">        // 拿到transform返回的数据并传入</span></span>
+<span class="line"><span style="color:#E1E4E8">        item.consumer?.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">, res)</span></span>
+<span class="line"><span style="color:#6A737D">        // 如果需要新增hook，可在这里添加逻辑</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#6A737D">      // 订阅插件中的名字，并传入回调函数</span></span>
+<span class="line"><span style="color:#E1E4E8">      subscrib.</span><span style="color:#B392F0">watch</span><span style="color:#E1E4E8">(item.name, wrapperTranform)</span></span>
+<span class="line"><span style="color:#E1E4E8">    })</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span></code></pre>
+<h3 id="插件运行流程">插件运行流程</h3>
+<p>那么整体的流程大概如下图所示：</p>
+<p><img alt="插件运行流程" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="719" src="/_astro/01-process-flow.DahWDiXg_VWUSe.webp" ></p>
+<h2 id="结尾">结尾</h2>
+<h3 id="-小结">🤔 小结</h3>
+<p>监控的原理无非就是重写（将原有的基础上包裹一层）或者添加事件监听器，例如小程序的监控也是如此。</p>
+<p>下一篇「监控SDK手摸手Teach-微信小程序篇」会讲在微信小程序中怎么实现事件埋点、错误监控，敬请期待~</p>
+<h3 id="-开源">🧐 开源</h3>
+<p>监控SDK<a href="https://mitojs.github.io/mito-doc/#/sdk/guide/introduction">mitojs文档</a>，目前有部分人在用<a href="https://github.com/mitojs/mitojs">mitojs</a>在做自己的监控平台或者埋点相关业务，如果你感兴趣可以，不妨过来瞅瞅 😘</p>
+<h3 id="-联系内推">📞 联系&#x26;内推</h3>
+<p>字节前端大量招人，内推可帮助修改简历和实时查询面试进度，欢迎砸简历到我的<strong>邮箱</strong></p><div></div><strong>@bytedance.com</strong><p></p>
+<p>如果你对字节前端、错误监控、埋点感兴趣、也直接联系我的<strong>微信</strong></p><div></div><p></p>
+<p><strong>Have A Good Day!!!</strong></p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2021/interview/"><!-- Primary Meta Tags --><title>2021年 字节跳动-前端面经</title><meta name="title" content="2021年 字节跳动-前端面经"><meta name="description" content="双非本科两年经验前端面经，包括字节跳动web infra、涂鸦、来未来科技、阿里淘特、美团、哈啰、腾讯PCG等公司面试经历"><meta name="author" content="Shanks"><meta name="keywords" content="面试, 前端"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2021/interview/"><meta property="og:title" content="2021年 字节跳动-前端面经"><meta property="og:description" content="双非本科两年经验前端面经，包括字节跳动web infra、涂鸦、来未来科技、阿里淘特、美团、哈啰、腾讯PCG等公司面试经历"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2021-06-23"><meta property="article:tag" content="面试"><meta property="article:tag" content="前端"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2021/interview/"><meta property="twitter:title" content="2021年 字节跳动-前端面经"><meta property="twitter:description" content="双非本科两年经验前端面经，包括字节跳动web infra、涂鸦、来未来科技、阿里淘特、美团、哈啰、腾讯PCG等公司面试经历"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.Uaq4wKsD.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.oJg5Xdcy.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">2021年 字节跳动-前端面经</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2021-06-23</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">3,014 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 8 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">面试</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">前端</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <div class="custom-container tip"><p class="custom-container-title">履历</p><p>本人19年<strong>双非</strong>本科毕业，无大厂背景加持，借着上一年自研前端监控系统的经历认真写了简历。目前监控SDK已开源：<a href="https://github.com/mitojs/mitojs">mitojs</a>（已有部分公司开发者正使用该SDK在构建自己的监控平台），为了更好的开源，将<a href="https://github.com/clouDr-f2e/mitojs">老版SDK</a>迁到<a href="https://github.com/mitojs/mitojs">新版mitojs</a>，迁到新的<a href="https://github.com/mitojs">MITO组织</a>，后续会在<a href="https://github.com/mitojs">MITO组织</a>里开源前后端项目、docker私有化部署、<strong>免费saas</strong>服务等等，敬请期待~</p><p>如有意想一起共建的小伙伴可私聊我~</p><p><a href="https://juejin.cn/post/6990174096554360869">该篇掘金文章地址</a></p></div>
+<h2 id="字节跳动---web-infra">字节跳动 - web infra</h2>
+<h3 id="一面视频面记不全了">一面视频面（记不全了）</h3>
+<ol>
+<li>讲下你的MITO（前端监控系统）的主要功能</li>
+<li>你的SDK中用户行为栈是怎么获取和更新的</li>
+<li>埋点SDK是怎么实现新开页面并携带原页面的信息（至少两种方式）</li>
+<li>简述react fiber的作用，以及实现原理</li>
+<li>react hook出现的意义什么？解决了什么问题？</li>
+<li>Vue.use这个函数在源码里面做了哪些事情，主要用来干嘛的？</li>
+<li>手写代码：实现一个函数，监听浏览器所有的事件（不可枚举）并上报该事件名称</li>
+<li>有写过plugin吗，说说webpack的plugin是怎么获取hook入参的？</li>
+<li>手写代码：用react hook实现计时器</li>
+<li>手写代码：实现类似webpack plugin的管道函数（具体题目忘记了）</li>
+</ol>
+<p>全程耗时：50分钟</p>
+<h3 id="二面视频面web-infra组长二面">二面视频面（web infra组长二面）</h3>
+<ol>
+<li>讲讲你和普通前端，你的亮点有哪些？</li>
+<li>我看了你开源（mitojs），你的代码风格是借鉴sentry，你出发点是什么？为什么不直接用sentry私有化部署，而是自研前端监控？</li>
+<li>简单讲讲你的SDK的架构、和sentry的SDK对比，有哪些优势？（行为栈更精确、hooks更完善）</li>
+<li>简单讲讲你的性能监控SDK（同事开发，借鉴google官方api）</li>
+<li>为什么要二次开发google开源的性能监控SDK？</li>
+<li>SDK怎么采集用户行为栈（面包屑）？</li>
+<li>你是怎么录制页面并回放页面（用开源包<a href="https://github.com/rrweb-io/rrweb">rrweb</a>，并在此基础之上二次开发，说明录制原理）</li>
+<li>没用浏览器的官方api，你是怎么检查当前用户电脑CPU的性能？（只有达到某个性能指标才开启录制，因为录制过程需要不断序列号dom，所以比较耗CPU）</li>
+<li>网页上报数据量高并发，你用node是怎么处理的？（redis+rocketMq）</li>
+<li>有没有进行压测过你的服务器？最高的QPS是多少？</li>
+<li>服务端有没有做错误事件聚合，聚合的方式是怎样的？</li>
+<li>收集错误时有没有进行采样控制？</li>
+<li>如果让你来设计单页应用的性能指标，你会怎么设计？（可以理解成怎么拿到路由间切换和路由间接口返回的时间差）</li>
+<li>什么因数会导致FCP、FMP等等指标的变化？</li>
+<li>了解过long task，有没有监控这个指标？</li>
+<li>手写代码：打印一下斐波那契数列：1 1 2 3 5 8 …</li>
+<li>书写代码：实现深拷贝函数</li>
+<li>手写代码：写个单例模式</li>
+<li>手写代码：写个节流函数</li>
+<li>你如果离职的话，最快的入职时间是什么时候？</li>
+<li>你最有成就的事是什么我们可以再聊一聊（开源SDK：别人使用开源再公司线上环境使用、文章）</li>
+<li>把你自己产出文章地址发一下</li>
+</ol>
+<p>二面当场通过，约三面~</p>
+<p>全程耗时</p><div></div><p></p>
+<h3 id="三面视频面web-infra-三面-记不清了">三面视频面（web infra 三面 (记不清了)）</h3>
+<ol>
+<li>简单介绍一下你的监控系统</li>
+<li>为什么不直接用sentry私有化部署，而是自研前端监控？</li>
+<li>用飞书画一下整个架构图，画的过程中会问为什么会这样设计？</li>
+<li>怎么优化FCP这个性能指标？</li>
+<li>在做的过程中有没有遇到难点，然后是怎么解决的？</li>
+<li>你是怎么检查当前用户电脑CPU的性能？（只有达到某个性能指标才开启录制，因为录制过程需要不断序列号dom节点，所以比较耗CPU）</li>
+<li>手写代码：实现transform函数，将对象转成类似树结构的数组</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">transform</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#79B8FF">  0</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    username: </span><span style="color:#9ECBFF">'0'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    department: </span><span style="color:#9ECBFF">'A-B-C'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  1</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    username: </span><span style="color:#9ECBFF">'1'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    department: </span><span style="color:#9ECBFF">'A-B-D'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#79B8FF">  2</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    username: </span><span style="color:#9ECBFF">'2'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    department: </span><span style="color:#9ECBFF">'A-X-Y'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"><span style="color:#6A737D">// 打印结果：</span></span>
+<span class="line"><span style="color:#E1E4E8">[</span></span>
+<span class="line"><span style="color:#E1E4E8">  {</span></span>
+<span class="line"><span style="color:#E1E4E8">    name: </span><span style="color:#9ECBFF">'A'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    path: </span><span style="color:#9ECBFF">'A'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    children: [</span></span>
+<span class="line"><span style="color:#E1E4E8">      {</span></span>
+<span class="line"><span style="color:#E1E4E8">        name: </span><span style="color:#9ECBFF">'0'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        path: </span><span style="color:#9ECBFF">'A-B'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        children: [</span></span>
+<span class="line"><span style="color:#E1E4E8">          { name: </span><span style="color:#9ECBFF">'0'</span><span style="color:#E1E4E8">, path: </span><span style="color:#9ECBFF">'A-B-C'</span><span style="color:#E1E4E8">, children: [] },</span></span>
+<span class="line"><span style="color:#E1E4E8">          { name: </span><span style="color:#9ECBFF">'1'</span><span style="color:#E1E4E8">, path: </span><span style="color:#9ECBFF">'A-B-D'</span><span style="color:#E1E4E8">, children: [] },</span></span>
+<span class="line"><span style="color:#E1E4E8">        ],</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">      { name: </span><span style="color:#9ECBFF">'2'</span><span style="color:#E1E4E8">, path: </span><span style="color:#9ECBFF">'A-X'</span><span style="color:#E1E4E8">, children: [{ name: </span><span style="color:#9ECBFF">'2'</span><span style="color:#E1E4E8">, path: </span><span style="color:#9ECBFF">'A-X-Y'</span><span style="color:#E1E4E8">, children: [] }] },</span></span>
+<span class="line"><span style="color:#E1E4E8">    ],</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">]</span></span></code></pre>
+<p>全程耗时：1小时</p>
+<h3 id="四面杭州-hr面">四面杭州-hr面</h3>
+<ol>
+<li>为什么离职？</li>
+<li>你期望什么样的团队和工作内容？</li>
+<li>期望薪资？</li>
+<li>期望工作地点？</li>
+</ol>
+<p>过了一周后，上海hr打电话过来说你不符合我们这web infra的资深前端工程师的岗位，原因就不公开说了，考虑到前面三面面试官对你评价不错，所以将你转到杭州字节-研发体系岗位，问我转岗过去需要加面一面，是否接受，隔天安排了加面。</p>
+<h3 id="转岗杭州加面研发体系">转岗杭州加面（研发体系）</h3>
+<ol>
+<li>手写题目：</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">/*</span></span>
+<span class="line"><span style="color:#6A737D">请实现抽奖函数rand，保证随机性</span></span>
+<span class="line"><span style="color:#6A737D">输入为表示对象数组，对象有属性n表示人名，w表示权重</span></span>
+<span class="line"><span style="color:#6A737D">随机返回一个中奖人名，中奖概率和w成正比</span></span>
+<span class="line"><span style="color:#6A737D">*/</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> peoples </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">  { n: </span><span style="color:#9ECBFF">'p1'</span><span style="color:#E1E4E8">, w: </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { n: </span><span style="color:#9ECBFF">'p2'</span><span style="color:#E1E4E8">, w: </span><span style="color:#79B8FF">200</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { n: </span><span style="color:#9ECBFF">'p3'</span><span style="color:#E1E4E8">, w: </span><span style="color:#79B8FF">100</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#B392F0"> rand</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">p</span><span style="color:#E1E4E8">) {}</span></span></code></pre>
+<ol start="2">
+<li>简单讲讲你的前端监控？</li>
+<li>服务端的整体架构是怎么样的，从技术选型开始讲</li>
+<li>仔细讲下你的上报数据后的处理过程</li>
+<li>为什么不直接用ES，而是采用阿里云的sls（日志服务）</li>
+<li>为什么不直接消费MQ，而是将MQ消费到redis，然后再消费redis？</li>
+<li>你的QPS大概是多少？</li>
+<li>你的服务器数量和服务器配置是多少，服务端的资源使用率是多少？(面试官说不谈配置讲吞吐量都是耍流氓)</li>
+<li>你的SDK在收集指标时相对于别人有所创新吗（保障用户行为顺序性，暴露hooks供使用者自定义收集信息和上报结构）</li>
+<li>unhandledrejection是怎么触发的？这个事件触发了就一定要上报吗？</li>
+<li>说说你的前端页面跟业界监控对比有哪些差异点吗？</li>
+<li>后续你如果想继续开发这个东西，你未来的计划是什么？</li>
+<li>你本次看工作的话，你希望新的工作是什么样的？</li>
+<li>你平时是怎么学习新技术的？</li>
+<li>你认为自己是有责任心的人吗？</li>
+<li>你是偏向于走各个方向探索还是一直向某个方向研究下去？</li>
+</ol>
+<p>当场通过~</p>
+<h3 id="offer邮件">offer邮件</h3>
+<p>等了一周多的时间，邮箱收到叫我提交流水的邮件，提交流水后，过了两天电话简单和我讲了薪资和福利，问我是否接受，再过了一周，发了正式offer邮件~</p>
+<p>从一面到收到offer邮件花了：35天</p>
+<h2 id="涂鸦-效能平台---资深前端工程师">涂鸦-效能平台 - 资深前端工程师</h2>
+<p>三面都是基本题目，js、vue、react，没有问到算法</p>
+<h3 id="一面电话面">一面电话面</h3>
+<p>js、vue的源码，项目经历</p>
+<h3 id="二面电话面">二面电话面</h3>
+<p>js、react的基础，项目经历</p>
+<h3 id="三面现场面">三面现场面</h3>
+<p>js基础、场景题、项目经历</p>
+<p>拿到口头offer</p>
+<h2 id="来未来科技医疗--资深前端工程师">来未来科技（医疗）- 资深前端工程师</h2>
+<h3 id="一面电话面-1">一面电话面</h3>
+<p>由于没有录音，所以过程记得不太清楚，只记得面试官是个女的，声音还蛮好听得~</p>
+<ol>
+<li>react和vue的使用上面的区别</li>
+<li>vue的双向绑定原理，为什么数组不能直接更改下标更新？</li>
+<li>vue中this.$set这个函数做了什么事</li>
+<li>简述一下babel和ast？可以用ast做一些什么事？</li>
+<li>讲一下你的MITO（前端监控系统）做哪些事</li>
+<li>为什么需要用你的MITO，给业务带来了哪些价值</li>
+<li>说说你是怎么推广SDK到各个业务线使用</li>
+<li>为什么想离职，未来三年的规划是什么</li>
+<li>你有什么想要问我的吗</li>
+</ol>
+<p>挂完电话半小时后，小姐姐面试官主动加我微信，给我做题的链接地址。</p>
+<h3 id="二面笔试题">二面笔试题</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">//============= 测试代码 ==============</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> list</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
+<span class="line"><span style="color:#E1E4E8">  { id: </span><span style="color:#79B8FF">1001</span><span style="color:#E1E4E8">, parentId: </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'AA'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { id: </span><span style="color:#79B8FF">1002</span><span style="color:#E1E4E8">, parentId: </span><span style="color:#79B8FF">1001</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'BB'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { id: </span><span style="color:#79B8FF">1003</span><span style="color:#E1E4E8">, parentId: </span><span style="color:#79B8FF">1001</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'CC'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { id: </span><span style="color:#79B8FF">1004</span><span style="color:#E1E4E8">, parentId: </span><span style="color:#79B8FF">1003</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'DD'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { id: </span><span style="color:#79B8FF">1005</span><span style="color:#E1E4E8">, parentId: </span><span style="color:#79B8FF">1003</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'EE'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { id: </span><span style="color:#79B8FF">1006</span><span style="color:#E1E4E8">, parentId: </span><span style="color:#79B8FF">1002</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'FF'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { id: </span><span style="color:#79B8FF">1007</span><span style="color:#E1E4E8">, parentId: </span><span style="color:#79B8FF">1002</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'GG'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { id: </span><span style="color:#79B8FF">1008</span><span style="color:#E1E4E8">, parentId: </span><span style="color:#79B8FF">1004</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'HH'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">  { id: </span><span style="color:#79B8FF">1009</span><span style="color:#E1E4E8">, parentId: </span><span style="color:#79B8FF">1005</span><span style="color:#E1E4E8">, name: </span><span style="color:#9ECBFF">'II'</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#6A737D">// 实现printTree函数</span></span>
+<span class="line"><span style="color:#B392F0">printTree</span><span style="color:#E1E4E8">(list)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 输出：</span></span>
+<span class="line"><span style="color:#6A737D">// AA</span></span>
+<span class="line"><span style="color:#6A737D">//    BB</span></span>
+<span class="line"><span style="color:#6A737D">//      FF</span></span>
+<span class="line"><span style="color:#6A737D">//      GG</span></span>
+<span class="line"><span style="color:#6A737D">//    CC</span></span>
+<span class="line"><span style="color:#6A737D">//      DD</span></span>
+<span class="line"><span style="color:#6A737D">//        HH</span></span>
+<span class="line"><span style="color:#6A737D">//      EE</span></span>
+<span class="line"><span style="color:#6A737D">//        II</span></span></code></pre>
+<ol start="2">
+<li>
+<p>实现千分位格式化函数</p>
+</li>
+<li>
+<p>用class或hook实现ant的input效果，可以不写css</p>
+</li>
+</ol>
+<h3 id="二面电话面-1">二面电话面</h3>
+<ol>
+<li>简单讲讲你对三道笔试题的思路</li>
+<li></li>
+</ol>
+<h3 id="三面现场面-1">三面现场面</h3>
+<p>那时已经有了涂鸦的前端leader的口头offer，所以就不想再去现场面了，感觉我的性价比对于独角兽公司太低了，会被hr压价</p>
+<h2 id="阿里淘特">阿里（淘特）</h2>
+<h3 id="一面电话面-2">一面电话面</h3>
+<p>js基础、vue源码</p>
+<h3 id="二面笔试题-1">二面笔试题</h3>
+<p>三道题目，通过</p>
+<h3 id="二面电话面-2">二面电话面</h3>
+<ol>
+<li>电话面问算法：怎么拿到一个字符串中第一次出现一次的字符？
+我说了两种答案：</li>
+</ol>
+<ul>
+<li>时间复杂度On + 空间复杂度On</li>
+<li>时间复杂度On^2</li>
+</ul>
+<p>结果面试官说用indexOf，indexOf可以理解成O1操作，我人蒙了~</p>
+<ol start="2">
+<li>后面就扯前端监控系统和业务
+和面试官聊得不是很来，结果当然是挂了</li>
+</ol>
+<h2 id="美团到店技术">美团（到店技术）</h2>
+<h3 id="一面视频面">一面视频面</h3>
+<ol>
+<li>Vue的双向绑定</li>
+<li>Vue源码中大量个节点更新时的策略</li>
+<li>手写代码：用数组实现栈</li>
+<li>手写代码：写出快速排序</li>
+</ol>
+<h3 id="二面">二面</h3>
+<p>由于过了字节的web infra四面，所以选择拒绝面试，但是后续还是加了美团前端leader的微信，说要是不来字节可以再考虑下美团</p>
+<h2 id="哈啰">哈啰</h2>
+<h3 id="一面电话面-3">一面电话面</h3>
+<p>通过</p>
+<h3 id="二面电话面-3">二面电话面</h3>
+<ol>
+<li>怎么找出一个链表是否是闭环</li>
+<li>怎么找到一个单链表的中点</li>
+<li>判断一个字符串是否符合正规的开区间和闭区间</li>
+<li>讲下ssl加密算法</li>
+<li>从url输入到展现，浏览器发生了哪些过程？</li>
+</ol>
+<h3 id="三面电话面">三面电话面</h3>
+<p>通过</p>
+<h3 id="hr面">hr面</h3>
+<p>通过</p>
+<h2 id="深圳腾讯-pcg">深圳腾讯-PCG</h2>
+<h3 id="一面视频面-1">一面视频面</h3>
+<ol>
+<li>腾讯PCG主要做些什么事</li>
+<li>讲下你的MITO（前端监控系统）的主要功能</li>
+<li>简单讲讲你的用户行为是怎么收集的、怎么拿到xhr的请求状态</li>
+<li>react和vue的使用情况、怎么编写一个vue插件、Vue.use函数里面具体做了哪些事</li>
+<li>简单实现下promise</li>
+<li>你有什么要问我的吗</li>
+</ol>
+<h3 id="二面电话面-4">二面电话面</h3>
+<ol>
+<li>讲下你MITO对业务的价值，为什么会这个系统的出现、为什么不直接用sentry私有化部署？</li>
+<li>react class 和 hook的区别，hook存在的意义是什么</li>
+<li>简述下react受控和非受控组件</li>
+<li>react高阶组件的几种实现方式</li>
+<li>Charles为什么可以劫持和更改https的请求，它的原理是什么？</li>
+<li>简单讲讲SSL的协议？</li>
+<li>你有什么要问我的吗</li>
+</ol>
+<p>过了四天，短信通知不合适，有点莫名其妙</p>
+<h2 id="总结">总结</h2>
+<p>当你的简历里面有不错项目或经历，可以试着将面试官引导到你比较有优势的那一面。如果简历没有比较可观的项目，也可以将面试官引导到你比较在行的源码、js基础、算法当中的某一块，当你在其中的某一块有突出表现，基本上就能给面试官留下不错的印象。</p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>

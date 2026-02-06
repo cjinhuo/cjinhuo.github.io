@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="en"> <head><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://giscus.app"><link rel="dns-prefetch" href="https://lf1-cdn-tos.bytegoofy.com"><script>
+  const initThemeFromLocalStorage = () => {
+    const Dark = 'dark'
+    const Light = 'light'
+    const localStorageKey = '__shanks__theme'
+    const addDarkToClassList = () => document.documentElement.classList.add(Dark)
+    const removeDarkToClassList = () => document.documentElement.classList.remove(Dark)
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem(localStorageKey)) {
+        return localStorage.getItem(localStorageKey)
+      }
+      localStorage.setItem(localStorageKey, Dark)
+      return Dark
+    })()
+    if (theme && theme === Dark) {
+      addDarkToClassList()
+    } else {
+      removeDarkToClassList()
+    }
+  }
+  initThemeFromLocalStorage()
+  document.addEventListener('astro:after-swap', () => {
+    initThemeFromLocalStorage()
+  })
+</script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.17.1"><!-- Canonical URL --><link rel="canonical" href="https://cjinhuo.netlify.app/blogs/2021/sdk-architecture/"><!-- Primary Meta Tags --><title>前端监控:监控SDK手摸手Teach-架构篇(已开源)</title><meta name="title" content="前端监控:监控SDK手摸手Teach-架构篇(已开源)"><meta name="description" content="介绍可扩展性较好的SDK架构，monorepo、可插拔的插件思路、@mitojs/core核心设计，以及浏览器和微信小程序的整体架构"><meta name="author" content="Shanks"><meta name="keywords" content="SDK, 前端监控, 架构"><!-- Open Graph / Facebook --><meta property="og:type" content="article"><meta property="og:url" content="https://cjinhuo.netlify.app/blogs/2021/sdk-architecture/"><meta property="og:title" content="前端监控:监控SDK手摸手Teach-架构篇(已开源)"><meta property="og:description" content="介绍可扩展性较好的SDK架构，monorepo、可插拔的插件思路、@mitojs/core核心设计，以及浏览器和微信小程序的整体架构"><meta property="og:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="og:site_name" content="Shanks"><meta property="article:author" content="Shanks"><meta property="article:published_time" content="2021-10-01"><meta property="article:tag" content="SDK"><meta property="article:tag" content="前端监控"><meta property="article:tag" content="架构"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cjinhuo.netlify.app/blogs/2021/sdk-architecture/"><meta property="twitter:title" content="前端监控:监控SDK手摸手Teach-架构篇(已开源)"><meta property="twitter:description" content="介绍可扩展性较好的SDK架构，monorepo、可插拔的插件思路、@mitojs/core核心设计，以及浏览器和微信小程序的整体架构"><meta property="twitter:image" content="https://cjinhuo.netlify.app/placeholder-social.jpg"><meta property="twitter:creator" content="https://github.com/cjinhuo"><!-- Additional SEO --><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow"><!-- keywords --><meta data-react-helmet="true" name="keywords" content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs,"><!-- description --><meta data-react-helmet="true" name="description" content="shank blog"><!-- sharecontent --><meta data-react-helmet="true" name="sharecontent" data-msg-img="./cjinhuo_blog.webp" data-msg-title="Shanks Blog" data-msg-content="前端监控,小程序监控,mitojs,cjinhuo,web monitoring,mini program monitoring,shanks,blogs"><!-- JSON-LD Structured Data --><script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description: description,
+      image: socialImageURL.toString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        url: authorHref
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_TITLE,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.url).toString()
+        }
+      },
+      datePublished: pubDate,
+      dateModified: updatedDate || pubDate,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString()
+      }
+    })}
+  </script><link rel="stylesheet" href="/_astro/about.Uaq4wKsD.css">
+<link rel="stylesheet" href="/_astro/about.CArPWdo4.css"></head> <body class="bg-skin-background"> <header class="flex justify-between items-center"> <script async src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_19840_9.23068c8b37faf24c94259db4fbf93080.js">
+  </script> <script type="module">const t=document.documentElement;function i(){const n=t.getBoundingClientRect().width/35;let e=16;n>16?e=16:n<12?e=12:e=n,t.style.fontSize=e+"px"}window.addEventListener("resize",i);window.addEventListener("DOMContentLoaded",i);</script> <a class="flex items-center gap-2.5 text-skin-neutral-1 hover:text-skin-neutral-3 font-semibold tracking-widest" href="/"> <span class="w-5 h-5 bg-skin-primary"></span> <span>SHANKS</span> </a> <div class="flex items-center gap-6"> <a target="_self" href="/blogs" title="Blog" aria-label="Blog" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5">Blog</a><a target="_blank" href="https://github.com/cjinhuo" title="Github" aria-label="Github" rel="noopener noreferrer" class="hover:text-skin-neutral-1 transition duration-75 text-base text-skin-neutral-5"><div style="width:20px;height:20px" class="hover:text-skin-neutral-1 text-skin-neutral-5"><iconpark-icon style="font-size:20px;vertical-align:middle;transition:color 0.02s" name="github"></iconpark-icon></div></a> <div class="w-5 h-5"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1mqAKG" component-url="/_astro/ToggleTheme.oJg5Xdcy.js" component-export="default" renderer-url="/_astro/client.Dc9Vh3na.js" props="{}" ssr client="only" opts="{&quot;name&quot;:&quot;ToggleTheme&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </div> <meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script> </header> <main class="min-h-screen">  <article class="max-w-4xl mx-auto px-6 md:px-12 py-12"> <h1 class="text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6">前端监控:监控SDK手摸手Teach-架构篇(已开源)</h1> <div class="flex flex-wrap items-center gap-x-8 gap-y-2 mb-6"> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect> <line x1="16" x2="16" y1="2" y2="6"></line> <line x1="8" x2="8" y1="2" y2="6"></line> <line x1="3" x2="21" y1="10" y2="10"></line> </svg> <time class="text-skin-neutral-5 font-mono text-xs">2021-10-01</time> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle> </svg> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors"> Shanks </a> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path> <polyline points="14 2 14 8 20 8"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">1,447 字</span> </div> <div class="flex items-center gap-2"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-skin-neutral-6"> <circle cx="12" cy="12" r="10"></circle> <polyline points="12 6 12 12 16 14"></polyline> </svg> <span class="text-skin-neutral-5 font-mono text-xs">约 4 min</span> </div> </div> <div class="flex flex-wrap gap-2 mb-6"><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">SDK</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">前端监控</span><span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono">架构</span></div> <div class="h-px bg-skin-card-border mb-8"></div>  <div class="prose prose-slate dark:prose-invert max-w-none"> <h2 id="概要">概要</h2>
+<p>本文的主要目的是介绍一种可扩展性较好的SDK架构，让后续业务迭代的代码更清晰明朗。这种架构已经在开源监控SDK:<a href="https://github.com/mitojs/mitojs">mitojs</a>实践，有兴趣的小伙伴可以去瞅瞅~</p>
+<p>来到正文，本文分成三个部分</p>
+<ul>
+<li>背景</li>
+<li>SDK的架构与迭代</li>
+<li>结尾</li>
+</ul>
+<h2 id="背景">背景</h2>
+<p>传统模式下，前端项目发到正式环境后就变成了一个黑盒子，所有报错信息只能通过用户使用时截图、口头描述发送到开发者，然后开发者来根据用户所描述的场景去模拟这个错误的产生，这效率特低，所以很多开源或收费的前端监控平台就应运而生，比如:</p>
+<ul>
+<li><a href="https://github.com/getsentry/sentry">sentry</a></li>
+<li><a href="https://github.com/a597873885/webfunny_monitor">webfunny</a></li>
+<li><a href="https://www.fundebug.com/">fundebug</a></li>
+<li><a href="https://www.aliyun.com/product/arms">阿里云前端监控(ARMS)</a></li>
+</ul>
+<p>等等一些优秀的监控平台</p>
+<h3 id="自研的优势">自研的优势</h3>
+<ol>
+<li><code>阿里云前端监控(ARMS)</code>和<code>fundebug</code>需要投入大量金钱来作为支持，而<code>webfunny</code>和<code>sentry</code>虽是可以用<code>docker</code>私有化部署，但由于其源代码没有开源，二次开发受限</li>
+<li>可以将公司所有的SDK统一成一个，包括但不限于：埋点平台SDK、性能监控SDK、录屏SDK</li>
+<li>可以无缝共享采集到的信息，比如错误信息可以和埋点信息联动，便可拿到更细的用户行为栈，更快的排查线上错误</li>
+<li>可以设计更好的服务端结构，相同服务器的性能，不同的架构可以抗住不同的QPS</li>
+</ol>
+<h3 id="监控平台的组成">监控平台的组成</h3>
+<p><img alt="整体流程" loading="lazy" decoding="async" fetchpriority="auto" width="1234" height="642" src="/_astro/01-flow.Dspp6Wge_Z1IsRSB.webp" ></p>
+<h2 id="sdk的架构与迭代">SDK的架构与迭代</h2>
+<p>前端监控的原理其实就那么几个，比如拦截http请求就是重写原生函数</p><div></div>、XMLHttpRequest，监控代码错误：window.onerror，但SDK也是一个工程，是需要不断迭代追加功能的，所以良好的架构可以为后期迭代打下不错的地基<p></p>
+<h3 id="monorepo">monorepo</h3>
+<p>借鉴了<code>sentry</code>和<code>vue-next</code>的代码目录结构，最终也是采用<a href="https://en.wikipedia.org/wiki/Monorepo">monorepo</a></p>
+<p>它的优势：</p>
+<ol>
+<li>分模块打包、分模块热更新、分包发布（提高开发体验）</li>
+<li>抽离抽象类、工具类到某个包，代码结构清晰（降低耦合性，提高代码可读性）</li>
+</ol>
+<h4 id="包与包之间的关系">包与包之间的关系</h4>
+<p><img alt="包与包间的关系" loading="lazy" decoding="async" fetchpriority="auto" width="1416" height="1390" src="/_astro/02-packages.Cpnf2w-d_2w6nRe.webp" ></p>
+<h4 id="多包打包与发布">多包打包与发布</h4>
+<p>试用了<a href="https://github.com/lerna/lerna">lerna</a>后，发现它的功能太多，我想要的只是一个打包和发布的功能，最终是用js脚步编写根据命令行的入参来调用<code>rollup</code>的<code>api</code>和<code>npm</code>的<code>api</code>来打包和发布，具体<a href="https://github.com/mitojs/mitojs/blob/master/script/build.js">打包脚本</a></p>
+<h3 id="可插拔的插件思路">可插拔的插件思路</h3>
+<p>该思路是从<a href="https://rollupjs.org/guide/en/#plugins-overview">rollup</a>和监控开源库<a href="https://github.com/dora-projects/dora/tree/master/packages/browser/src/plugins">dora</a>中借鉴。</p>
+<p>我们需要监控:</p>
+<ul>
+<li>xhr</li>
+<li>fetch</li>
+<li>hashroute</li>
+<li>historyroute</li>
+<li>error
+…等等</li>
+</ul>
+<h4 id="传统模式">传统模式</h4>
+<ol>
+<li>重写xhr</li>
+<li>在重写的过程中拿到想要的数据</li>
+<li>通过发布订阅回传</li>
+<li>在订阅中心中拿到数据，并处理</li>
+</ol>
+<p>如果没有规范的约束，每个重写的过程都会变的杂乱无章，回传数据和处理数据可能到处都是。</p>
+<p>如果我们借鉴了插件模式后，会变成什么样呢？</p>
+<h4 id="插件模式">插件模式</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">interface</span><span style="color:#B392F0"> BasePluginType</span><span style="color:#E1E4E8">&#x3C;</span><span style="color:#B392F0">T</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> EventTypes</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> EventTypes</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">C</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> BaseClientType</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> BaseClientType</span><span style="color:#E1E4E8">> {</span></span>
+<span class="line"><span style="color:#6A737D">  // 事件枚举</span></span>
+<span class="line"><span style="color:#FFAB70">  name</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span></span>
+<span class="line"><span style="color:#6A737D">  // 监控事件，并在该事件中用notify通知订阅中心</span></span>
+<span class="line"><span style="color:#B392F0">  monitor</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#F97583">:</span><span style="color:#B392F0"> C</span><span style="color:#E1E4E8">, </span><span style="color:#B392F0">notify</span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">eventName</span><span style="color:#F97583">:</span><span style="color:#B392F0"> T</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">data</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span></span>
+<span class="line"><span style="color:#6A737D">  // 在monitor中触发数据并将数据传入当前函数，拿到数据做数据格式转换</span></span>
+<span class="line"><span style="color:#B392F0">  transform</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#F97583">:</span><span style="color:#B392F0"> C</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">collectedData</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> any</span></span>
+<span class="line"><span style="color:#6A737D">  // 拿到转换后的数据进行breadcrumb、report等等操作</span></span>
+<span class="line"><span style="color:#B392F0">  consumer</span><span style="color:#F97583">?:</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">this</span><span style="color:#F97583">:</span><span style="color:#B392F0"> C</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">transformedData</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> any</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#79B8FF"> void</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><img alt="baseplugin" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="372" src="/_astro/03-baseplugin.DErUqByl_1s201N.webp" ></p>
+<p>这时就会有人说了，如果我的业务比这复杂多了，那这个架构还能撑住吗？是可以的，将上面插件中的3个hooks:<code>monitor、transform、consumer</code>分成更多hooks，可以是5个也可以是10个，只要你分的颗粒度足够细，且完全按照这些hooks的对应功能来编写代码，不管你的项目代码有多几十万行，你的代码层次结构都是很清晰的</p>
+<h4 id="举个监听unhandlerejection的插件">举个🌰：监听unhandlerejection的插件</h4>
+<p><img src="https://files.catbox.moe/86e8gp.png" alt="unhandlerejectionPlugin.png"></p>
+<h4 id="插件实际在代码中的使用">插件实际在代码中的使用</h4>
+<p><img src="https://files.catbox.moe/8k4tdh.png" alt="browserClient"></p>
+<h4 id="在vue3使用mitojsvue">在Vue3使用@mitojs/vue</h4>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// main.ts</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { createApp } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> 'vue'</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> App </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> './App.vue'</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { init } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@mitojs/browser"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> { vuePlugin } </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@mitojs/vue"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> app</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> createApp</span><span style="color:#E1E4E8">(App)</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> MitoInstance</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> init</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">  vue: app,</span></span>
+<span class="line"><span style="color:#E1E4E8">  dsn: </span><span style="color:#9ECBFF">'https://test.com/yourInterface'</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  maxBreadcrumbs: </span><span style="color:#79B8FF">100</span></span>
+<span class="line"><span style="color:#E1E4E8">},[vuePlugin])</span></span></code></pre>
+<p>可以去<a href="https://mitojs.github.io/vue3-sdk-demo/#/page-one">vue3 Demo</a>体验一下sdk收集的数据，更多信息可以访问<a href="https://mitojs.github.io/mito-doc/#/sdk/guide/vue">vue3 接入指南</a></p>
+<h3 id="mitojscore">@mitojs/core</h3>
+<p>上面讲完插件是构成整个<code>SDK</code>的主要链路，现在讲下最基本的一些工具类，来串联这些插件，由于需要支持多个端，每个端需要监听的事件、上报方式、可配置项的是不同的，所以需要抽离多个抽象类，方便扩展。如下是<a href="https://github.com/mitojs/mitojs/tree/master/packages/core">@mitojs/core</a>的整体思维导图</p>
+<p><img alt="core" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="1211" src="/_astro/06-core.BBN5l1iK_1V2MrC.webp" ></p>
+<h3 id="浏览器的整体思维导图">浏览器的整体思维导图</h3>
+<p><img src="https://files.catbox.moe/g57hci.png" alt="browser-architecture"></p>
+<h3 id="微信小程序的整体思维导图">微信小程序的整体思维导图</h3>
+<p><img alt="wx-mini-architecture" loading="lazy" decoding="async" fetchpriority="auto" width="1512" height="1021" src="/_astro/08-wx-mini-architecture.DK2f4OWV_Z1SgGR8.webp" ></p>
+<h3 id="可迭代性">可迭代性</h3>
+<p>后续如果有人想<code>pull request</code> <code>node监控</code>或<code>其他小程序的监控</code>，只要按照这个插件模式开发，可迭代性便会大大提高</p>
+<h2 id="结尾">结尾</h2>
+<h3 id="-小结">🤔 小结</h3>
+<p>该架构的思想可适用于任何SDK，不同SDK中对应插件的个数和作用不同。总而言之，把一个大功能分隔成几个小功能区域，在指定的区域写指定功能的代码，让代码逻辑有规律可循。</p>
+<p>下一篇「监控SDK手摸手Teach-实现篇」会讲具体在插件代码的编写，敬请期待~</p>
+<h3 id="-开源">🧐 开源</h3>
+<p>github仓库<a href="https://github.com/mitojs/mitojs">mitojs</a>，新SDK重构后，包的体积更小、代码架构更清晰，耦合性更低，文档：<a href="https://mitojs.github.io/mito-doc/#/sdk/guide/introduction">mitojs文档</a>，目前有部分人在用<a href="https://github.com/mitojs/mitojs">mitojs</a>在做自己的监控平台或者埋点相关业务，如果你感兴趣可以，不妨过来瞅瞅 😘</p>
+<h3 id="-联系内推">📞 联系&#x26;内推</h3>
+<p>字节架构前端大量招人，内推可帮助修改简历和实时查询面试进度，欢迎砸简历到我的<strong>邮箱</strong></p><div></div><strong>@bytedance.com</strong><p></p>
+<p>如果你对字节架构前端、错误监控、埋点感兴趣、也直接联系我的<strong>微信</strong></p><div></div><p></p>
+<p><strong>Have A Good Day!!!</strong></p> </div> <section class="giscus mx-auto mt-10 w-full"> <div id="giscus-loading" class="text-skin-neutral-5 text-center py-4">
+Loading comments...
+</div> </section> <script type="module">const i=()=>{const r=document.querySelector(".giscus");if(!r){const e=document.querySelector('script[src="https://giscus.app/client.js"]');e&&e.remove();return}const n=()=>{const e=document.getElementById("giscus-loading");e&&e.remove();const s=document.querySelector('script[src="https://giscus.app/client.js"]');s&&s.remove();const t=document.createElement("script");t.src="https://giscus.app/client.js",t.setAttribute("data-repo","cjinhuo/cjinhuo.github.io"),t.setAttribute("data-repo-id","MDEwOlJlcG9zaXRvcnk2OTk2NDgwNw=="),t.setAttribute("data-category","General"),t.setAttribute("data-category-id","DIC_kwDOBCuUB84Cx9F9"),t.setAttribute("data-mapping","title"),t.setAttribute("data-strict","0"),t.setAttribute("data-reactions-enabled","1"),t.setAttribute("data-emit-metadata","0"),t.setAttribute("data-input-position","top"),t.setAttribute("data-theme","preferred_color_scheme"),t.setAttribute("data-lang","zh-CN"),t.setAttribute("data-loading","lazy"),t.crossOrigin="anonymous",t.async=!0,document.body.appendChild(t)};if("IntersectionObserver"in window){const e=new IntersectionObserver(s=>{s.forEach(t=>{t.isIntersecting&&(n(),e.disconnect())})},{rootMargin:"200px"});e.observe(r)}else n()};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",i):i();document.addEventListener("astro:page-load",i);document.addEventListener("astro:after-swap",i);</script> </article> </main> <footer class="border-t border-skin-card-border"> <div class="max-w-5xl mx-auto px-6 md:px-12 py-8 flex justify-between items-center"> <span class="text-skin-neutral-6 font-mono text-xs">
+Shanks &copy; 2026 All rights reserved.
+</span> <div class="flex items-center gap-4"> <a href="https://github.com/cjinhuo" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path> <path d="M9 18c-4.51 2-5-2-7-2"></path> </svg> </a> <a href="https://twitter.com" target="_blank" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path> </svg> </a> <a href="mailto:cjinhuo@qq.com" class="text-skin-neutral-6 hover:text-skin-neutral-4 transition-colors"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <rect width="20" height="16" x="2" y="4" rx="2"></rect> <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path> </svg> </a> </div> </div> </footer> </body></html>
