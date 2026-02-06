@@ -10,7 +10,7 @@ description: Git 自动提交工具。当用户需要提交代码变更、commit
 ## 提交流程
 
 1. 执行 `git status` 查看当前变更
-2. 执行 `git add .` 或 `git add <files>` 暂存文件
+2. 执行 `git add .` 暂存文件（如果用户没有特别说明，默认提交所有变更文件）
 3. 根据变更内容自动生成符合规范的 commit message
 4. 执行 `git commit -m "<message>"` 提交
 
