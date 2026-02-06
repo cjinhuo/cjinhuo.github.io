@@ -16,8 +16,8 @@
 		"preinstall": "npx only-allow pnpm"
 	},
 	"engines": {
-		"node": ">=16",
-		"pnpm": ">=7"
+		"node": ">=22",
+		"pnpm": ">=9"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^4.3.13",
