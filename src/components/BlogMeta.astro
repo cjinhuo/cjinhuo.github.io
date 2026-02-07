@@ -6,12 +6,12 @@ import DocumentIcon from '@/assets/icons/DocumentIcon.astro'
 import ClockIcon from '@/assets/icons/ClockIcon.astro'
 
 interface Props {
-  pubDate: string | Date
-  author?: string
-  authorHref?: string
-  wordCount: number
-  readingTime: number
-  class?: string
+	pubDate: string | Date
+	author?: string
+	authorHref?: string
+	wordCount: number
+	readingTime: number
+	class?: string
 }
 
 const { pubDate, author, authorHref, wordCount, readingTime, class: className } = Astro.props

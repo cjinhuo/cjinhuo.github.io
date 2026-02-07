@@ -7,4 +7,3 @@ export const SITE_DESCRIPTION = `Welcome to Shanks' Blog!`
 // resume
 export const RESUME_TITLE = '陈金伙的简历'
 export const RESUME_DESCRIPTION = '陈金伙的简历'
-

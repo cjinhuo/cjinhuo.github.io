@@ -11,7 +11,7 @@ export default function Tag({ tags, className = '' }: TagProps) {
 			{tags.map((tag) => (
 				<span
 					key={tag}
-					className="inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono"
+					className='inline-flex items-center px-2 py-1 text-xs font-bold bg-skin-tag-bg text-skin-tag-text font-mono'
 				>
 					{tag}
 				</span>

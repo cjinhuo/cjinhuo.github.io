@@ -5,27 +5,27 @@ import '../styles/global.css'
 import { SITE_TITLE, SITE_DESCRIPTION } from '../config'
 
 export interface Props {
-  title?: string
-  description?: string
-  image?: string
-  author?: string
-  authorHref?: string
-  pubDate?: string
-  updatedDate?: string
-  type?: 'website' | 'article'
-  tags?: string[]
+	title?: string
+	description?: string
+	image?: string
+	author?: string
+	authorHref?: string
+	pubDate?: string
+	updatedDate?: string
+	type?: 'website' | 'article'
+	tags?: string[]
 }
 
-const { 
-  title = SITE_TITLE, 
-  description = SITE_DESCRIPTION, 
-  image = '/placeholder-social.jpg',
-  author = 'Shanks',
-  authorHref = 'https://github.com/cjinhuo',
-  pubDate,
-  updatedDate,
-  type = 'website',
-  tags = []
+const {
+	title = SITE_TITLE,
+	description = SITE_DESCRIPTION,
+	image = '/placeholder-social.jpg',
+	author = 'Shanks',
+	authorHref = 'https://github.com/cjinhuo',
+	pubDate,
+	updatedDate,
+	type = 'website',
+	tags = [],
 } = Astro.props
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
