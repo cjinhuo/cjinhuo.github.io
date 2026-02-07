@@ -62,9 +62,7 @@ pubDate: '2021-12-24'
 
 ### 享受短暂人生（看电影）
 
-<center>
-<img src="./05-movies.webp" height="300" />
-</center>
+![电影](./05-movies.webp)
 
 最享受的事就是健完身回去洗澡后，吃着外卖额外再煎个「🐂肉+简蛋🍳」，一切准备就绪后就可以开始看电影（以下是个人在今年看过且觉得不错的）：
 * 动漫
@@ -102,9 +100,7 @@ pubDate: '2021-12-24'
 
 ### books
 
-<center>
-<img src="./06-books.webp" height="300" />
-</center>
+![书籍](./06-books.webp)
 
 纸质书：
 * 够笑一年的奇葩人体冷知识
@@ -135,9 +131,7 @@ pubDate: '2021-12-24'
 
 ### 吃一堑长一智
 
-<center>
-<img src="./07-lessons.webp" height="300" />
-</center>
+![教训](./07-lessons.webp)
 
 * 如果想持续维护开源项目的话，要是公司没有强制要求，不需要放入公司组下的`Github`
 

@@ -1,5 +1,6 @@
 @import './skin.css';
 @import './tailwind.css';
+@import './prose.css';
 
 * {
   transition: color 0.1s;
