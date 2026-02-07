@@ -10,6 +10,7 @@ const posts = (await getSortedBlogPosts()).slice(0, 3)
     <BlogCard
       slug={post.id}
       frontmatter={post.data}
+      body={post.body}
     />
   ))}
 </section>

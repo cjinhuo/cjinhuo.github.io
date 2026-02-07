@@ -15,4 +15,5 @@ export interface BlogType {
 export interface BlogCardProps {
 	slug: string
 	frontmatter: BlogType
+	body?: string
 }

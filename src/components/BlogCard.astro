@@ -4,10 +4,16 @@ import type { BlogCardProps } from '@/types'
 import Tag from './Tag.astro'
 import CalendarIcon from '@/assets/icons/CalendarIcon.astro'
 import UserIcon from '@/assets/icons/UserIcon.astro'
+import DocumentIcon from '@/assets/icons/DocumentIcon.astro'
+import ClockIcon from '@/assets/icons/ClockIcon.astro'
+import { getWordCount } from '@/shared/utils'
 
-const { slug, frontmatter } = Astro.props as BlogCardProps
+const { slug, frontmatter, body } = Astro.props as BlogCardProps
 const { pubDate, title, description, author, authorHref, tags } = frontmatter
 const url = `/blogs/${slug}`
+
+const wordCount = getWordCount(body ?? '')
+const readingTime = Math.ceil(wordCount / 400)
 ---
 
 <div class='w-full h-auto mb-6 p-6 bg-skin-card-bg border border-skin-card-border border-l-2 hover:border-l-skin-primary transition-colors'>
@@ -25,6 +31,18 @@ const url = `/blogs/${slug}`
         <a class='font-mono text-xs text-skin-neutral-5 hover:underline' href={authorHref} target='_blank'>
           {author}
         </a>
+      </div>
+    )}
+    {wordCount > 0 && (
+      <div class='flex items-center gap-2'>
+        <DocumentIcon class='text-skin-neutral-6' />
+        <span class='font-mono text-xs text-skin-neutral-6'>{wordCount.toLocaleString()} 字</span>
+      </div>
+    )}
+    {readingTime > 0 && (
+      <div class='flex items-center gap-2'>
+        <ClockIcon class='text-skin-neutral-6' />
+        <span class='font-mono text-xs text-skin-neutral-6'>约 {readingTime} min</span>
       </div>
     )}
   </div>

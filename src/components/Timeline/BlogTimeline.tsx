@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import BlogCard from '@/components/BlogCard'
+import type { BlogType } from '@/types'
 import FilterTags from './FilterTags'
 import YearDropdown from './YearDropdown'
 
-interface SerializedPost {
+interface SerializedPost extends BlogType {
 	id: string
-	title: string
-	description: string
-	pubDate: string
-	tags?: string[]
-	author?: string
-	authorHref?: string
+	body?: string
 }
 
 interface SerializedMonth {
@@ -33,6 +29,7 @@ interface BlogTimelineProps {
 export default function BlogTimeline({ initialData, allTags }: BlogTimelineProps) {
 	const [selectedTag, setSelectedTag] = useState('All')
 	const [selectedYear, setSelectedYear] = useState<number | null>(null)
+	const [hoveredPost, setHoveredPost] = useState<{ year: number; month: number } | null>(null)
 	const timelineRef = useRef<HTMLDivElement>(null)
 	const yearRefs = useRef<Map<number, HTMLDivElement>>(new Map())
 
@@ -121,69 +118,84 @@ export default function BlogTimeline({ initialData, allTags }: BlogTimelineProps
 										<div className='flex items-center'>
 											<div className='w-10 flex justify-center shrink-0'>
 												<div
-													className={`w-3 h-3 rounded-full ${isCurrentYear ? 'bg-skin-primary' : 'bg-skin-neutral-5'}`}
+													className={`w-3 h-3 rounded-full transition-colors ${
+														hoveredPost?.year === yearData.year || isCurrentYear
+															? 'bg-skin-primary'
+															: 'bg-skin-neutral-5'
+													}`}
 												/>
 											</div>
 											<h2
-												className={`text-2xl font-bold ${
-													isCurrentYear ? 'text-skin-neutral-1' : 'text-skin-neutral-4'
+												className={`text-2xl font-bold transition-colors ${
+													hoveredPost?.year === yearData.year || isCurrentYear
+														? 'text-skin-neutral-1'
+														: 'text-skin-neutral-4'
 												}`}
 											>
 												{yearData.year}
 											</h2>
 											<span
-												className={`font-mono text-xs ml-4 ${
-													isCurrentYear ? 'text-skin-neutral-5' : 'text-skin-neutral-6'
+												className={`font-mono text-xs ml-4 transition-colors ${
+													hoveredPost?.year === yearData.year || isCurrentYear
+														? 'text-skin-neutral-5'
+														: 'text-skin-neutral-6'
 												}`}
 											>
 												{yearData.totalPosts} {yearData.totalPosts === 1 ? 'post' : 'posts'}
 											</span>
 										</div>
 
-										{yearData.months.map((monthData) => (
-											<div key={monthData.month}>
-												<div className='flex'>
-													<div className='w-10 flex justify-center shrink-0'>
-														<div className='w-0.5 h-4 bg-skin-card-border' />
+										{yearData.months.map((monthData) => {
+											const isMonthHovered =
+												hoveredPost?.year === yearData.year && hoveredPost?.month === monthData.month
+											return (
+												<div key={monthData.month}>
+													<div className='flex'>
+														<div className='w-10 flex justify-center shrink-0'>
+															<div className='w-0.5 h-4 bg-skin-card-border' />
+														</div>
 													</div>
-												</div>
-												<div className='flex items-center'>
-													<div className='w-10 flex justify-center shrink-0'>
-														<div
-															className={`w-2 h-2 rounded-full ${
-																isCurrentYear ? 'bg-skin-primary' : 'bg-skin-neutral-5'
-															}`}
-														/>
-													</div>
-													<h3
-														className={`font-mono text-sm font-semibold ${
-															isCurrentYear ? 'text-skin-primary' : 'text-skin-neutral-5'
-														}`}
-													>
-														{monthData.monthName}
-													</h3>
-												</div>
-												<div className='flex'>
-													<div className='w-10 flex justify-center shrink-0'>
-														<div className='w-0.5 h-full bg-skin-card-border' />
-													</div>
-													<div className='flex-1 py-4 space-y-6'>
-														{monthData.posts.map((post) => (
-															<BlogCard
-																key={post.id}
-																id={post.id}
-																title={post.title}
-																description={post.description}
-																author={post.author}
-																authorHref={post.authorHref}
-																pubDate={post.pubDate}
-																tags={post.tags}
+													<div className='flex items-center'>
+														<div className='w-10 flex justify-center shrink-0'>
+															<div
+																className={`w-2 h-2 rounded-full transition-colors ${
+																	isMonthHovered ? 'bg-skin-primary' : 'bg-skin-neutral-5'
+																}`}
 															/>
-														))}
+														</div>
+														<h3
+															className={`font-mono text-sm font-semibold transition-colors ${
+																isMonthHovered ? 'text-skin-primary' : 'text-skin-neutral-5'
+															}`}
+														>
+															{monthData.monthName}
+														</h3>
+													</div>
+													<div className='flex'>
+														<div className='w-10 flex justify-center shrink-0'>
+															<div className='w-0.5 h-full bg-skin-card-border' />
+														</div>
+														<div className='flex-1 py-4 space-y-6'>
+															{monthData.posts.map((post) => (
+																<BlogCard
+																	key={post.id}
+																	id={post.id}
+																	title={post.title}
+																	description={post.description}
+																	author={post.author}
+																	authorHref={post.authorHref}
+																	pubDate={post.pubDate}
+																	tags={post.tags}
+																	body={post.body}
+																	onPointerEnter={() => setHoveredPost({ year: yearData.year, month: monthData.month })}
+																	onPointerLeave={() => setHoveredPost(null)}
+																/>
+															))}
+														</div>
 													</div>
 												</div>
-											</div>
-										))}
+											)
+										})}
 									</div>
 								</div>
 							)
