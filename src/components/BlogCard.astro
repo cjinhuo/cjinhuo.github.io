@@ -1,11 +1,7 @@
 ---
-import dayjs from 'dayjs'
 import type { BlogCardProps } from '@/types'
 import Tag from './Tag.astro'
-import CalendarIcon from '@/assets/icons/CalendarIcon.astro'
-import UserIcon from '@/assets/icons/UserIcon.astro'
-import DocumentIcon from '@/assets/icons/DocumentIcon.astro'
-import ClockIcon from '@/assets/icons/ClockIcon.astro'
+import BlogMeta from './BlogMeta.astro'
 import { getWordCount } from '@/shared/utils'
 
 const { slug, frontmatter, body } = Astro.props as BlogCardProps
@@ -20,32 +16,14 @@ const readingTime = Math.ceil(wordCount / 400)
   <a href={url} class='text-lg text-skin-neutral-1 font-semibold block mb-4 hover:underline'>
     {title}
   </a>
-  <div class='flex items-center flex-wrap gap-x-4 mb-4'>
-    <div class='flex items-center gap-2'>
-      <CalendarIcon class='text-skin-neutral-6' />
-      <time class='font-mono text-xs text-skin-neutral-6'>{dayjs(pubDate).format('YYYY-MM-DD')}</time>
-    </div>
-    {author && (
-      <div class='flex items-center gap-2'>
-        <UserIcon class='text-skin-neutral-6' />
-        <a class='font-mono text-xs text-skin-neutral-5 hover:underline' href={authorHref} target='_blank'>
-          {author}
-        </a>
-      </div>
-    )}
-    {wordCount > 0 && (
-      <div class='flex items-center gap-2'>
-        <DocumentIcon class='text-skin-neutral-6' />
-        <span class='font-mono text-xs text-skin-neutral-6'>{wordCount.toLocaleString()} 字</span>
-      </div>
-    )}
-    {readingTime > 0 && (
-      <div class='flex items-center gap-2'>
-        <ClockIcon class='text-skin-neutral-6' />
-        <span class='font-mono text-xs text-skin-neutral-6'>约 {readingTime} min</span>
-      </div>
-    )}
-  </div>
+  <BlogMeta
+    pubDate={pubDate}
+    author={author}
+    authorHref={authorHref}
+    wordCount={wordCount}
+    readingTime={readingTime}
+    class='gap-x-4 mb-4'
+  />
   <Tag tags={tags} className='mb-4' />
   <p class='text-xs text-skin-neutral-4 font-mono leading-relaxed'>{description}</p>
 </div>

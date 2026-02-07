@@ -4,10 +4,7 @@ import Header from '@/components/Header/Header.astro'
 import Footer from '@/components/Footer.astro'
 import Comments from '@/components/Comments.astro'
 import Tag from '@/components/Tag.astro'
-import CalendarIcon from '@/assets/icons/CalendarIcon.astro'
-import UserIcon from '@/assets/icons/UserIcon.astro'
-import DocumentIcon from '@/assets/icons/DocumentIcon.astro'
-import ClockIcon from '@/assets/icons/ClockIcon.astro'
+import BlogMeta from '@/components/BlogMeta.astro'
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 import { getWordCount } from '@/shared/utils'
 import { Image } from 'astro:assets'
@@ -67,32 +64,14 @@ const readingTime = Math.ceil(wordCount / 400)
       )}
       <article class='max-w-4xl mx-auto px-6 md:px-12 py-12'>
         <h1 class='text-3xl md:text-4xl font-bold text-skin-neutral-1 tracking-tight mb-6'>{title}</h1>
-        <div class='flex flex-wrap items-center gap-x-8 gap-y-2 mb-6'>
-          <div class='flex items-center gap-2'>
-            <CalendarIcon class="text-skin-neutral-6" />
-            <time class='text-skin-neutral-5 font-mono text-xs'>{pubDate}</time>
-          </div>
-          {author && (
-            <div class='flex items-center gap-2'>
-              <UserIcon class="text-skin-neutral-6" />
-              <a href={authorHref} target='_blank' class='text-skin-neutral-5 font-mono text-xs hover:text-skin-primary transition-colors'>
-                {author}
-              </a>
-            </div>
-          )}
-          {wordCount > 0 && (
-            <div class='flex items-center gap-2'>
-              <DocumentIcon class="text-skin-neutral-6" />
-              <span class='text-skin-neutral-5 font-mono text-xs'>{wordCount.toLocaleString()} 字</span>
-            </div>
-          )}
-          {readingTime > 0 && (
-            <div class='flex items-center gap-2'>
-              <ClockIcon class="text-skin-neutral-6" />
-              <span class='text-skin-neutral-5 font-mono text-xs'>约 {readingTime} min</span>
-            </div>
-          )}
-        </div>
+        <BlogMeta
+          pubDate={pubDate}
+          author={author}
+          authorHref={authorHref}
+          wordCount={wordCount}
+          readingTime={readingTime}
+          class='gap-x-8 gap-y-2 mb-6'
+        />
         <Tag tags={tags} className='mb-6' />
         <div class='h-px bg-skin-card-border mb-8'></div>
         {updatedDate && (

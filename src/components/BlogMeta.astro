@@ -1,0 +1,45 @@
+---
+import dayjs from 'dayjs'
+import CalendarIcon from '@/assets/icons/CalendarIcon.astro'
+import UserIcon from '@/assets/icons/UserIcon.astro'
+import DocumentIcon from '@/assets/icons/DocumentIcon.astro'
+import ClockIcon from '@/assets/icons/ClockIcon.astro'
+
+interface Props {
+  pubDate: string | Date
+  author?: string
+  authorHref?: string
+  wordCount: number
+  readingTime: number
+  class?: string
+}
+
+const { pubDate, author, authorHref, wordCount, readingTime, class: className } = Astro.props
+---
+
+<div class:list={['flex flex-wrap items-center', className]}>
+  <div class='flex items-center gap-2'>
+    <CalendarIcon class='text-skin-neutral-6' />
+    <time class='text-skin-neutral-5 font-mono text-xs'>{dayjs(pubDate).format('YYYY-MM-DD')}</time>
+  </div>
+  {author && (
+    <div class='flex items-center gap-2'>
+      <UserIcon class='text-skin-neutral-6' />
+      <a href={authorHref} target='_blank' class='text-skin-neutral-5 font-mono text-xs hover:text-skin-primary hover:underline transition-colors'>
+        {author}
+      </a>
+    </div>
+  )}
+  {wordCount > 0 && (
+    <div class='flex items-center gap-2'>
+      <DocumentIcon class='text-skin-neutral-6' />
+      <span class='text-skin-neutral-5 font-mono text-xs'>{wordCount.toLocaleString()} 字</span>
+    </div>
+  )}
+  {readingTime > 0 && (
+    <div class='flex items-center gap-2'>
+      <ClockIcon class='text-skin-neutral-6' />
+      <span class='text-skin-neutral-5 font-mono text-xs'>约 {readingTime} min</span>
+    </div>
+  )}
+</div>
