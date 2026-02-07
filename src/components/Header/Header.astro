@@ -29,11 +29,9 @@ import { ClientRouter } from 'astro:transitions'
     <span class='w-5 h-5 bg-skin-primary'></span>
     <span>SHANKS</span>
   </a>
-  <div class='flex items-center gap-6'>
+  <nav class='flex items-center gap-6'>
     <NavLink pathname={Astro.url.pathname} />
-    <div class='w-5 h-5'>
-      <ToggleTheme client:only='react' />
-    </div>
-  </div>
+    <ToggleTheme client:only='react' />
+  </nav>
   <ClientRouter />
 </header>

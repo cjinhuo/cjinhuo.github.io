@@ -12,12 +12,13 @@ export enum NameTypes {
 interface PropsType extends React.HTMLAttributes<any> {
   name: NameTypes
 }
-export default function IconPark({ name, ...props }: PropsType) {
+export default function IconPark({ name, className, ...props }: PropsType) {
   return (
-    <div style={{ width: '20px', height: '20px' }} {...props}>
+    <div className={`w-5 h-5 flex items-center justify-center ${className || ''}`} {...props}>
       <iconpark-icon
-        style={{ fontSize: '20px', verticalAlign: 'middle', transition: 'color 0.02s' }}
-        name={name}></iconpark-icon>
+        style={{ fontSize: '20px', transition: 'color 0.02s' }}
+        name={name}
+      />
     </div>
   )
 }
