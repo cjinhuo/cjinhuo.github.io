@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
 import CalendarIcon from '@/assets/icons/CalendarIcon'
-import UserIcon from '@/assets/icons/UserIcon'
-import DocumentIcon from '@/assets/icons/DocumentIcon'
 import ClockIcon from '@/assets/icons/ClockIcon'
+import DocumentIcon from '@/assets/icons/DocumentIcon'
+import UserIcon from '@/assets/icons/UserIcon'
 import { getWordCount } from '@/shared/utils'
 
 interface BlogCardProps {
@@ -43,7 +43,7 @@ export default function BlogCard({
 			<a href={url} className='text-lg text-skin-neutral-1 font-semibold block mb-4 hover:underline'>
 				{title}
 			</a>
-			<div className='flex items-center flex-wrap gap-x-4 mb-4'>
+			<div className='flex items-center flex-wrap gap-x-2 md:gap-x-4 mb-4'>
 				<div className='flex items-center gap-2'>
 					<CalendarIcon className='text-skin-neutral-6' />
 					<time className='font-mono text-xs text-skin-neutral-6'>{dayjs(pubDate).format('YYYY-MM-DD')}</time>
