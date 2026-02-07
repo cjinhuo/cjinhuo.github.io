@@ -10,19 +10,21 @@ const allTags = getAllTags(posts)
 const timelineData = groupPostsByYearMonth(posts)
 
 const serializedData = timelineData.map((yearData) => ({
-  year: yearData.year,
-  totalPosts: yearData.totalPosts,
-  months: yearData.months.map((monthData) => ({
-    month: monthData.month,
-    monthName: monthData.monthName,
-    posts: monthData.posts.map((post) => ({
-      id: post.id,
-      title: post.data.title,
-      description: post.data.description,
-      pubDate: post.data.pubDate,
-      tags: post.data.tags,
-    })),
-  })),
+	year: yearData.year,
+	totalPosts: yearData.totalPosts,
+	months: yearData.months.map((monthData) => ({
+		month: monthData.month,
+		monthName: monthData.monthName,
+		posts: monthData.posts.map((post) => ({
+			id: post.id,
+			title: post.data.title,
+			description: post.data.description,
+			pubDate: post.data.pubDate,
+			author: post.data.author,
+			authorHref: post.data.authorHref,
+			tags: post.data.tags,
+		})),
+	})),
 }))
 ---
 

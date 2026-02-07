@@ -9,6 +9,8 @@ interface SerializedPost {
 	description: string
 	pubDate: string
 	tags?: string[]
+	author?: string
+	authorHref?: string
 }
 
 interface SerializedMonth {
@@ -119,9 +121,7 @@ export default function BlogTimeline({ initialData, allTags }: BlogTimelineProps
 										<div className='flex items-center'>
 											<div className='w-10 flex justify-center shrink-0'>
 												<div
-													className={`w-3 h-3 rounded-full ${
-														isCurrentYear ? 'bg-skin-primary' : 'bg-skin-neutral-5'
-													}`}
+													className={`w-3 h-3 rounded-full ${isCurrentYear ? 'bg-skin-primary' : 'bg-skin-neutral-5'}`}
 												/>
 											</div>
 											<h2
@@ -174,6 +174,8 @@ export default function BlogTimeline({ initialData, allTags }: BlogTimelineProps
 																id={post.id}
 																title={post.title}
 																description={post.description}
+																author={post.author}
+																authorHref={post.authorHref}
 																pubDate={post.pubDate}
 																tags={post.tags}
 															/>
