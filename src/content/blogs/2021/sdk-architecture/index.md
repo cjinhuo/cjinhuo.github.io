@@ -97,12 +97,12 @@ interface BasePluginType<T extends EventTypes = EventTypes, C extends BaseClient
 这时就会有人说了，如果我的业务比这复杂多了，那这个架构还能撑住吗？是可以的，将上面插件中的3个hooks:`monitor、transform、consumer`分成更多hooks，可以是5个也可以是10个，只要你分的颗粒度足够细，且完全按照这些hooks的对应功能来编写代码，不管你的项目代码有多几十万行，你的代码层次结构都是很清晰的
 #### 举个🌰：监听unhandlerejection的插件
 
-![unhandlerejectionPlugin.png](https://files.catbox.moe/86e8gp.png)
+![unhandlerejectionPlugin.png](./04-unhandlerejection.webp)
 
 
 #### 插件实际在代码中的使用
 
-![browserClient](https://files.catbox.moe/8k4tdh.png)
+![browserClient](./05-browserclient.webp)
 
 #### 在Vue3使用@mitojs/vue
 
@@ -131,7 +131,7 @@ const MitoInstance = init({
 
 ### 浏览器的整体思维导图
 
-![browser-architecture](https://files.catbox.moe/g57hci.png)
+![browser-architecture](./07-browser-architecture.webp)
 
 
 ### 微信小程序的整体思维导图
