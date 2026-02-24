@@ -5,6 +5,7 @@ import Footer from '@/components/Footer.astro'
 import Comments from '@/components/Comments.astro'
 import Tag from '@/components/Tag.astro'
 import BlogMeta from '@/components/BlogMeta.astro'
+import ImagePreview from '@/components/ImagePreview'
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 import { getWordCount } from '@/shared/utils'
 import { Image } from 'astro:assets'
@@ -79,12 +80,13 @@ const readingTime = Math.ceil(wordCount / 400)
             Last updated on <time>{updatedDate}</time>
           </div>
         )}
-        <div class='prose prose-slate dark:prose-invert max-w-none'>
+        <div class='prose prose-slate dark:prose-invert max-w-none blog-content'>
           <Content />
         </div>
         <Comments />
       </article>
     </main>
     <Footer />
+    <ImagePreview client:load containerSelector='body' />
   </body>
 </html>
