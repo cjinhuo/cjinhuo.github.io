@@ -1,0 +1,213 @@
+---
+import BaseHead from '../components/BaseHead.astro'
+import Footer from '@/components/Footer.astro'
+import Header from '@/components/Header/Header.astro'
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <BaseHead />
+    <title>贪吃蛇游戏</title>
+  </head>
+  <body class="bg-skin-background text-skin-neutral-1">
+    <Header />
+    <main class="min-h-screen max-w-5xl mx-auto px-6 md:px-12 py-10">
+      <section class="space-y-5">
+        <h1 class="text-3xl md:text-4xl font-semibold">贪吃蛇</h1>
+        <p class="text-skin-neutral-5">方向键或 WASD 控制，空格开始或重新开始。</p>
+      </section>
+
+      <section class="mt-8 grid gap-6 md:grid-cols-[auto,1fr] items-start">
+        <div class="board-wrap">
+          <canvas id="game" width="400" height="400"></canvas>
+        </div>
+        <div class="panel rounded-lg border border-skin-card-border bg-skin-card-bg p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-skin-neutral-5">当前分数</span>
+            <strong id="score" class="text-xl font-semibold">0</strong>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-skin-neutral-5">最高分</span>
+            <strong id="best" class="text-xl font-semibold">0</strong>
+          </div>
+          <p id="status" class="text-sm text-skin-neutral-5">按空格开始游戏</p>
+          <button
+            id="restart"
+            type="button"
+            class="w-full rounded-md border border-skin-primary text-skin-primary hover:bg-skin-primary hover:text-white transition-colors py-2"
+          >
+            重新开始
+          </button>
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .board-wrap {
+    width: fit-content;
+    border: 1px solid var(--color-card-border);
+    border-radius: 12px;
+    background: var(--color-card-bg);
+    padding: 10px;
+  }
+
+  #game {
+    display: block;
+    border-radius: 8px;
+    background: #0f172a;
+    max-width: 86vw;
+    height: auto;
+  }
+</style>
+
+<script>
+  const GRID_SIZE = 20
+  const TILE_COUNT = 20
+  const INITIAL_SPEED = 120
+  const canvas = document.getElementById('game')
+  const ctx = canvas.getContext('2d')
+  const scoreEl = document.getElementById('score')
+  const bestEl = document.getElementById('best')
+  const statusEl = document.getElementById('status')
+  const restartEl = document.getElementById('restart')
+
+  let snake = [{ x: 10, y: 10 }]
+  let food = { x: 5, y: 5 }
+  let direction = { x: 0, y: 0 }
+  let queuedDirection = { x: 0, y: 0 }
+  let score = 0
+  let best = Number(localStorage.getItem('snake-best') || '0')
+  let timer = null
+  let running = false
+  let speed = INITIAL_SPEED
+
+  bestEl.textContent = String(best)
+
+  const randomCell = () => ({
+    x: Math.floor(Math.random() * TILE_COUNT),
+    y: Math.floor(Math.random() * TILE_COUNT),
+  })
+
+  const spawnFood = () => {
+    let candidate = randomCell()
+    while (snake.some((part) => part.x === candidate.x && part.y === candidate.y)) {
+      candidate = randomCell()
+    }
+    food = candidate
+  }
+
+  const drawCell = (x, y, color) => {
+    ctx.fillStyle = color
+    ctx.fillRect(x * GRID_SIZE + 1, y * GRID_SIZE + 1, GRID_SIZE - 2, GRID_SIZE - 2)
+  }
+
+  const render = () => {
+    ctx.fillStyle = '#0f172a'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    ctx.strokeStyle = '#1e293b'
+    for (let i = 0; i <= TILE_COUNT; i += 1) {
+      const pos = i * GRID_SIZE
+      ctx.beginPath()
+      ctx.moveTo(pos, 0)
+      ctx.lineTo(pos, canvas.height)
+      ctx.stroke()
+      ctx.beginPath()
+      ctx.moveTo(0, pos)
+      ctx.lineTo(canvas.width, pos)
+      ctx.stroke()
+    }
+
+    drawCell(food.x, food.y, '#f43f5e')
+    snake.forEach((part, index) => {
+      drawCell(part.x, part.y, index === 0 ? '#22d3ee' : '#14b8a6')
+    })
+  }
+
+  const endGame = () => {
+    running = false
+    clearInterval(timer)
+    timer = null
+    statusEl.textContent = '游戏结束，按空格或点击重新开始'
+    if (score > best) {
+      best = score
+      bestEl.textContent = String(best)
+      localStorage.setItem('snake-best', String(best))
+    }
+  }
+
+  const tick = () => {
+    direction = queuedDirection
+    const head = snake[0]
+    const next = { x: head.x + direction.x, y: head.y + direction.y }
+
+    if (
+      next.x < 0 ||
+      next.y < 0 ||
+      next.x >= TILE_COUNT ||
+      next.y >= TILE_COUNT ||
+      snake.some((part) => part.x === next.x && part.y === next.y)
+    ) {
+      endGame()
+      render()
+      return
+    }
+
+    snake.unshift(next)
+
+    if (next.x === food.x && next.y === food.y) {
+      score += 1
+      scoreEl.textContent = String(score)
+      spawnFood()
+      if (speed > 70 && score % 4 === 0) {
+        speed -= 6
+        clearInterval(timer)
+        timer = setInterval(tick, speed)
+      }
+    } else {
+      snake.pop()
+    }
+
+    render()
+  }
+
+  const start = () => {
+    snake = [{ x: 10, y: 10 }]
+    direction = { x: 1, y: 0 }
+    queuedDirection = { x: 1, y: 0 }
+    score = 0
+    speed = INITIAL_SPEED
+    scoreEl.textContent = '0'
+    spawnFood()
+    statusEl.textContent = '游戏进行中'
+    running = true
+    clearInterval(timer)
+    timer = setInterval(tick, speed)
+    render()
+  }
+
+  const setDirection = (x, y) => {
+    if (!running) return
+    if (direction.x === -x && direction.y === -y) return
+    queuedDirection = { x, y }
+  }
+
+  document.addEventListener('keydown', (event) => {
+    const key = event.key.toLowerCase()
+    if (key === 'arrowup' || key === 'w') setDirection(0, -1)
+    if (key === 'arrowdown' || key === 's') setDirection(0, 1)
+    if (key === 'arrowleft' || key === 'a') setDirection(-1, 0)
+    if (key === 'arrowright' || key === 'd') setDirection(1, 0)
+    if (key === ' ') {
+      event.preventDefault()
+      if (!running) start()
+    }
+  })
+
+  restartEl.addEventListener('click', start)
+  render()
+</script>

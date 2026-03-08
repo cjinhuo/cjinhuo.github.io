@@ -1,0 +1,56 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _runtime = require("../runtime");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = (0, _runtime.IconWrapper)('orange', true, function (props) {
+  return /*#__PURE__*/_react.default.createElement("svg", {
+    width: props.size,
+    height: props.size,
+    viewBox: "0 0 48 48",
+    fill: "none"
+  }, /*#__PURE__*/_react.default.createElement("path", {
+    d: "M41 25.9999C41 35.9411 35 43.9999 24 43.9999C13 43.9999 7 35.9411 7 25.9999C7 22.3197 8.10446 18.8975 10 16.0465C13.2248 11.1965 17.7391 12.9999 24 12.9999C30.2609 12.9999 34.7752 11.1965 38 16.0465C39.8955 18.8975 41 22.3197 41 25.9999Z",
+    fill: props.colors[1],
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M26 13L29 9H26L24 7L22 9H19L22 13",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("circle", {
+    cx: "18",
+    cy: "20",
+    r: "2",
+    fill: props.colors[2]
+  }), /*#__PURE__*/_react.default.createElement("circle", {
+    cx: "15",
+    cy: "27",
+    r: "2",
+    fill: props.colors[2]
+  }), /*#__PURE__*/_react.default.createElement("circle", {
+    cx: "21",
+    cy: "25",
+    r: "2",
+    fill: props.colors[2]
+  }), /*#__PURE__*/_react.default.createElement("circle", {
+    cx: "18",
+    cy: "32",
+    r: "2",
+    fill: props.colors[2]
+  }));
+});
+
+exports.default = _default;

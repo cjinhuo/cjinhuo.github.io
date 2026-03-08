@@ -1,0 +1,44 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _runtime = require("../runtime");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = (0, _runtime.IconWrapper)('future-build-two', false, function (props) {
+  return /*#__PURE__*/_react.default.createElement("svg", {
+    width: props.size,
+    height: props.size,
+    viewBox: "0 0 48 48",
+    fill: "none"
+  }, /*#__PURE__*/_react.default.createElement("path", {
+    d: "M4 44H44",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("ellipse", {
+    cx: "24.5",
+    cy: "7",
+    rx: "13.5",
+    ry: "3",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M16 9C16 9 20.1593 17.8828 21 24C22.0687 31.7763 20 44 20 44",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M32.2266 9C32.2266 9 28.0673 17.8828 27.2266 24C26.1578 31.7763 28.0006 44 28.0006 44",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth
+  }));
+});
+
+exports.default = _default;

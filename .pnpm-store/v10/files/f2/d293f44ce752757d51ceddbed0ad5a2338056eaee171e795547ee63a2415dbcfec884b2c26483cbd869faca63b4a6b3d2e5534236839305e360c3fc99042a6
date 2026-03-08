@@ -1,0 +1,73 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _runtime = require("../runtime");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = (0, _runtime.IconWrapper)('gate', false, function (props) {
+  return /*#__PURE__*/_react.default.createElement("svg", {
+    width: props.size,
+    height: props.size,
+    viewBox: "0 0 48 48",
+    fill: "none"
+  }, /*#__PURE__*/_react.default.createElement("path", {
+    d: "M13 10V35",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M35 10V35",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M8 18L40 18",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M24 10V18",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M39 10H9.00001L5 4C5 4 16.0708 5 24 5C31.9292 5 43 4 43 4L39 10Z",
+    fill: props.colors[1],
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("rect", {
+    x: "10",
+    y: "35",
+    width: "6",
+    height: "9",
+    fill: props.colors[1],
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("rect", {
+    x: "32",
+    y: "35",
+    width: "6",
+    height: "9",
+    fill: props.colors[1],
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }));
+});
+
+exports.default = _default;

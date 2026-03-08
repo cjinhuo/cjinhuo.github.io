@@ -1,0 +1,53 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _runtime = require("../runtime");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = (0, _runtime.IconWrapper)('fingerprint', true, function (props) {
+  return /*#__PURE__*/_react.default.createElement("svg", {
+    width: props.size,
+    height: props.size,
+    viewBox: "0 0 48 48",
+    fill: "none"
+  }, /*#__PURE__*/_react.default.createElement("path", {
+    d: "M18 43V22C18 18.6863 20.6863 16 24 16C27.3137 16 30 18.6863 30 22V43",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M12 40V22C12 15.3726 17.3726 10 24 10C30.6274 10 36 15.3726 36 22V40",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M6 35V22C6 12.0589 14.0589 4 24 4C33.9411 4 42 12.0589 42 22V35",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M24 44V31",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/_react.default.createElement("path", {
+    d: "M24 24.625V21.875",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }));
+});
+
+exports.default = _default;

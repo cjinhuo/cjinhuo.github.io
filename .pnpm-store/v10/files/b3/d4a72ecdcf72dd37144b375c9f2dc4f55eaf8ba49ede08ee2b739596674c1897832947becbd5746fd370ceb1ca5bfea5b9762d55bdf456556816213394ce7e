@@ -1,0 +1,34 @@
+import React from 'react';
+import { IconWrapper } from '../runtime';
+export default IconWrapper('menu-fold', true, function (props) {
+  return /*#__PURE__*/React.createElement("svg", {
+    width: props.size,
+    height: props.size,
+    viewBox: "0 0 48 48",
+    fill: "none"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M8 11H40",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M8 24H40",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M8 37H40",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M13.6568 29.6568L8 23.9999L13.6568 18.343",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }));
+});

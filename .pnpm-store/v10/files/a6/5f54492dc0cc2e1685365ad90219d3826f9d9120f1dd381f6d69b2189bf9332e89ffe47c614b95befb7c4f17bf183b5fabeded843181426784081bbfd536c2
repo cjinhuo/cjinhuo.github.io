@@ -1,0 +1,49 @@
+import React from 'react';
+import { IconWrapper } from '../runtime';
+export default IconWrapper('user-positioning', true, function (props) {
+  return /*#__PURE__*/React.createElement("svg", {
+    width: props.size,
+    height: props.size,
+    viewBox: "0 0 48 48",
+    fill: "none"
+  }, /*#__PURE__*/React.createElement("circle", {
+    cx: "24",
+    cy: "16",
+    r: "6",
+    fill: props.colors[1],
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M36 36C36 29.3726 30.6274 24 24 24C17.3726 24 12 29.3726 12 36",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M36 4H44V12",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M12 4H4V12",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M36 44H44V36",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M12 44H4V36",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }));
+});

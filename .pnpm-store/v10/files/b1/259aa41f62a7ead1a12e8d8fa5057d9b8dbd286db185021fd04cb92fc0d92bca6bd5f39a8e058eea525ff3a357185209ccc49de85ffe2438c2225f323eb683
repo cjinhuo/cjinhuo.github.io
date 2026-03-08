@@ -1,0 +1,51 @@
+import React from 'react';
+import { IconWrapper } from '../runtime';
+export default IconWrapper('weightlifting', false, function (props) {
+  return /*#__PURE__*/React.createElement("svg", {
+    width: props.size,
+    height: props.size,
+    viewBox: "0 0 48 48",
+    fill: "none"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M24 27C26.7614 27 29 24.7614 29 22C29 19.2386 26.7614 17 24 17C21.2386 17 19 19.2386 19 22C19 24.7614 21.2386 27 24 27Z",
+    fill: props.colors[1],
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeMiterlimit: "2"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M4 9H44",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeMiterlimit: "2",
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M4 4V14",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeMiterlimit: "2",
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M44 4V14",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeMiterlimit: "2",
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M11 9V26.1L24 34L37 26V9",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeMiterlimit: "2",
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M24 34V44",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeMiterlimit: "2",
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }));
+});

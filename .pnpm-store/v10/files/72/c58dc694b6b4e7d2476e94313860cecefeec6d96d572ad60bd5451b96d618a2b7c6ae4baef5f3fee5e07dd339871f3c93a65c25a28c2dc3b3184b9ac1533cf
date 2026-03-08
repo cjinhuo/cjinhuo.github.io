@@ -1,0 +1,22 @@
+import React from 'react';
+import { IconWrapper } from '../runtime';
+export default IconWrapper('triangular-pyramid', false, function (props) {
+  return /*#__PURE__*/React.createElement("svg", {
+    width: props.size,
+    height: props.size,
+    viewBox: "0 0 48 48",
+    fill: "none"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M24 44L42 35L24 4L6 35L24 44Z",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M24 44V4",
+    stroke: props.colors[0],
+    strokeWidth: props.strokeWidth,
+    strokeLinecap: props.strokeLinecap,
+    strokeLinejoin: props.strokeLinejoin
+  }));
+});
