@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config'
+import { defineConfig, fontProviders } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
@@ -10,6 +10,13 @@ import react from '@astrojs/react'
 // https://astro.build/config
 export default defineConfig({
   site: 'https://cjinhuo.netlify.app/',
+  fonts: [
+    {
+      name: 'Roboto',
+      cssVariable: '--font-roboto',
+      provider: fontProviders.fontsource(),
+    },
+  ],
   syntaxHighlight: 'prism',
   markdown: {
     remarkPlugins: [remarkDirective, remarkContainer]

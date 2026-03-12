@@ -11,7 +11,7 @@ html,body{
   min-height: 100vh;
 }
 body {
-  font-family: 'Roboto Variable', sans-serif;
+  font-family: var(--font-roboto), sans-serif;
   margin: auto;
   padding: 20px;
   width: 100%;
