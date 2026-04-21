@@ -27,7 +27,7 @@
 		"@fontsource-variable/roboto": "^5.2.9",
 		"@icon-park/react": "^1.4.2",
 		"@tailwindcss/vite": "^4.1.18",
-		"astro": "^6.0.3",
+		"astro": "^6.1.6",
 		"cz-conventional-changelog": "^3.3.0",
 		"dayjs": "^1.11.19",
 		"github-markdown-css": "^5.9.0",
