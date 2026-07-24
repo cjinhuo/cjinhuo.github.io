@@ -25,6 +25,10 @@ html {
   --color-tag-bg: #E2E8F0;
   --color-tag-text: #334155;
   --color-status-dot: #22C55E;
+
+  /* market semantic (gain/loss) — CN convention: up=red, down=green */
+  --color-market-up: #EF4444;
+  --color-market-down: #22C55E;
 }
 
 
@@ -55,6 +59,10 @@ html {
   --color-tag-bg: #1A1A1A;
   --color-tag-text: #BFFF00;
   --color-status-dot: #22C55E;
+
+  /* market semantic (gain/loss) — CN convention: up=red, down=green */
+  --color-market-up: #EF4444;
+  --color-market-down: #22C55E;
 }
 
 ::selection {

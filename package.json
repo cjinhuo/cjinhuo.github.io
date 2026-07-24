@@ -20,22 +20,25 @@
 		"pnpm": ">=9"
 	},
 	"dependencies": {
-		"@astrojs/mdx": "^5.0.0",
-		"@astrojs/react": "^5.0.0",
-		"@astrojs/rss": "^4.0.17",
-		"@astrojs/sitemap": "^3.7.1",
+		"@astrojs/markdown-remark": "^7.2.0",
+		"@astrojs/mdx": "^7.0.0",
+		"@astrojs/react": "^6.0.0",
+		"@astrojs/rss": "^4.0.18",
+		"@astrojs/sitemap": "^3.7.3",
 		"@fontsource-variable/roboto": "^5.2.9",
 		"@icon-park/react": "^1.4.2",
 		"@tailwindcss/vite": "^4.1.18",
-		"astro": "^6.0.3",
+		"astro": "^7.0.0",
 		"cz-conventional-changelog": "^3.3.0",
 		"dayjs": "^1.11.19",
 		"github-markdown-css": "^5.9.0",
 		"react": "^19.2.4",
 		"react-dom": "^19.2.4",
 		"remark-directive": "^4.0.0",
+		"sharp": "^0.35.2",
 		"tailwindcss": "^4.1.18",
-		"typed.js": "^3.0.0"
+		"typed.js": "^3.0.0",
+		"unist-util-visit": "^5.1.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.14",

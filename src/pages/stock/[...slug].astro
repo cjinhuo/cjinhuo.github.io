@@ -1,0 +1,137 @@
+---
+import BaseHead from '@/components/BaseHead.astro'
+import Header from '@/components/Header/Header.astro'
+import Footer from '@/components/Footer.astro'
+import ScrollProgress from '@/components/ScrollProgress'
+import { render } from 'astro:content'
+import { getSortedStockPosts, getAdjacentStockPosts, type StockEntry } from '@/shared/stock'
+import { getWordCount } from '@/shared/utils'
+import dayjs from 'dayjs'
+import 'github-markdown-css'
+
+export async function getStaticPaths() {
+	const posts = await getSortedStockPosts()
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post, posts },
+	}))
+}
+
+type Props = { post: StockEntry; posts: StockEntry[] }
+
+const { post, posts } = Astro.props as Props
+const { Content } = await render(post)
+const { title, description, pubDate, tags, trade } = post.data
+
+const wordCount = getWordCount(post.body ?? '')
+const readingTime = Math.ceil(wordCount / 400)
+const { prev, next } = getAdjacentStockPosts(posts, post.id)
+
+const isPositive = (value: string) => !value.trim().startsWith('-')
+const showTradeCard = trade && (trade.buyPrice || trade.sellPrice || trade.changePercent)
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      pubDate={pubDate}
+      type="article"
+      tags={tags}
+    />
+  </head>
+  <body class="bg-skin-background">
+    <Header />
+    <main class="max-w-3xl mx-auto px-6 md:px-12 py-12 min-h-screen">
+      <a
+        href="/stock"
+        class="inline-flex items-center gap-2 font-mono text-sm text-skin-neutral-5 hover:text-skin-primary transition-colors"
+      >
+        <span aria-hidden="true">&larr;</span><span>返回列表</span>
+      </a>
+
+      <header class="mt-8">
+        <h1
+          class="text-3xl md:text-4xl font-bold text-skin-neutral-1"
+          style="text-wrap:balance; word-break:keep-all; overflow-wrap:break-word; line-height:1.25;"
+        >
+          {title}
+        </h1>
+        <p class="mt-4 font-mono text-xs md:text-sm text-skin-neutral-5 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span>{dayjs(pubDate).format('YYYY.MM.DD')}</span>
+          {readingTime > 0 && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>{readingTime} min read</span>
+            </>
+          )}
+          {trade?.symbol && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span class="text-skin-neutral-4">关联标的 <span class="text-skin-primary">{trade.symbol}</span></span>
+            </>
+          )}
+        </p>
+        {tags && tags.length > 0 && (
+          <div class="mt-4 flex flex-nowrap overflow-x-auto no-scrollbar gap-2">
+            {tags.map((tag) => (
+              <span class="shrink-0 inline-flex items-center h-6 px-2 text-xs whitespace-nowrap rounded-sm bg-skin-tag-bg text-skin-tag-text font-mono">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+        <div class="h-px bg-skin-card-border mt-8"></div>
+      </header>
+
+      {showTradeCard && (
+        <section class="mt-8 p-5 bg-skin-card-bg border border-skin-card-border border-l-2">
+          <p class="font-mono text-xs text-skin-neutral-5 uppercase tracking-widest">本次交易数据</p>
+          <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4">
+            {trade?.buyPrice && (
+              <div class="min-w-0">
+                <p class="font-mono text-xs text-skin-neutral-4 truncate">买入均价</p>
+                <p class="mt-1 font-mono text-2xl font-semibold text-skin-neutral-1 whitespace-nowrap">{trade.buyPrice}</p>
+              </div>
+            )}
+            {trade?.sellPrice && (
+              <div class="min-w-0 sm:border-l border-skin-card-border sm:pl-4">
+                <p class="font-mono text-xs text-skin-neutral-4 truncate">清仓均价</p>
+                <p class="mt-1 font-mono text-2xl font-semibold text-skin-neutral-1 whitespace-nowrap">{trade.sellPrice}</p>
+              </div>
+            )}
+            {trade?.changePercent && (
+              <div class="min-w-0 sm:border-l border-skin-card-border sm:pl-4">
+                <p class="font-mono text-xs text-skin-neutral-4 truncate">本次盈亏</p>
+                <p class={`mt-1 font-mono text-2xl font-semibold whitespace-nowrap ${isPositive(trade.changePercent) ? 'text-skin-market-up' : 'text-skin-market-down'}`}>
+                  {trade.changePercent}
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      <article class="mt-10 prose prose-slate dark:prose-invert max-w-none blog-content">
+        <Content />
+      </article>
+
+      <div class="h-px bg-skin-card-border mt-12"></div>
+      <nav class="mt-6 flex items-center justify-between gap-4 font-mono text-sm">
+        {prev ? (
+          <a href={`/stock/${prev.id}`} class="min-w-0 text-skin-neutral-4 hover:text-skin-primary transition-colors truncate">
+            &larr; 上一篇：{prev.data.title}
+          </a>
+        ) : <span></span>}
+        {next ? (
+          <a href={`/stock/${next.id}`} class="min-w-0 text-right text-skin-neutral-4 hover:text-skin-primary transition-colors truncate">
+            下一篇：{next.data.title} &rarr;
+          </a>
+        ) : <span></span>}
+      </nav>
+    </main>
+    <Footer />
+    <ScrollProgress client:load />
+  </body>
+</html>

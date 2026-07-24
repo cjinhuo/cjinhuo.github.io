@@ -1,5 +1,5 @@
 {
-  "version": "2.7",
+  "version": "2.14",
   "children": [
     {
       "type": "frame",
@@ -17,13 +17,11 @@
           "name": "Navigation",
           "width": "fill_container",
           "height": 64,
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "padding": [
             0,
             48
@@ -77,23 +75,23 @@
                   "fontWeight": "500"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "IElYI",
                   "name": "githubIcon",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "github",
-                  "iconFontFamily": "lucide",
+                  "icon": "github",
+                  "library": "lucide",
                   "fill": "#666666"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "aIumn",
                   "name": "sunIcon",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "sun",
-                  "iconFontFamily": "lucide",
+                  "icon": "sun",
+                  "library": "lucide",
                   "fill": "#666666"
                 }
               ]
@@ -105,13 +103,11 @@
           "id": "zAsUR",
           "name": "Hero Section",
           "width": "fill_container",
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "gap": 64,
           "padding": [
             80,
@@ -236,13 +232,11 @@
               "name": "Post Card 1",
               "width": "fill_container",
               "fill": "#0A0A0A",
-              "stroke": {
-                "align": "inside",
-                "thickness": {
-                  "left": 2
-                },
-                "fill": "#BFFF00"
+              "stroke": "#BFFF00",
+              "strokeWidth": {
+                "left": 2
               },
+              "strokeAlignment": "inner",
               "layout": "vertical",
               "gap": 16,
               "padding": 24,
@@ -403,13 +397,11 @@
               "name": "Post Card 2",
               "width": "fill_container",
               "fill": "#0A0A0A",
-              "stroke": {
-                "align": "inside",
-                "thickness": {
-                  "left": 2
-                },
-                "fill": "#0F0F0F"
+              "stroke": "#0F0F0F",
+              "strokeWidth": {
+                "left": 2
               },
+              "strokeAlignment": "inner",
               "gap": 24,
               "padding": 24,
               "children": [
@@ -447,13 +439,13 @@
                           "alignItems": "center",
                           "children": [
                             {
-                              "type": "icon_font",
+                              "type": "icon",
                               "id": "X2uBM",
                               "name": "metaDateIcon",
                               "width": 14,
                               "height": 14,
-                              "iconFontName": "calendar",
-                              "iconFontFamily": "lucide",
+                              "icon": "calendar",
+                              "library": "lucide",
                               "fill": "#404040"
                             },
                             {
@@ -476,13 +468,13 @@
                           "alignItems": "center",
                           "children": [
                             {
-                              "type": "icon_font",
+                              "type": "icon",
                               "id": "6K5KE",
                               "name": "metaAuthorIcon",
                               "width": 14,
                               "height": 14,
-                              "iconFontName": "user",
-                              "iconFontFamily": "lucide",
+                              "icon": "user",
+                              "library": "lucide",
                               "fill": "#404040"
                             },
                             {
@@ -505,13 +497,13 @@
                           "alignItems": "center",
                           "children": [
                             {
-                              "type": "icon_font",
+                              "type": "icon",
                               "id": "DqFAq",
                               "name": "metaWordsIcon",
                               "width": 14,
                               "height": 14,
-                              "iconFontName": "file-text",
-                              "iconFontFamily": "lucide",
+                              "icon": "file-text",
+                              "library": "lucide",
                               "fill": "#404040"
                             },
                             {
@@ -534,13 +526,13 @@
                           "alignItems": "center",
                           "children": [
                             {
-                              "type": "icon_font",
+                              "type": "icon",
                               "id": "KLct2",
                               "name": "metaTimeIcon",
                               "width": 14,
                               "height": 14,
-                              "iconFontName": "timer",
-                              "iconFontFamily": "lucide",
+                              "icon": "timer",
+                              "library": "lucide",
                               "fill": "#404040"
                             },
                             {
@@ -677,7 +669,7 @@
                   "fill": {
                     "type": "image",
                     "enabled": true,
-                    "url": "./images/generated-1770262111951.png",
+                    "url": "images/generated-1770262111951.png",
                     "mode": "fill"
                   },
                   "cornerRadius": 8
@@ -702,13 +694,13 @@
                   "fontWeight": "500"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "DQ1fY",
                   "name": "viewAllArrow",
                   "width": 14,
                   "height": 14,
-                  "iconFontName": "arrow-right",
-                  "iconFontFamily": "lucide",
+                  "icon": "arrow-right",
+                  "library": "lucide",
                   "fill": "#BFFF00"
                 }
               ]
@@ -720,13 +712,11 @@
           "id": "Dw4GG",
           "name": "Footer",
           "width": "fill_container",
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "top": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "top": 1
           },
+          "strokeAlignment": "inner",
           "layout": "vertical",
           "gap": 24,
           "padding": [
@@ -760,33 +750,33 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "pHaJS",
                       "name": "footerGithub",
                       "width": 16,
                       "height": 16,
-                      "iconFontName": "github",
-                      "iconFontFamily": "lucide",
+                      "icon": "github",
+                      "library": "lucide",
                       "fill": "#404040"
                     },
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "FqWdz",
                       "name": "footerTwitter",
                       "width": 16,
                       "height": 16,
-                      "iconFontName": "twitter",
-                      "iconFontFamily": "lucide",
+                      "icon": "twitter",
+                      "library": "lucide",
                       "fill": "#404040"
                     },
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "02Oly",
                       "name": "footerMail",
                       "width": 16,
                       "height": 16,
-                      "iconFontName": "mail",
-                      "iconFontFamily": "lucide",
+                      "icon": "mail",
+                      "library": "lucide",
                       "fill": "#404040"
                     }
                   ]
@@ -813,13 +803,11 @@
           "name": "Navigation",
           "width": "fill_container",
           "height": 64,
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "padding": [
             0,
             48
@@ -871,13 +859,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "zebWJ",
                       "name": "backArrow",
                       "width": 14,
                       "height": 14,
-                      "iconFontName": "arrow-left",
-                      "iconFontFamily": "lucide",
+                      "icon": "arrow-left",
+                      "library": "lucide",
                       "fill": "#666666"
                     },
                     {
@@ -903,23 +891,23 @@
                   "fontWeight": "500"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "zZvfg",
                   "name": "githubA",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "github",
-                  "iconFontFamily": "lucide",
+                  "icon": "github",
+                  "library": "lucide",
                   "fill": "#666666"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "zmFP3",
                   "name": "sunA",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "sun",
-                  "iconFontFamily": "lucide",
+                  "icon": "sun",
+                  "library": "lucide",
                   "fill": "#666666"
                 }
               ]
@@ -999,13 +987,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "u8RjD",
                       "name": "metaDateIcon",
                       "width": 14,
                       "height": 14,
-                      "iconFontName": "calendar",
-                      "iconFontFamily": "lucide",
+                      "icon": "calendar",
+                      "library": "lucide",
                       "fill": "#404040"
                     },
                     {
@@ -1028,13 +1016,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "0SY6O",
                       "name": "metaAuthorIcon",
                       "width": 14,
                       "height": 14,
-                      "iconFontName": "user",
-                      "iconFontFamily": "lucide",
+                      "icon": "user",
+                      "library": "lucide",
                       "fill": "#404040"
                     },
                     {
@@ -1057,13 +1045,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "pSy0Z",
                       "name": "metaWordsIcon",
                       "width": 14,
                       "height": 14,
-                      "iconFontName": "file-text",
-                      "iconFontFamily": "lucide",
+                      "icon": "file-text",
+                      "library": "lucide",
                       "fill": "#404040"
                     },
                     {
@@ -1086,13 +1074,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "tCbwN",
                       "name": "metaTimeIcon",
                       "width": 14,
                       "height": 14,
-                      "iconFontName": "timer",
-                      "iconFontFamily": "lucide",
+                      "icon": "timer",
+                      "library": "lucide",
                       "fill": "#404040"
                     },
                     {
@@ -1387,13 +1375,11 @@
           "id": "mYPLV",
           "name": "Footer",
           "width": "fill_container",
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "top": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "top": 1
           },
+          "strokeAlignment": "inner",
           "padding": [
             32,
             48
@@ -1419,33 +1405,33 @@
               "alignItems": "center",
               "children": [
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "VpFcD",
                   "name": "fAgh",
                   "width": 16,
                   "height": 16,
-                  "iconFontName": "github",
-                  "iconFontFamily": "lucide",
+                  "icon": "github",
+                  "library": "lucide",
                   "fill": "#404040"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "wvDRH",
                   "name": "fAtw",
                   "width": 16,
                   "height": 16,
-                  "iconFontName": "twitter",
-                  "iconFontFamily": "lucide",
+                  "icon": "twitter",
+                  "library": "lucide",
                   "fill": "#404040"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "T5uhw",
                   "name": "fAml",
                   "width": 16,
                   "height": 16,
-                  "iconFontName": "mail",
-                  "iconFontFamily": "lucide",
+                  "icon": "mail",
+                  "library": "lucide",
                   "fill": "#404040"
                 }
               ]
@@ -1470,13 +1456,11 @@
           "name": "Navigation",
           "width": "fill_container",
           "height": 56,
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "padding": [
             0,
             20
@@ -1530,13 +1514,13 @@
                   "fontWeight": "500"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "RxkF2",
                   "name": "menuIcon",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "menu",
-                  "iconFontFamily": "lucide",
+                  "icon": "menu",
+                  "library": "lucide",
                   "fill": "#666666"
                 }
               ]
@@ -1548,13 +1532,11 @@
           "id": "7ppL8",
           "name": "Hero Section",
           "width": "fill_container",
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "layout": "vertical",
           "gap": 24,
           "padding": [
@@ -1646,13 +1628,11 @@
               "name": "Post Card 1",
               "width": "fill_container",
               "fill": "#0A0A0A",
-              "stroke": {
-                "align": "inside",
-                "thickness": {
-                  "left": 2
-                },
-                "fill": "#BFFF00"
+              "stroke": "#BFFF00",
+              "strokeWidth": {
+                "left": 2
               },
+              "strokeAlignment": "inner",
               "layout": "vertical",
               "gap": 14,
               "padding": 20,
@@ -1815,13 +1795,11 @@
               "name": "Post Card 2",
               "width": "fill_container",
               "fill": "#0A0A0A",
-              "stroke": {
-                "align": "inside",
-                "thickness": {
-                  "left": 2
-                },
-                "fill": "#0F0F0F"
+              "stroke": "#0F0F0F",
+              "strokeWidth": {
+                "left": 2
               },
+              "strokeAlignment": "inner",
               "layout": "vertical",
               "gap": 14,
               "padding": 20,
@@ -1994,13 +1972,13 @@
                   "fontWeight": "500"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "sxaZ6",
                   "name": "viewAllArrow",
                   "width": 12,
                   "height": 12,
-                  "iconFontName": "arrow-right",
-                  "iconFontFamily": "lucide",
+                  "icon": "arrow-right",
+                  "library": "lucide",
                   "fill": "#BFFF00"
                 }
               ]
@@ -2012,13 +1990,11 @@
           "id": "fnwgP",
           "name": "Footer",
           "width": "fill_container",
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "top": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "top": 1
           },
+          "strokeAlignment": "inner",
           "layout": "vertical",
           "gap": 16,
           "padding": [
@@ -2044,33 +2020,33 @@
               "alignItems": "center",
               "children": [
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "HbEqF",
                   "name": "fGh",
                   "width": 14,
                   "height": 14,
-                  "iconFontName": "github",
-                  "iconFontFamily": "lucide",
+                  "icon": "github",
+                  "library": "lucide",
                   "fill": "#404040"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "epkqp",
                   "name": "fTw",
                   "width": 14,
                   "height": 14,
-                  "iconFontName": "twitter",
-                  "iconFontFamily": "lucide",
+                  "icon": "twitter",
+                  "library": "lucide",
                   "fill": "#404040"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "40cuM",
                   "name": "fMl",
                   "width": 14,
                   "height": 14,
-                  "iconFontName": "mail",
-                  "iconFontFamily": "lucide",
+                  "icon": "mail",
+                  "library": "lucide",
                   "fill": "#404040"
                 }
               ]
@@ -2095,13 +2071,11 @@
           "name": "Navigation",
           "width": "fill_container",
           "height": 56,
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "padding": [
             0,
             20
@@ -2152,13 +2126,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "OEjuL",
                       "name": "backArrow",
                       "width": 12,
                       "height": 12,
-                      "iconFontName": "arrow-left",
-                      "iconFontFamily": "lucide",
+                      "icon": "arrow-left",
+                      "library": "lucide",
                       "fill": "#666666"
                     },
                     {
@@ -2184,13 +2158,13 @@
                   "fontWeight": "500"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "dQeb0",
                   "name": "menuIcon",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "menu",
-                  "iconFontFamily": "lucide",
+                  "icon": "menu",
+                  "library": "lucide",
                   "fill": "#666666"
                 }
               ]
@@ -2273,13 +2247,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "VrURf",
                       "name": "metaDateIcon",
                       "width": 12,
                       "height": 12,
-                      "iconFontName": "calendar",
-                      "iconFontFamily": "lucide",
+                      "icon": "calendar",
+                      "library": "lucide",
                       "fill": "#404040"
                     },
                     {
@@ -2302,13 +2276,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "SEbuQ",
                       "name": "metaAuthorIcon",
                       "width": 12,
                       "height": 12,
-                      "iconFontName": "user",
-                      "iconFontFamily": "lucide",
+                      "icon": "user",
+                      "library": "lucide",
                       "fill": "#404040"
                     },
                     {
@@ -2340,13 +2314,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "dG6ef",
                       "name": "metaWordsIcon",
                       "width": 12,
                       "height": 12,
-                      "iconFontName": "file-text",
-                      "iconFontFamily": "lucide",
+                      "icon": "file-text",
+                      "library": "lucide",
                       "fill": "#404040"
                     },
                     {
@@ -2369,13 +2343,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "P8Lyl",
                       "name": "metaTimeIcon",
                       "width": 12,
                       "height": 12,
-                      "iconFontName": "timer",
-                      "iconFontFamily": "lucide",
+                      "icon": "timer",
+                      "library": "lucide",
                       "fill": "#404040"
                     },
                     {
@@ -2683,13 +2657,11 @@
           "name": "Navigation",
           "width": "fill_container",
           "height": 64,
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "padding": [
             0,
             48
@@ -2743,23 +2715,23 @@
                   "fontWeight": "500"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "sOjlJ",
                   "name": "gi3",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "github",
-                  "iconFontFamily": "lucide",
+                  "icon": "github",
+                  "library": "lucide",
                   "fill": "#666666"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "6NWIg",
                   "name": "si3",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "sun",
-                  "iconFontFamily": "lucide",
+                  "icon": "sun",
+                  "library": "lucide",
                   "fill": "#666666"
                 }
               ]
@@ -2808,13 +2780,11 @@
           "id": "YYzdk",
           "name": "FilterRow",
           "width": "fill_container",
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "gap": 12,
           "padding": [
             0,
@@ -2974,11 +2944,9 @@
               "name": "TimeDrop",
               "fill": "#0A0A0A",
               "cornerRadius": 2,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1,
-                "fill": "#1A1A1A"
-              },
+              "stroke": "#1A1A1A",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
               "gap": 6,
               "padding": [
                 6,
@@ -2987,13 +2955,13 @@
               "alignItems": "center",
               "children": [
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "bLMay",
                   "name": "tdIco3",
                   "width": 12,
                   "height": 12,
-                  "iconFontName": "calendar",
-                  "iconFontFamily": "lucide",
+                  "icon": "calendar",
+                  "library": "lucide",
                   "fill": "#666666"
                 },
                 {
@@ -3007,13 +2975,13 @@
                   "fontWeight": "normal"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "dRSk8",
                   "name": "tdChev3",
                   "width": 10,
                   "height": 10,
-                  "iconFontName": "chevron-down",
-                  "iconFontFamily": "lucide",
+                  "icon": "chevron-down",
+                  "library": "lucide",
                   "fill": "#666666"
                 }
               ]
@@ -3135,11 +3103,9 @@
                           "fill": "#BFFF00",
                           "width": 8,
                           "height": 8,
-                          "stroke": {
-                            "align": "outside",
-                            "thickness": 3,
-                            "fill": "#000000"
-                          }
+                          "stroke": "#000000",
+                          "strokeWidth": 3,
+                          "strokeAlignment": "outer"
                         },
                         {
                           "type": "rectangle",
@@ -3182,11 +3148,9 @@
                           "width": "fill_container",
                           "fill": "#0A0A0A",
                           "cornerRadius": 4,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#1A1A1A"
-                          },
+                          "stroke": "#1A1A1A",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
                           "layout": "vertical",
                           "gap": 10,
                           "padding": 20,
@@ -3356,11 +3320,9 @@
                           "fill": "#BFFF00",
                           "width": 8,
                           "height": 8,
-                          "stroke": {
-                            "align": "outside",
-                            "thickness": 3,
-                            "fill": "#000000"
-                          }
+                          "stroke": "#000000",
+                          "strokeWidth": 3,
+                          "strokeAlignment": "outer"
                         },
                         {
                           "type": "rectangle",
@@ -3403,11 +3365,9 @@
                           "width": "fill_container",
                           "fill": "#0A0A0A",
                           "cornerRadius": 4,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#1A1A1A"
-                          },
+                          "stroke": "#1A1A1A",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
                           "layout": "vertical",
                           "gap": 10,
                           "padding": 20,
@@ -3527,11 +3487,9 @@
                           "width": "fill_container",
                           "fill": "#0A0A0A",
                           "cornerRadius": 4,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#1A1A1A"
-                          },
+                          "stroke": "#1A1A1A",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
                           "layout": "vertical",
                           "gap": 10,
                           "padding": 20,
@@ -3723,11 +3681,9 @@
                           "fill": "#666666",
                           "width": 8,
                           "height": 8,
-                          "stroke": {
-                            "align": "outside",
-                            "thickness": 3,
-                            "fill": "#000000"
-                          }
+                          "stroke": "#000000",
+                          "strokeWidth": 3,
+                          "strokeAlignment": "outer"
                         },
                         {
                           "type": "rectangle",
@@ -3770,11 +3726,9 @@
                           "width": "fill_container",
                           "fill": "#0A0A0A",
                           "cornerRadius": 4,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#1A1A1A"
-                          },
+                          "stroke": "#1A1A1A",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
                           "layout": "vertical",
                           "gap": 10,
                           "padding": 20,
@@ -3909,11 +3863,9 @@
                           "fill": "#666666",
                           "width": 8,
                           "height": 8,
-                          "stroke": {
-                            "align": "outside",
-                            "thickness": 3,
-                            "fill": "#000000"
-                          }
+                          "stroke": "#000000",
+                          "strokeWidth": 3,
+                          "strokeAlignment": "outer"
                         },
                         {
                           "type": "rectangle",
@@ -3956,11 +3908,9 @@
                           "width": "fill_container",
                           "fill": "#0A0A0A",
                           "cornerRadius": 4,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#1A1A1A"
-                          },
+                          "stroke": "#1A1A1A",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
                           "layout": "vertical",
                           "gap": 10,
                           "padding": 20,
@@ -4124,13 +4074,13 @@
                       "alignItems": "center",
                       "children": [
                         {
-                          "type": "icon_font",
+                          "type": "icon",
                           "id": "z8TRw",
                           "name": "scrollIco",
                           "width": 14,
                           "height": 14,
-                          "iconFontName": "mouse",
-                          "iconFontFamily": "lucide",
+                          "icon": "mouse",
+                          "library": "lucide",
                           "fill": "#333333"
                         },
                         {
@@ -4170,13 +4120,11 @@
           "name": "MobileNav",
           "width": "fill_container",
           "height": 56,
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "padding": [
             0,
             20
@@ -4220,23 +4168,23 @@
               "alignItems": "center",
               "children": [
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "6SeqR",
                   "name": "blogIcon",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "notebook-pen",
-                  "iconFontFamily": "lucide",
+                  "icon": "notebook-pen",
+                  "library": "lucide",
                   "fill": "#BFFF00"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "57h9O",
                   "name": "mSun",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "sun",
-                  "iconFontFamily": "lucide",
+                  "icon": "sun",
+                  "library": "lucide",
                   "fill": "#666666"
                 }
               ]
@@ -4299,11 +4247,9 @@
               "width": "fill_container",
               "fill": "#0A0A0A",
               "cornerRadius": 4,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1,
-                "fill": "#1A1A1A"
-              },
+              "stroke": "#1A1A1A",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
               "gap": 8,
               "padding": [
                 10,
@@ -4312,13 +4258,13 @@
               "alignItems": "center",
               "children": [
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "chfdr",
                   "name": "msIco",
                   "width": 14,
                   "height": 14,
-                  "iconFontName": "search",
-                  "iconFontFamily": "lucide",
+                  "icon": "search",
+                  "library": "lucide",
                   "fill": "#404040"
                 },
                 {
@@ -4340,13 +4286,11 @@
           "id": "WGZRG",
           "name": "MobileFilterRow",
           "width": "fill_container",
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "layout": "vertical",
           "gap": 12,
           "padding": [
@@ -4507,11 +4451,9 @@
               "name": "TimeDrop",
               "fill": "#0A0A0A",
               "cornerRadius": 2,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1,
-                "fill": "#1A1A1A"
-              },
+              "stroke": "#1A1A1A",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
               "gap": 4,
               "padding": [
                 6,
@@ -4520,13 +4462,13 @@
               "alignItems": "center",
               "children": [
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "hFVfo",
                   "name": "mtdIco",
                   "width": 11,
                   "height": 11,
-                  "iconFontName": "calendar",
-                  "iconFontFamily": "lucide",
+                  "icon": "calendar",
+                  "library": "lucide",
                   "fill": "#666666"
                 },
                 {
@@ -4540,13 +4482,13 @@
                   "fontWeight": "normal"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "ec23C",
                   "name": "mtdChev",
                   "width": 10,
                   "height": 10,
-                  "iconFontName": "chevron-down",
-                  "iconFontFamily": "lucide",
+                  "icon": "chevron-down",
+                  "library": "lucide",
                   "fill": "#666666"
                 }
               ]
@@ -4656,11 +4598,9 @@
                           "fill": "#BFFF00",
                           "width": 6,
                           "height": 6,
-                          "stroke": {
-                            "align": "outside",
-                            "thickness": 3,
-                            "fill": "#000000"
-                          }
+                          "stroke": "#000000",
+                          "strokeWidth": 3,
+                          "strokeAlignment": "outer"
                         },
                         {
                           "type": "rectangle",
@@ -4703,11 +4643,9 @@
                           "width": "fill_container",
                           "fill": "#0A0A0A",
                           "cornerRadius": 4,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#1A1A1A"
-                          },
+                          "stroke": "#1A1A1A",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
                           "layout": "vertical",
                           "gap": 8,
                           "padding": 16,
@@ -4878,11 +4816,9 @@
                           "fill": "#BFFF00",
                           "width": 6,
                           "height": 6,
-                          "stroke": {
-                            "align": "outside",
-                            "thickness": 3,
-                            "fill": "#000000"
-                          }
+                          "stroke": "#000000",
+                          "strokeWidth": 3,
+                          "strokeAlignment": "outer"
                         },
                         {
                           "type": "rectangle",
@@ -4925,11 +4861,9 @@
                           "width": "fill_container",
                           "fill": "#0A0A0A",
                           "cornerRadius": 4,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#1A1A1A"
-                          },
+                          "stroke": "#1A1A1A",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
                           "layout": "vertical",
                           "gap": 8,
                           "padding": 16,
@@ -5051,11 +4985,9 @@
                           "width": "fill_container",
                           "fill": "#0A0A0A",
                           "cornerRadius": 4,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#1A1A1A"
-                          },
+                          "stroke": "#1A1A1A",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
                           "layout": "vertical",
                           "gap": 8,
                           "padding": 16,
@@ -5230,11 +5162,9 @@
                           "fill": "#666666",
                           "width": 6,
                           "height": 6,
-                          "stroke": {
-                            "align": "outside",
-                            "thickness": 3,
-                            "fill": "#000000"
-                          }
+                          "stroke": "#000000",
+                          "strokeWidth": 3,
+                          "strokeAlignment": "outer"
                         },
                         {
                           "type": "rectangle",
@@ -5277,11 +5207,9 @@
                           "width": "fill_container",
                           "fill": "#0A0A0A",
                           "cornerRadius": 4,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#1A1A1A"
-                          },
+                          "stroke": "#1A1A1A",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
                           "layout": "vertical",
                           "gap": 8,
                           "padding": 16,
@@ -5417,11 +5345,9 @@
                           "fill": "#666666",
                           "width": 6,
                           "height": 6,
-                          "stroke": {
-                            "align": "outside",
-                            "thickness": 3,
-                            "fill": "#000000"
-                          }
+                          "stroke": "#000000",
+                          "strokeWidth": 3,
+                          "strokeAlignment": "outer"
                         },
                         {
                           "type": "rectangle",
@@ -5464,11 +5390,9 @@
                           "width": "fill_container",
                           "fill": "#0A0A0A",
                           "cornerRadius": 4,
-                          "stroke": {
-                            "align": "inside",
-                            "thickness": 1,
-                            "fill": "#1A1A1A"
-                          },
+                          "stroke": "#1A1A1A",
+                          "strokeWidth": 1,
+                          "strokeAlignment": "inner",
                           "layout": "vertical",
                           "gap": 8,
                           "padding": 16,
@@ -5604,13 +5528,13 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "EJImW",
                       "name": "mScrollIco",
                       "width": 12,
                       "height": 12,
-                      "iconFontName": "chevrons-down",
-                      "iconFontFamily": "lucide",
+                      "icon": "chevrons-down",
+                      "library": "lucide",
                       "fill": "#333333"
                     },
                     {
@@ -5647,13 +5571,11 @@
           "name": "Navigation",
           "width": "fill_container",
           "height": 64,
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#CBD5E1"
+          "stroke": "#CBD5E1",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "padding": [
             0,
             48
@@ -5707,23 +5629,23 @@
                   "fontWeight": "500"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "auXfz",
                   "name": "githubIcon",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "github",
-                  "iconFontFamily": "lucide",
+                  "icon": "github",
+                  "library": "lucide",
                   "fill": "#64748B"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "kkKPH",
                   "name": "sunIcon",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "sun",
-                  "iconFontFamily": "lucide",
+                  "icon": "sun",
+                  "library": "lucide",
                   "fill": "#64748B"
                 }
               ]
@@ -5735,13 +5657,11 @@
           "id": "6HEDi",
           "name": "Hero Section",
           "width": "fill_container",
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#CBD5E1"
+          "stroke": "#CBD5E1",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "gap": 64,
           "padding": [
             80,
@@ -5893,13 +5813,11 @@
               "name": "Post Card 1",
               "width": "fill_container",
               "fill": "#FFFFFF",
-              "stroke": {
-                "align": "inside",
-                "thickness": {
-                  "left": 3
-                },
-                "fill": "#3B82F6"
+              "stroke": "#3B82F6",
+              "strokeWidth": {
+                "left": 3
               },
+              "strokeAlignment": "inner",
               "layout": "vertical",
               "gap": 16,
               "padding": 24,
@@ -6060,13 +5978,11 @@
               "name": "Post Card 2",
               "width": "fill_container",
               "fill": "#FFFFFF",
-              "stroke": {
-                "align": "inside",
-                "thickness": {
-                  "left": 3
-                },
-                "fill": "#CBD5E1"
+              "stroke": "#CBD5E1",
+              "strokeWidth": {
+                "left": 3
               },
+              "strokeAlignment": "inner",
               "layout": "vertical",
               "gap": 16,
               "padding": 24,
@@ -6239,13 +6155,13 @@
                   "fontWeight": "500"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "0OV3v",
                   "name": "viewAllArrow",
                   "width": 14,
                   "height": 14,
-                  "iconFontName": "arrow-right",
-                  "iconFontFamily": "lucide",
+                  "icon": "arrow-right",
+                  "library": "lucide",
                   "fill": "#3B82F6"
                 }
               ]
@@ -6257,13 +6173,11 @@
           "id": "fYLgE",
           "name": "Footer",
           "width": "fill_container",
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "top": 1
-            },
-            "fill": "#CBD5E1"
+          "stroke": "#CBD5E1",
+          "strokeWidth": {
+            "top": 1
           },
+          "strokeAlignment": "inner",
           "layout": "vertical",
           "gap": 24,
           "padding": [
@@ -6297,33 +6211,33 @@
                   "alignItems": "center",
                   "children": [
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "QJMWy",
                       "name": "footerGithub",
                       "width": 16,
                       "height": 16,
-                      "iconFontName": "github",
-                      "iconFontFamily": "lucide",
+                      "icon": "github",
+                      "library": "lucide",
                       "fill": "#64748B"
                     },
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "0kJGT",
                       "name": "footerTwitter",
                       "width": 16,
                       "height": 16,
-                      "iconFontName": "twitter",
-                      "iconFontFamily": "lucide",
+                      "icon": "twitter",
+                      "library": "lucide",
                       "fill": "#64748B"
                     },
                     {
-                      "type": "icon_font",
+                      "type": "icon",
                       "id": "FpUE0",
                       "name": "footerMail",
                       "width": 16,
                       "height": 16,
-                      "iconFontName": "mail",
-                      "iconFontFamily": "lucide",
+                      "icon": "mail",
+                      "library": "lucide",
                       "fill": "#64748B"
                     }
                   ]
@@ -6350,13 +6264,11 @@
           "name": "Navigation",
           "width": "fill_container",
           "height": 64,
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "padding": [
             0,
             48
@@ -6410,23 +6322,23 @@
                   "fontWeight": "500"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "OBDED",
                   "name": "githubIcon",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "github",
-                  "iconFontFamily": "lucide",
+                  "icon": "github",
+                  "library": "lucide",
                   "fill": "#666666"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "XRDjG",
                   "name": "sunIcon",
                   "width": 18,
                   "height": 18,
-                  "iconFontName": "sun",
-                  "iconFontFamily": "lucide",
+                  "icon": "sun",
+                  "library": "lucide",
                   "fill": "#666666"
                 }
               ]
@@ -6465,13 +6377,11 @@
           "id": "izb6a",
           "name": "FilterRow",
           "width": "fill_container",
-          "stroke": {
-            "align": "inside",
-            "thickness": {
-              "bottom": 1
-            },
-            "fill": "#1A1A1A"
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
           },
+          "strokeAlignment": "inner",
           "gap": 12,
           "padding": [
             0,
@@ -6608,11 +6518,9 @@
               "name": "timeDrop",
               "fill": "#0A0A0A",
               "cornerRadius": 2,
-              "stroke": {
-                "align": "inside",
-                "thickness": 1,
-                "fill": "#1A1A1A"
-              },
+              "stroke": "#1A1A1A",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
               "gap": 6,
               "padding": [
                 6,
@@ -6621,13 +6529,13 @@
               "alignItems": "center",
               "children": [
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "0J0MQ",
                   "name": "calIcon",
                   "width": 12,
                   "height": 12,
-                  "iconFontName": "calendar",
-                  "iconFontFamily": "lucide",
+                  "icon": "calendar",
+                  "library": "lucide",
                   "fill": "#666666"
                 },
                 {
@@ -6641,13 +6549,13 @@
                   "fontWeight": "normal"
                 },
                 {
-                  "type": "icon_font",
+                  "type": "icon",
                   "id": "KHLfy",
                   "name": "chevIcon",
                   "width": 10,
                   "height": 10,
-                  "iconFontName": "chevron-down",
-                  "iconFontFamily": "lucide",
+                  "icon": "chevron-down",
+                  "library": "lucide",
                   "fill": "#666666"
                 }
               ]
@@ -6783,11 +6691,9 @@
                               "fill": "#BFFF00",
                               "width": 8,
                               "height": 8,
-                              "stroke": {
-                                "align": "outside",
-                                "thickness": 3,
-                                "fill": "#000000"
-                              }
+                              "stroke": "#000000",
+                              "strokeWidth": 3,
+                              "strokeAlignment": "outer"
                             },
                             {
                               "type": "rectangle",
@@ -6830,11 +6736,9 @@
                               "width": "fill_container",
                               "fill": "#0A0A0A",
                               "cornerRadius": 4,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "#1A1A1A"
-                              },
+                              "stroke": "#1A1A1A",
+                              "strokeWidth": 1,
+                              "strokeAlignment": "inner",
                               "layout": "vertical",
                               "gap": 10,
                               "padding": 20,
@@ -7004,11 +6908,9 @@
                               "fill": "#BFFF00",
                               "width": 8,
                               "height": 8,
-                              "stroke": {
-                                "align": "outside",
-                                "thickness": 3,
-                                "fill": "#000000"
-                              }
+                              "stroke": "#000000",
+                              "strokeWidth": 3,
+                              "strokeAlignment": "outer"
                             },
                             {
                               "type": "rectangle",
@@ -7051,11 +6953,9 @@
                               "width": "fill_container",
                               "fill": "#0A0A0A",
                               "cornerRadius": 4,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "#1A1A1A"
-                              },
+                              "stroke": "#1A1A1A",
+                              "strokeWidth": 1,
+                              "strokeAlignment": "inner",
                               "layout": "vertical",
                               "gap": 10,
                               "padding": 20,
@@ -7175,11 +7075,9 @@
                               "width": "fill_container",
                               "fill": "#0A0A0A",
                               "cornerRadius": 4,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "#1A1A1A"
-                              },
+                              "stroke": "#1A1A1A",
+                              "strokeWidth": 1,
+                              "strokeAlignment": "inner",
                               "layout": "vertical",
                               "gap": 10,
                               "padding": 20,
@@ -7402,11 +7300,9 @@
                               "fill": "#666666",
                               "width": 8,
                               "height": 8,
-                              "stroke": {
-                                "align": "outside",
-                                "thickness": 3,
-                                "fill": "#000000"
-                              }
+                              "stroke": "#000000",
+                              "strokeWidth": 3,
+                              "strokeAlignment": "outer"
                             },
                             {
                               "type": "rectangle",
@@ -7449,11 +7345,9 @@
                               "width": "fill_container",
                               "fill": "#0A0A0A",
                               "cornerRadius": 4,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "#1A1A1A"
-                              },
+                              "stroke": "#1A1A1A",
+                              "strokeWidth": 1,
+                              "strokeAlignment": "inner",
                               "layout": "vertical",
                               "gap": 10,
                               "padding": 20,
@@ -7588,11 +7482,9 @@
                               "fill": "#666666",
                               "width": 8,
                               "height": 8,
-                              "stroke": {
-                                "align": "outside",
-                                "thickness": 3,
-                                "fill": "#000000"
-                              }
+                              "stroke": "#000000",
+                              "strokeWidth": 3,
+                              "strokeAlignment": "outer"
                             },
                             {
                               "type": "rectangle",
@@ -7635,11 +7527,9 @@
                               "width": "fill_container",
                               "fill": "#0A0A0A",
                               "cornerRadius": 4,
-                              "stroke": {
-                                "align": "inside",
-                                "thickness": 1,
-                                "fill": "#1A1A1A"
-                              },
+                              "stroke": "#1A1A1A",
+                              "strokeWidth": 1,
+                              "strokeAlignment": "inner",
                               "layout": "vertical",
                               "gap": 10,
                               "padding": 20,
@@ -7802,13 +7692,13 @@
                           "alignItems": "center",
                           "children": [
                             {
-                              "type": "icon_font",
+                              "type": "icon",
                               "id": "JrsVz",
                               "name": "scrollIcon",
                               "width": 14,
                               "height": 14,
-                              "iconFontName": "mouse",
-                              "iconFontFamily": "lucide",
+                              "icon": "mouse",
+                              "library": "lucide",
                               "fill": "#333333"
                             },
                             {
@@ -7826,6 +7716,1731 @@
                       ]
                     }
                   ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "o1umu",
+      "x": 685,
+      "y": 5953,
+      "name": "Stock Trading Journal",
+      "clip": true,
+      "width": 1440,
+      "fill": "#000000",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "X2sG9t",
+          "name": "Navigation",
+          "width": "fill_container",
+          "height": 64,
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "strokeAlignment": "inner",
+          "padding": [
+            0,
+            48
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "CY3TV",
+              "name": "logoFrame",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "id": "o8BCov",
+                  "name": "logoMark",
+                  "fill": "#BFFF00",
+                  "width": 20,
+                  "height": 20
+                },
+                {
+                  "type": "text",
+                  "id": "bo2yH",
+                  "name": "logoText",
+                  "fill": "#FFFFFF",
+                  "content": "SHANKS",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "600",
+                  "letterSpacing": 3
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "B8zsv",
+              "name": "navRight",
+              "gap": 24,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "L82e4f",
+                  "name": "blogLink",
+                  "fill": "#666666",
+                  "content": "Blog",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "Os4ZP",
+                  "name": "journalLink",
+                  "fill": "#BFFF00",
+                  "content": "Journal",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "icon",
+                  "id": "EAVQW",
+                  "name": "githubIcon",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "github",
+                  "library": "lucide",
+                  "fill": "#666666"
+                },
+                {
+                  "type": "icon",
+                  "id": "tWn9S",
+                  "name": "sunIcon",
+                  "width": 18,
+                  "height": 18,
+                  "icon": "sun",
+                  "library": "lucide",
+                  "fill": "#666666"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "U0ZBxC",
+          "name": "PageHeader",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            48,
+            80,
+            32,
+            80
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "x7cpvw",
+              "name": "headerTitle",
+              "fill": "#FFFFFF",
+              "content": "Trading Journal",
+              "fontFamily": "Inter",
+              "fontSize": 36,
+              "fontWeight": "700",
+              "letterSpacing": -1
+            },
+            {
+              "type": "text",
+              "id": "M9Vv8C",
+              "name": "headerSub",
+              "fill": "#666666",
+              "content": "$ journalctl --stocks --since=\"2024-01-01\"",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "s40EC",
+          "name": "StatsRow",
+          "width": "fill_container",
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "strokeAlignment": "inner",
+          "gap": 24,
+          "padding": [
+            0,
+            80,
+            24,
+            80
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "nd5xw",
+              "name": "StatCard1",
+              "width": "fill_container",
+              "fill": "#0A0A0A",
+              "cornerRadius": 4,
+              "stroke": "#1A1A1A",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                24
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "oLXUZ",
+                  "name": "statLabel1",
+                  "fill": "#666666",
+                  "content": "Total Trades",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "jv0hD",
+                  "name": "statValue1",
+                  "fill": "#FFFFFF",
+                  "content": "47",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tFhXf",
+              "name": "StatCard2",
+              "width": "fill_container",
+              "fill": "#0A0A0A",
+              "cornerRadius": 4,
+              "stroke": "#1A1A1A",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                24
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "QluTO",
+                  "name": "statLabel2",
+                  "fill": "#666666",
+                  "content": "Win Rate",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "mZj43",
+                  "name": "statValue2",
+                  "fill": "#22C55E",
+                  "content": "68.1%",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "M6Q0e9",
+              "name": "StatCard3",
+              "width": "fill_container",
+              "fill": "#0A0A0A",
+              "cornerRadius": 4,
+              "stroke": "#1A1A1A",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                24
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "RpK3Z",
+                  "name": "statLabel3",
+                  "fill": "#666666",
+                  "content": "Total P&L",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "BEylr",
+                  "name": "statValue3",
+                  "fill": "#22C55E",
+                  "content": "+$12,847.50",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "UAiSb",
+              "name": "StatCard4",
+              "width": "fill_container",
+              "fill": "#0A0A0A",
+              "cornerRadius": 4,
+              "stroke": "#1A1A1A",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                24
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "nNZ1d",
+                  "name": "statLabel4",
+                  "fill": "#666666",
+                  "content": "Best Trade",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "normal",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "Q8NtW",
+                  "name": "statValue4",
+                  "fill": "#FFFFFF",
+                  "content": "NVDA +$3,240",
+                  "fontFamily": "Inter",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "N2eIr",
+          "name": "FilterRow",
+          "width": "fill_container",
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "strokeAlignment": "inner",
+          "gap": 12,
+          "padding": [
+            12,
+            80
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "a1qT7B",
+              "name": "filterAll",
+              "fill": "#BFFF00",
+              "cornerRadius": 2,
+              "padding": [
+                6,
+                12
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "R3NM9",
+                  "name": "filterAllText",
+                  "fill": "#000000",
+                  "content": "All",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "MSq4t",
+              "name": "filterBuy",
+              "fill": "#1A1A1A",
+              "cornerRadius": 2,
+              "padding": [
+                6,
+                12
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ZvkmI",
+                  "name": "filterBuyText",
+                  "fill": "#22C55E",
+                  "content": "BUY",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "gtqMf",
+              "name": "filterSell",
+              "fill": "#1A1A1A",
+              "cornerRadius": 2,
+              "padding": [
+                6,
+                12
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "u92mgi",
+                  "name": "filterSellText",
+                  "fill": "#EF4444",
+                  "content": "SELL",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "EyH5u",
+              "name": "filterHold",
+              "fill": "#1A1A1A",
+              "cornerRadius": 2,
+              "padding": [
+                6,
+                12
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "frk58",
+                  "name": "filterHoldText",
+                  "fill": "#F59E0B",
+                  "content": "HOLD",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "id": "M6Gsw",
+              "name": "sep",
+              "fill": "#1A1A1A",
+              "width": 1,
+              "height": 20
+            },
+            {
+              "type": "frame",
+              "id": "egUZ2",
+              "name": "dateDrop",
+              "fill": "#0A0A0A",
+              "cornerRadius": 2,
+              "stroke": "#1A1A1A",
+              "strokeWidth": 1,
+              "strokeAlignment": "inner",
+              "gap": 6,
+              "padding": [
+                6,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "lX2In",
+                  "name": "calIcon",
+                  "width": 12,
+                  "height": 12,
+                  "icon": "calendar",
+                  "library": "lucide",
+                  "fill": "#666666"
+                },
+                {
+                  "type": "text",
+                  "id": "v40mZK",
+                  "name": "dateText",
+                  "fill": "#999999",
+                  "content": "2024 – 2026",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "icon",
+                  "id": "O3Wdo",
+                  "name": "chevIcon",
+                  "width": 10,
+                  "height": 10,
+                  "icon": "chevron-down",
+                  "library": "lucide",
+                  "fill": "#666666"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "RCd7m",
+          "name": "TableArea",
+          "clip": true,
+          "width": "fill_container",
+          "layout": "vertical",
+          "padding": [
+            0,
+            80,
+            48,
+            80
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "x6zRQ",
+              "name": "TableHeader",
+              "width": "fill_container",
+              "stroke": "#1A1A1A",
+              "strokeWidth": {
+                "bottom": 1
+              },
+              "strokeAlignment": "inner",
+              "padding": [
+                10,
+                0
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "hpVZw",
+                  "name": "colDate",
+                  "fill": "#666666",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "Date",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "E2u2LP",
+                  "name": "colStock",
+                  "fill": "#666666",
+                  "textGrowth": "fixed-width",
+                  "width": 80,
+                  "content": "Stock",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "kl19a",
+                  "name": "colOp",
+                  "fill": "#666666",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "Op",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "oBrvS",
+                  "name": "colPrice",
+                  "fill": "#666666",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "Price",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "ES5od",
+                  "name": "colQty",
+                  "fill": "#666666",
+                  "textGrowth": "fixed-width",
+                  "width": 60,
+                  "content": "Qty",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "G0tVdu",
+                  "name": "colPL",
+                  "fill": "#666666",
+                  "textGrowth": "fixed-width",
+                  "width": 100,
+                  "content": "P&L",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                },
+                {
+                  "type": "text",
+                  "id": "rWuNc",
+                  "name": "colNotes",
+                  "fill": "#666666",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "Notes & Thoughts",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "600",
+                  "letterSpacing": 1
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "dL3WP",
+              "name": "TableBody",
+              "width": "fill_container",
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "vz5lP",
+                  "name": "TradeRow_NVDA_2026-06-20",
+                  "width": "fill_container",
+                  "stroke": "#1A1A1A",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "strokeAlignment": "inner",
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "EH8ja",
+                      "name": "cell_0",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "2026-06-20",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "X0xbgL",
+                      "name": "cell_1",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 80,
+                      "content": "NVDA",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "eVO65",
+                      "name": "cell_2",
+                      "fill": "#EF4444",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "SELL",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "wstDy",
+                      "name": "cell_3",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "$142.30",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Qoa0t",
+                      "name": "cell_4",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "50",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Z6jscR",
+                      "name": "cell_5",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "+$1,240.00",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "l3cAN",
+                      "name": "cellNotes",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "AI 芯片需求依然强劲，但估值偏高，锁定利润。短期可能有回调，等机会再入场。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pKqKu",
+                  "name": "TradeRow_TSLA_2026-06-15",
+                  "width": "fill_container",
+                  "stroke": "#1A1A1A",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "strokeAlignment": "inner",
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "JogUf",
+                      "name": "cell_0",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "2026-06-15",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "c36q5A",
+                      "name": "cell_1",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 80,
+                      "content": "TSLA",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "wkE8j",
+                      "name": "cell_2",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "BUY",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "f0a1Vs",
+                      "name": "cell_3",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "$248.70",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "K9bgZ",
+                      "name": "cell_4",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "30",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "u5AQVM",
+                      "name": "cell_5",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "—",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "j6HEmO",
+                      "name": "cellNotes",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "FSD v13 发布后市场反应积极，Robotaxi 路线图清晰。长期看好，分批建仓。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "J624u",
+                  "name": "TradeRow_AAPL_2026-06-08",
+                  "width": "fill_container",
+                  "stroke": "#1A1A1A",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "strokeAlignment": "inner",
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "tB95n",
+                      "name": "cell_0",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "2026-06-08",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "z8jG9",
+                      "name": "cell_1",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 80,
+                      "content": "AAPL",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Pdv4A",
+                      "name": "cell_2",
+                      "fill": "#EF4444",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "SELL",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "M6auV",
+                      "name": "cell_3",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "$218.50",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "XNwcE",
+                      "name": "cell_4",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "100",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "hGa33",
+                      "name": "cell_5",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "+$850.00",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "gbTRf",
+                      "name": "cellNotes",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "WWDC 后利好出尽，短期缺乏催化剂。减仓一半保留底仓，转配其他成长股。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cqvy3",
+                  "name": "TradeRow_META_2026-06-01",
+                  "width": "fill_container",
+                  "stroke": "#1A1A1A",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "strokeAlignment": "inner",
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "HQ5p9",
+                      "name": "cell_0",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "2026-06-01",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "gp7ah",
+                      "name": "cell_1",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 80,
+                      "content": "META",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "UaTaY",
+                      "name": "cell_2",
+                      "fill": "#F59E0B",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "HOLD",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Nw4VK",
+                      "name": "cell_3",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "$528.40",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "f1guXM",
+                      "name": "cell_4",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "20",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "nOnGj",
+                      "name": "cell_5",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "+$2,168.00",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "d9ZJNE",
+                      "name": "cellNotes",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Q1 广告收入超预期，AI 投入开始变现。当前位置不加不减，继续持有观察。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "N8AeX",
+                  "name": "TradeRow_PLTR_2026-05-24",
+                  "width": "fill_container",
+                  "stroke": "#1A1A1A",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "strokeAlignment": "inner",
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VXdcZ",
+                      "name": "cell_0",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "2026-05-24",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "S9owlH",
+                      "name": "cell_1",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 80,
+                      "content": "PLTR",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "jGjsw",
+                      "name": "cell_2",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "BUY",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "xU8y4",
+                      "name": "cell_3",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "$93.15",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "b4MRG8",
+                      "name": "cell_4",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "200",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "X6HjN",
+                      "name": "cell_5",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "+$1,430.00",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "KeIwc",
+                      "name": "cellNotes",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "政府 + 商业 AI 双轮驱动，AIP 平台增长迅猛。估值虽高但增速匹配，小仓位试探。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "oPZGl",
+                  "name": "TradeRow_AMD_2026-05-18",
+                  "width": "fill_container",
+                  "stroke": "#1A1A1A",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "strokeAlignment": "inner",
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "l4pUf6",
+                      "name": "cell_0",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "2026-05-18",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "TvDAK",
+                      "name": "cell_1",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 80,
+                      "content": "AMD",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ealX7",
+                      "name": "cell_2",
+                      "fill": "#EF4444",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "SELL",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Tqx2Z",
+                      "name": "cell_3",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "$168.20",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "M8jKhO",
+                      "name": "cell_4",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "40",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "fXu1D",
+                      "name": "cell_5",
+                      "fill": "#EF4444",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "-$420.00",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "QZI0E",
+                      "name": "cellNotes",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "数据中心 GPU 竞争加剧，NVDA 份额压制明显。止损出局，集中仓位到龙头。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "y9eltL",
+                  "name": "TradeRow_MSFT_2026-05-10",
+                  "width": "fill_container",
+                  "stroke": "#1A1A1A",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "strokeAlignment": "inner",
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "CP2Lx",
+                      "name": "cell_0",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "2026-05-10",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "i7Z4ch",
+                      "name": "cell_1",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 80,
+                      "content": "MSFT",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "K1qX6b",
+                      "name": "cell_2",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "BUY",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "OF7lb",
+                      "name": "cell_3",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "$445.80",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "QrqOM",
+                      "name": "cell_4",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "15",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "FBCfU",
+                      "name": "cell_5",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "—",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "njwpN",
+                      "name": "cellNotes",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Copilot 企业 adoption 加速，Azure 增速稳定。作为底仓配置，长期持有。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "D6VrT",
+                  "name": "TradeRow_GOOGL_2026-04-28",
+                  "width": "fill_container",
+                  "stroke": "#1A1A1A",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "strokeAlignment": "inner",
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "IXQCc",
+                      "name": "cell_0",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "2026-04-28",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "yIikn",
+                      "name": "cell_1",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 80,
+                      "content": "GOOGL",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Z0ATNU",
+                      "name": "cell_2",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "BUY",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "g4a2d",
+                      "name": "cell_3",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "$178.30",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "yG10x",
+                      "name": "cell_4",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "25",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "G7GXEb",
+                      "name": "cell_5",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "+$475.00",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "SyGIZ",
+                      "name": "cellNotes",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Gemini 追赶 GPT，搜索护城河依然牢固。估值合理，适合中长期布局。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "LKGUE",
+                  "name": "TradeRow_TSLA_2026-04-15",
+                  "width": "fill_container",
+                  "stroke": "#1A1A1A",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "strokeAlignment": "inner",
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "pTc9f",
+                      "name": "cell_0",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "2026-04-15",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kiCYJ",
+                      "name": "cell_1",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 80,
+                      "content": "TSLA",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "tPeVs",
+                      "name": "cell_2",
+                      "fill": "#EF4444",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "SELL",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "vYVWe",
+                      "name": "cell_3",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "$262.10",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "BPDt1",
+                      "name": "cell_4",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "20",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "e3yNT",
+                      "name": "cell_5",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "+$268.00",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "E47XOI",
+                      "name": "cellNotes",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "Q1 交付数据低于预期，短线获利了结。保留底仓等 FSD 催化剂。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "un0rM",
+                  "name": "TradeRow_NVDA_2026-04-02",
+                  "width": "fill_container",
+                  "stroke": "#1A1A1A",
+                  "strokeWidth": {
+                    "bottom": 1
+                  },
+                  "strokeAlignment": "inner",
+                  "padding": [
+                    12,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "SC48Z",
+                      "name": "cell_0",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "2026-04-02",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "xeUom",
+                      "name": "cell_1",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 80,
+                      "content": "NVDA",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "dHQCi",
+                      "name": "cell_2",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "BUY",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "AVTAM",
+                      "name": "cell_3",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "$128.50",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "LY3w9",
+                      "name": "cell_4",
+                      "fill": "#E5E5E5",
+                      "textGrowth": "fixed-width",
+                      "width": 60,
+                      "content": "40",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "D3LFHs",
+                      "name": "cell_5",
+                      "fill": "#22C55E",
+                      "textGrowth": "fixed-width",
+                      "width": 100,
+                      "content": "+$690.00",
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "c0wyQ5",
+                      "name": "cellNotes",
+                      "fill": "#999999",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "GTC 大会后 Blackwell 订单超预期，逢回调加仓。AI 基础设施投资周期远未结束。",
+                      "lineHeight": 1.5,
+                      "fontFamily": "JetBrains Mono",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "SpxwV",
+          "name": "Footer",
+          "width": "fill_container",
+          "stroke": "#1A1A1A",
+          "strokeWidth": {
+            "top": 1
+          },
+          "strokeAlignment": "inner",
+          "padding": [
+            24,
+            80
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "d86ieC",
+              "name": "footerLeft",
+              "fill": "#525252",
+              "content": "© 2026 Shanks · Trading Journal",
+              "fontFamily": "JetBrains Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "TRGaP",
+              "name": "footerRight",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "DSOry",
+                  "name": "footerLink1",
+                  "fill": "#666666",
+                  "content": "Blog",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "Gj4TG",
+                  "name": "footerLink2",
+                  "fill": "#666666",
+                  "content": "Journal",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "MfyNH",
+                  "name": "footerLink3",
+                  "fill": "#666666",
+                  "content": "GitHub",
+                  "fontFamily": "JetBrains Mono",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
                 }
               ]
             }
@@ -8014,5 +9629,6 @@
       "type": "color",
       "value": "#BFFF00"
     }
-  }
+  },
+  "fileToken": "6e7b9980-18dc-4ab3-b833-29ff3f5ab47e"
 }

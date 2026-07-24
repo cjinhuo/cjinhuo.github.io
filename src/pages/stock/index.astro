@@ -1,0 +1,54 @@
+---
+import BaseHead from '@/components/BaseHead.astro'
+import Header from '@/components/Header/Header.astro'
+import Footer from '@/components/Footer.astro'
+import StockJournal from '@/components/Stock/StockJournal'
+import { getSortedStockPosts, getAllStockTags } from '@/shared/stock'
+import { getWordCount } from '@/shared/utils'
+
+const posts = await getSortedStockPosts()
+const allTags = getAllStockTags(posts)
+
+const serializedPosts = posts.map((post) => {
+	const wordCount = getWordCount(post.body ?? '')
+	return {
+		id: post.id,
+		title: post.data.title,
+		description: post.data.description,
+		pubDate: post.data.pubDate,
+		tags: post.data.tags,
+		trade: post.data.trade,
+		readingTime: Math.ceil(wordCount / 400),
+	}
+})
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <BaseHead title="Stock" description="记录交易背后的思考、复盘与认知迭代。" />
+  </head>
+  <body class="bg-skin-background">
+    <Header />
+    <main class="max-w-5xl mx-auto px-6 md:px-12 py-12 min-h-screen">
+      <section>
+        <div class="flex items-end justify-between gap-4">
+          <h1
+            class="text-3xl sm:text-4xl font-bold text-skin-neutral-1"
+            style="line-height:1.2;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word;"
+          >
+            Stock
+          </h1>
+          <span class="hidden sm:block font-mono text-xs text-skin-neutral-5 shrink-0 pb-1">
+            notes &amp; reflections
+          </span>
+        </div>
+        <div class="h-px bg-skin-card-border mt-4 mb-4"></div>
+        <p class="text-skin-neutral-4 text-sm sm:text-base">记录交易背后的思考、复盘与认知迭代。</p>
+      </section>
+
+      <StockJournal client:load posts={serializedPosts} allTags={allTags} />
+    </main>
+    <Footer />
+  </body>
+</html>

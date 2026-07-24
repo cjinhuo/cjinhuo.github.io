@@ -1,4 +1,5 @@
 import { defineConfig, fontProviders } from 'astro/config'
+import { unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
@@ -19,7 +20,11 @@ export default defineConfig({
   ],
   syntaxHighlight: 'prism',
   markdown: {
-    remarkPlugins: [remarkDirective, remarkContainer]
+    processor: unified({
+      remarkPlugins: [remarkDirective, remarkContainer],
+      gfm: true,
+      smartypants: true,
+    }),
   },
   integrations: [mdx(), sitemap(), react()],
   compressHTML: true,

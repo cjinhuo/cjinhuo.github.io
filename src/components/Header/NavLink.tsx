@@ -5,6 +5,10 @@ const NavList = [
 		label: 'Blog',
 		href: '/blogs',
 	},
+	{
+		label: 'Stock',
+		href: '/stock',
+	},
 	// {
 	//   label: 'Resume',
 	//   href: '/resume',
@@ -24,7 +28,7 @@ export default function NavLink({ pathname }: TypeProps) {
 	return (
 		<>
 			{NavList.map((item) => {
-				const isActive = pathname === item.href
+				const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
 				const textClassName = isActive ? 'text-skin-primary' : 'text-skin-neutral-5'
 				const label = item.icon ? (
 					<IconPark className={`hover:text-skin-primary ${textClassName}`} name={item.icon}></IconPark>
