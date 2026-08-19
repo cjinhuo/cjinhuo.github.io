@@ -4,7 +4,7 @@ import Header from '@/components/Header/Header.astro'
 import Footer from '@/components/Footer.astro'
 import ScrollProgress from '@/components/ScrollProgress'
 import { render } from 'astro:content'
-import { getSortedStockPosts, getAdjacentStockPosts, type StockEntry } from '@/shared/stock'
+import { getSortedStockPosts, getAdjacentStockPosts, normalizeTrades, type StockEntry } from '@/shared/stock'
 import { getWordCount } from '@/shared/utils'
 import dayjs from 'dayjs'
 import 'github-markdown-css'
@@ -21,14 +21,21 @@ type Props = { post: StockEntry; posts: StockEntry[] }
 
 const { post, posts } = Astro.props as Props
 const { Content } = await render(post)
-const { title, description, pubDate, tags, trade } = post.data
+const { title, description, pubDate, tags } = post.data
+
+// 归一化为交易数组，兼容单笔 trade 与多笔 trades
+const trades = normalizeTrades(post.data)
+const isMultiTrade = trades.length > 1
+// header 处关联标的：合并去重所有笔的 symbol
+const symbolList = Array.from(new Set(trades.map((t) => t.symbol).filter((s): s is string => Boolean(s))))
 
 const wordCount = getWordCount(post.body ?? '')
 const readingTime = Math.ceil(wordCount / 400)
 const { prev, next } = getAdjacentStockPosts(posts, post.id)
 
 const isPositive = (value: string) => !value.trim().startsWith('-')
-const showTradeCard = trade && (trade.buyPrice || trade.sellPrice || trade.changePercent)
+// 仅保留含关键交易数据的笔，用于渲染「本次交易数据」卡片
+const cardTrades = trades.filter((t) => t.buyPrice || t.sellPrice || t.changePercent)
 ---
 
 <html lang="zh-CN">
@@ -66,10 +73,10 @@ const showTradeCard = trade && (trade.buyPrice || trade.sellPrice || trade.chang
               <span>{readingTime} min read</span>
             </>
           )}
-          {trade?.symbol && (
+          {symbolList.length > 0 && (
             <>
               <span aria-hidden="true">·</span>
-              <span class="text-skin-neutral-4">关联标的 <span class="text-skin-primary">{trade.symbol}</span></span>
+              <span class="text-skin-neutral-4">关联标的 <span class="text-skin-primary">{symbolList.join('、')}</span></span>
             </>
           )}
         </p>
@@ -85,30 +92,42 @@ const showTradeCard = trade && (trade.buyPrice || trade.sellPrice || trade.chang
         <div class="h-px bg-skin-card-border mt-8"></div>
       </header>
 
-      {showTradeCard && (
+      {cardTrades.length > 0 && (
         <section class="mt-8 p-5 bg-skin-card-bg border border-skin-card-border border-l-2">
           <p class="font-mono text-xs text-skin-neutral-5 uppercase tracking-widest">本次交易数据</p>
-          <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4">
-            {trade?.buyPrice && (
-              <div class="min-w-0">
-                <p class="font-mono text-xs text-skin-neutral-4 truncate">买入均价</p>
-                <p class="mt-1 font-mono text-2xl font-semibold text-skin-neutral-1 whitespace-nowrap">{trade.buyPrice}</p>
+          <div class="mt-4 flex flex-col gap-6">
+            {cardTrades.map((trade, index) => (
+              <div class={index > 0 ? 'pt-6 border-t border-skin-card-border' : ''}>
+                {isMultiTrade && (trade.symbol || trade.related) && (
+                  <p class="font-mono text-sm text-skin-neutral-3 mb-3">
+                    {trade.symbol && <span class="text-skin-primary">{trade.symbol}</span>}
+                    {trade.related && <span class="text-skin-neutral-5">{trade.symbol ? ` · ${trade.related}` : trade.related}</span>}
+                  </p>
+                )}
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4">
+                  {trade.buyPrice && (
+                    <div class="min-w-0">
+                      <p class="font-mono text-xs text-skin-neutral-4 truncate">买入均价</p>
+                      <p class="mt-1 font-mono text-2xl font-semibold text-skin-neutral-1 whitespace-nowrap">{trade.buyPrice}</p>
+                    </div>
+                  )}
+                  {trade.sellPrice && (
+                    <div class="min-w-0 sm:border-l border-skin-card-border sm:pl-4">
+                      <p class="font-mono text-xs text-skin-neutral-4 truncate">清仓均价</p>
+                      <p class="mt-1 font-mono text-2xl font-semibold text-skin-neutral-1 whitespace-nowrap">{trade.sellPrice}</p>
+                    </div>
+                  )}
+                  {trade.changePercent && (
+                    <div class="min-w-0 sm:border-l border-skin-card-border sm:pl-4">
+                      <p class="font-mono text-xs text-skin-neutral-4 truncate">本次盈亏</p>
+                      <p class={`mt-1 font-mono text-2xl font-semibold whitespace-nowrap ${isPositive(trade.changePercent) ? 'text-skin-market-up' : 'text-skin-market-down'}`}>
+                        {trade.changePercent}
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
-            {trade?.sellPrice && (
-              <div class="min-w-0 sm:border-l border-skin-card-border sm:pl-4">
-                <p class="font-mono text-xs text-skin-neutral-4 truncate">清仓均价</p>
-                <p class="mt-1 font-mono text-2xl font-semibold text-skin-neutral-1 whitespace-nowrap">{trade.sellPrice}</p>
-              </div>
-            )}
-            {trade?.changePercent && (
-              <div class="min-w-0 sm:border-l border-skin-card-border sm:pl-4">
-                <p class="font-mono text-xs text-skin-neutral-4 truncate">本次盈亏</p>
-                <p class={`mt-1 font-mono text-2xl font-semibold whitespace-nowrap ${isPositive(trade.changePercent) ? 'text-skin-market-up' : 'text-skin-market-down'}`}>
-                  {trade.changePercent}
-                </p>
-              </div>
-            )}
+            ))}
           </div>
         </section>
       )}

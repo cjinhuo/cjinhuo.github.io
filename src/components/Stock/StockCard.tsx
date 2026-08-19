@@ -16,7 +16,7 @@ export interface StockCardData {
 	pubDate: string
 	tags?: string[]
 	body?: string
-	trade?: StockTrade
+	trades: StockTrade[]
 	readingTime: number
 }
 
@@ -33,10 +33,17 @@ interface StockCardProps {
 }
 
 export default function StockCard({ post }: StockCardProps) {
-	const { id, title, description, pubDate, tags, trade, readingTime } = post
+	const { id, title, description, pubDate, tags, trades, readingTime } = post
 	const url = `/stock/${id}`
 	const primaryTag = tags?.[0]
 	const secondaryTag = tags?.[1]
+
+	// 是否为多笔交易，用于决定是否展示各标的名称加以区分
+	const isMultiTrade = trades.length > 1
+	// 底部关联标的：合并去重所有笔的 related
+	const relatedList = Array.from(new Set(trades.map((t) => t.related).filter((r): r is string => Boolean(r))))
+	// 仅保留含涨跌幅或盈亏数据的交易，用于摘要展示
+	const summaryTrades = trades.filter((t) => t.changePercent || t.profit)
 
 	return (
 		<a
@@ -74,22 +81,32 @@ export default function StockCard({ post }: StockCardProps) {
 			</h2>
 			<p className='mt-2 text-sm text-skin-neutral-4 line-clamp-3'>{description}</p>
 
-			{trade && (trade.changePercent || trade.profit) && (
-				<div className='mt-4 flex items-center gap-3 flex-wrap font-mono'>
-					{trade.changePercent && (
-						<span className='flex items-baseline gap-1.5 whitespace-nowrap px-2 py-1 rounded-sm bg-skin-tag-bg'>
-							<span className='text-[10px] uppercase tracking-wider text-skin-neutral-5'>涨跌幅</span>
-							<span className={`text-sm font-semibold ${tradeColorClass(trade.changePercent)}`}>
-								{trade.changePercent}
-							</span>
-						</span>
-					)}
-					{trade.profit && (
-						<span className='flex items-baseline gap-1.5 whitespace-nowrap px-2 py-1 rounded-sm bg-skin-tag-bg'>
-							<span className='text-[10px] uppercase tracking-wider text-skin-neutral-5'>盈亏</span>
-							<span className={`text-sm font-semibold ${tradeColorClass(trade.profit)}`}>{trade.profit}</span>
-						</span>
-					)}
+			{summaryTrades.length > 0 && (
+				<div className='mt-4 flex flex-col gap-2 font-mono'>
+					{summaryTrades.map((trade, index) => (
+						<div
+							key={trade.symbol ?? index}
+							className='flex items-center gap-3 flex-wrap'
+						>
+							{isMultiTrade && trade.symbol && (
+								<span className='text-xs text-skin-neutral-4 whitespace-nowrap'>{trade.symbol}</span>
+							)}
+							{trade.changePercent && (
+								<span className='flex items-baseline gap-1.5 whitespace-nowrap px-2 py-1 rounded-sm bg-skin-tag-bg'>
+									<span className='text-[10px] uppercase tracking-wider text-skin-neutral-5'>涨跌幅</span>
+									<span className={`text-sm font-semibold ${tradeColorClass(trade.changePercent)}`}>
+										{trade.changePercent}
+									</span>
+								</span>
+							)}
+							{trade.profit && (
+								<span className='flex items-baseline gap-1.5 whitespace-nowrap px-2 py-1 rounded-sm bg-skin-tag-bg'>
+									<span className='text-[10px] uppercase tracking-wider text-skin-neutral-5'>盈亏</span>
+									<span className={`text-sm font-semibold ${tradeColorClass(trade.profit)}`}>{trade.profit}</span>
+								</span>
+							)}
+						</div>
+					))}
 				</div>
 			)}
 
@@ -97,7 +114,7 @@ export default function StockCard({ post }: StockCardProps) {
 
 			<div className='flex items-center justify-between gap-3'>
 				<span className='font-mono text-xs text-skin-neutral-5 truncate'>
-					{trade?.related ? `关联 · ${trade.related}` : ' '}
+					{relatedList.length > 0 ? `关联 · ${relatedList.join('、')}` : ' '}
 				</span>
 				<span className='font-mono text-xs text-skin-primary whitespace-nowrap shrink-0'>阅读全文 →</span>
 			</div>

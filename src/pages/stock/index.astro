@@ -3,7 +3,7 @@ import BaseHead from '@/components/BaseHead.astro'
 import Header from '@/components/Header/Header.astro'
 import Footer from '@/components/Footer.astro'
 import StockJournal from '@/components/Stock/StockJournal'
-import { getSortedStockPosts, getAllStockTags } from '@/shared/stock'
+import { getSortedStockPosts, getAllStockTags, normalizeTrades } from '@/shared/stock'
 import { getWordCount } from '@/shared/utils'
 
 const posts = await getSortedStockPosts()
@@ -17,7 +17,7 @@ const serializedPosts = posts.map((post) => {
 		description: post.data.description,
 		pubDate: post.data.pubDate,
 		tags: post.data.tags,
-		trade: post.data.trade,
+		trades: normalizeTrades(post.data),
 		readingTime: Math.ceil(wordCount / 400),
 	}
 })

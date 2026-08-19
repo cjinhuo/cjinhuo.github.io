@@ -1,6 +1,21 @@
 import { type CollectionEntry, getCollection } from 'astro:content'
+import type { StockTrade } from '@/components/Stock/StockCard'
 
 export type StockEntry = CollectionEntry<'stock'>
+
+/**
+ * 将文章 frontmatter 中的 trade（单笔）与 trades（多笔）归一化为统一的数组，
+ * 使上层组件只需处理一种形态。优先取 trades，回退到单笔 trade，均无则返回空数组。
+ */
+export function normalizeTrades(data: { trade?: StockTrade; trades?: StockTrade[] }): StockTrade[] {
+	if (data.trades && data.trades.length > 0) {
+		return data.trades
+	}
+	if (data.trade) {
+		return [data.trade]
+	}
+	return []
+}
 
 export async function getSortedStockPosts(): Promise<StockEntry[]> {
 	const posts = await getCollection('stock')
