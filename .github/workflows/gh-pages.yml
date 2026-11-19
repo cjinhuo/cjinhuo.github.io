@@ -19,6 +19,8 @@ jobs:
           cache: 'pnpm'
       - run: pnpm i
       - run: pnpm build
+        env:
+          PUBLISH_TARGET: github-pages
       - name: Deploy dist
         uses: peaceiris/actions-gh-pages@v3
         with:

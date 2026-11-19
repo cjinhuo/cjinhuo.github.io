@@ -1,0 +1,24 @@
+---
+const projects = [
+  { name: 'Thrift to JSON Schema', url: 'https://cjinhuo.github.io/thrift-to-json-schema/', description: 'Convert Apache Thrift definitions to JSON Schema and validate sample data in the browser.' },
+  { name: 'Text Search Engine', url: 'https://cjinhuo.github.io/text-search-engine/', description: 'Try fuzzy matching across Chinese pinyin and English, then explore how each match is scored.' },
+  { name: 'BlazWitcher', url: 'https://blazwitcher.vercel.app/en', description: 'Search Chrome and Edge tabs, bookmarks and history with pinyin, and organize tabs with AI.' },
+  { name: 'Morse Typer', url: 'https://cjinhuo.github.io/morse/', description: 'Practice Morse code with the space bar, convert text to dots and dashes, or practice English typing.' },
+  { name: 'MitoJS for React', url: 'https://mitojs.github.io/react-sdk-demo/', description: 'Trigger a React ErrorBoundary and inspect the SDK report alongside network and user events.' },
+  { name: 'MitoJS for Vue 2', url: 'https://mitojs.github.io/vue2-sdk-demo/', description: 'Trace Vue 2 component errors, rejected promises and HTTP requests through the report monitor.' },
+  { name: 'MitoJS for Vue 3', url: 'https://mitojs.github.io/vue3-sdk-demo/', description: 'Explore Vue 3 error capture and inspect user actions leading up to a report.' },
+  { name: 'MitoJS monitoring dashboard', url: 'https://mitojs.github.io/mito-admin-demo/', description: 'Explore sample frontend errors, stack traces and user activity in the monitoring dashboard.' },
+]
+---
+
+<section class="max-w-5xl mx-auto px-6 md:px-12 py-12" aria-labelledby="projects-heading">
+  <h1 id="projects-heading" class="text-2xl font-semibold text-skin-neutral-1">Open-source projects by Shanks</h1>
+  <ul class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+    {projects.map(({ name, url, description }) => (
+      <li>
+        <a class="font-semibold text-skin-primary underline underline-offset-4" href={url}>{name}</a>
+        <p class="mt-1 text-skin-neutral-4">{description}</p>
+      </li>
+    ))}
+  </ul>
+</section>

@@ -3,13 +3,14 @@ import BaseHead from '../components/BaseHead.astro'
 import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header/Header.astro'
 import TypeWriter from '@/components/TypeWriter'
+import OpenSourceProjects from '@/components/OpenSourceProjects.astro'
 import RecentPosts from '@/components/RecentPosts.astro'
 ---
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <BaseHead />
+    <BaseHead title="Shanks | Open-source projects and engineering blog" description="Explore Shanks’ open-source developer tools, pinyin search, Morse code practice and MitoJS monitoring demos, alongside engineering articles." />
   </head>
   <body class="bg-skin-background">
     <Header />
@@ -24,6 +25,8 @@ import RecentPosts from '@/components/RecentPosts.astro'
           </div>
         </div>
       </section>
+
+      <OpenSourceProjects />
 
       <section class="max-w-5xl mx-auto px-6 md:px-12 py-12">
         <div class="flex justify-between items-center mb-8">
