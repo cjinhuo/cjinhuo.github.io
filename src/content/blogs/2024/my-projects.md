@@ -1,29 +1,37 @@
 ---
-title: "A lot of tools I created"
-description: "Here are some tiny tools I still maintained: 🎉"
+title: "Open-source tools and interactive demos"
+description: "Try Pinyin fuzzy search, browser tab search, Morse code practice, Thrift to JSON Schema conversion, and MitoJS monitoring demos."
 pubDate: '2024-08-18'
-updatedDate: '2024-08-18'
+updatedDate: '2026-11-26'
 tags: ['开源', '工具', '前端', 'SDK']
 ---
 
-Here are some tiny tools I still maintained: 🎉
+Here are some tools I build and work on. Each demo is linked directly so you can try the feature before installing anything.
 
-## @mitojs
-🎉 A lite SDK for monitoring Web and MiniProgram,[SDK Demo](https://mitojs.github.io/react-sdk-demo/#/page-one) for that,[Admin Demo](https://mitojs.github.io/mito-admin-demo/#/errors/2/info) for that,[Document](https://mitojs.github.io/mito-doc/#/sdk/guide/introduction) for that
+## Text Search Engine: JavaScript Pinyin fuzzy search
 
+Search local strings or objects using Chinese characters, full Pinyin, Pinyin initials, or English. [Try the demo](https://cjinhuo.github.io/text-search-engine/), then read the [English integration guide](https://cjinhuo.github.io/text-search-engine/en/) or [中文接入与选型](https://cjinhuo.github.io/text-search-engine/guide/) for runnable examples, match ranges, and a reproducible comparison.
 
-## morse
-📟 A [interesting toy](https://cjinhuo.github.io/morse/) of Morse code which could visualize Morse code in binary tree to train you memorize those codes easily and deeply.
+## Blazwitcher: find tabs, bookmarks, and history
 
-## text search engine
-🔍 A [text search engine](https://github.com/cjinhuo/text-search-engine) that relies on a dynamic programming algorithm and supports fuzzy search with pinyin.
+Use Pinyin initials to jump to a browser tab, bookmark, or history entry. The browser extension also supports AI tab grouping. See the [product page](https://blazwitcher.vercel.app/en), [Chrome Web Store listing](https://chromewebstore.google.com/detail/fjgablnemienkegdnbihhemebmmonihg), or [中文体验与安装指南](/blogs/2025/blazwitcher).
 
-## blazwitcher
-⚒️ A [Chrome Extension](https://chrome.google.com/webstore/detail/fjgablnemienkegdnbihhemebmmonihg) for searching tabs, bookmarks, and history with support for fuzzy Pinyin search which let you switch or create tab you want in blazing speed.
+## Morse Typer: practice and conversion
 
-## parser
-⌨ A tiny parser from [parsing](https://cjinhuo.github.io/thrift-to-json-schema/) thrift to JSON schema
+[Practice Morse code](https://cjinhuo.github.io/morse/) with the space bar and see the binary tree, or [convert between plain text and Morse code](https://cjinhuo.github.io/morse/converter/). For ordinary keyboard drills, use [English typing practice](https://cjinhuo.github.io/morse/latin/).
 
+## Schema Studio: Thrift to JSON Schema
 
-## the best mono repo boilerplate
-📦 A set of scripts are preset for [monorepo](https://github.com/cjinhuo/mono-sdk-boilerplate) with Pnpm + changeset + nx
+[Convert an Apache Thrift definition to JSON Schema online](https://cjinhuo.github.io/thrift-to-json-schema/) and validate sample JSON in the browser. See the [English conversion and SDK guide](https://cjinhuo.github.io/thrift-to-json-schema/en/) or [中文递归类型示例](https://cjinhuo.github.io/thrift-to-json-schema/guide/) to try a complete example.
+
+## MitoJS: frontend monitoring SDK demos
+
+Start with the [SDK documentation](https://mitojs.github.io/mito-doc/sdk/guide/introduction/). Use the [React](https://mitojs.github.io/react-sdk-demo/), [Vue 2](https://mitojs.github.io/vue2-sdk-demo/), and [Vue 3](https://mitojs.github.io/vue3-sdk-demo/) demos to trigger errors and inspect reports. The [monitoring dashboard](https://mitojs.github.io/mito-admin-demo/) uses sample data for exploring report details.
+
+## Planche Practice
+
+[Open the practice tracker](https://cjinhuo.github.io/planche-practice/) to see the checklist and log a session. Records stay in the current browser and can be exported as JSON.
+
+## Monorepo tooling
+
+[Starter scripts](https://github.com/cjinhuo/mono-sdk-boilerplate) for a pnpm monorepo with Changesets and Nx.
