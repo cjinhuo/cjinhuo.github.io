@@ -4,3 +4,4 @@ Allow: /
 Sitemap: https://cjinhuo.github.io/thrift-to-json-schema/sitemap.xml
 Sitemap: https://cjinhuo.github.io/text-search-engine/sitemap.xml
 Sitemap: https://cjinhuo.github.io/morse/sitemap.xml
+Sitemap: https://cjinhuo.github.io/planche-practice/sitemap.xml

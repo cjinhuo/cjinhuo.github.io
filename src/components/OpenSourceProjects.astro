@@ -1,23 +1,88 @@
 ---
 const projects = [
-  { name: 'Thrift to JSON Schema', url: 'https://cjinhuo.github.io/thrift-to-json-schema/', description: 'Convert Apache Thrift definitions to JSON Schema and validate sample data in the browser.' },
-  { name: 'Text Search Engine', url: 'https://cjinhuo.github.io/text-search-engine/', description: 'Try fuzzy matching across Chinese pinyin and English, then explore how each match is scored.' },
-  { name: 'BlazWitcher', url: 'https://blazwitcher.vercel.app/en', description: 'Search Chrome and Edge tabs, bookmarks and history with pinyin, and organize tabs with AI.' },
-  { name: 'Morse Typer', url: 'https://cjinhuo.github.io/morse/', description: 'Practice Morse code with the space bar, convert text to dots and dashes, or practice English typing.' },
-  { name: 'MitoJS for React', url: 'https://mitojs.github.io/react-sdk-demo/', description: 'Trigger a React ErrorBoundary and inspect the SDK report alongside network and user events.' },
-  { name: 'MitoJS for Vue 2', url: 'https://mitojs.github.io/vue2-sdk-demo/', description: 'Trace Vue 2 component errors, rejected promises and HTTP requests through the report monitor.' },
-  { name: 'MitoJS for Vue 3', url: 'https://mitojs.github.io/vue3-sdk-demo/', description: 'Explore Vue 3 error capture and inspect user actions leading up to a report.' },
-  { name: 'MitoJS monitoring dashboard', url: 'https://mitojs.github.io/mito-admin-demo/', description: 'Explore sample frontend errors, stack traces and user activity in the monitoring dashboard.' },
+  {
+    name: 'Text Search Engine',
+    url: 'https://cjinhuo.github.io/text-search-engine/',
+    description: 'Search local lists with Chinese, Pinyin initials, or English. Try beijing or bj to look up Beijing schools, then see how to return match ranges for highlighting.',
+    links: [
+      { label: 'English quickstart and comparison', url: 'https://cjinhuo.github.io/text-search-engine/en/' },
+      { label: '中文指南', url: 'https://cjinhuo.github.io/text-search-engine/guide/', lang: 'zh-CN' },
+    ],
+  },
+  {
+    name: 'Blazwitcher',
+    url: 'https://blazwitcher.vercel.app/en',
+    description: 'Find Chrome or Edge tabs, bookmarks, and history with fuzzy Pinyin search. The browser extension also supports AI tab grouping.',
+    links: [
+      { label: '中文产品页', url: 'https://blazwitcher.vercel.app/zh', lang: 'zh-CN' },
+      { label: 'Chrome Web Store', url: 'https://chromewebstore.google.com/detail/fjgablnemienkegdnbihhemebmmonihg' },
+    ],
+  },
+  {
+    name: 'Schema Studio',
+    url: 'https://cjinhuo.github.io/thrift-to-json-schema/',
+    description: 'Paste an Apache Thrift definition to generate JSON Schema, then validate sample JSON in your browser.',
+    links: [
+      { label: 'English conversion and SDK guide', url: 'https://cjinhuo.github.io/thrift-to-json-schema/en/' },
+      { label: '中文递归类型示例', url: 'https://cjinhuo.github.io/thrift-to-json-schema/guide/', lang: 'zh-CN' },
+    ],
+  },
+  {
+    name: 'Morse Typer',
+    url: 'https://cjinhuo.github.io/morse/',
+    description: 'Learn Morse code with the space bar. Start with SOS (··· −−− ···), then try whole words.',
+    links: [
+      { label: 'Morse code converter', url: 'https://cjinhuo.github.io/morse/converter/' },
+      { label: 'English typing practice', url: 'https://cjinhuo.github.io/morse/latin/' },
+    ],
+  },
+  {
+    name: 'MitoJS for React',
+    url: 'https://mitojs.github.io/react-sdk-demo/',
+    description: 'Trigger a React Error Boundary and inspect the SDK report alongside network and user events.',
+    links: [{ label: 'MitoJS SDK guide', url: 'https://mitojs.github.io/mito-doc/sdk/guide/introduction/' }],
+  },
+  {
+    name: 'MitoJS for Vue 2',
+    url: 'https://mitojs.github.io/vue2-sdk-demo/',
+    description: 'Trace Vue 2 component errors, rejected promises, and HTTP requests through the report monitor.',
+    links: [],
+  },
+  {
+    name: 'MitoJS for Vue 3',
+    url: 'https://mitojs.github.io/vue3-sdk-demo/',
+    description: 'Explore Vue 3 error capture and inspect user actions leading up to a report.',
+    links: [],
+  },
+  {
+    name: 'MitoJS monitoring dashboard',
+    url: 'https://mitojs.github.io/mito-admin-demo/',
+    description: 'Explore frontend errors, stack traces, and user activity with sample data.',
+    links: [],
+  },
+  {
+    name: 'Planche Practice',
+    url: 'https://cjinhuo.github.io/planche-practice/',
+    description: 'Open the practice checklist and log a session. Progress stays in your browser; the app provides a JSON export.',
+    links: [{ label: '中文练习与记录指南', url: 'https://cjinhuo.github.io/planche-practice/guide/', lang: 'zh-CN' }],
+  },
 ]
 ---
 
 <section class="max-w-5xl mx-auto px-6 md:px-12 py-12" aria-labelledby="projects-heading">
   <h1 id="projects-heading" class="text-2xl font-semibold text-skin-neutral-1">Open-source projects by Shanks</h1>
   <ul class="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-    {projects.map(({ name, url, description }) => (
+    {projects.map(({ name, url, description, links }) => (
       <li>
         <a class="font-semibold text-skin-primary underline underline-offset-4" href={url}>{name}</a>
         <p class="mt-1 text-skin-neutral-4">{description}</p>
+        {links.length > 0 && (
+          <ul class="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+            {links.map(({ label, url, lang }) => (
+              <li><a class="text-skin-primary underline underline-offset-4" href={url} lang={lang}>{label}</a></li>
+            ))}
+          </ul>
+        )}
       </li>
     ))}
   </ul>
